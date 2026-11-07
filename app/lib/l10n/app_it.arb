@@ -1,0 +1,7 @@
+{
+  "@@locale": "it",
+  "appNome": "BA",
+  "@appNome": {
+    "description": "Chiave di prova del task 000: nome dell'app."
+  }
+}
