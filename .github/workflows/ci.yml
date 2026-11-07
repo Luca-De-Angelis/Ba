@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  app:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Progetto Flutter presente?
+        id: check
+        working-directory: .
+        run: |
+          if [ -f app/pubspec.yaml ]; then echo "ok=true" >> "$GITHUB_OUTPUT"; else echo "ok=false" >> "$GITHUB_OUTPUT"; echo "app/pubspec.yaml non c'è ancora: salto i controlli Flutter."; fi
+
+      - uses: subosito/flutter-action@v2
+        if: steps.check.outputs.ok == 'true'
+        with:
+          channel: stable
+          cache: true
+
+      - name: Dipendenze
+        if: steps.check.outputs.ok == 'true'
+        run: flutter pub get
+
+      - name: Analisi
+        if: steps.check.outputs.ok == 'true'
+        run: flutter analyze
+
+      - name: Test
+        if: steps.check.outputs.ok == 'true'
+        run: flutter test
+
+      - name: Niente Material o Cupertino nel design system
+        if: steps.check.outputs.ok == 'true'
+        run: |
+          if grep -rnE "package:flutter/(material|cupertino)\.dart" lib/design_system; then
+            echo "Il design system deve importare solo package:flutter/widgets.dart"; exit 1; fi

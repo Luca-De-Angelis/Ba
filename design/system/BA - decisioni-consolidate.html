@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; font-family:'Instrument Sans',system-ui,sans-serif; color:#1A1816; }
+  doc-page:not(:defined) { visibility:hidden; }
+  body doc-page, body doc-page h1, body doc-page h2, body doc-page p, body doc-page li, body doc-page th, body doc-page td, body doc-page div { font-family:'Instrument Sans',system-ui,sans-serif; }
+  a { color:#7A4A18; text-decoration:none; border-bottom:1px solid rgba(122,74,24,0.35); }
+  a:hover { color:#5C3610; border-bottom-color:rgba(92,54,16,0.7); }
+</style>
+<script src="./doc-page.js"></script>
+</helmet>
+
+<doc-page margin="0.8in">
+
+  <div style="display:flex;flex-direction:column;gap:6px;border-bottom:2px solid #1A1816;padding-bottom:14px;margin-bottom:26px">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:10pt;letter-spacing:0.14em;text-transform:uppercase;color:#5F5A54">BA · brief di design · sostituisce il §7</div>
+    <h1 style="margin:0;font-size:26pt;font-weight:600;letter-spacing:-0.02em;line-height:1.1">Decisioni consolidate sulla rappresentazione, lo stato e il movimento</h1>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:9pt;line-height:1.5;color:#5F5A54;border:1px solid #C9C2B9;border-radius:4pt;padding:7pt 9pt;margin-top:6px">Questo documento porta le <strong style="font-weight:500">decisioni e le motivazioni</strong>. La fonte di verità per i valori è <strong style="font-weight:500">tokens.dart</strong>: i numeri citati qui sono copie di lettura e, se divergono, vince il file.</div>
+    <div style="font-size:11pt;line-height:1.5;color:#5F5A54;max-width:34em">Direzione scelta: impacchettamento adattivo con sagome irregolari. Perimetro alpha, tema scuro. Ogni valore qui è destinato a <span style="font-family:'IBM Plex Mono',monospace;font-size:10pt">tokens.dart</span>: dove manca un valore è dichiarato mancante, non lasciato al codice.</div>
+  </div>
+
+  <h2 style="margin:0 0 8px;font-size:14pt;font-weight:600;letter-spacing:-0.01em">7.1 &nbsp;Come si rappresenta una persona</h2>
+  <p style="margin:0 0 16px;font-size:11pt;line-height:1.6;color:#2E2A26">La persona è rappresentata dall'<strong style="font-weight:600">immagine che ha scelto</strong>, usata come riempimento della sagoma assegnata dalla stanza. Le <strong style="font-weight:600">iniziali su tinta assegnata</strong> sono il ripiego. In alpha il ripiego è il caso dominante: è progettato come principale, e ogni stato deve leggersi identico nelle due varianti. Nessun nome visibile accanto alle presenze.</p>
+
+  <h2 style="margin:0 0 8px;font-size:14pt;font-weight:600;letter-spacing:-0.01em">7.2 &nbsp;Colore e forma li assegna la stanza</h2>
+  <p style="margin:0 0 16px;font-size:11pt;line-height:1.6;color:#2E2A26">Entrando in un DEN si riceve una tinta libera e una sagoma libera, valide finché si è dentro. Palette e repertorio di sagome sono <strong style="font-weight:600">chiusi e disegnati</strong>: nessun valore generato da hash dell'ID. Assegnare per stanza garantisce l'unicità dove serve e rende tinta e forma effimere come tutto il resto. Corollario: la forma non identifica una persona fra sessioni diverse, e non deve diventarlo.</p>
+
+  <h2 style="margin:0 0 8px;font-size:14pt;font-weight:600;letter-spacing:-0.01em">7.3 &nbsp;Luminanza: il tetto vale anche per le immagini</h2>
+  <p style="margin:0 0 12px;font-size:11pt;line-height:1.6;color:#2E2A26">Le presenze stanno nella metà bassa della scala di luminanza; la parte alta resta allo stato. Sui dischi il tetto è <strong style="font-weight:600">luminanza relativa ≤ 0,18</strong>, che garantisce iniziali bianche a 4,5:1 senza eccezioni. Con le sfumature il vincolo vale sullo <em>stop più chiaro</em>. Sulle immagini il tetto è un velo piatto <span style="font-family:'IBM Plex Mono',monospace;font-size:10pt">rgba(8,7,6,.34)</span> dentro la sagoma — un <span style="font-family:'IBM Plex Mono',monospace;font-size:10pt">ColorFiltered</span>, non un blur: qualunque foto smette di abbagliare al buio.</p>
+
+  <table style="width:100%;border-collapse:collapse;font-size:10pt;margin:0 0 6px">
+    <thead>
+      <tr style="border-bottom:1px solid #1A1816">
+        <th style="text-align:left;padding:6px 8px 6px 0;font-weight:600">Presenza</th>
+        <th style="text-align:left;padding:6px 8px;font-weight:600;font-family:'IBM Plex Mono',monospace">stop chiaro</th>
+        <th style="text-align:left;padding:6px 8px;font-weight:600;font-family:'IBM Plex Mono',monospace">stop scuro</th>
+        <th style="text-align:left;padding:6px 8px;font-weight:600">L (stop chiaro)</th>
+      </tr>
+    </thead>
+    <tbody style="color:#2E2A26;font-family:'IBM Plex Mono',monospace">
+      <tr style="border-bottom:1px solid #E2DDD4"><td style="padding:5px 8px 5px 0;font-family:'Instrument Sans',sans-serif">indaco</td><td style="padding:5px 8px">#5257AC</td><td style="padding:5px 8px">#33367A</td><td style="padding:5px 8px">0,118</td></tr>
+      <tr style="border-bottom:1px solid #E2DDD4"><td style="padding:5px 8px 5px 0;font-family:'Instrument Sans',sans-serif">terracotta</td><td style="padding:5px 8px">#A83E2E</td><td style="padding:5px 8px">#6E251C</td><td style="padding:5px 8px">0,120</td></tr>
+      <tr style="border-bottom:1px solid #E2DDD4"><td style="padding:5px 8px 5px 0;font-family:'Instrument Sans',sans-serif">verde</td><td style="padding:5px 8px">#23735A</td><td style="padding:5px 8px">#14473A</td><td style="padding:5px 8px">0,134</td></tr>
+      <tr style="border-bottom:1px solid #E2DDD4"><td style="padding:5px 8px 5px 0;font-family:'Instrument Sans',sans-serif">ocra</td><td style="padding:5px 8px">#96621A</td><td style="padding:5px 8px">#5F3C0B</td><td style="padding:5px 8px">0,154</td></tr>
+      <tr style="border-bottom:1px solid #E2DDD4"><td style="padding:5px 8px 5px 0;font-family:'Instrument Sans',sans-serif">blu</td><td style="padding:5px 8px">#2A6894</td><td style="padding:5px 8px">#1B4463</td><td style="padding:5px 8px">0,131</td></tr>
+      <tr style="border-bottom:1px solid #E2DDD4"><td style="padding:5px 8px 5px 0;font-family:'Instrument Sans',sans-serif">magenta</td><td style="padding:5px 8px">#AC3765</td><td style="padding:5px 8px">#72203F</td><td style="padding:5px 8px">0,124</td></tr>
+      <tr style="border-bottom:1px solid #E2DDD4"><td style="padding:5px 8px 5px 0;font-family:'Instrument Sans',sans-serif">oliva</td><td style="padding:5px 8px">#557426</td><td style="padding:5px 8px">#374A18</td><td style="padding:5px 8px">0,151</td></tr>
+      <tr style="border-bottom:1px solid #E2DDD4"><td style="padding:5px 8px 5px 0;font-family:'Instrument Sans',sans-serif">prugna</td><td style="padding:5px 8px">#7A3080</td><td style="padding:5px 8px">#4E1F52</td><td style="padding:5px 8px">0,092</td></tr>
+    </tbody>
+  </table>
+  <p style="margin:0 0 16px;font-size:10pt;line-height:1.55;color:#5F5A54">Otto tinte disegnate su dodici previste: le quattro mancanti vanno disegnate in Fase 2 nella stessa banda (L 0,09–0,16), non oltre. I valori di L sono calcolati, non stimati; vanno riverificati sul dispositivo con profilo colore reale.</p>
+
+  <h2 style="margin:0 0 8px;font-size:14pt;font-weight:600;letter-spacing:-0.01em">7.4 &nbsp;Sagome irregolari</h2>
+  <p style="margin:0 0 16px;font-size:11pt;line-height:1.6;color:#2E2A26">Raggi asimmetrici entro <strong style="font-weight:600">±8% dal cerchio</strong> (nessun raggio oltre 58% né sotto 42%): abbastanza per non leggersi come geometria, poco per non leggersi come illustrazione. Cinque sagome in repertorio, assegnate per posto. La sagoma è anche la maschera dell'immagine e il tracciato dell'anello. <em>Da verificare con volti reali</em>: se la sagoma più asimmetrica taglia mento o fronte, l'escursione scende a ±5% e la regola diventa "nessun raggio sotto il 46%".</p>
+
+  <h2 style="margin:0 0 8px;font-size:14pt;font-weight:600;letter-spacing:-0.01em">7.5 &nbsp;Disposizione: la scala è del gruppo</h2>
+  <p style="margin:0 0 12px;font-size:11pt;line-height:1.6;color:#2E2A26">Le presenze si impacchettano in posizioni irregolari, senza griglia e senza posti vuoti disegnati: <strong style="font-weight:600">il palco non ha sedie, solo persone</strong>. La dimensione dice quante sono, e appartiene al gruppo: dimensioni diverse fra persone sarebbero rango.</p>
+  <table style="width:100%;border-collapse:collapse;font-size:10pt;margin:0 0 16px">
+    <thead>
+      <tr style="border-bottom:1px solid #1A1816">
+        <th style="text-align:left;padding:6px 8px 6px 0;font-weight:600">Sul palco</th>
+        <th style="text-align:left;padding:6px 8px;font-weight:600">Diametro</th>
+        <th style="text-align:left;padding:6px 8px;font-weight:600">Iniziali</th>
+        <th style="text-align:left;padding:6px 8px;font-weight:600">Luce minima fra sagome</th>
+      </tr>
+    </thead>
+    <tbody style="color:#2E2A26">
+      <tr style="border-bottom:1px solid #E2DDD4"><td style="padding:5px 8px 5px 0">1</td><td style="padding:5px 8px">208 dp</td><td style="padding:5px 8px">61 dp</td><td style="padding:5px 8px">—</td></tr>
+      <tr style="border-bottom:1px solid #E2DDD4"><td style="padding:5px 8px 5px 0">2</td><td style="padding:5px 8px">156 dp</td><td style="padding:5px 8px">46 dp</td><td style="padding:5px 8px">20 dp · <em>in diagonale a 360 dp</em></td></tr>
+      <tr style="border-bottom:1px solid #E2DDD4"><td style="padding:5px 8px 5px 0">3–4</td><td style="padding:5px 8px">130 dp</td><td style="padding:5px 8px">38 dp</td><td style="padding:5px 8px">20 dp</td></tr>
+      <tr style="border-bottom:1px solid #E2DDD4"><td style="padding:5px 8px 5px 0">5–6</td><td style="padding:5px 8px">112 dp</td><td style="padding:5px 8px">33 dp</td><td style="padding:5px 8px">20 dp</td></tr>
+      <tr style="border-bottom:1px solid #E2DDD4"><td style="padding:5px 8px 5px 0">7–8</td><td style="padding:5px 8px"><strong style="font-weight:600">88 dp</strong></td><td style="padding:5px 8px">26 dp</td><td style="padding:5px 8px">20 dp</td></tr>
+    </tbody>
+  </table>
+
+  <h2 style="margin:0 0 8px;font-size:14pt;font-weight:600;letter-spacing:-0.01em">7.6 &nbsp;Distanza minima: è un token, non un layout</h2>
+  <p style="margin:0 0 16px;font-size:11pt;line-height:1.6;color:#2E2A26">Distanza fra i centri ≥ diametro + banda anello (5) + crescita al picco (4) + respiro (8) = <strong style="font-weight:600">20 pt di luce fra le sagome</strong>. È il vincolo che tiene l'anello di chi parla fuori dal vicino anche al massimo dell'escursione. Se l'algoritmo di impacchettamento scende sotto questa soglia, il segnale si degrada: la soglia va imposta al packing, non corretta a valle.</p>
+  <p style="margin:0 0 16px;font-size:11pt;line-height:1.6;color:#2E2A26"><strong style="font-weight:600">Ricontrollato sulla baseline vera, che è 360 dp e non 375 pt.</strong> Con 320 dp di larghezza utile, una fila di tre a 92 chiedeva 328 dp — otto di troppo, e a pagarli sarebbe stato l'anello del bordo esterno. <strong style="font-weight:600">Il fondo della scala scende quindi a 88</strong> (tre in fila: 316 dp, quattro di margine). Conseguenza sull'impacchettamento: la coppia a 156 non sta affiancata a questa larghezza e va in diagonale — è un vincolo del packing, non una scala nuova. Il conto per riga, la tabella dei casi e la formula stanno in <em>BA · Token</em>, T6 bis.</p>
+
+  <h2 style="margin:0 0 8px;font-size:14pt;font-weight:600;letter-spacing:-0.01em">7.7 &nbsp;"Sta parlando": anello a doppio tratto</h2>
+  <p style="margin:0 0 12px;font-size:11pt;line-height:1.6;color:#2E2A26">Chi parla porta un anello che segue la propria sagoma, reattivo al livello audio, distinto per <strong style="font-weight:600">luminanza e movimento, mai per tinta</strong> — la tinta è occupata dall'identità, e la luminanza è il canale che sopravvive a schermo piccolo, luce scarsa e daltonismo. L'anello porta con sé il proprio sfondo: keyline scura adiacente alla sagoma e tratto chiaro sopra, così il segnale non dipende dall'immagine sotto né da quella del vicino. Non è un tracciato d'onda.</p>
+  <p style="margin:0 0 12px;font-size:11pt;line-height:1.6;color:#2E2A26"><strong style="font-weight:600">L'anello sta su due canali, non uno</strong>, e la divisione viene dall'SDK (LiveKit). <strong style="font-weight:600">Canale veloce</strong>: comparsa e scomparsa, guidate da <span style="font-family:'IBM Plex Mono',monospace;font-size:10pt">ActiveSpeakersChanged</span> — un fatto booleano, che arriva presto e regge da solo tutto il significato. <strong style="font-weight:600">Canale lento</strong>: il respiro, guidato dall'ampiezza campionata a 500 ms — decorazione informata, non informazione. La conseguenza è un vincolo, non una preferenza: <strong style="font-weight:600">il rilascio del respiro non può essere più corto dell'intervallo di campionamento</strong>, o l'anello si sgonfia fra un campione e l'altro e si rigonfia al successivo, disegnando un dente di sega alla frequenza di campionamento che non ha più niente a che vedere con la voce. Se un giorno il canale lento non arrivasse, resta il veloce: ed è esattamente il ripiego statico del 7.16, non un caso in più da progettare.</p>
+  <p style="margin:0 0 12px;font-size:11pt;line-height:1.6;color:#2E2A26"><strong style="font-weight:600">Il proprio livello va degradato al ritmo degli altri.</strong> Il microfono locale è leggibile a qualunque frequenza, e sarebbe gratis far respirare la propria bolla più fluida di tutte: non si fa. La stessa forma avrebbe due comportamenti, e chi lo nota per primo è chi guarda se stesso parlare. Il livello locale si ricampiona a 500 ms come quello di chiunque altro.</p>
+  <table style="width:100%;border-collapse:collapse;font-size:10pt;margin:0 0 16px">
+    <tbody style="color:#2E2A26">
+      <tr style="border-bottom:1px solid #E2DDD4"><td style="padding:5px 8px 5px 0;width:42%">keyline interna</td><td style="padding:5px 8px;font-family:'IBM Plex Mono',monospace">3 pt · rgba(8,7,6,.92) · adiacente alla sagoma</td></tr>
+      <tr style="border-bottom:1px solid #E2DDD4"><td style="padding:5px 8px 5px 0">tratto chiaro</td><td style="padding:5px 8px;font-family:'IBM Plex Mono',monospace">2 pt · #F5F1EC · esterno alla keyline</td></tr>
+      <tr style="border-bottom:1px solid #E2DDD4"><td style="padding:5px 8px 5px 0">banda totale</td><td style="padding:5px 8px;font-family:'IBM Plex Mono',monospace">5 pt · crescita al picco +4 pt</td></tr>
+      <tr style="border-bottom:1px solid #E2DDD4"><td style="padding:5px 8px 5px 0">inviluppo</td><td style="padding:5px 8px;font-family:'IBM Plex Mono',monospace">attacco 70 ms · rilascio 350 ms</td></tr>
+      <tr style="border-bottom:1px solid #E2DDD4"><td style="padding:5px 8px 5px 0">escursione</td><td style="padding:5px 8px;font-family:'IBM Plex Mono',monospace">scala 1,00 → 1,075 · opacità 0,28 → 0,95</td></tr>
+      <tr style="border-bottom:1px solid #E2DDD4"><td style="padding:5px 8px 5px 0">implementazione</td><td style="padding:5px 8px;font-family:'IBM Plex Mono',monospace">un ticker per schermata · CustomPainter con repaint: Listenable</td></tr>
+    </tbody>
+  </table>
+
+  <h2 style="margin:0 0 8px;font-size:14pt;font-weight:600;letter-spacing:-0.01em">7.8 &nbsp;Più voci insieme: un limiter sulla grafica</h2>
+  <p style="margin:0 0 16px;font-size:11pt;line-height:1.6;color:#2E2A26">Con più voci contemporanee l'escursione di ciascun anello si comprime, così l'energia visiva totale resta costante: a due voci il massimo per anello scende a 1,042 di scala e 0,66 di opacità. L'albero di Natale diventa impossibile per costruzione, non sconsigliato per buon gusto.</p>
+
+  <h2 style="margin:0 0 8px;font-size:14pt;font-weight:600;letter-spacing:-0.01em">7.9 &nbsp;Abbassata da me — vale per la sessione</h2>
+  <p style="margin:0 0 16px;font-size:11pt;line-height:1.6;color:#2E2A26">La presenza <strong style="font-weight:600">perde saturazione ma tiene una traccia della propria tinta</strong> (<span style="font-family:'IBM Plex Mono',monospace;font-size:10pt">#4A3F4A→#332B33</span> per la prugna; con immagine, velo al 66%), le iniziali restano all'80% e l'identità resta leggibile. Occupa comunque un posto sul palco. <strong style="font-weight:600">Non ha anello, nemmeno ridotto</strong>: l'anello significa "questa voce ti sta arrivando", e su una voce abbassata direbbe il falso. La sua attività passa su un canale separato — un altoparlante barrato che si accende quando quella persona parla, per sola opacità (0,45 → 1 in 140 ms lineari), senza seguire il livello audio. Il glifo usa la stessa logica a doppio tratto dell'anello: casing scuro sotto la barra chiara. Vive solo sul palco: nelle bolle da 22 pt del pubblico sarebbe sotto la soglia di leggibilità, e lì resta la sola desaturazione. Si legge come "abbassato", non come "punito".</p>
+
+  <h2 style="margin:0 0 8px;font-size:14pt;font-weight:600;letter-spacing:-0.01em">7.10 &nbsp;Bloccata — permanente, ovunque, dichiarata</h2>
+  <p style="margin:0 0 12px;font-size:11pt;line-height:1.6;color:#2E2A26">La presenza è <strong style="font-weight:600">neutra piena</strong> (<span style="font-family:'IBM Plex Mono',monospace;font-size:10pt">#3D3B39→#2A2927</span>, iniziali al 70%: la tinta scompare, l'identità no), porta un glifo diverso — cerchio barrato — e <strong style="font-weight:600">nessun segnale di attività</strong>. Entrando in un DEN dove c'è una persona bloccata la vedo <em>marcata, non nascosta</em>: il posto resta occupato e il palco resta contato correttamente.</p>
+  <p style="margin:0 0 16px;font-size:11pt;line-height:1.6;color:#2E2A26">Il blocco è <strong style="font-weight:600">l'unica cosa che l'app ricorda di una persona</strong>, ed è un'eccezione dichiarata al principio dell'effimero: va scritta all'utente nel momento in cui blocca, non nascosta in un'informativa, e non protetta da un dialogo di conferma (un dialogo si chiude senza leggerlo). Ne segue un requisito: <strong style="font-weight:600">l'elenco dei bloccati vive nelle impostazioni (§5.5), con sblocco</strong>. Un'azione permanente senza un posto dove vederla e annullarla non è una preferenza, è una trappola.</p>
+
+  <h2 style="margin:0 0 8px;font-size:14pt;font-weight:600;letter-spacing:-0.01em">7.10 bis &nbsp;Rimosso da un DEN — la memoria è della stanza, non mia <span style="font-family:'IBM Plex Mono',monospace;font-size:9pt;font-weight:400;color:#5F5A54">· da Fase 2, 5j</span></h2>
+  <p style="margin:0 0 12px;font-size:11pt;line-height:1.6;color:#2E2A26">Chi ha aperto il DEN può rimuovermi. Nel momento in cui succede la stanza si chiude e resta una frase ferma — <em>“Non sei più in <span style="font-style:normal">Fra due turni</span>. Non puoi rientrare.”</em> — senza motivo inventato, senza dialogo di conferma, senza appello: <strong style="font-weight:600">il motivo non lo abbiamo e non lo chiediamo</strong>, e un appello in alpha sarebbe una promessa che nessuno può mantenere. L'uscita è hairline, non azione chiara: qui l'app potrebbe riportarmi in elenco da sola, quindi non le serve un colore per chiedermelo (regola 1).</p>
+  <p style="margin:0 0 16px;font-size:11pt;line-height:1.6;color:#2E2A26">In elenco la riga <strong style="font-weight:600">resta, spenta e inerte</strong>, con il marcatore <span style="font-family:'IBM Plex Mono',monospace;font-size:10pt">rimosso</span>: una porta chiusa si vede, altrimenti sembra un guasto e si ritenta. <strong style="font-weight:600">Non è un blocco e non si somma al blocco:</strong> il blocco è mio verso una persona e vale in ogni DEN, la rimozione è di una stanza verso di me e vale in quella stanza — chi mi ha rimosso non entra fra le persone che non sento, perché non l'ho deciso io. Le impostazioni tengono le due cose nella stessa schermata (§5.5), in due gruppi: <em>dati da te</em>, con <strong style="font-weight:600">Sblocca</strong>, e <em>ricevuti</em>, <strong style="font-weight:600">senza nessuna azione</strong>. È l'asimmetria a dire la differenza; un pulsante inattivo suggerirebbe che da qualche parte c'è un modo. Stesso tempo sfocato del blocco (“in aprile”, “stasera”).</p>
+
+  <h2 style="margin:0 0 8px;font-size:14pt;font-weight:600;letter-spacing:-0.01em">7.11 &nbsp;Il pubblico</h2>
+  <p style="margin:0 0 16px;font-size:11pt;line-height:1.6;color:#2E2A26">Il pubblico è <strong style="font-weight:600">un numero</strong>, più al massimo tre bolle da 22 pt come campione stabile — non "ultimi connessi", che sarebbe una classifica e produrrebbe rimescolio in periferia. L'arrivo di qualcuno è un evento transitorio, non uno slot permanente. Il pubblico esiste solo da nove persone in su: a quota zero deve costare zero. Nessun marcatore di stato a questa scala.</p>
+
+  <h2 style="margin:0 0 8px;font-size:14pt;font-weight:600;letter-spacing:-0.01em">7.12 &nbsp;I nomi esistono, non si vedono</h2>
+  <p style="margin:0 0 16px;font-size:11pt;line-height:1.6;color:#2E2A26">Nessun nome accanto alle presenze: il legame voce→persona lo fa l'anello, e si abbassa solo chi sta parlando, quindi il flusso si chiude senza etichette. Il nome per esteso vive nella scheda al tocco e nel <strong style="font-weight:600">livello di accessibilità</strong>, che non è una modalità separata né un TTS proprietario: ogni presenza è un elemento semantico con etichetta completa ("Lucia C., voce abbassata da te, sta parlando"), e i cambi di stato del palco sono annunci — sale, scende, entra, esce, abbassata, bloccata. L'anello è decorativo per lo screen reader; il suo significato vive nell'etichetta. È anche l'unico posto dove lo stato è testo, e quindi va tenuto aggiornato come codice di prodotto, non come metadato.</p>
+  <p style="margin:0 0 16px;font-size:11pt;line-height:1.6;color:#2E2A26">È anche la ragione per cui <strong style="font-weight:600">i sottotitoli, quando esisteranno, non porteranno etichette</strong>: l'attribuzione la fanno tinta e anello, non un nome davanti alla battuta. A differenza della televisione, qui un indicatore dal vivo di chi parla esiste già. Nella prima versione non esistono; quello che si tiene aperto è solo la fascia nell'ordine di cessione e l'unicità della tinta sul palco (Fase 2, 5i).</p>
+
+  <h2 style="margin:0 0 8px;font-size:14pt;font-weight:600;letter-spacing:-0.01em">7.12 bis &nbsp;La fascia testo ha due sorgenti, non una</h2>
+  <p style="margin:0 0 16px;font-size:11pt;line-height:1.6;color:#2E2A26">Quando la fascia esisterà, il testo che ci compare avrà <strong style="font-weight:600">due origini e un solo componente</strong>: il riconoscimento della voce di chi parla, oppure il <strong style="font-weight:600">testo digitato da un partecipante che non può o non vuole usare la propria voce</strong>. Attribuzione, permanenza e regole sono identiche nei due casi — un blocco alla volta, tinta e anello di chi lo produce, permanenza ricavata dalla velocità di lettura, nessuna etichetta. Non si costruisce niente ora: serve solo che <strong style="font-weight:600">l'ingresso testuale non diventi impossibile dopo</strong>, come per la Loggia.</p>
+  <p style="margin:0 0 16px;font-size:11pt;line-height:1.6;color:#2E2A26">La distinzione che salva il §3, ed è precisa: il divieto riguarda <strong style="font-weight:600">un canale testuale parallelo alla voce</strong>, che competerebbe con essa — si scriverebbe mentre un altro parla, si leggerebbe invece di ascoltare, e resterebbe una cronologia. Il testo usato <em>al posto della propria voce</em>, da chi occupa un posto sul palco, non è un canale parallelo: <strong style="font-weight:600">occupa lo stesso turno che occuperebbe parlando</strong>, non scorre, non si risale, non lascia cronologia. Non aggiunge un canale, usa quello che c'è in un'altra forma.</p>
+  <p style="margin:0 0 16px;font-size:11pt;line-height:1.6;color:#2E2A26">Le condizioni perché resti vero sono tre, e sono le stesse che tengono in piedi i sottotitoli. <strong style="font-weight:600">Il posto sul palco è la condizione d'accesso</strong>: chi è nel pubblico non scrive, come non parla. <strong style="font-weight:600">La fascia è unica e sequenziale</strong>: scrivere non consente di sovrapporsi a chi sta parlando, perché due blocchi insieme non esistono. E <strong style="font-weight:600">non esiste un campo di scrittura permanente a schermo</strong>: si scrive quando è il proprio turno, non si tiene una tastiera aperta accanto alla conversazione — una casella sempre presente <em>sarebbe</em> il canale parallelo, come che la chiamiamo.</p>
+
+  <h2 style="margin:0 0 8px;font-size:14pt;font-weight:600;letter-spacing:-0.01em">7.13 &nbsp;Il tocco su una presenza</h2>
+  <p style="margin:0 0 16px;font-size:11pt;line-height:1.6;color:#2E2A26">Apre una <strong style="font-weight:600">scheda breve, non una schermata profilo</strong>: nome per esteso, stato, e tre azioni — <em>abbassa questa voce</em>, <em>blocca</em> (con la sua conseguenza scritta accanto), <em>segnala</em>. Nessun preferito, nessuna azione utente-utente, nessuna storia. La scheda esiste per dire chi è e per regolare cosa sento, poi si chiude. Fuori perimetro alpha: automoderazione, amministratore del DEN, follow, sottogruppi.</p>
+
+  <h2 style="margin:0 0 8px;font-size:14pt;font-weight:600;letter-spacing:-0.01em">7.14 &nbsp;Intestazione della stanza</h2>
+  <p style="margin:0 0 16px;font-size:11pt;line-height:1.6;color:#2E2A26">Nome del DEN e, nelle stanze pubbliche, il marcatore <span style="font-family:'IBM Plex Mono',monospace;font-size:10pt">entra chiunque</span>: è una previsione sociale — <em>chi può arrivare</em> — perché regola cosa dico, non un lucchetto. <strong style="font-weight:600">Le stanze private non portano alcun marcatore</strong>: l'assenza è l'informazione. La riga di stato del palco separa due livelli: il fatto della stanza ("5 sul palco") sopra, le mie preferenze ("per te: 1 abbassata, 1 bloccata") sotto e più deboli. Non si mescolano mai su una riga sola.</p>
+  <p style="margin:0 0 16px;font-size:11pt;line-height:1.6;color:#2E2A26">I marcatori restano due in elenco — <span style="font-family:'IBM Plex Mono',monospace;font-size:10pt">entra chiunque</span> e <span style="font-family:'IBM Plex Mono',monospace;font-size:10pt">su invito</span> — più <span style="font-family:'IBM Plex Mono',monospace;font-size:10pt">rimosso</span> sulla riga spenta. <strong style="font-weight:600">Nessun marcatore nomina il trattamento della voce</strong>: è una questione tecnica accettata alla registrazione e, come il trattamento dei dati, non si ridichiara a ogni conversazione. Una stanza non decide nessuna impostazione di chi entra.</p>
+
+  <h2 style="margin:0 0 8px;font-size:14pt;font-weight:600;letter-spacing:-0.01em">7.15 &nbsp;Movimento: perché è così poco, e dove sta la specifica</h2>
+  <p style="margin:0 0 12px;font-size:11pt;line-height:1.6;color:#2E2A26"><strong style="font-weight:600">La specifica del movimento sta in un punto solo: <em>BA · Token</em>, T8.</strong> Cosa si muove, per quanti millisecondi, con quale curva, cosa deve restare fermo, e cosa non può muoversi insieme a cos'altro. Le due tabelle che stavano qui e nel 7.15 bis sono state fuse là e questo paragrafo tiene solo le ragioni: due copie di una durata divergono al primo ritocco, e la copia sbagliata è sempre quella che qualcuno legge.</p>
+  <p style="margin:0 0 12px;font-size:11pt;line-height:1.6;color:#2E2A26"><strong style="font-weight:600">Perché è poco.</strong> Il rischio da evitare non è la batteria ma il throttling termico: quando il telefono scalda, la prima cosa che degrada è l'audio — l'unica non negoziabile. L'anello resta l'unico movimento continuo ammesso, perché è l'unico che porta un'informazione che cambia da sola.</p>
+  <p style="margin:0 0 12px;font-size:11pt;line-height:1.6;color:#2E2A26"><strong style="font-weight:600">Perché l'arrivo di una persona non si celebra.</strong> Nessun suono, nessun annuncio, nessuna animazione d'ingresso: le presenze compaiono e spariscono. Il solo effetto ammesso è il re-incastro, che è la conseguenza geometrica dell'arrivo, non la sua celebrazione.</p>
+  <p style="margin:0 0 12px;font-size:11pt;line-height:1.6;color:#2E2A26"><strong style="font-weight:600">Perché la scala cambia per tutti insieme, chi parla compreso.</strong> Una presenza più piccola delle altre, anche solo per qualche secondo, si legge come rango. Le soglie non si toccano: si governa la <em>frequenza</em> con cui si assesta, con l'attesa a conteggio fermo — il viavai produce un assestamento solo. Le alternative scartate (animare ogni ingresso, o cambiare scala a scatto) sono disegnate al §5g del documento di fase 2, con il motivo dello scarto.</p>
+  <p style="margin:0 0 16px;font-size:11pt;line-height:1.6;color:#2E2A26">Il ripiego senza movimento non è una versione ridotta di questo: è il 7.16, e comunica gli stessi stati.</p>
+
+  <h2 style="margin:0 0 8px;font-size:14pt;font-weight:600;letter-spacing:-0.01em">7.16 &nbsp;Fallback statico di prima classe</h2>
+  <p style="margin:0 0 16px;font-size:11pt;line-height:1.6;color:#2E2A26">Con movimento ridotto, screen reader attivo o degrado termico, gli stessi stati si comunicano senza alcun movimento: l'anello resta fermo sul valore alto (chi parla è l'unica presenza cerchiata), il glifo di chi è abbassato resta acceso mentre parla, il re-incastro diventa istantaneo. Nessuno stato dipende dall'animazione per esistere: l'animazione ne è la resa continua, non la definizione.</p>
+
+  <h2 style="margin:26px 0 10px;font-size:14pt;font-weight:600;letter-spacing:-0.01em;border-top:1px solid #1A1816;padding-top:18px">Cosa resta aperto — e va deciso su un telefono vero</h2>
+  <ol style="margin:0;padding-left:1.3em;font-size:11pt;line-height:1.6;color:#2E2A26">
+    <li style="margin-bottom:8px"><strong style="font-weight:600">Il ritaglio delle sagome su volti reali.</strong> Se taglia mento o fronte: asimmetria a ±5%, nessun raggio sotto 46%.</li>
+    <li style="margin-bottom:8px"><strong style="font-weight:600">Il glifo di "abbassata che parla" a 375 pt e 20% di luminosità.</strong> Se sparisce, si ingrandisce da 28 a 32 pt — non si colora: la tinta è occupata.</li>
+    <li style="margin-bottom:8px"><strong style="font-weight:600">Il tetto di luminanza sulle immagini</strong> provato su una foto molto chiara e una molto scura. Se una foto scura diventa illeggibile, il velo va calcolato sulla luminanza media dell'immagine: più codice, da sapere prima.</li>
+    <li style="margin-bottom:8px"><strong style="font-weight:600">Otto persone su un 360 dp reale.</strong> Tre a 88 in fila lasciano 4 dp di margine: se sul telefono l'anello del bordo esterno tocca comunque il vuoto laterale, il fondo scende a 86 — non si stringe la distanza fra i centri, che è ciò che protegge il segnale.</li>
+    <li style="margin-bottom:8px"><strong style="font-weight:600">Il respiro dell'anello con campioni veri a 500 ms.</strong> Un rilascio di 600 ms è calcolato, non visto: su rete instabile i campioni arrivano in ritardo e il respiro può risultare a scatti. Se accade, il rilascio sale (non scende), o il canale lento si spegne — il veloce resta e dice la stessa cosa.</li>
+    <li style="margin-bottom:8px"><strong style="font-weight:600">Il DEN vuoto a 208 pt.</strong> Una presenza sola molto grande può leggersi come generosa o come pomposa. È la schermata che vedrà quasi ogni tester.</li>
+    <li style="margin-bottom:8px"><strong style="font-weight:600">Che lavoro resta al colore</strong> (§8.5) quando le immagini diventano dominanti: sul palco la tinta perde il suo compito e sopravvive solo nel ripiego. Il candidato è la stanza, non la persona.</li>
+    <li style="margin-bottom:8px"><strong style="font-weight:600">In v1 chi ha bisogno di leggere non ha niente.</strong> Rinviare i sottotitoli è un costo, non un pareggio: va detto agli invitati dell'alpha, non scoperto dai loro silenzi. Da verificare che la fascia riservata (Fase 2, 5i) basti davvero ad accoglierli poi senza rifare la stanza.</li>
+    <li><strong style="font-weight:600">L'effimero non ha più un segno visibile.</strong> Rimossa la riga "non si registra", resta solo l'assenza di archivi: vera ma silenziosa. Da dire una volta, all'ingresso in stanza, non in permanenza.</li>
+  </ol>
+
+</doc-page>
+</x-dc>
+</body>
+</html>

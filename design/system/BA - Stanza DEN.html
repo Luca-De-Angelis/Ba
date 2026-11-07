@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+  body { margin:0; background:#0A0A09; color:#F2EEE9; font-family:'Instrument Sans',system-ui,sans-serif; }
+  a { color:#D9CFA8; text-decoration:none; border-bottom:1px solid rgba(217,207,168,0.35); }
+  a:hover { color:#F0E6BE; border-bottom-color:rgba(240,230,190,0.7); }
+  @keyframes voiceA {
+    0%   { transform:scale(1.00); opacity:0.28 }
+    16%  { transform:scale(1.075); opacity:0.95 }
+    38%  { transform:scale(1.030); opacity:0.60 }
+    62%  { transform:scale(1.055); opacity:0.80 }
+    100% { transform:scale(1.00); opacity:0.28 }
+  }
+  @keyframes voiceB {
+    0%   { transform:scale(1.00); opacity:0.22 }
+    22%  { transform:scale(1.042); opacity:0.66 }
+    54%  { transform:scale(1.018); opacity:0.40 }
+    78%  { transform:scale(1.035); opacity:0.55 }
+    100% { transform:scale(1.00); opacity:0.22 }
+  }
+</style>
+</helmet>
+
+<section style="padding:56px 56px 72px;display:flex;flex-direction:column;gap:36px;border-bottom:1px solid rgba(242,238,233,0.10)">
+
+  <div style="display:flex;flex-direction:column;gap:14px;max-width:800px">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A837B">BA · abbassare e bloccare</div>
+    <div style="font-size:34px;font-weight:600;letter-spacing:-0.02em;line-height:1.15">Due azioni, due stati, nessun anello</div>
+    <div style="font-size:15px;line-height:1.55;color:#A09890;text-wrap:pretty">L'anello resta riservato alle voci che sto sentendo. Chi è abbassato mostra un altoparlante barrato che si accende quando parla — transizione discreta, non legata al livello. Chi è bloccato non ha alcun segnale di attività. In entrambi i casi l'identità resta leggibile e il posto resta occupato. Intestazione senza "non si registra"; le stanze private non portano marcatore.</div>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start">
+
+    <!-- 4a — STANZA VIVA CON ABBASSATA E BLOCCATA -->
+    <div id="4a" style="display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#100F0E;background:#D9CFA8;padding:3px 8px;border-radius:999px">4a</div>
+        <div style="font-size:18px;font-weight:600;letter-spacing:-0.01em">Viva — 2 voci, 1 abbassata che parla, 1 bloccata</div>
+      </div>
+      <div style="width:375px;height:667px;background:linear-gradient(180deg,#171413 0%,#100F0E 52%,#0B0A09 100%);border-radius:28px;border:1px solid rgba(242,238,233,0.10);overflow:hidden;display:flex;flex-direction:column;color:#F2EEE9;position:relative">
+        <div style="height:46px;display:flex;align-items:flex-end;padding:0 20px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.04em"><span>21:40</span></div>
+        <div style="padding:4px 20px 0;display:flex;flex-direction:column;gap:7px">
+          <div style="font-size:22px;font-weight:600;letter-spacing:-0.012em">Cucina di notte</div>
+          <div style="display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#A09890;letter-spacing:0.06em;text-transform:uppercase"><span style="width:7px;height:7px;background:#A09890"></span><span>entra chiunque</span></div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:0 20px;position:relative">
+          <div style="position:absolute;left:0;right:0;top:8px;bottom:8px;background:radial-gradient(closest-side at 50% 44%,rgba(230,220,190,0.055),rgba(230,220,190,0.018) 62%,rgba(230,220,190,0) 100%);pointer-events:none"></div>
+          <div style="position:relative;width:335px;height:272px;flex:0 0 auto">
+            <div role="img" aria-label="Sofia L., sul palco, in ascolto, sei tu" style="position:absolute;left:0px;top:60px;width:96px;height:96px;border-radius:56% 44% 49% 51% / 47% 53% 47% 53%;background:linear-gradient(155deg,#5257AC 0%,#33367A 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:#FFFFFF;transition:transform 180ms cubic-bezier(0.34,1.15,0.5,1)" style-active="transform:scale(0.945)">SL</div>
+            <div role="img" aria-label="Marta Bellini, sul palco, sta parlando" style="position:absolute;left:104px;top:8px;width:96px;height:96px;transition:transform 180ms cubic-bezier(0.34,1.15,0.5,1)" style-active="transform:scale(0.945)">
+              <div style="position:absolute;inset:-3px;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;border:3px solid rgba(8,7,6,0.92);animation:{{ animA }}"></div>
+              <div style="position:absolute;inset:-5px;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;border:2px solid #F5F1EC;animation:{{ animA }}"></div>
+              <div style="width:96px;height:96px;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;background:linear-gradient(155deg,#A83E2E 0%,#6E251C 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:#FFFFFF">MB</div>
+            </div>
+            <div role="img" aria-label="Ahmed H., sul palco, sta parlando" style="position:absolute;left:216px;top:62px;width:96px;height:96px;transition:transform 180ms cubic-bezier(0.34,1.15,0.5,1)" style-active="transform:scale(0.945)">
+              <div style="position:absolute;inset:-3px;border-radius:52% 48% 58% 42% / 43% 57% 46% 54%;border:3px solid rgba(8,7,6,0.92);animation:{{ animB }}"></div>
+              <div style="position:absolute;inset:-5px;border-radius:52% 48% 58% 42% / 43% 57% 46% 54%;border:2px solid #F5F1EC;animation:{{ animB }}"></div>
+              <div style="width:96px;height:96px;border-radius:52% 48% 58% 42% / 43% 57% 46% 54%;background:linear-gradient(155deg,#96621A 0%,#5F3C0B 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:#FFFFFF">AH</div>
+            </div>
+            <div role="img" aria-label="Dario V., sul palco, bloccato da te" style="position:absolute;left:60px;top:168px;width:96px;height:96px;transition:transform 180ms cubic-bezier(0.34,1.15,0.5,1)" style-active="transform:scale(0.945)">
+              <div style="width:96px;height:96px;border-radius:44% 56% 53% 47% / 57% 43% 49% 51%;background:linear-gradient(155deg,#3D3B39 0%,#2A2927 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:rgba(242,238,233,0.70)">DV</div>
+              <div style="position:absolute;right:0px;bottom:0px;width:28px;height:28px;border-radius:999px;background:rgba(8,7,6,0.94);border:1px solid rgba(242,238,233,0.16);display:flex;align-items:center;justify-content:center">
+                <div style="position:relative;width:14px;height:14px;border-radius:999px;border:1.5px solid rgba(242,238,233,0.62);display:flex;align-items:center;justify-content:center">
+                  <div style="width:15px;height:1.5px;background:rgba(242,238,233,0.62);transform:rotate(-45deg)"></div>
+                </div>
+              </div>
+            </div>
+            <div role="img" aria-label="Lucia C., sul palco, voce abbassata da te, sta parlando" style="position:absolute;left:176px;top:176px;width:96px;height:96px">
+              <div style="width:96px;height:96px;border-radius:58% 42% 46% 54% / 49% 51% 55% 45%;background:linear-gradient(155deg,#4A3F4A 0%,#332B33 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:rgba(242,238,233,0.80)">LC</div>
+              <div style="position:absolute;right:0px;bottom:0px;width:28px;height:28px;border-radius:999px;background:rgba(8,7,6,0.94);border:1px solid rgba(242,238,233,0.22);display:flex;align-items:center;justify-content:center;transition:border-color 140ms linear">
+                <div style="position:relative;width:17px;height:12px;display:flex;align-items:center">
+                  <div style="width:4px;height:6px;background:#F2EEE9;border-radius:1px"></div>
+                  <div style="width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent;border-left:7px solid #F2EEE9"></div>
+                  <div style="position:absolute;left:-1px;top:3.5px;width:19px;height:5px;border-radius:2px;background:rgba(8,7,6,0.92);transform:rotate(-38deg)"></div>
+                  <div style="position:absolute;left:0px;top:5px;width:17px;height:2px;background:#F2EEE9;transform:rotate(-38deg)"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:7px;position:relative">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#A09890;letter-spacing:0.06em;text-transform:uppercase">5 sul palco</div>
+            <div style="display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.04em"><span style="width:12px;height:1px;background:#8A837B"></span><span>per te: 1 abbassata, 1 bloccata</span></div>
+          </div>
+        </div>
+        <div style="padding:0 20px 16px;display:flex;align-items:center;gap:9px">
+          <div style="display:flex;gap:6px">
+            <div style="width:22px;height:22px;border-radius:57% 43% 48% 52% / 46% 54% 50% 50%;background:linear-gradient(155deg,#2A6894 0%,#1B4463 100%)"></div>
+            <div style="width:22px;height:22px;border-radius:45% 55% 56% 44% / 53% 47% 52% 48%;background:linear-gradient(155deg,#AC3765 0%,#72203F 100%)"></div>
+            <div style="width:22px;height:22px;border-radius:52% 48% 43% 57% / 49% 51% 46% 54%;background:linear-gradient(155deg,#3D3B39 0%,#2A2927 100%)"></div>
+          </div>
+          <div style="font-size:13px;color:#A09890">14 in ascolto</div>
+        </div>
+        <div style="padding:0 20px 24px;display:flex;flex-direction:column;gap:10px">
+          <div style="height:56px;border-radius:999px;background:linear-gradient(180deg,#221E1C 0%,#15120F 100%);border:1px solid rgba(242,238,233,0.14);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;color:#F2EEE9">Il tuo microfono è aperto</div>
+          <div style="display:flex;gap:10px">
+            <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Scendi dal palco</div>
+            <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Esci</div>
+          </div>
+        </div>
+        <div style="position:absolute;inset:0;background:#000000;pointer-events:none;z-index:5;opacity:{{ dim }}"></div>
+      </div>
+    </div>
+
+    <!-- 4b — SCHEDA AL TOCCO, TRE AZIONI -->
+    <div id="4b" style="display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#100F0E;background:#D9CFA8;padding:3px 8px;border-radius:999px">4b</div>
+        <div style="font-size:18px;font-weight:600;letter-spacing:-0.01em">Scheda — abbassa, blocca, segnala</div>
+      </div>
+      <div style="width:375px;height:667px;background:linear-gradient(180deg,#171413 0%,#100F0E 52%,#0B0A09 100%);border-radius:28px;border:1px solid rgba(242,238,233,0.10);overflow:hidden;display:flex;flex-direction:column;color:#F2EEE9;position:relative">
+        <div style="height:46px;display:flex;align-items:flex-end;padding:0 20px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.04em"><span>21:40</span></div>
+        <div style="padding:4px 20px 0;display:flex;flex-direction:column;gap:7px">
+          <div style="font-size:22px;font-weight:600;letter-spacing:-0.012em">Cucina di notte</div>
+          <div style="display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#A09890;letter-spacing:0.06em;text-transform:uppercase"><span style="width:7px;height:7px;background:#A09890"></span><span>entra chiunque</span></div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:0 20px;position:relative">
+          <div style="position:absolute;left:0;right:0;top:8px;bottom:8px;background:radial-gradient(closest-side at 50% 44%,rgba(230,220,190,0.055),rgba(230,220,190,0.018) 62%,rgba(230,220,190,0) 100%);pointer-events:none"></div>
+          <div style="position:relative;width:335px;height:272px;flex:0 0 auto">
+            <div style="position:absolute;left:0px;top:60px;width:96px;height:96px;border-radius:56% 44% 49% 51% / 47% 53% 47% 53%;background:linear-gradient(155deg,#5257AC 0%,#33367A 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:#FFFFFF">SL</div>
+            <div style="position:absolute;left:104px;top:8px;width:96px;height:96px">
+              <div style="position:absolute;inset:-3px;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;border:3px solid rgba(8,7,6,0.92);animation:{{ animA }}"></div>
+              <div style="position:absolute;inset:-5px;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;border:2px solid #F5F1EC;animation:{{ animA }}"></div>
+              <div style="width:96px;height:96px;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;background:linear-gradient(155deg,#A83E2E 0%,#6E251C 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:#FFFFFF">MB</div>
+            </div>
+            <div style="position:absolute;left:216px;top:62px;width:96px;height:96px">
+              <div style="width:96px;height:96px;border-radius:52% 48% 58% 42% / 43% 57% 46% 54%;background:linear-gradient(155deg,#3D3B39 0%,#2A2927 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:rgba(242,238,233,0.70)">DV</div>
+              <div style="position:absolute;right:0px;bottom:0px;width:28px;height:28px;border-radius:999px;background:rgba(8,7,6,0.94);border:1px solid rgba(242,238,233,0.16);display:flex;align-items:center;justify-content:center">
+                <div style="position:relative;width:14px;height:14px;border-radius:999px;border:1.5px solid rgba(242,238,233,0.62);display:flex;align-items:center;justify-content:center">
+                  <div style="width:15px;height:1.5px;background:rgba(242,238,233,0.62);transform:rotate(-45deg)"></div>
+                </div>
+              </div>
+            </div>
+            <div style="position:absolute;left:60px;top:168px;width:96px;height:96px;border-radius:44% 56% 53% 47% / 57% 43% 49% 51%;background:linear-gradient(155deg,#23735A 0%,#14473A 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:#FFFFFF">RK</div>
+            <div style="position:absolute;left:176px;top:176px;width:96px;height:96px;border-radius:58% 42% 46% 54% / 49% 51% 55% 45%;background:linear-gradient(155deg,#96621A 0%,#5F3C0B 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:#FFFFFF">AH</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:7px;position:relative">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#A09890;letter-spacing:0.06em;text-transform:uppercase">5 sul palco</div>
+            <div style="display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.04em"><span style="width:12px;height:1px;background:#8A837B"></span><span>per te: 1 bloccata</span></div>
+          </div>
+        </div>
+        <div style="padding:0 20px 16px;display:flex;align-items:center;gap:9px">
+          <div style="display:flex;gap:6px">
+            <div style="width:22px;height:22px;border-radius:57% 43% 48% 52% / 46% 54% 50% 50%;background:linear-gradient(155deg,#2A6894 0%,#1B4463 100%)"></div>
+            <div style="width:22px;height:22px;border-radius:45% 55% 56% 44% / 53% 47% 52% 48%;background:linear-gradient(155deg,#AC3765 0%,#72203F 100%)"></div>
+            <div style="width:22px;height:22px;border-radius:52% 48% 43% 57% / 49% 51% 46% 54%;background:linear-gradient(155deg,#557426 0%,#374A18 100%)"></div>
+          </div>
+          <div style="font-size:13px;color:#A09890">14 in ascolto</div>
+        </div>
+        <div style="padding:0 20px 24px;display:flex;flex-direction:column;gap:10px">
+          <div style="height:56px;border-radius:999px;background:linear-gradient(180deg,#221E1C 0%,#15120F 100%);border:1px solid rgba(242,238,233,0.14);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;color:#F2EEE9">Il tuo microfono è aperto</div>
+          <div style="display:flex;gap:10px">
+            <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Scendi dal palco</div>
+            <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Esci</div>
+          </div>
+        </div>
+        <div style="position:absolute;inset:0;background:rgba(8,7,6,0.62);pointer-events:none;z-index:3"></div>
+        <div style="position:absolute;left:0;right:0;bottom:0;z-index:4;background:linear-gradient(180deg,#221E1C 0%,#141210 100%);border-top:1px solid rgba(242,238,233,0.14);border-radius:6px 6px 28px 28px;padding:20px 20px 18px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;align-items:center;gap:14px">
+            <div style="width:56px;height:56px;flex:0 0 auto;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;background:linear-gradient(155deg,#A83E2E 0%,#6E251C 100%);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;color:#FFFFFF">MB</div>
+            <div style="display:flex;flex-direction:column;gap:4px;min-width:0">
+              <div style="font-size:20px;font-weight:600;letter-spacing:-0.01em">Marta Bellini</div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#A09890;letter-spacing:0.06em;text-transform:uppercase">sul palco · sta parlando</div>
+            </div>
+          </div>
+          <div style="height:52px;border-radius:999px;border:1px solid rgba(242,238,233,0.16);display:flex;align-items:center;justify-content:center;font-size:15px;color:#F2EEE9">Abbassa questa voce</div>
+          <div style="display:flex;flex-direction:column;gap:12px;border-top:1px solid rgba(242,238,233,0.10);padding-top:14px">
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <div style="min-height:26px;display:flex;align-items:center;font-size:15px;color:#F2EEE9">Blocca</div>
+              <div style="font-size:12px;line-height:1.45;color:#A09890;text-wrap:pretty">Vale in ogni DEN e resta anche dopo. È l'unica cosa che BA ricorda di una persona.</div>
+            </div>
+            <div style="min-height:44px;display:flex;align-items:center;font-size:15px;color:#F2EEE9">Segnala</div>
+          </div>
+          <div style="height:44px;display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Chiudi</div>
+        </div>
+        <div style="position:absolute;inset:0;background:#000000;pointer-events:none;z-index:6;opacity:{{ dim }}"></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:22px;max-width:400px;padding-top:44px">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#F2EEE9">i quattro stati, a confronto</div>
+        <div style="display:flex;flex-wrap:wrap;gap:18px">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:76px">
+            <div style="width:64px;height:64px;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;background:linear-gradient(155deg,#A83E2E 0%,#6E251C 100%);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600;color:#FFFFFF">MB</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#8A837B;text-align:center;line-height:1.4;letter-spacing:0.04em">in ascolto</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:76px">
+            <div style="position:relative;width:64px;height:64px">
+              <div style="position:absolute;inset:-3px;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;border:3px solid rgba(8,7,6,0.92)"></div>
+              <div style="position:absolute;inset:-5px;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;border:2px solid #F5F1EC"></div>
+              <div style="width:64px;height:64px;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;background:linear-gradient(155deg,#A83E2E 0%,#6E251C 100%);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600;color:#FFFFFF">MB</div>
+            </div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#8A837B;text-align:center;line-height:1.4;letter-spacing:0.04em">sta parlando</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:76px">
+            <div style="position:relative;width:64px;height:64px">
+              <div style="width:64px;height:64px;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;background:linear-gradient(155deg,#4A3F4A 0%,#332B33 100%);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600;color:rgba(242,238,233,0.80)">MB</div>
+              <div style="position:absolute;right:-2px;bottom:-2px;width:24px;height:24px;border-radius:999px;background:rgba(8,7,6,0.94);border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center">
+                <div style="position:relative;width:15px;height:11px;display:flex;align-items:center">
+                  <div style="width:3px;height:5px;background:rgba(242,238,233,0.45);border-radius:1px"></div>
+                  <div style="width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:6px solid rgba(242,238,233,0.45)"></div>
+                  <div style="position:absolute;left:-1px;top:2.75px;width:17px;height:4.5px;border-radius:2px;background:rgba(8,7,6,0.92);transform:rotate(-38deg)"></div>
+                  <div style="position:absolute;left:0px;top:4px;width:15px;height:1.5px;background:rgba(242,238,233,0.45);transform:rotate(-38deg)"></div>
+                </div>
+              </div>
+            </div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#8A837B;text-align:center;line-height:1.4;letter-spacing:0.04em">abbassata, tace</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:76px">
+            <div style="position:relative;width:64px;height:64px">
+              <div style="width:64px;height:64px;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;background:linear-gradient(155deg,#4A3F4A 0%,#332B33 100%);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600;color:rgba(242,238,233,0.80)">MB</div>
+              <div style="position:absolute;right:-2px;bottom:-2px;width:24px;height:24px;border-radius:999px;background:rgba(8,7,6,0.94);border:1px solid rgba(242,238,233,0.22);display:flex;align-items:center;justify-content:center">
+                <div style="position:relative;width:15px;height:11px;display:flex;align-items:center">
+                  <div style="width:3px;height:5px;background:#F2EEE9;border-radius:1px"></div>
+                  <div style="width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:6px solid #F2EEE9"></div>
+                  <div style="position:absolute;left:-1px;top:2.75px;width:17px;height:4.5px;border-radius:2px;background:rgba(8,7,6,0.92);transform:rotate(-38deg)"></div>
+                  <div style="position:absolute;left:0px;top:4px;width:15px;height:1.5px;background:#F2EEE9;transform:rotate(-38deg)"></div>
+                </div>
+              </div>
+            </div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#8A837B;text-align:center;line-height:1.4;letter-spacing:0.04em">abbassata, parla</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:76px">
+            <div style="position:relative;width:64px;height:64px">
+              <div style="width:64px;height:64px;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;background:linear-gradient(155deg,#3D3B39 0%,#2A2927 100%);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600;color:rgba(242,238,233,0.70)">DV</div>
+              <div style="position:absolute;right:-2px;bottom:-2px;width:24px;height:24px;border-radius:999px;background:rgba(8,7,6,0.94);border:1px solid rgba(242,238,233,0.16);display:flex;align-items:center;justify-content:center">
+                <div style="position:relative;width:13px;height:13px;border-radius:999px;border:1.5px solid rgba(242,238,233,0.62);display:flex;align-items:center;justify-content:center">
+                  <div style="width:14px;height:1.5px;background:rgba(242,238,233,0.62);transform:rotate(-45deg)"></div>
+                </div>
+              </div>
+            </div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#8A837B;text-align:center;line-height:1.4;letter-spacing:0.04em">bloccata</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#F2EEE9">perché due canali diversi</div>
+        <div style="font-size:13px;line-height:1.6;color:#A09890;text-wrap:pretty">Il glifo usa la stessa logica a doppio tratto dell'anello — casing scuro 5 px sotto la barra chiara 2 px — perché è l'unico canale che porta "abbassata sta parlando" e non deve fondersi col cono. Il marcatore vive solo sul palco: nelle bolle da 22 px del pubblico sarebbe sotto la soglia di leggibilità, quindi lì resta la sola desaturazione. L'anello dice "questa voce ti sta arrivando". Se l'avesse anche chi è abbassato, direbbe il falso — quindi l'attività di chi è abbassato passa su un canale separato: il glifo, che si accende e si spegne (opacità 0,45 → 1, 140 ms lineari) senza seguire l'ampiezza. Sono due informazioni diverse e ora hanno due forme diverse, non due intensità della stessa.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#F2EEE9">desaturazione, non annerimento</div>
+        <div style="font-size:13px;line-height:1.6;color:#A09890;text-wrap:pretty">Abbassata: la tinta perde saturazione ma tiene la sua traccia (viola → <span style="font-family:'IBM Plex Mono',monospace">#4A3F4A→#332B33</span>). Bloccata: neutro pieno (<span style="font-family:'IBM Plex Mono',monospace">#3D3B39→#2A2927</span>) — a distanza di colpo d'occhio si distinguono per il glifo, da vicino anche per la tinta residua. Iniziali all'80% e al 70%: 5,2:1 e oltre, l'identità resta leggibile in entrambi.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#F2EEE9">un buco dichiarato</div>
+        <div style="font-size:13px;line-height:1.6;color:#A09890;text-wrap:pretty">Via "non si registra", l'effimero (§8.3) non ha più un segno visibile: resta solo l'assenza di archivi, che è vera ma silenziosa. Da riempire altrove — una volta, all'ingresso in stanza, non in permanenza.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#F2EEE9">accessibilità, senza modalità</div>
+        <div style="font-size:13px;line-height:1.6;color:#A09890;text-wrap:pretty">Nessuna vista alternativa e nessun TTS proprietario: ogni presenza è un elemento semantico con etichetta ("Lucia C., voce abbassata da te, sta parlando"), e i cambi di stato del palco sono annunci di cortesia — sale, scende, entra, esce, abbassata, bloccata. L'anello è decorativo per lo screen reader; il suo significato vive nell'etichetta.</div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<section style="padding:56px 56px 72px;display:flex;flex-direction:column;gap:36px;border-bottom:1px solid rgba(242,238,233,0.10)">
+
+  <div style="display:flex;flex-direction:column;gap:14px;max-width:780px">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A837B">BA · rappresentazione della persona</div>
+    <div style="font-size:34px;font-weight:600;letter-spacing:-0.02em;line-height:1.15">Immagine, ripiego, e il segnale che non dipende dal vicino</div>
+    <div style="font-size:15px;line-height:1.55;color:#A09890;text-wrap:pretty">Nessun nome visibile: il binding voce→persona lo fa l'anello. Le iniziali sono il ripiego, ed è il caso dominante dell'alpha — quindi <a href="#3a">3a</a> è la schermata principale e <a href="#3b">3b</a> la variante con immagine. <a href="#3c">3c</a> è la scheda al tocco.</div>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start">
+
+    <!-- 3a — INIZIALI (ripiego = caso dominante) -->
+    <div id="3a" style="display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#100F0E;background:#D9CFA8;padding:3px 8px;border-radius:999px">3a</div>
+        <div style="font-size:18px;font-weight:600;letter-spacing:-0.01em">Ripiego iniziali — principale</div>
+      </div>
+      <div style="width:375px;height:667px;background:linear-gradient(180deg,#171413 0%,#100F0E 52%,#0B0A09 100%);border-radius:28px;border:1px solid rgba(242,238,233,0.10);overflow:hidden;display:flex;flex-direction:column;color:#F2EEE9;position:relative">
+        <div style="height:46px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 20px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.04em"><span>21:40</span><span>non si registra</span></div>
+        <div style="padding:4px 20px 0;display:flex;flex-direction:column;gap:7px">
+          <div style="font-size:22px;font-weight:600;letter-spacing:-0.012em">Cucina di notte</div>
+          <div style="display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#A09890;letter-spacing:0.06em;text-transform:uppercase"><span style="width:7px;height:7px;background:#A09890"></span><span>entra chiunque</span></div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:0 20px;position:relative">
+          <div style="position:absolute;left:0;right:0;top:8px;bottom:8px;background:radial-gradient(closest-side at 50% 44%,rgba(230,220,190,0.055),rgba(230,220,190,0.018) 62%,rgba(230,220,190,0) 100%);pointer-events:none"></div>
+          <div style="position:relative;width:335px;height:272px;flex:0 0 auto">
+            <div role="img" aria-label="Sofia L., sul palco, in ascolto" style="position:absolute;left:0px;top:60px;width:96px;height:96px;border-radius:56% 44% 49% 51% / 47% 53% 47% 53%;background:linear-gradient(155deg,#5257AC 0%,#33367A 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:#FFFFFF;transition:transform 180ms cubic-bezier(0.34,1.15,0.5,1)" style-active="transform:scale(0.945)">SL</div>
+            <div role="img" aria-label="Marta Bellini, sul palco, sta parlando" style="position:absolute;left:104px;top:8px;width:96px;height:96px;transition:transform 180ms cubic-bezier(0.34,1.15,0.5,1)" style-active="transform:scale(0.945)">
+              <div style="position:absolute;inset:-3px;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;border:3px solid rgba(8,7,6,0.92);animation:{{ animA }}"></div>
+              <div style="position:absolute;inset:-5px;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;border:2px solid #F5F1EC;animation:{{ animA }}"></div>
+              <div style="width:96px;height:96px;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;background:linear-gradient(155deg,#A83E2E 0%,#6E251C 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:#FFFFFF">MB</div>
+            </div>
+            <div role="img" aria-label="Ahmed H., sul palco, sta parlando" style="position:absolute;left:216px;top:62px;width:96px;height:96px;transition:transform 180ms cubic-bezier(0.34,1.15,0.5,1)" style-active="transform:scale(0.945)">
+              <div style="position:absolute;inset:-3px;border-radius:52% 48% 58% 42% / 43% 57% 46% 54%;border:3px solid rgba(8,7,6,0.92);animation:{{ animB }}"></div>
+              <div style="position:absolute;inset:-5px;border-radius:52% 48% 58% 42% / 43% 57% 46% 54%;border:2px solid #F5F1EC;animation:{{ animB }}"></div>
+              <div style="width:96px;height:96px;border-radius:52% 48% 58% 42% / 43% 57% 46% 54%;background:linear-gradient(155deg,#96621A 0%,#5F3C0B 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:#FFFFFF">AH</div>
+            </div>
+            <div role="img" aria-label="Ren K., sul palco, in ascolto" style="position:absolute;left:60px;top:168px;width:96px;height:96px;border-radius:44% 56% 53% 47% / 57% 43% 49% 51%;background:linear-gradient(155deg,#23735A 0%,#14473A 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:#FFFFFF;transition:transform 180ms cubic-bezier(0.34,1.15,0.5,1)" style-active="transform:scale(0.945)">RK</div>
+            <div role="img" aria-label="Lucia C., sul palco, voce abbassata da te" style="position:absolute;left:176px;top:176px;width:96px;height:96px;border-radius:58% 42% 46% 54% / 49% 51% 55% 45%;background:linear-gradient(155deg,#3F1F41 0%,#2A1330 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:rgba(242,238,233,0.72);transition:transform 180ms cubic-bezier(0.34,1.15,0.5,1)" style-active="transform:scale(0.945)">LC</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.06em;text-transform:uppercase;position:relative"><span>5 sul palco</span><span style="width:3px;height:3px;border-radius:999px;background:#8A837B"></span><span>1 abbassata</span></div>
+        </div>
+        <div style="padding:0 20px 16px;display:flex;align-items:center;gap:9px">
+          <div style="display:flex;gap:6px">
+            <div style="width:22px;height:22px;border-radius:57% 43% 48% 52% / 46% 54% 50% 50%;background:linear-gradient(155deg,#2A6894 0%,#1B4463 100%)"></div>
+            <div style="width:22px;height:22px;border-radius:45% 55% 56% 44% / 53% 47% 52% 48%;background:linear-gradient(155deg,#AC3765 0%,#72203F 100%)"></div>
+            <div style="width:22px;height:22px;border-radius:52% 48% 43% 57% / 49% 51% 46% 54%;background:linear-gradient(155deg,#557426 0%,#374A18 100%)"></div>
+          </div>
+          <div style="font-size:13px;color:#A09890">14 in ascolto</div>
+        </div>
+        <div style="padding:0 20px 24px;display:flex;flex-direction:column;gap:10px">
+          <div style="height:56px;border-radius:999px;background:linear-gradient(180deg,#221E1C 0%,#15120F 100%);border:1px solid rgba(242,238,233,0.14);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;color:#F2EEE9">Il tuo microfono è aperto</div>
+          <div style="display:flex;gap:10px">
+            <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Scendi dal palco</div>
+            <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Esci</div>
+          </div>
+        </div>
+        <div style="position:absolute;inset:0;background:#000000;pointer-events:none;z-index:5;opacity:{{ dim }}"></div>
+      </div>
+    </div>
+
+    <!-- 3b — IMMAGINE SCELTA -->
+    <div id="3b" style="display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#100F0E;background:#D9CFA8;padding:3px 8px;border-radius:999px">3b</div>
+        <div style="font-size:18px;font-weight:600;letter-spacing:-0.01em">Con immagine — misto</div>
+      </div>
+      <div style="width:375px;height:667px;background:linear-gradient(180deg,#171413 0%,#100F0E 52%,#0B0A09 100%);border-radius:28px;border:1px solid rgba(242,238,233,0.10);overflow:hidden;display:flex;flex-direction:column;color:#F2EEE9;position:relative">
+        <div style="height:46px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 20px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.04em"><span>21:40</span><span>non si registra</span></div>
+        <div style="padding:4px 20px 0;display:flex;flex-direction:column;gap:7px">
+          <div style="font-size:22px;font-weight:600;letter-spacing:-0.012em">Cucina di notte</div>
+          <div style="display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#A09890;letter-spacing:0.06em;text-transform:uppercase"><span style="width:7px;height:7px;background:#A09890"></span><span>entra chiunque</span></div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:0 20px;position:relative">
+          <div style="position:absolute;left:0;right:0;top:8px;bottom:8px;background:radial-gradient(closest-side at 50% 44%,rgba(230,220,190,0.055),rgba(230,220,190,0.018) 62%,rgba(230,220,190,0) 100%);pointer-events:none"></div>
+          <div style="position:relative;width:335px;height:272px;flex:0 0 auto">
+            <div role="img" aria-label="Sofia L., sul palco, in ascolto" style="position:absolute;left:0px;top:60px;width:96px;height:96px;border-radius:56% 44% 49% 51% / 47% 53% 47% 53%;overflow:hidden;background:#1A1715">
+              <image-slot id="ba-face-1" shape="rect" placeholder="volto reale"></image-slot>
+              <div style="position:absolute;inset:0;background:rgba(8,7,6,0.34);pointer-events:none"></div>
+            </div>
+            <div role="img" aria-label="Marta Bellini, sul palco, sta parlando" style="position:absolute;left:104px;top:8px;width:96px;height:96px">
+              <div style="position:absolute;inset:-3px;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;border:3px solid rgba(8,7,6,0.92);animation:{{ animA }};z-index:2"></div>
+              <div style="position:absolute;inset:-5px;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;border:2px solid #F5F1EC;animation:{{ animA }};z-index:2"></div>
+              <div style="position:absolute;inset:0;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;overflow:hidden;background:#1A1715">
+                <image-slot id="ba-face-2" shape="rect" placeholder="volto reale"></image-slot>
+                <div style="position:absolute;inset:0;background:rgba(8,7,6,0.34);pointer-events:none"></div>
+              </div>
+            </div>
+            <div role="img" aria-label="Ahmed H., sul palco, sta parlando" style="position:absolute;left:216px;top:62px;width:96px;height:96px">
+              <div style="position:absolute;inset:-3px;border-radius:52% 48% 58% 42% / 43% 57% 46% 54%;border:3px solid rgba(8,7,6,0.92);animation:{{ animB }}"></div>
+              <div style="position:absolute;inset:-5px;border-radius:52% 48% 58% 42% / 43% 57% 46% 54%;border:2px solid #F5F1EC;animation:{{ animB }}"></div>
+              <div style="width:96px;height:96px;border-radius:52% 48% 58% 42% / 43% 57% 46% 54%;background:linear-gradient(155deg,#96621A 0%,#5F3C0B 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:#FFFFFF">AH</div>
+            </div>
+            <div role="img" aria-label="Ren K., sul palco, in ascolto" style="position:absolute;left:60px;top:168px;width:96px;height:96px;border-radius:44% 56% 53% 47% / 57% 43% 49% 51%;background:linear-gradient(155deg,#23735A 0%,#14473A 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:#FFFFFF">RK</div>
+            <div role="img" aria-label="Lucia C., sul palco, voce abbassata da te" style="position:absolute;left:176px;top:176px;width:96px;height:96px;border-radius:58% 42% 46% 54% / 49% 51% 55% 45%;overflow:hidden;background:#1A1715">
+              <image-slot id="ba-face-3" shape="rect" placeholder="volto reale"></image-slot>
+              <div style="position:absolute;inset:0;background:rgba(8,7,6,0.66);pointer-events:none"></div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.06em;text-transform:uppercase;position:relative"><span>5 sul palco</span><span style="width:3px;height:3px;border-radius:999px;background:#8A837B"></span><span>1 abbassata</span></div>
+        </div>
+        <div style="padding:0 20px 16px;display:flex;align-items:center;gap:9px">
+          <div style="display:flex;gap:6px">
+            <div style="width:22px;height:22px;border-radius:57% 43% 48% 52% / 46% 54% 50% 50%;background:linear-gradient(155deg,#2A6894 0%,#1B4463 100%)"></div>
+            <div style="width:22px;height:22px;border-radius:45% 55% 56% 44% / 53% 47% 52% 48%;background:linear-gradient(155deg,#AC3765 0%,#72203F 100%)"></div>
+            <div style="width:22px;height:22px;border-radius:52% 48% 43% 57% / 49% 51% 46% 54%;background:linear-gradient(155deg,#557426 0%,#374A18 100%)"></div>
+          </div>
+          <div style="font-size:13px;color:#A09890">14 in ascolto</div>
+        </div>
+        <div style="padding:0 20px 24px;display:flex;flex-direction:column;gap:10px">
+          <div style="height:56px;border-radius:999px;background:linear-gradient(180deg,#221E1C 0%,#15120F 100%);border:1px solid rgba(242,238,233,0.14);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;color:#F2EEE9">Il tuo microfono è aperto</div>
+          <div style="display:flex;gap:10px">
+            <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Scendi dal palco</div>
+            <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Esci</div>
+          </div>
+        </div>
+        <div style="position:absolute;inset:0;background:#000000;pointer-events:none;z-index:5;opacity:{{ dim }}"></div>
+      </div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.05em;max-width:375px;line-height:1.6">trascina tre volti reali nelle tre sagome per verificare il ritaglio ↑</div>
+    </div>
+
+    <!-- 3c — SCHEDA AL TOCCO -->
+    <div id="3c" style="display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#100F0E;background:#D9CFA8;padding:3px 8px;border-radius:999px">3c</div>
+        <div style="font-size:18px;font-weight:600;letter-spacing:-0.01em">Al tocco — scheda breve</div>
+      </div>
+      <div style="width:375px;height:667px;background:linear-gradient(180deg,#171413 0%,#100F0E 52%,#0B0A09 100%);border-radius:28px;border:1px solid rgba(242,238,233,0.10);overflow:hidden;display:flex;flex-direction:column;color:#F2EEE9;position:relative">
+        <div style="height:46px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 20px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.04em"><span>21:40</span><span>non si registra</span></div>
+        <div style="padding:4px 20px 0;display:flex;flex-direction:column;gap:7px">
+          <div style="font-size:22px;font-weight:600;letter-spacing:-0.012em">Cucina di notte</div>
+          <div style="display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#A09890;letter-spacing:0.06em;text-transform:uppercase"><span style="width:7px;height:7px;background:#A09890"></span><span>entra chiunque</span></div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:0 20px;position:relative">
+          <div style="position:relative;width:335px;height:272px;flex:0 0 auto">
+            <div style="position:absolute;left:0px;top:60px;width:96px;height:96px;border-radius:56% 44% 49% 51% / 47% 53% 47% 53%;background:linear-gradient(155deg,#5257AC 0%,#33367A 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:#FFFFFF">SL</div>
+            <div style="position:absolute;left:104px;top:8px;width:96px;height:96px">
+              <div style="position:absolute;inset:-3px;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;border:3px solid rgba(8,7,6,0.92);animation:{{ animA }}"></div>
+              <div style="position:absolute;inset:-5px;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;border:2px solid #F5F1EC;animation:{{ animA }}"></div>
+              <div style="width:96px;height:96px;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;background:linear-gradient(155deg,#A83E2E 0%,#6E251C 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:#FFFFFF">MB</div>
+            </div>
+            <div style="position:absolute;left:216px;top:62px;width:96px;height:96px">
+              <div style="position:absolute;inset:-3px;border-radius:52% 48% 58% 42% / 43% 57% 46% 54%;border:3px solid rgba(8,7,6,0.92);animation:{{ animB }}"></div>
+              <div style="position:absolute;inset:-5px;border-radius:52% 48% 58% 42% / 43% 57% 46% 54%;border:2px solid #F5F1EC;animation:{{ animB }}"></div>
+              <div style="width:96px;height:96px;border-radius:52% 48% 58% 42% / 43% 57% 46% 54%;background:linear-gradient(155deg,#96621A 0%,#5F3C0B 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:#FFFFFF">AH</div>
+            </div>
+            <div style="position:absolute;left:60px;top:168px;width:96px;height:96px;border-radius:44% 56% 53% 47% / 57% 43% 49% 51%;background:linear-gradient(155deg,#23735A 0%,#14473A 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:#FFFFFF">RK</div>
+            <div style="position:absolute;left:176px;top:176px;width:96px;height:96px;border-radius:58% 42% 46% 54% / 49% 51% 55% 45%;background:linear-gradient(155deg,#3F1F41 0%,#2A1330 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:rgba(242,238,233,0.72)">LC</div>
+          </div>
+        </div>
+        <div style="padding:0 20px 24px;display:flex;flex-direction:column;gap:10px">
+          <div style="height:56px;border-radius:999px;background:linear-gradient(180deg,#221E1C 0%,#15120F 100%);border:1px solid rgba(242,238,233,0.14);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;color:#F2EEE9">Il tuo microfono è aperto</div>
+          <div style="display:flex;gap:10px">
+            <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Scendi dal palco</div>
+            <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Esci</div>
+          </div>
+        </div>
+        <div style="position:absolute;inset:0;background:rgba(8,7,6,0.62);pointer-events:none;z-index:3"></div>
+        <div style="position:absolute;left:0;right:0;bottom:0;z-index:4;background:linear-gradient(180deg,#221E1C 0%,#141210 100%);border-top:1px solid rgba(242,238,233,0.14);border-radius:6px 6px 28px 28px;padding:22px 20px 24px;display:flex;flex-direction:column;gap:18px">
+          <div style="display:flex;align-items:center;gap:14px">
+            <div style="width:56px;height:56px;flex:0 0 auto;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;background:linear-gradient(155deg,#A83E2E 0%,#6E251C 100%);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;color:#FFFFFF">MB</div>
+            <div style="display:flex;flex-direction:column;gap:4px;min-width:0">
+              <div style="font-size:20px;font-weight:600;letter-spacing:-0.01em">Marta Bellini</div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#A09890;letter-spacing:0.06em;text-transform:uppercase">sul palco · sta parlando</div>
+            </div>
+          </div>
+          <div style="height:52px;border-radius:999px;border:1px solid rgba(242,238,233,0.16);display:flex;align-items:center;justify-content:center;font-size:15px;color:#F2EEE9">Abbassa questa voce</div>
+          <div style="height:44px;display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Chiudi</div>
+        </div>
+        <div style="position:absolute;inset:0;background:#000000;pointer-events:none;z-index:6;opacity:{{ dim }}"></div>
+      </div>
+      <div style="max-width:375px;font-size:13px;line-height:1.6;color:#A09890;text-wrap:pretty">Nome per esteso e una sola azione. Nessun preferito, nessuna azione utente-utente, nessuna storia: la scheda esiste per dire chi è e per abbassarlo, e si chiude.</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:22px;max-width:400px;padding-top:44px">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#F2EEE9">anello a doppio tratto</div>
+        <div style="font-size:13px;line-height:1.6;color:#A09890;text-wrap:pretty">Keyline scura 3 px adiacente alla sagoma (<span style="font-family:'IBM Plex Mono',monospace">rgba(8,7,6,.92)</span>), tratto chiaro 2 px sopra (<span style="font-family:'IBM Plex Mono',monospace">#F5F1EC</span>): banda totale 5 px, entrambi i tratti sulla stessa sagoma scalata e sullo stesso inviluppo. Il segnale non dipende più da cosa c'è sotto o accanto.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#F2EEE9">distanza minima, ora è un token</div>
+        <div style="font-size:13px;line-height:1.6;color:#A09890;text-wrap:pretty">Distanza fra i centri ≥ diametro + banda anello (5) + crescita al picco (4) + 8 di respiro = 20 px di luce fra le sagome. È il vincolo che tiene l'anello fuori dal vicino anche al picco d'escursione, quindi va nei token accanto alla scala, non nel layout.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#F2EEE9">tetto di luminanza sulle immagini</div>
+        <div style="font-size:13px;line-height:1.6;color:#A09890;text-wrap:pretty">Velo piatto <span style="font-family:'IBM Plex Mono',monospace">rgba(8,7,6,.34)</span> dentro la sagoma: qualunque foto scende sotto luminanza ~0,34 e non abbaglia al buio. È un `ColorFiltered`, non un blur. Le persone restano nella metà bassa della scala anche con le immagini, come i dischi (§7). "Abbassata" con foto è lo stesso velo al 66%: il volto resta riconoscibile, l'energia cala.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#F2EEE9">ritaglio: da verificare con volti veri</div>
+        <div style="font-size:13px;line-height:1.6;color:#A09890;text-wrap:pretty">Non lo verifico su un volto immaginato: in <a href="#3b">3b</a> le tre sagome sono caselle in cui trascinare tre foto reali. Da guardare in particolare la sagoma con il raggio più asimmetrico (58%/42%): è quella che può tagliare mento o fronte. Se accade, l'asimmetria scende da ±8% a ±5% e la regola diventa "nessun raggio sotto il 46%".</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#F2EEE9">i nomi esistono, non si vedono</div>
+        <div style="font-size:13px;line-height:1.6;color:#A09890;text-wrap:pretty">Ogni presenza porta un'etichetta di accessibilità completa — "Marta Bellini, sul palco, sta parlando" / "Lucia C., voce abbassata da te" — che è anche l'unico posto dove lo stato è testo. Lo screen reader annuncia i cambi di stato del palco, non ogni campione d'ampiezza: l'anello è decorativo per VoiceOver, lo stato no.</div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<section style="padding:56px 56px 72px;display:flex;flex-direction:column;gap:36px;border-bottom:1px solid rgba(242,238,233,0.10)">
+
+  <div style="display:flex;flex-direction:column;gap:14px;max-width:780px">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A837B">BA · direzione scelta · consolidamento</div>
+    <div style="font-size:34px;font-weight:600;letter-spacing:-0.02em;line-height:1.15">Impacchettamento adattivo, incastrato</div>
+    <div style="font-size:15px;line-height:1.55;color:#A09890;text-wrap:pretty">Stessa schermata di <a href="#1c">1c</a>, tre correzioni strutturali: sfumature a una sola tinta su superfici e presenze, posizioni fuori griglia con le presenze che si sfiorano, e sagome a bolla — una diversa per posto. La scala resta del gruppo, non della persona.</div>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:64px;align-items:flex-start">
+
+    <div id="2a" style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#100F0E;background:#D9CFA8;padding:3px 8px;border-radius:999px">2a</div>
+        <div style="font-size:21px;font-weight:600;letter-spacing:-0.01em">Stanza DEN — viva e vuota</div>
+      </div>
+
+      <div style="display:flex;gap:32px;flex-wrap:wrap">
+
+        <!-- 2a VIVA -->
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="width:375px;height:667px;background:linear-gradient(180deg,#171413 0%,#100F0E 52%,#0B0A09 100%);border-radius:28px;border:1px solid rgba(242,238,233,0.10);overflow:hidden;display:flex;flex-direction:column;color:#F2EEE9;position:relative">
+            <div style="height:46px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 20px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.04em"><span>21:40</span><span>non si registra</span></div>
+            <div style="padding:4px 20px 0;display:flex;flex-direction:column;gap:7px">
+              <div style="font-size:22px;font-weight:600;letter-spacing:-0.012em">Cucina di notte</div>
+              <div style="display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#A09890;letter-spacing:0.06em;text-transform:uppercase"><span style="width:7px;height:7px;background:#A09890"></span><span>entra chiunque</span></div>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:0 20px;position:relative">
+              <div style="position:absolute;left:0;right:0;top:8px;bottom:8px;background:radial-gradient(closest-side at 50% 44%,rgba(230,220,190,0.055),rgba(230,220,190,0.018) 62%,rgba(230,220,190,0) 100%);pointer-events:none"></div>
+              <div style="position:relative;width:335px;height:272px;flex:0 0 auto">
+                <div style="position:absolute;left:0px;top:60px;width:96px;height:96px;border-radius:56% 44% 49% 51% / 47% 53% 47% 53%;background:linear-gradient(155deg,#5257AC 0%,#33367A 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:#FFFFFF;transition:transform 180ms cubic-bezier(0.34,1.15,0.5,1)" style-active="transform:scale(0.945)">SL</div>
+                <div style="position:absolute;left:104px;top:8px;width:96px;height:96px;transition:transform 180ms cubic-bezier(0.34,1.15,0.5,1)" style-active="transform:scale(0.945)">
+                  <div style="position:absolute;inset:-7px;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;border:2px solid #F5F1EC;animation:{{ animA }}"></div>
+                  <div style="width:96px;height:96px;border-radius:47% 53% 42% 58% / 55% 45% 58% 42%;background:linear-gradient(155deg,#A83E2E 0%,#6E251C 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:#FFFFFF">MB</div>
+                </div>
+                <div style="position:absolute;left:216px;top:62px;width:96px;height:96px;transition:transform 180ms cubic-bezier(0.34,1.15,0.5,1)" style-active="transform:scale(0.945)">
+                  <div style="position:absolute;inset:-7px;border-radius:52% 48% 58% 42% / 43% 57% 46% 54%;border:2px solid #F5F1EC;animation:{{ animB }}"></div>
+                  <div style="width:96px;height:96px;border-radius:52% 48% 58% 42% / 43% 57% 46% 54%;background:linear-gradient(155deg,#96621A 0%,#5F3C0B 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:#FFFFFF">AH</div>
+                </div>
+                <div style="position:absolute;left:60px;top:168px;width:96px;height:96px;border-radius:44% 56% 53% 47% / 57% 43% 49% 51%;background:linear-gradient(155deg,#23735A 0%,#14473A 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:#FFFFFF;transition:transform 180ms cubic-bezier(0.34,1.15,0.5,1)" style-active="transform:scale(0.945)">RK</div>
+                <div style="position:absolute;left:176px;top:176px;width:96px;height:96px;border-radius:58% 42% 46% 54% / 49% 51% 55% 45%;background:linear-gradient(155deg,#3F1F41 0%,#2A1330 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;color:rgba(242,238,233,0.72);transition:transform 180ms cubic-bezier(0.34,1.15,0.5,1)" style-active="transform:scale(0.945)">LC</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.06em;text-transform:uppercase;position:relative"><span>5 sul palco</span><span style="width:3px;height:3px;border-radius:999px;background:#8A837B"></span><span>1 abbassata</span></div>
+            </div>
+            <div style="padding:0 20px 16px;display:flex;align-items:center;gap:9px">
+              <div style="display:flex;gap:6px">
+                <div style="width:22px;height:22px;border-radius:57% 43% 48% 52% / 46% 54% 50% 50%;background:linear-gradient(155deg,#2A6894 0%,#1B4463 100%)"></div>
+                <div style="width:22px;height:22px;border-radius:45% 55% 56% 44% / 53% 47% 52% 48%;background:linear-gradient(155deg,#AC3765 0%,#72203F 100%)"></div>
+                <div style="width:22px;height:22px;border-radius:52% 48% 43% 57% / 49% 51% 46% 54%;background:linear-gradient(155deg,#557426 0%,#374A18 100%)"></div>
+              </div>
+              <div style="font-size:13px;color:#A09890">14 in ascolto</div>
+            </div>
+            <div style="padding:0 20px 24px;display:flex;flex-direction:column;gap:10px">
+              <div style="height:56px;border-radius:999px;background:linear-gradient(180deg,#221E1C 0%,#15120F 100%);border:1px solid rgba(242,238,233,0.14);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;color:#F2EEE9">Il tuo microfono è aperto</div>
+              <div style="display:flex;gap:10px">
+                <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Scendi dal palco</div>
+                <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Esci</div>
+              </div>
+            </div>
+            <div style="position:absolute;inset:0;background:#000000;pointer-events:none;z-index:5;opacity:{{ dim }}"></div>
+          </div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.06em;text-transform:uppercase">viva · 5 sul palco · 2 parlano · 14 in ascolto</div>
+        </div>
+
+        <!-- 2a VUOTA -->
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="width:375px;height:667px;background:linear-gradient(180deg,#171413 0%,#100F0E 52%,#0B0A09 100%);border-radius:28px;border:1px solid rgba(242,238,233,0.10);overflow:hidden;display:flex;flex-direction:column;color:#F2EEE9;position:relative">
+            <div style="height:46px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 20px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.04em"><span>21:40</span><span>non si registra</span></div>
+            <div style="padding:4px 20px 0;display:flex;flex-direction:column;gap:7px">
+              <div style="font-size:22px;font-weight:600;letter-spacing:-0.012em">Cucina di notte</div>
+              <div style="display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#A09890;letter-spacing:0.06em;text-transform:uppercase"><span style="width:7px;height:7px;background:#A09890"></span><span>entra chiunque</span></div>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:0 20px;position:relative">
+              <div style="position:absolute;left:0;right:0;top:8px;bottom:8px;background:radial-gradient(closest-side at 50% 40%,rgba(230,220,190,0.06),rgba(230,220,190,0.02) 60%,rgba(230,220,190,0) 100%);pointer-events:none"></div>
+              <div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:16px">
+                <div style="width:208px;height:208px;border-radius:54% 46% 48% 52% / 50% 50% 45% 55%;background:linear-gradient(155deg,#5257AC 0%,#2F3273 100%);display:flex;align-items:center;justify-content:center;font-size:62px;font-weight:600;color:#FFFFFF;transition:transform 180ms cubic-bezier(0.34,1.15,0.5,1)" style-active="transform:scale(0.965)">SL</div>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.06em;text-transform:uppercase">solo tu</div>
+              </div>
+              <div style="position:relative;font-size:15px;line-height:1.5;color:#A09890;text-align:center;max-width:250px;text-wrap:pretty">Il microfono è tuo. Se arriva qualcuno, arriva senza annunciarsi.</div>
+            </div>
+            <div style="padding:0 20px 24px;display:flex;flex-direction:column;gap:10px">
+              <div style="height:56px;border-radius:999px;background:linear-gradient(180deg,#221E1C 0%,#15120F 100%);border:1px solid rgba(242,238,233,0.14);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;color:#F2EEE9">Resta e ti avviso</div>
+              <div style="display:flex;gap:10px">
+                <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Invita qualcuno</div>
+                <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Esci</div>
+              </div>
+            </div>
+            <div style="position:absolute;inset:0;background:#000000;pointer-events:none;z-index:5;opacity:{{ dim }}"></div>
+          </div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.06em;text-transform:uppercase">vuota · solo io</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:22px;max-width:380px;padding-top:52px">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#F2EEE9">sfumature, con il vincolo §7</div>
+        <div style="font-size:13px;line-height:1.6;color:#A09890;text-wrap:pretty">Due stop della stessa tinta, 155°. Lo stop più chiaro sta comunque sotto luminanza 0,18 — indigo 0,118 · terracotta 0,120 · verde 0,134 · ocra 0,154 — quindi le iniziali bianche restano AA su tutta la palette. Superfici e pulsanti hanno una sfumatura verticale a bassa escursione, l'alone sotto il gruppo è un `RadialGradient`: nessuna ombra, nessun blur.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#F2EEE9">forma: bolla, non cerchio</div>
+        <div style="font-size:13px;line-height:1.6;color:#A09890;text-wrap:pretty">Ogni presenza ha una sagoma appena diversa (raggi asimmetrici entro ±8% dal cerchio: abbastanza per non sembrare geometria, poco per non sembrare un'illustrazione). <strong style="color:#F2EEE9;font-weight:500">La forma la assegna la stanza, come il colore</strong> — cinque sagome in rotazione sui posti, non legate alla persona: altrimenti diventerebbe un tratto permanente, cioè identità accumulata. L'anello di chi parla è la stessa sagoma scalata, non un cerchio: segue il contorno.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#F2EEE9">al tocco</div>
+        <div style="font-size:13px;line-height:1.6;color:#A09890;text-wrap:pretty">Premi una presenza nell'anteprima: cede di 5,5% e torna, 180 ms, curva con un filo di rimbalzo — la sagoma irregolare fa il resto, si legge come cedimento di una bolla. I vicini si scostano di ≤ 4 px e rientrano nello stesso tempo. È movimento <em>a richiesta</em>, quindi fuori dal budget continuo della §4: nessun assestamento perpetuo, che competerebbe con l'unico segnale che conta. Le dimensioni restano uguali fra le persone — diverse fra loro sarebbero rango (§2).</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#F2EEE9">da approvare</div>
+        <div style="font-size:13px;line-height:1.6;color:#A09890;text-wrap:pretty">Sono caduti i nomi sotto i dischi: erano ciò che impediva l'incastro. Le iniziali a 30 px restano l'identificatore (§7), e "abbassata" si legge dal disco composto verso lo sfondo più una riga di stato sotto il gruppo. Se i nomi devono tornare, i dischi tornano distanziati.</div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<section style="padding:56px 56px 96px;display:flex;flex-direction:column;gap:40px">
+
+  <div style="display:flex;flex-direction:column;gap:14px;max-width:760px">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8C857D">BA · fase 1 · direzione</div>
+    <div style="font-size:34px;font-weight:600;letter-spacing:-0.02em;line-height:1.15">Tre disposizioni per la stanza DEN</div>
+    <div style="font-size:15px;line-height:1.55;color:#A09890;text-wrap:pretty">Tema scuro. Palette, tipografia, spaziature, copy e quantità di interfaccia sono <em>identici</em> nelle tre: cambia solo dove stanno le persone sul palco. Ogni direzione in due stati — viva (5 sul palco, 2 che parlano insieme, 14 in ascolto) e vuota (solo io).</div>
+  </div>
+
+  <sc-if value="{{ showConstants }}" hint-placeholder-val="{{ true }}">
+  <div style="display:flex;flex-wrap:wrap;gap:0;border-top:1px solid rgba(242,238,233,0.12);border-bottom:1px solid rgba(242,238,233,0.12);padding:18px 0;max-width:1180px;font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.7;color:#A09890">
+    <div style="min-width:230px;padding-right:28px"><div style="color:#F2EEE9;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">superfici</div>sfondo #100F0E<br>superficie #191715<br>hairline #F2EEE9 @ 9%</div>
+    <div style="min-width:230px;padding-right:28px"><div style="color:#F2EEE9;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">testo</div>primario #F2EEE9<br>secondario #A09890<br>terziario #8A837B</div>
+    <div style="min-width:230px;padding-right:28px"><div style="color:#F2EEE9;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">tipo</div>Instrument Sans 22/16/13/12<br>IBM Plex Mono 11 (etichette)<br>nessun peso oltre 600</div>
+    <div style="min-width:230px;padding-right:28px"><div style="color:#F2EEE9;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">spazio · raggi</div>4 · 8 · 12 · 20 · 32<br>raggi 0 · 6 · 999 (mai 12–16)<br>nessuna ombra, nessun blur</div>
+    <div style="min-width:230px"><div style="color:#F2EEE9;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">stato parla</div>anello, solo luminanza<br>attacco 70 ms · rilascio 350 ms<br>escursione compressa a più voci</div>
+  </div>
+  </sc-if>
+
+  <div style="display:flex;flex-wrap:wrap;gap:64px;align-items:flex-start">
+
+    <!-- ============ 1a — GRIGLIA ============ -->
+    <div id="1a" style="display:flex;flex-direction:column;gap:20px;width:830px">
+      <div style="display:flex;flex-direction:column;gap:10px;max-width:700px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#100F0E;background:#D9CFA8;padding:3px 8px;border-radius:999px">1a</div>
+          <div style="font-size:21px;font-weight:600;letter-spacing:-0.01em">Griglia regolare</div>
+        </div>
+        <div style="font-size:14px;line-height:1.55;color:#A09890;text-wrap:pretty">La posizione non porta significato, così l'unica cosa che cambia sullo schermo è chi parla: l'occhio impara otto caselle una volta e poi non deve più cercare.</div>
+      </div>
+
+      <div style="display:flex;gap:32px;flex-wrap:wrap">
+
+        <!-- 1a VIVA -->
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="width:375px;height:667px;background:#100F0E;border-radius:28px;border:1px solid rgba(242,238,233,0.10);overflow:hidden;display:flex;flex-direction:column;color:#F2EEE9;position:relative">
+            <div style="height:46px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 20px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.04em"><span>21:40</span><span>non si registra</span></div>
+            <div style="padding:4px 20px 0;display:flex;flex-direction:column;gap:7px">
+              <div style="font-size:22px;font-weight:600;letter-spacing:-0.012em">Cucina di notte</div>
+              <div style="display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#A09890;letter-spacing:0.06em;text-transform:uppercase"><span style="width:7px;height:7px;background:#A09890"></span><span>entra chiunque</span></div>
+            </div>
+            <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:0 20px">
+              <div style="display:grid;grid-template-columns:repeat(4,64px);justify-content:space-between;column-gap:23px;row-gap:26px;width:100%">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:64px">
+                  <div style="position:relative;width:64px;height:64px">
+                    <div style="width:64px;height:64px;border-radius:999px;background:#4A4FA0;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:600;color:#FFFFFF">SL</div>
+                  </div>
+                  <div style="font-size:12px;color:#F2EEE9;text-align:center;line-height:1.25">Io</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:64px">
+                  <div style="position:relative;width:64px;height:64px">
+                    <div style="position:absolute;inset:-7px;border-radius:999px;border:2px solid #F5F1EC;animation:{{ animA }}"></div>
+                    <div style="width:64px;height:64px;border-radius:999px;background:#A33A2B;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:600;color:#FFFFFF">MB</div>
+                  </div>
+                  <div style="font-size:12px;color:#A09890;text-align:center;line-height:1.25">Marta</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:64px">
+                  <div style="position:relative;width:64px;height:64px">
+                    <div style="width:64px;height:64px;border-radius:999px;background:#1F6B52;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:600;color:#FFFFFF">RK</div>
+                  </div>
+                  <div style="font-size:12px;color:#A09890;text-align:center;line-height:1.25">Ren</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:64px">
+                  <div style="position:relative;width:64px;height:64px">
+                    <div style="width:64px;height:64px;border-radius:999px;background:#3A1C3C;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:600;color:rgba(242,238,233,0.72)">LC</div>
+                  </div>
+                  <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;text-align:center;line-height:1.25;letter-spacing:0.04em">abbassata</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:64px">
+                  <div style="position:relative;width:64px;height:64px">
+                    <div style="position:absolute;inset:-7px;border-radius:999px;border:2px solid #F5F1EC;animation:{{ animB }}"></div>
+                    <div style="width:64px;height:64px;border-radius:999px;background:#8C5A12;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:600;color:#FFFFFF">AH</div>
+                  </div>
+                  <div style="font-size:12px;color:#A09890;text-align:center;line-height:1.25">Ahmed</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:64px"><div style="width:64px;height:64px;border-radius:999px;border:1px solid rgba(242,238,233,0.09)"></div></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:64px"><div style="width:64px;height:64px;border-radius:999px;border:1px solid rgba(242,238,233,0.09)"></div></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:64px"><div style="width:64px;height:64px;border-radius:999px;border:1px solid rgba(242,238,233,0.09)"></div></div>
+              </div>
+            </div>
+            <div style="padding:0 20px 16px;display:flex;align-items:center;gap:9px">
+              <div style="display:flex;gap:6px">
+                <div style="width:22px;height:22px;border-radius:999px;background:#26608C"></div>
+                <div style="width:22px;height:22px;border-radius:999px;background:#A6335F"></div>
+                <div style="width:22px;height:22px;border-radius:999px;background:#4F6B22"></div>
+              </div>
+              <div style="font-size:13px;color:#A09890">14 in ascolto</div>
+            </div>
+            <div style="padding:0 20px 24px;display:flex;flex-direction:column;gap:10px">
+              <div style="height:56px;border-radius:999px;background:#191715;border:1px solid rgba(242,238,233,0.14);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;color:#F2EEE9">Il tuo microfono è aperto</div>
+              <div style="display:flex;gap:10px">
+                <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Scendi dal palco</div>
+                <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Esci</div>
+              </div>
+            </div>
+            <div style="position:absolute;inset:0;background:#000000;pointer-events:none;z-index:5;opacity:{{ dim }}"></div>
+          </div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.06em;text-transform:uppercase">viva · 5 sul palco · 2 parlano</div>
+        </div>
+
+        <!-- 1a VUOTA -->
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="width:375px;height:667px;background:#100F0E;border-radius:28px;border:1px solid rgba(242,238,233,0.10);overflow:hidden;display:flex;flex-direction:column;color:#F2EEE9;position:relative">
+            <div style="height:46px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 20px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.04em"><span>21:40</span><span>non si registra</span></div>
+            <div style="padding:4px 20px 0;display:flex;flex-direction:column;gap:7px">
+              <div style="font-size:22px;font-weight:600;letter-spacing:-0.012em">Cucina di notte</div>
+              <div style="display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#A09890;letter-spacing:0.06em;text-transform:uppercase"><span style="width:7px;height:7px;background:#A09890"></span><span>entra chiunque</span></div>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:0 20px">
+              <div style="display:grid;grid-template-columns:repeat(4,64px);justify-content:space-between;column-gap:23px;row-gap:26px;width:100%">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:64px">
+                  <div style="width:64px;height:64px;border-radius:999px;background:#4A4FA0;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:600;color:#FFFFFF">SL</div>
+                  <div style="font-size:12px;color:#F2EEE9;text-align:center;line-height:1.25">Io</div>
+                </div>
+                <div style="width:64px;height:64px;border-radius:999px;border:1px solid rgba(242,238,233,0.05)"></div>
+                <div style="width:64px;height:64px;border-radius:999px;border:1px solid rgba(242,238,233,0.05)"></div>
+                <div style="width:64px;height:64px;border-radius:999px;border:1px solid rgba(242,238,233,0.05)"></div>
+                <div style="width:64px;height:64px;border-radius:999px;border:1px solid rgba(242,238,233,0.05)"></div>
+                <div style="width:64px;height:64px;border-radius:999px;border:1px solid rgba(242,238,233,0.05)"></div>
+                <div style="width:64px;height:64px;border-radius:999px;border:1px solid rgba(242,238,233,0.05)"></div>
+                <div style="width:64px;height:64px;border-radius:999px;border:1px solid rgba(242,238,233,0.05)"></div>
+              </div>
+              <div style="font-size:15px;line-height:1.5;color:#A09890;text-align:center;max-width:250px;text-wrap:pretty">Il microfono è tuo. Se arriva qualcuno, arriva senza annunciarsi.</div>
+            </div>
+            <div style="padding:0 20px 24px;display:flex;flex-direction:column;gap:10px">
+              <div style="height:56px;border-radius:999px;background:#191715;border:1px solid rgba(242,238,233,0.14);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;color:#F2EEE9">Resta e ti avviso</div>
+              <div style="display:flex;gap:10px">
+                <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Invita qualcuno</div>
+                <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Esci</div>
+              </div>
+            </div>
+            <div style="position:absolute;inset:0;background:#000000;pointer-events:none;z-index:5;opacity:{{ dim }}"></div>
+          </div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.06em;text-transform:uppercase">vuota · solo io</div>
+        </div>
+
+      </div>
+      <div style="font-size:13px;line-height:1.6;color:#8A837B;max-width:700px;text-wrap:pretty">Costo: a una sola persona la griglia mostra sette caselle non occupate, e il vuoto diventa misurabile. Le ho tenute (l'alternativa era nasconderle e perdere la prevedibilità) ma portate a opacità 5%: si leggono come limite del palco, non come assenze.</div>
+    </div>
+
+    <!-- ============ 1b — ANELLO ============ -->
+    <div id="1b" style="display:flex;flex-direction:column;gap:20px;width:830px">
+      <div style="display:flex;flex-direction:column;gap:10px;max-width:700px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#100F0E;background:#D9CFA8;padding:3px 8px;border-radius:999px">1b</div>
+          <div style="font-size:21px;font-weight:600;letter-spacing:-0.01em">Anello</div>
+        </div>
+        <div style="font-size:14px;line-height:1.55;color:#A09890;text-wrap:pretty">Un cerchio non ha una prima posizione, quindi non può produrre un podio nemmeno per sbaglio; e libera il centro, il solo punto dove uno stato di stanza si legge senza essere cercato.</div>
+      </div>
+
+      <div style="display:flex;gap:32px;flex-wrap:wrap">
+
+        <!-- 1b VIVA -->
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="width:375px;height:667px;background:#100F0E;border-radius:28px;border:1px solid rgba(242,238,233,0.10);overflow:hidden;display:flex;flex-direction:column;color:#F2EEE9;position:relative">
+            <div style="height:46px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 20px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.04em"><span>21:40</span><span>non si registra</span></div>
+            <div style="padding:4px 20px 0;display:flex;flex-direction:column;gap:7px">
+              <div style="font-size:22px;font-weight:600;letter-spacing:-0.012em">Cucina di notte</div>
+              <div style="display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#A09890;letter-spacing:0.06em;text-transform:uppercase"><span style="width:7px;height:7px;background:#A09890"></span><span>entra chiunque</span></div>
+            </div>
+            <div style="flex:1;display:flex;align-items:center;justify-content:center">
+              <div style="position:relative;width:296px;height:296px">
+                <div style="position:absolute;left:80px;right:80px;top:116px;text-align:center;font-size:15px;color:#A09890;line-height:1.4">2 parlano</div>
+                <div style="position:absolute;left:80px;right:80px;top:141px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.06em;text-transform:uppercase">5 sul palco</div>
+                <div style="position:absolute;left:110px;top:10px;width:76px;display:flex;flex-direction:column;align-items:center;gap:16px">
+                  <div style="position:relative;width:60px;height:60px">
+                    <div style="width:60px;height:60px;border-radius:999px;background:#4A4FA0;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;color:#FFFFFF">SL</div>
+                  </div>
+                  <div style="font-size:12px;color:#F2EEE9;text-align:center;line-height:1.2">Io</div>
+                </div>
+                <div style="position:absolute;left:186px;top:42px;width:76px;display:flex;flex-direction:column;align-items:center;gap:16px">
+                  <div style="position:relative;width:60px;height:60px">
+                    <div style="position:absolute;inset:-7px;border-radius:999px;border:2px solid #F5F1EC;animation:{{ animA }}"></div>
+                    <div style="width:60px;height:60px;border-radius:999px;background:#A33A2B;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;color:#FFFFFF">MB</div>
+                  </div>
+                  <div style="font-size:12px;color:#A09890;text-align:center;line-height:1.2">Marta</div>
+                </div>
+                <div style="position:absolute;left:186px;top:194px;width:76px;display:flex;flex-direction:column;align-items:center;gap:16px">
+                  <div style="position:relative;width:60px;height:60px">
+                    <div style="width:60px;height:60px;border-radius:999px;background:#1F6B52;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;color:#FFFFFF">RK</div>
+                  </div>
+                  <div style="font-size:12px;color:#A09890;text-align:center;line-height:1.2">Ren</div>
+                </div>
+                <div style="position:absolute;left:110px;top:226px;width:76px;display:flex;flex-direction:column;align-items:center;gap:16px">
+                  <div style="position:relative;width:60px;height:60px">
+                    <div style="width:60px;height:60px;border-radius:999px;background:#3A1C3C;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;color:rgba(242,238,233,0.72)">LC</div>
+                  </div>
+                  <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;text-align:center;line-height:1.2;letter-spacing:0.04em">abbassata</div>
+                </div>
+                <div style="position:absolute;left:2px;top:118px;width:76px;display:flex;flex-direction:column;align-items:center;gap:16px">
+                  <div style="position:relative;width:60px;height:60px">
+                    <div style="position:absolute;inset:-7px;border-radius:999px;border:2px solid #F5F1EC;animation:{{ animB }}"></div>
+                    <div style="width:60px;height:60px;border-radius:999px;background:#8C5A12;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;color:#FFFFFF">AH</div>
+                  </div>
+                  <div style="font-size:12px;color:#A09890;text-align:center;line-height:1.2">Ahmed</div>
+                </div>
+                <div style="position:absolute;left:253px;top:145px;width:6px;height:6px;border-radius:999px;background:rgba(242,238,233,0.14)"></div>
+                <div style="position:absolute;left:69px;top:221px;width:6px;height:6px;border-radius:999px;background:rgba(242,238,233,0.14)"></div>
+                <div style="position:absolute;left:69px;top:69px;width:6px;height:6px;border-radius:999px;background:rgba(242,238,233,0.14)"></div>
+              </div>
+            </div>
+            <div style="padding:0 20px 16px;display:flex;align-items:center;gap:9px">
+              <div style="display:flex;gap:6px">
+                <div style="width:22px;height:22px;border-radius:999px;background:#26608C"></div>
+                <div style="width:22px;height:22px;border-radius:999px;background:#A6335F"></div>
+                <div style="width:22px;height:22px;border-radius:999px;background:#4F6B22"></div>
+              </div>
+              <div style="font-size:13px;color:#A09890">14 in ascolto</div>
+            </div>
+            <div style="padding:0 20px 24px;display:flex;flex-direction:column;gap:10px">
+              <div style="height:56px;border-radius:999px;background:#191715;border:1px solid rgba(242,238,233,0.14);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;color:#F2EEE9">Il tuo microfono è aperto</div>
+              <div style="display:flex;gap:10px">
+                <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Scendi dal palco</div>
+                <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Esci</div>
+              </div>
+            </div>
+            <div style="position:absolute;inset:0;background:#000000;pointer-events:none;z-index:5;opacity:{{ dim }}"></div>
+          </div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.06em;text-transform:uppercase">viva · 5 sul palco · 2 parlano</div>
+        </div>
+
+        <!-- 1b VUOTA -->
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="width:375px;height:667px;background:#100F0E;border-radius:28px;border:1px solid rgba(242,238,233,0.10);overflow:hidden;display:flex;flex-direction:column;color:#F2EEE9;position:relative">
+            <div style="height:46px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 20px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.04em"><span>21:40</span><span>non si registra</span></div>
+            <div style="padding:4px 20px 0;display:flex;flex-direction:column;gap:7px">
+              <div style="font-size:22px;font-weight:600;letter-spacing:-0.012em">Cucina di notte</div>
+              <div style="display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#A09890;letter-spacing:0.06em;text-transform:uppercase"><span style="width:7px;height:7px;background:#A09890"></span><span>entra chiunque</span></div>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:0 20px">
+              <div style="position:relative;width:296px;height:296px;flex:0 0 auto">
+                <div style="position:absolute;left:80px;right:80px;top:132px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.06em;text-transform:uppercase">solo tu</div>
+                <div style="position:absolute;left:110px;top:10px;width:76px;display:flex;flex-direction:column;align-items:center;gap:16px">
+                  <div style="width:60px;height:60px;border-radius:999px;background:#4A4FA0;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;color:#FFFFFF">SL</div>
+                  <div style="font-size:12px;color:#F2EEE9;text-align:center;line-height:1.2">Io</div>
+                </div>
+                <div style="position:absolute;left:194px;top:42px;width:60px;height:60px;border-radius:999px;border:1px solid rgba(242,238,233,0.05)"></div>
+                <div style="position:absolute;left:226px;top:118px;width:60px;height:60px;border-radius:999px;border:1px solid rgba(242,238,233,0.05)"></div>
+                <div style="position:absolute;left:194px;top:194px;width:60px;height:60px;border-radius:999px;border:1px solid rgba(242,238,233,0.05)"></div>
+                <div style="position:absolute;left:118px;top:226px;width:60px;height:60px;border-radius:999px;border:1px solid rgba(242,238,233,0.05)"></div>
+                <div style="position:absolute;left:42px;top:194px;width:60px;height:60px;border-radius:999px;border:1px solid rgba(242,238,233,0.05)"></div>
+                <div style="position:absolute;left:10px;top:118px;width:60px;height:60px;border-radius:999px;border:1px solid rgba(242,238,233,0.05)"></div>
+                <div style="position:absolute;left:42px;top:42px;width:60px;height:60px;border-radius:999px;border:1px solid rgba(242,238,233,0.05)"></div>
+              </div>
+              <div style="font-size:15px;line-height:1.5;color:#A09890;text-align:center;max-width:250px;text-wrap:pretty">Il microfono è tuo. Se arriva qualcuno, arriva senza annunciarsi.</div>
+            </div>
+            <div style="padding:0 20px 24px;display:flex;flex-direction:column;gap:10px">
+              <div style="height:56px;border-radius:999px;background:#191715;border:1px solid rgba(242,238,233,0.14);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;color:#F2EEE9">Resta e ti avviso</div>
+              <div style="display:flex;gap:10px">
+                <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Invita qualcuno</div>
+                <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Esci</div>
+              </div>
+            </div>
+            <div style="position:absolute;inset:0;background:#000000;pointer-events:none;z-index:5;opacity:{{ dim }}"></div>
+          </div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.06em;text-transform:uppercase">vuota · solo io</div>
+        </div>
+
+      </div>
+      <div style="font-size:13px;line-height:1.6;color:#8A837B;max-width:700px;text-wrap:pretty">Nello stato vivo i posti liberi diventano punti da 6 px invece di cerchi: sono la geometria del palco, non sedie vuote. Nello stato vuoto tornano cerchi, perché con una persona sola servono a dire "c'è posto".</div>
+    </div>
+
+    <!-- ============ 1c — IMPACCHETTAMENTO ============ -->
+    <div id="1c" style="display:flex;flex-direction:column;gap:20px;width:830px">
+      <div style="display:flex;flex-direction:column;gap:10px;max-width:700px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#100F0E;background:#D9CFA8;padding:3px 8px;border-radius:999px">1c</div>
+          <div style="font-size:21px;font-weight:600;letter-spacing:-0.01em">Impacchettamento adattivo</div>
+        </div>
+        <div style="font-size:14px;line-height:1.55;color:#A09890;text-wrap:pretty">Il palco non ha posti, solo persone: la scala dice quante sono prima che si contino, e a una sola persona non resta nessun buco da leggere.</div>
+      </div>
+
+      <div style="display:flex;gap:32px;flex-wrap:wrap">
+
+        <!-- 1c VIVA -->
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="width:375px;height:667px;background:#100F0E;border-radius:28px;border:1px solid rgba(242,238,233,0.10);overflow:hidden;display:flex;flex-direction:column;color:#F2EEE9;position:relative">
+            <div style="height:46px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 20px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.04em"><span>21:40</span><span>non si registra</span></div>
+            <div style="padding:4px 20px 0;display:flex;flex-direction:column;gap:7px">
+              <div style="font-size:22px;font-weight:600;letter-spacing:-0.012em">Cucina di notte</div>
+              <div style="display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#A09890;letter-spacing:0.06em;text-transform:uppercase"><span style="width:7px;height:7px;background:#A09890"></span><span>entra chiunque</span></div>
+            </div>
+            <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:0 20px">
+              <div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:20px 16px">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:18px;width:88px">
+                  <div style="position:relative;width:88px;height:88px">
+                    <div style="width:88px;height:88px;border-radius:999px;background:#4A4FA0;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:600;color:#FFFFFF">SL</div>
+                  </div>
+                  <div style="font-size:12px;color:#F2EEE9;text-align:center;line-height:1.2">Io</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:18px;width:88px">
+                  <div style="position:relative;width:88px;height:88px">
+                    <div style="position:absolute;inset:-8px;border-radius:999px;border:2px solid #F5F1EC;animation:{{ animA }}"></div>
+                    <div style="width:88px;height:88px;border-radius:999px;background:#A33A2B;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:600;color:#FFFFFF">MB</div>
+                  </div>
+                  <div style="font-size:12px;color:#A09890;text-align:center;line-height:1.2">Marta</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:18px;width:88px">
+                  <div style="position:relative;width:88px;height:88px">
+                    <div style="width:88px;height:88px;border-radius:999px;background:#1F6B52;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:600;color:#FFFFFF">RK</div>
+                  </div>
+                  <div style="font-size:12px;color:#A09890;text-align:center;line-height:1.2">Ren</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:18px;width:88px">
+                  <div style="position:relative;width:88px;height:88px">
+                    <div style="width:88px;height:88px;border-radius:999px;background:#3A1C3C;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:600;color:rgba(242,238,233,0.72)">LC</div>
+                  </div>
+                  <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;text-align:center;line-height:1.2;letter-spacing:0.04em">abbassata</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:18px;width:88px">
+                  <div style="position:relative;width:88px;height:88px">
+                    <div style="position:absolute;inset:-8px;border-radius:999px;border:2px solid #F5F1EC;animation:{{ animB }}"></div>
+                    <div style="width:88px;height:88px;border-radius:999px;background:#8C5A12;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:600;color:#FFFFFF">AH</div>
+                  </div>
+                  <div style="font-size:12px;color:#A09890;text-align:center;line-height:1.2">Ahmed</div>
+                </div>
+              </div>
+            </div>
+            <div style="padding:0 20px 16px;display:flex;align-items:center;gap:9px">
+              <div style="display:flex;gap:6px">
+                <div style="width:22px;height:22px;border-radius:999px;background:#26608C"></div>
+                <div style="width:22px;height:22px;border-radius:999px;background:#A6335F"></div>
+                <div style="width:22px;height:22px;border-radius:999px;background:#4F6B22"></div>
+              </div>
+              <div style="font-size:13px;color:#A09890">14 in ascolto</div>
+            </div>
+            <div style="padding:0 20px 24px;display:flex;flex-direction:column;gap:10px">
+              <div style="height:56px;border-radius:999px;background:#191715;border:1px solid rgba(242,238,233,0.14);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;color:#F2EEE9">Il tuo microfono è aperto</div>
+              <div style="display:flex;gap:10px">
+                <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Scendi dal palco</div>
+                <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Esci</div>
+              </div>
+            </div>
+            <div style="position:absolute;inset:0;background:#000000;pointer-events:none;z-index:5;opacity:{{ dim }}"></div>
+          </div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.06em;text-transform:uppercase">viva · 5 sul palco · 2 parlano</div>
+        </div>
+
+        <!-- 1c VUOTA -->
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="width:375px;height:667px;background:#100F0E;border-radius:28px;border:1px solid rgba(242,238,233,0.10);overflow:hidden;display:flex;flex-direction:column;color:#F2EEE9;position:relative">
+            <div style="height:46px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 20px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.04em"><span>21:40</span><span>non si registra</span></div>
+            <div style="padding:4px 20px 0;display:flex;flex-direction:column;gap:7px">
+              <div style="font-size:22px;font-weight:600;letter-spacing:-0.012em">Cucina di notte</div>
+              <div style="display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#A09890;letter-spacing:0.06em;text-transform:uppercase"><span style="width:7px;height:7px;background:#A09890"></span><span>entra chiunque</span></div>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:0 20px">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+                <div style="width:196px;height:196px;border-radius:999px;background:#4A4FA0;display:flex;align-items:center;justify-content:center;font-size:58px;font-weight:600;color:#FFFFFF">SL</div>
+                <div style="font-size:13px;color:#F2EEE9">Io</div>
+              </div>
+              <div style="font-size:15px;line-height:1.5;color:#A09890;text-align:center;max-width:250px;text-wrap:pretty">Il microfono è tuo. Se arriva qualcuno, arriva senza annunciarsi.</div>
+            </div>
+            <div style="padding:0 20px 24px;display:flex;flex-direction:column;gap:10px">
+              <div style="height:56px;border-radius:999px;background:#191715;border:1px solid rgba(242,238,233,0.14);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;color:#F2EEE9">Resta e ti avviso</div>
+              <div style="display:flex;gap:10px">
+                <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Invita qualcuno</div>
+                <div style="flex:1;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">Esci</div>
+              </div>
+            </div>
+            <div style="position:absolute;inset:0;background:#000000;pointer-events:none;z-index:5;opacity:{{ dim }}"></div>
+          </div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.06em;text-transform:uppercase">vuota · solo io</div>
+        </div>
+
+      </div>
+      <div style="font-size:13px;line-height:1.6;color:#8A837B;max-width:700px;text-wrap:pretty">Scala per numero di persone sul palco: 1 → 196, 2 → 148, 3–4 → 112, 5–6 → 88, 7–8 → 68 px. La scala è del gruppo, non dell'individuo: chi parla non diventa più grande, altrimenti la dimensione tornerebbe a essere rango.</div>
+    </div>
+
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:40px;border-top:1px solid rgba(242,238,233,0.12);padding-top:24px;max-width:1180px">
+    <div style="max-width:340px;display:flex;flex-direction:column;gap:8px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#F2EEE9">il test dei 375 pt</div>
+      <div style="font-size:13px;line-height:1.6;color:#A09890;text-wrap:pretty">Accendi <em>Prova occhiata</em> nei tweaks: porta le tre schermate a luminosità 20%. Restano visibili solo gli anelli e la conta — è la lettura che deve funzionare.</div>
+    </div>
+    <div style="max-width:340px;display:flex;flex-direction:column;gap:8px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#F2EEE9">fallback statico</div>
+      <div style="font-size:13px;line-height:1.6;color:#A09890;text-wrap:pretty"><em>Riduci il movimento</em> ferma gli anelli sul valore alto: chi parla resta l'unico avatar cerchiato. Nessuno stato dipende dall'animazione.</div>
+    </div>
+    <div style="max-width:340px;display:flex;flex-direction:column;gap:8px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#F2EEE9">cosa non c'è</div>
+      <div style="font-size:13px;line-height:1.6;color:#A09890;text-wrap:pretty">Nessun tempo trascorso, nessun conteggio cumulativo, nessuna mano alzata permanente, nessun badge. L'unica riga che nomina la registrazione la nega, e sta dove sta l'ora.</div>
+    </div>
+  </div>
+
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;glanceTest&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Verifica&quot;},&quot;reduceMotion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Verifica&quot;},&quot;showConstants&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Documento&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const reduce = this.props.reduceMotion ?? false;
+    return {
+      animA: reduce ? "none" : "voiceA 1.45s cubic-bezier(0.22,0.9,0.25,1) infinite",
+      animB: reduce ? "none" : "voiceB 1.9s cubic-bezier(0.22,0.9,0.25,1) infinite",
+      dim: (this.props.glanceTest ?? false) ? 0.66 : 0,
+      showConstants: this.props.showConstants ?? true
+    };
+  }
+}
+</script>
+</body>
+</html>
