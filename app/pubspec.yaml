@@ -1,0 +1,44 @@
+name: ba
+description: "BA — social vocale basato sulla presenza."
+publish_to: 'none'
+
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.13.7
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # Solo traduzioni (task 000). Altre dipendenze arrivano con il task che le usa.
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  # Genera le traduzioni da lib/l10n/*.arb (vedi l10n.yaml).
+  generate: true
+  # Niente Material: nessuna icona Material nell'app (CLAUDE.md, regole sul design system).
+  uses-material-design: false
+
+  # I nomi di famiglia sono quelli di tokens.dart (BaTesto.famiglia, famigliaMono).
+  # Licenze (OFL) accanto ai file. Instrument Sans: 400 corpo, 500 controllo, 600 titoli.
+  # IBM Plex Mono: solo 400, come in tokens.dart.
+  fonts:
+    - family: Instrument Sans
+      fonts:
+        - asset: assets/fonts/instrument-sans/InstrumentSans-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/instrument-sans/InstrumentSans-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/instrument-sans/InstrumentSans-SemiBold.ttf
+          weight: 600
+    - family: IBM Plex Mono
+      fonts:
+        - asset: assets/fonts/ibm-plex-mono/IBMPlexMono-Regular.ttf
+          weight: 400

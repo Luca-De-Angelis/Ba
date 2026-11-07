@@ -28,6 +28,7 @@ Un solo registro per tutte le decisioni di prodotto e di design. Le decisioni te
 | D-020 | 6/11/2026 | Approccio mobile first. Il tablet è supportato dalla beta 1, per ora solo in verticale. Il layout dipende dalla larghezza dello schermo, non dall'orientamento, così l'orizzontale si potrà aggiungere | Luca | Valida; orizzontale da rivalutare |
 | D-021 | 7/11/2026 | I nomi `Ba<Componente>` (per esempio `BaPresenza`, `BaPalco`) sono riservati ai widget. Le classi di token prendono il suffisso `Tokens` (`BaPresenza` → `BaPresenzaTokens`, `BaColor` → `BaColorTokens`…). Il cambio si fa nel task 004 | Chat di orchestrazione, su segnalazione di Claude Code | Valida |
 | D-022 | 7/11/2026 | Il telefono più stretto di riferimento è 360 dp (Android), non i 375 pt dell'iPhone citati nel brief v2.1: progettare per 360 copre entrambi | Decisioni consolidate §7; brief v2.1 §4 | Valida |
+| D-023 | 7/11/2026 | Su iPad l'app richiede lo schermo intero (UIRequiresFullScreen) finché è solo verticale: rinuncia a Split View e Slide Over. Si toglie quando arriva l'orizzontale | Task 000; D-020 | Valida |
 
 ## Aperte
 
