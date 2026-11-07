@@ -17,7 +17,7 @@ Due decisioni nuove: token e scale seguono il modello di Tailwind restando in Fl
 7. **Breakpoint, mobile first.** Il valore base è il telefono, da 360 dp. Proponi la soglia del tablet con nomi alla Tailwind. Vincolo: un iPad mini in verticale (744 pt) deve ricevere il layout tablet, quindi la soglia `md` di Tailwind (768) da sola non basta.
 8. **Layout tablet in verticale** per le cinque schermate dell'alpha (accesso, elenco DEN, stanza, attesa, impostazioni). Decidi come usare lo spazio in più: larghezza massima dei testi e degli elenchi, dimensione delle presenze sul palco, posizione delle azioni. Le azioni primarie restano raggiungibili; il principio "l'app è per lo più non guardata" vale anche sul tablet.
 9. **Nomi delle classi (D-021).** Le classi di token prendono il suffisso `Tokens` (`BaPresenza` → `BaPresenzaTokens`, `BaColor` → `BaColorTokens`…), perché i nomi `Ba<Componente>` sono riservati ai widget. Aggiorna di conseguenza i riferimenti nei documenti di sistema.
-10. **Indipendenza dall'orientamento.** Il layout dipende solo dalla larghezza: nessuna regola del tipo "se verticale".
+10. **Indipendenza dall'orientamento.** Il layout dipende solo dalla larghezza: nessuna regola del tipo "se verticale". Sui tablet Android l'orizzontale arriverà comunque (da target 37 il sistema ignora il blocco): non va disegnato ora, ma il layout non deve impedirlo.
 
 ## Do NOT
 

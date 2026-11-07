@@ -37,3 +37,4 @@ Un solo registro per tutte le decisioni di prodotto e di design. Le decisioni te
 - Come ci si connette con una persona.
 - Licenze per podcast e musica.
 - Revisione umana dei passaggi segnalati dalla moderazione.
+- Tablet Android: con target 36 il blocco in verticale viene ignorato dai 600 dp in su; esiste una deroga temporanea, che sparisce con target 37. Da decidere con lo sviluppo se attivarla.
