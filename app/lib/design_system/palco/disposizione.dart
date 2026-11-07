@@ -176,8 +176,10 @@ _Candidata? _migliore(
 ///
 /// L'altezza di ogni riga è la minima che dà distanza ≥ [passo] da tutti i
 /// centri già posti: la distanza non si stringe mai. Con [h] non nullo si
-/// scartano le disposizioni più alte di [h]. A parità di altezza vince la
-/// prima trovata (ordine fisso: riga più larga prima, centrata prima).
+/// scartano le disposizioni più alte di [h]. A parità di altezza (entro `_eps`)
+/// vince quella con il baricentro orizzontale più vicino all'asse della
+/// scatola, cioè la disposizione che non pende; a ulteriore parità, la prima
+/// trovata (ordine fisso: riga più larga prima, centrata prima).
 _Candidata? _cerca(
   int n,
   int kMax,
@@ -201,7 +203,12 @@ _Candidata? _cerca(
       if (resto == 0) {
         if (!haLarga) return;
         final altezza = punti.last.dy + extra;
-        if (migliore == null || altezza < migliore!.altezza(d) - _eps) {
+        final m = migliore;
+        if (m == null ||
+            altezza < m.altezza(d) - _eps ||
+            (altezza <= m.altezza(d) + _eps &&
+                _sbilanciamento(punti, corsaX) <
+                    _sbilanciamento(m.punti, m.corsaX) - _eps)) {
           migliore = _Candidata(
               List.of(righe), List.of(punti), corsaX, punti.last.dy);
         }
@@ -230,8 +237,8 @@ _Candidata? _cerca(
           }
           final altezza = y + extra;
           if (h != null && altezza > h + _eps) continue;
-          if (migliore != null && altezza >= migliore!.altezza(d) - _eps) {
-            continue; // non può battere la migliore: più righe non scendono
+          if (migliore != null && altezza > migliore!.altezza(d) + _eps) {
+            continue; // più alta della migliore: più righe non scendono
           }
           righe.add(c);
           for (final x in xs) {
@@ -272,4 +279,14 @@ BaDisposizionePalco _costruisci(
     centri: List.unmodifiable(centri),
     sfora: sfora,
   );
+}
+
+/// Distanza del baricentro orizzontale dei [punti] dall'asse del gruppo
+/// (`corsaX / 2`, che [_costruisci] porta sull'asse della scatola).
+double _sbilanciamento(List<Offset> punti, double corsaX) {
+  var somma = 0.0;
+  for (final p in punti) {
+    somma += p.dx;
+  }
+  return (somma / punti.length - corsaX / 2).abs();
 }

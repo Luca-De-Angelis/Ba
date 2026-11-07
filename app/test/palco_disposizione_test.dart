@@ -207,6 +207,18 @@ void main() {
     });
   });
 
+  group('simmetria', () {
+    test('il baricentro orizzontale coincide con il centro della scatola (±0,5 dp)', () {
+      for (final s in const [Size(320, 420), Size(744, 420)]) {
+        for (var n = 1; n <= 8; n++) {
+          final c = disponiPalco(persone: n, scatola: s).centri;
+          final baricentro = c.map((p) => p.dx).reduce((a, b) => a + b) / c.length;
+          expect(baricentro, closeTo(s.width / 2, 0.5), reason: '$n persone in $s: ${_righe(c)}');
+        }
+      }
+    });
+  });
+
   group('il diametro non cresce', () {
     // Griglia di scatole: lati da 100 a 800 con passo 20.
     final lati = [for (var v = 100.0; v <= 800; v += 20) v];
