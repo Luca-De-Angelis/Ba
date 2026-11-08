@@ -1,4 +1,4 @@
-<!-- Copia di lettura generata da "BA - Inventario componenti.html". Fa fede l'HTML esportato da Claude Design; i valori fanno fede in app/lib/design_system/tokens.dart. -->
+<!-- Copia di lettura generata da "BA - Inventario componenti.dc.html". Fa fede l'HTML esportato da Claude Design; i valori fanno fede in app/lib/design_system/tokens.dart. -->
 BA · brief di design · inventario
 # I componenti da costruire, con i loro stati
 La fonte di verità per i valori è **tokens.dart**. Qui non compaiono numeri se non come conseguenza: ogni cella cita il token per nome.
@@ -10,13 +10,13 @@ Tre stati valgono **per ogni componente toccabile** e non si ripetono riga per r
 
 ## C1  La presenza e il palco
 
-| widget     | varianti                                            | stati                                                                                              | token                                                                |
-|------------|-----------------------------------------------------|----------------------------------------------------------------------------------------------------|----------------------------------------------------------------------|
-| BaPresenza | palco (sola…s) · sistema · pubblico (muta)          | ferma · parla · abbassata · abbassata che parla · bloccata · persa · scheletro · premuta · a fuoco | BaPresenza.\* · BaSagoma · BaTinta · BaColor.voce\*                  |
-| BaRitratto | immagine · iniziali · sagoma nuda                   | in carico · caricata · fallita (→ iniziali) · assente (→ iniziali)                                 | BaPresenza.iniziali · BaTesto.iniziali                               |
-| BaAnello   | voce (doppio tratto) · fermo · sulla stanza · focus | a riposo · inviluppo · fermo per linea instabile · statico da ripiego                              | anelloKeyline · anelloTratto · voceAttacco/Rilascio                  |
-| BaPalco    | 1 · 2 · 3–4 · 5–6 · 7–8 · pieno                     | vuoto (attesa) · scheletro · vivo · in assestamento · in ricompattamento · congelato (linea persa) | diametro() · distanzaMinima() · assestamento · attesaIngresso/Uscita |
-| BaPubblico | campione + contatore                                | nessuno (non si disegna) · 1–3 · oltre 3 (campione fisso)                                          | BaPresenza.pubblico · BaTesto.marcatore                              |
+| widget     | varianti                                             | stati                                                                                              | token                                                                |
+|------------|------------------------------------------------------|----------------------------------------------------------------------------------------------------|----------------------------------------------------------------------|
+| BaPresenza | palco (sola…s) · sistema · pubblico (senza iniziali) | ferma · parla · mutata · mutata che parla · bloccata · persa · scheletro · premuta · a fuoco       | BaPresenza.\* · BaSagoma · BaTinta · BaColor.voce\*                  |
+| BaRitratto | immagine · iniziali · sagoma nuda                    | in carico · caricata · fallita (→ iniziali) · assente (→ iniziali)                                 | BaPresenza.iniziali · BaTesto.iniziali                               |
+| BaAnello   | voce (doppio tratto) · fermo · sulla stanza · focus  | a riposo · inviluppo · fermo per linea instabile · statico da ripiego                              | anelloKeyline · anelloTratto · voceAttacco/Rilascio                  |
+| BaPalco    | 1 · 2 · 3–4 · 5–6 · 7–8 · pieno                      | vuoto (attesa) · scheletro · vivo · in assestamento · in ricompattamento · congelato (linea persa) | diametro() · distanzaMinima() · assestamento · attesaIngresso/Uscita |
+| BaPubblico | campione + contatore                                 | nessuno (non si disegna) · 1–3 · oltre 3 (campione fisso)                                          | BaPresenza.pubblico · campionePubblico · BaTesto.marcatore           |
 
 **BaPalco riceve una scatola, non una dimensione.** Calcola la scala dal numero di presenze *e* dallo spazio che avanza (C6): è l'unico punto dell'app dove un layout decide una misura, e per questo è l'unico che va testato con il testo di sistema al massimo. **Esiste in un'implementazione sola, in Dart**, perché nessun'altra superficie impacchetta: le card di sistema allineano le sagome in fila (C5), quindi non c'è geometria da ricalcolare in Swift né da serializzare nel payload.
 
@@ -32,35 +32,37 @@ Tre stati valgono **per ogni componente toccabile** e non si ripetono riga per r
 
 ## C3  Controlli e messaggi
 
-|                  |                                                   |                                                                                                 |                                                            |
-|------------------|---------------------------------------------------|-------------------------------------------------------------------------------------------------|------------------------------------------------------------|
-| BaTouchable      | standard · su presenza                            | a riposo · premuto · a fuoco · inattivo. Su presenza il premuto scurisce la keyline e non scala | premutoVelo · premutoKeyline · focus\* · areaMinima/Estesa |
-| BaPillola        | informativa · attiva · chiara · spenta            | \+ i tre comuni. "Chiara" solo dove l'app non prosegue senza un gesto (BaRegole 1)              | BaControllo.primario · azione\* · filettoMarcato           |
-| BaAzioniInCoppia | due hairline · una sola (centrata)                | \+ i tre comuni, indipendenti fra le due                                                        | BaControllo.coppia · gapCoppia · filettoBase               |
-| BaMessaggio      | neutro · errore                                   | assente · presente. Uno solo per schermata; l'errore non si riempie mai                         | BaRaggio.riquadro · errore\* · filettoBase                 |
-| BaFoglio         | richiesta (permesso) · scheda presenza · invito   | chiuso · in salita · aperto · con contenuto più alto dello schermo (scorre)                     | BaRaggio.foglio · superficieFoglio · movimento.foglio      |
-| BaGlifo          | microfono barrato (abbassata) · bloccata · negato | spento · acceso (parla da abbassata) · in errore                                                | movimento.glifo · erroreTesto                              |
+|                  |                                                        |                                                                                                 |                                                            |
+|------------------|--------------------------------------------------------|-------------------------------------------------------------------------------------------------|------------------------------------------------------------|
+| BaTouchable      | standard · su presenza                                 | a riposo · premuto · a fuoco · inattivo. Su presenza il premuto scurisce la keyline e non scala | premutoVelo · premutoKeyline · focus\* · areaMinima/Estesa |
+| BaPillola        | informativa · attiva · chiara · spenta                 | \+ i tre comuni. "Chiara" solo dove l'app non prosegue senza un gesto (BaRegole 1)              | BaControllo.primario · azione\* · filettoMarcato           |
+| BaAzioniInCoppia | due hairline · una sola (centrata)                     | \+ i tre comuni, indipendenti fra le due                                                        | BaControllo.coppia · gapCoppia · filettoBase               |
+| BaMessaggio      | neutro · errore                                        | assente · presente. Uno solo per schermata; l'errore non si riempie mai                         | BaRaggio.riquadro · errore\* · filettoBase                 |
+| BaFoglio         | richiesta (permesso) · scheda presenza · invito        | chiuso · in salita · aperto · con contenuto più alto dello schermo (scorre)                     | BaRaggio.foglio · superficieFoglio · movimento.foglio      |
+| BaGlifo          | altoparlante barrato (voce mutata) · bloccata · negato | spento · acceso (la voce mutata parla) · in errore                                              | BaPresenza.glifo\* · movimento.glifo · erroreTesto         |
 
 Le altezze dei controlli in tokens.dart sono **minimi, non misure**: il contenuto può alzarli, mai abbassarli. È la condizione perché il testo grande non tronchi (C6).
 
 ## C4  Elenco e impostazioni
 
-|                    |                                                                |                                                                                                                                                           |                                        |
-|--------------------|----------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------|
-| BaRigaDen          | viva · spenta · su invito · rimosso                            | con campione di presenze · con sagoma vuota (spenta) · con anello su chi parla · premuta · a fuoco · **inerte** (rimosso: né premuta né a fuoco)          | BaTesto.riga · marcatore · filettoBase |
-| BaRigaImpostazione | interruttore · valore · azione · conseguenza (permesso negato) | acceso · spento · negato dal sistema (con via d'uscita) · + i tre comuni. **Nessuno stato "deciso dalla stanza"**: un DEN non impone nessuna impostazione | BaTesto.minore · filettoDivisorio      |
-| BaRigaBloccata     | **dato da te** · **ricevuto** (un DEN, non una persona)        | bloccata · sblocco in corso · sbloccata (esce dall'elenco) · ricevuto: **nessuna azione**, sagoma vuota al posto della presenza                           | BaPresenza (neutra) · BaGlifo          |
-| BaCampoCodice      | accesso · invito                                               | vuoto · in scrittura · in verifica · rifiutato (errore) · scaduto                                                                                         | azioneChiara · erroreTesto             |
+|                    |                                                                                                                     |                                                                                                                                                                                                                                                                |                                        |
+|--------------------|---------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------|
+| BaRigaDen          | viva · spenta · su invito · rimossobeta                                                                             | con campione di presenze · con sagoma vuota (spenta) · con anello su chi parla · premuta · a fuoco · **inerte** (rimosso: né premuta né a fuoco)beta                                                                                                           | BaTesto.riga · marcatore · filettoBase |
+| BaRigaImpostazione | interruttore · valore · azione con conseguenza scritta ("Torna ascoltatore") · conseguenza (permesso negato)        | acceso · spento · negato dal sistema (con via d'uscita) · + i tre comuni. **Nessuno stato "deciso dalla stanza"**: un DEN non impone nessuna impostazione. **Nessun interruttore della trascrizione**: il consenso a parlare si ritira con "Torna ascoltatore" | BaTesto.minore · filettoDivisorio      |
+| BaRigaBloccata     | **dato da te** · **ricevuto**beta (un DEN, non una persona). Schermata in alpha: "Persone bloccate", un gruppo solo | bloccata · sblocco in corso · sbloccata (esce dall'elenco) · ricevuto (beta): **nessuna azione**, sagoma vuota al posto della presenza                                                                                                                         | BaPresenza (neutra) · BaGlifo          |
+| BaCampoCodice      | accesso · invito                                                                                                    | vuoto · in scrittura · in verifica · rifiutato (errore) · scaduto                                                                                                                                                                                              | azioneChiara · erroreTesto             |
 
 ## C5  Superfici di sistema
 
 |                   |                                          |                                                              |                                                    |
 |-------------------|------------------------------------------|--------------------------------------------------------------|----------------------------------------------------|
-| BaCardLive        | informativa · con azioni · dopo il tocco | stanza viva · io con microfono chiuso · stanza finita (coda) | superficieSistema · voceTrattoStanza · sistemaLock |
+| BaCardLive        | informativa · con azioni · dopo il tocco | stanza viva · io con microfono spento · stanza finita (coda) | superficieSistema · voceTrattoStanza · sistemaLock |
 | BaIsola           | compatta · minimal · espansa             | viva · con azioni (App Intent)                               | superficieIsola · voceTrattoStanzaTenue            |
-| BaNotificaAndroid | unica (obbligatoria)                     | viva · microfono chiuso. Non anima, per costruzione          | superficieNotifica                                 |
+| BaNotificaAndroid | unica (obbligatoria)                     | viva · microfono spento. Non anima, per costruzione          | superficieNotifica                                 |
 
 Questi tre **non sono widget Flutter**: sono SwiftUI e RemoteViews. Vivono nell'inventario perché gli stati vanno decisi qui, ma il codice sta altrove e va scritto due volte.
+
+**Lessico sulle superfici di sistema.** Per il proprio microfono l'azione è *Spegni il microfono* e lo stato è *Microfono spento*, solo informativo: dal telefono bloccato il microfono si spegne e non si riaccende, quindi lo stato non ha l'aspetto di un'azione. Resta *Esci*. "Muta" resta riservato alla voce di un altro ("muta questa voce"), come nel glossario.
 
 **Fuori dall'app non si impacchetta: si allinea.** Le sagome stanno in fila, al massimo quattro, con il contatore che porta il resto — dentro 144 pt di altezza l'impacchettamento non avrebbe spazio per esistere. Ne segue che BaPalco non serve mai fuori da Flutter e **non c'è geometria da serializzare**: BaPayloadStanza porta nome, conteggio, ora d'inizio, tinte e iniziali, e nient'altro. **La sagoma della stanza è statica** — sempre BaSagoma.mazzo\[0\], con l'anello fermo — quindi nemmeno lei è una geometria da calcolare in due posti.
 
@@ -78,7 +80,7 @@ La domanda giusta non è se il layout regge il testo grande, ma **chi cede quand
 | spazi e margini         | no           | scalarli raddoppierebbe il consumo di schermo senza aggiungere leggibilità                                                                                                                              |
 | diametro delle presenze | al contrario | si **riduce** quando il testo cresce: è il palco che paga                                                                                                                                               |
 
-**Ordine di cessione, quando lo spazio non basta.** Primo: l'alone e i margini verticali del palco. Secondo: la scala delle presenze, da 208 giù fino a 92. Terzo: **le iniziali** — sotto i 92 continuano a rimpicciolirsi con la bolla, e a 32 pt escono dal dominio e non si disegnano più. Resta la forma colorata, che porta comunque presenza, tinta e anello.
+**Ordine di cessione, quando lo spazio non basta.** Primo: l'alone e i margini verticali del palco. Secondo: la scala delle presenze, da 208 giù fino a 88. Terzo: **le iniziali** — sotto gli 88 continuano a rimpicciolirsi con la bolla, e a 32 pt escono dal dominio e non si disegnano più. Resta la forma colorata, che porta comunque presenza, tinta e anello.
 
 **Le sagome non cedono mai.** Nessuna presenza passa al contatore per fare spazio, nessuno scambia posto, nessuna priorità da calcolare, nessuna contesa: **chi è sul palco è a schermo**. Il fondo della scala — 88 dp da quando è stato ricontrollato a 360 dp — era un fondo solo perché era il minimo leggibile *con le iniziali dentro* — toltele, la scala prosegue, e non serve un secondo meccanismo. È la regola che l'app ha già: non si cede una sagoma, si cede quello che ci sta sopra.
 
@@ -119,7 +121,7 @@ Le note generali stanno in *BA · Token*, T10; le durate e tutto il movimento in
 <tr class="odd">
 <td>BaPresenza<br />
 <span>accessibilità</span></td>
-<td>l'etichetta per lo screen reader è "<em>nome</em>, sta parlando / microfono chiuso": le iniziali non sono la rappresentazione accessibile, sono un ripiego visivo</td>
+<td>l'etichetta per lo screen reader è "<em>nome</em>, sta parlando / microfono spento", più le mie preferenze quando ci sono ("Lucia C., voce mutata da te, sta parlando"): le iniziali non sono la rappresentazione accessibile, sono un ripiego visivo</td>
 </tr>
 <tr class="even">
 <td>BaFoglio</td>
@@ -207,7 +209,7 @@ La colonna di destra non è un elenco di cose brutte: è quello che si può **sp
 <tr class="odd">
 <td>BaTouchable</td>
 <td>area minima 44, nodo di focus, ordine di lettura. <strong>Va per primo</strong>: tutto il resto lo eredita</td>
-<td>il premuto a 94,5% con la sua curva</td>
+<td>il premuto a scala 0,98 con la sua curva</td>
 </tr>
 <tr class="even">
 <td>BaPillola</td>
@@ -236,7 +238,7 @@ La colonna di destra non è un elenco di cose brutte: è quello che si può **sp
 </tr>
 <tr class="odd">
 <td>BaRigaDen</td>
-<td>viva, spenta, e <strong>rimosso inerte</strong> — una porta chiusa non si preme</td>
+<td>viva e spenta. <strong>Rimosso inerte</strong> è beta: quando arriverà, una porta chiusa non si preme</td>
 <td>il campione di presenze nella riga, e l'anello su chi parla dentro l'elenco</td>
 </tr>
 <tr class="even">
@@ -246,7 +248,7 @@ La colonna di destra non è un elenco di cose brutte: è quello che si può **sp
 </tr>
 <tr class="odd">
 <td>BaRigaBloccata</td>
-<td>i due gruppi asimmetrici — dati da te con <em>Sblocca</em>, ricevuti senza azioni</td>
+<td>in alpha un gruppo solo, dati da te con <em>Sblocca</em>, nella schermata "Persone bloccate". Il gruppo ricevuti, senza azioni, è beta e si aggiunge sotto senza rifarla</td>
 <td>la data sfocata ("in aprile"): utile, non necessaria al primo giro</td>
 </tr>
 <tr class="even">
@@ -272,7 +274,7 @@ Una regola documentata si viola per distrazione; una regola senza strumento per 
 | regola                                                 | come si rende impossibile                                                                                                                                                                                                                                                                   |
 |--------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | 1 · una sola azione chiara, e solo dove serve un gesto | BaSchermata ha **un solo posto** per la richiesta, e lo accetta soltanto con il motivo che la giustifica. Due richieste non stanno in un posto solo, e una richiesta senza motivo non si costruisce                                                                                         |
-| 2 · niente informazione dalla sola tinta               | **Resta convenzione.** Si può obbligare BaPresenza a disegnare il glifo per abbassata e bloccata — quello sì — ma nessun tipo impedisce a una funzione futura di appoggiarsi al colore. Va guardata in revisione                                                                            |
+| 2 · niente informazione dalla sola tinta               | **Resta convenzione.** Si può obbligare BaPresenza a disegnare il glifo per voce mutata e bloccata — quello sì — ma nessun tipo impedisce a una funzione futura di appoggiarsi al colore. Va guardata in revisione                                                                          |
 | 3 · nessun contatore che accumula                      | BaOra.hhmm è l'unico formattatore di tempo dell'app. Non esiste una funzione che trasformi una durata in testo, e il modello della stanza porta l'ora d'inizio, non i minuti                                                                                                                |
 | 4 · l'anello sulla stanza fuori dall'app               | BaPayloadStanza **non ha un campo "chi parla"**. La superficie di sistema non può disegnare un anello su una persona perché non sa chi sia                                                                                                                                                  |
 | 5 · una dimensione sola per volta                      | BaPresenza **non prende un diametro**: lo eredita dal palco che la contiene. Due misure diverse nello stesso palco non sono esprimibili; una presenza fuori dal palco non si costruisce                                                                                                     |
