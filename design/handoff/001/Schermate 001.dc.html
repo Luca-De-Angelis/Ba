@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#0A0A09; color:#F2EEE9; font-family:'Instrument Sans',system-ui,sans-serif; }
+  a { color:#D9CFA8; text-decoration:none; border-bottom:1px solid rgba(217,207,168,0.35); }
+  a:hover { color:#F0E6BE; border-bottom-color:rgba(240,230,190,0.7); }
+</style>
+</helmet>
+
+<div style="background:#0A0A09;color:#F2EEE9;padding:40px 56px;border-bottom:1px solid rgba(242,238,233,0.10);display:flex;flex-direction:column;gap:12px;">
+  <div style="max-width:860px;display:flex;flex-direction:column;gap:12px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A837B">BA · Fase 2 · task 001 · solo le schermate cambiate</div>
+  <div style="font-size:34px;font-weight:600;letter-spacing:-0.02em;line-height:1.15">Accesso, impostazioni, superfici di sistema</div>
+  <div style="font-size:15px;line-height:1.55;color:#A09890;text-wrap:pretty">Baseline stretta a 360 dp. Valori da tokens.dart. Con la proprietà <span style="font-family:'IBM Plex Mono',monospace;font-size:13px">lingua</span> le etichette passano al tedesco per la verifica di lunghezza; con <span style="font-family:'IBM Plex Mono',monospace;font-size:13px">verificaOperatore</span> il passaggio SMS sparisce e il resto del flusso non cambia.</div></div>
+</div>
+
+<section data-screen-label="5a Accesso" style="background:#0A0A09;color:#F2EEE9;padding:48px 56px 64px;display:flex;flex-direction:column;gap:28px;border-bottom:1px solid rgba(242,238,233,0.10)">
+  <div style="display:flex;flex-direction:column;gap:8px;max-width:820px">
+    <div style="display:flex;align-items:center;gap:12px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#100F0E;background:#D9CFA8;padding:3px 8px;border-radius:999px">5a</div><div style="font-size:22px;font-weight:600;letter-spacing:-0.01em">Accesso — dal numero all'elenco</div></div>
+    <div style="font-size:14px;line-height:1.55;color:#A09890;text-wrap:pretty">Un'azione chiara per schermata. I due consensi sono due schermate e due controlli. Nessun codice di invito e nessuna email.</div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start">
+
+    <div style="display:flex;flex-direction:column;gap:12px;width:360px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;color:#A09890">5a.1 · NUMERO</div>
+      <div style="width:360px;height:740px;background:#0A0A09;border-radius:28px;border:1px solid rgba(242,238,233,0.10);overflow:hidden;display:flex;flex-direction:column;position:relative">
+        <div style="height:46px;display:flex;align-items:flex-end;padding:0 20px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.04em">21:40</div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:24px;padding:44px 20px 0">
+          <div style="font-size:22px;font-weight:600;letter-spacing:-0.26px;line-height:1.25">{{ L.telT }}</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.66px;text-transform:uppercase;color:#8A837B">{{ L.telCampo }}</div>
+            <div style="min-height:56px;display:flex;align-items:center;gap:12px;border-bottom:2px solid #D9CFA8;font-size:22px;letter-spacing:0.02em">
+              <span style="color:#A09890">+39</span><span>347 120 4821</span>
+            </div>
+          </div>
+        </div>
+        <div style="padding:0 20px 24px;display:flex;flex-direction:column;gap:10px">
+          <div style="min-height:56px;padding:8px 20px;box-sizing:border-box;border-radius:999px;background:linear-gradient(180deg,#EDE7DC 0%,#D2C9B6 100%);display:flex;align-items:center;justify-content:center;text-align:center;font-size:16px;font-weight:500;color:#100F0E;cursor:pointer" style-active="transform:scale(0.98)">{{ telA }}</div>
+        </div>
+      </div>
+      <div style="font-size:13px;line-height:1.5;color:#8A837B;text-wrap:pretty">{{ telNota }}</div>
+    </div>
+
+    <sc-if value="{{ showSms }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex;flex-direction:column;gap:12px;width:360px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;color:#A09890">5a.2 · CODICE SMS · RIMOVIBILE</div>
+      <div style="width:360px;height:740px;background:#0A0A09;border-radius:28px;border:1px dashed rgba(242,238,233,0.24);overflow:hidden;display:flex;flex-direction:column;position:relative">
+        <div style="height:46px;display:flex;align-items:flex-end;padding:0 20px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.04em">21:40</div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:24px;padding:44px 20px 0">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="font-size:22px;font-weight:600;letter-spacing:-0.26px;line-height:1.25">{{ L.smsT }}</div>
+            <div style="font-size:15px;line-height:1.5;color:#A09890">{{ L.smsB }}</div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <div style="flex:1;height:56px;border-radius:14px;border:1px solid rgba(242,238,233,0.14);display:flex;align-items:center;justify-content:center;font-size:22px">4</div>
+            <div style="flex:1;height:56px;border-radius:14px;border:1px solid rgba(242,238,233,0.14);display:flex;align-items:center;justify-content:center;font-size:22px">8</div>
+            <div style="flex:1;height:56px;border-radius:14px;border:1px solid rgba(242,238,233,0.14);display:flex;align-items:center;justify-content:center;font-size:22px">1</div>
+            <div style="flex:1;height:56px;border-radius:14px;border:2px solid #D9CFA8;box-sizing:border-box;display:flex;align-items:center;justify-content:center;font-size:22px"></div>
+            <div style="flex:1;height:56px;border-radius:14px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:22px"></div>
+            <div style="flex:1;height:56px;border-radius:14px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:22px"></div>
+          </div>
+          <div style="min-height:44px;display:flex;align-items:center;font-size:14px;color:#A09890">{{ L.smsRimanda }}</div>
+        </div>
+        <div style="padding:0 20px 24px;display:flex;flex-direction:column;gap:10px">
+          <div style="min-height:56px;padding:8px 20px;box-sizing:border-box;border-radius:999px;background:linear-gradient(180deg,#EDE7DC 0%,#D2C9B6 100%);display:flex;align-items:center;justify-content:center;text-align:center;font-size:16px;font-weight:500;color:#100F0E">{{ L.conferma }}</div>
+        </div>
+      </div>
+      <div style="font-size:13px;line-height:1.5;color:#8A837B;text-wrap:pretty">Se l'operatore verifica il numero, questa schermata non c'è: 5a.1 porta a 5a.3 con "Continua". Nessun'altra schermata dipende da questa.</div>
+    </div>
+    </sc-if>
+
+    <div style="display:flex;flex-direction:column;gap:12px;width:360px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;color:#A09890">5a.3 · ONBOARDING · PRIMO ACCESSO</div>
+      <div style="width:360px;height:740px;background:#0A0A09;border-radius:28px;border:1px solid rgba(242,238,233,0.10);overflow:hidden;display:flex;flex-direction:column;position:relative">
+        <div style="height:46px;display:flex;align-items:flex-end;padding:0 20px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.04em">21:41</div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:28px;padding:44px 20px 0">
+          <div style="font-size:22px;font-weight:600;letter-spacing:-0.26px;line-height:1.25">{{ L.onbT }}</div>
+          <div style="display:flex;flex-direction:column">
+            <div style="padding:16px 0;border-top:1px solid rgba(242,238,233,0.12);font-size:18px;font-weight:600;letter-spacing:-0.18px;line-height:1.35;text-wrap:pretty">Nessuna conversazione si può riascoltare.</div>
+            <div style="padding:16px 0;border-top:1px solid rgba(242,238,233,0.12);font-size:15px;line-height:1.5;color:#F2EEE9;text-wrap:pretty">Quando qualcuno parla, la sua voce si salva per poco tempo, solo per trascriverla. Poi si cancella.</div>
+            <div style="padding:16px 0;border-top:1px solid rgba(242,238,233,0.12);border-bottom:1px solid rgba(242,238,233,0.12);font-size:15px;line-height:1.5;color:#F2EEE9;text-wrap:pretty">Il testo trascritto resta per un periodo.</div>
+          </div>
+        </div>
+        <div style="padding:0 20px 24px;display:flex;flex-direction:column;gap:10px">
+          <div style="min-height:56px;padding:8px 20px;box-sizing:border-box;border-radius:999px;background:linear-gradient(180deg,#EDE7DC 0%,#D2C9B6 100%);display:flex;align-items:center;justify-content:center;text-align:center;font-size:16px;font-weight:500;color:#100F0E">{{ L.capito }}</div>
+        </div>
+      </div>
+      <div style="font-size:13px;line-height:1.5;color:#8A837B;text-wrap:pretty"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.06em;color:#D9CFA8">SEGNAPOSTO</span> Il testo definitivo lo approva il legale. Compare una volta sola, al primissimo accesso; lo stesso contenuto torna in 5a.5 e in fondo a 5d.</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;width:360px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;color:#A09890">5a.4 · CONSENSO 1 · NECESSARIO</div>
+      <div style="width:360px;height:740px;background:#0A0A09;border-radius:28px;border:1px solid rgba(242,238,233,0.10);overflow:hidden;display:flex;flex-direction:column;position:relative">
+        <div style="height:46px;display:flex;align-items:flex-end;padding:0 20px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.04em">21:41</div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:24px;padding:44px 20px 0">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="font-size:22px;font-weight:600;letter-spacing:-0.26px;line-height:1.25;text-wrap:pretty">{{ L.tpT }}</div>
+            <div style="font-size:15px;line-height:1.5;color:#A09890;text-wrap:pretty">Per usare BA servono i termini d'uso e l'informativa sulla privacy.</div>
+          </div>
+          <div style="display:flex;flex-direction:column">
+            <div style="min-height:52px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid rgba(242,238,233,0.12);font-size:15px">{{ L.leggiTermini }}<span style="color:#8A837B">›</span></div>
+            <div style="min-height:52px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid rgba(242,238,233,0.12);border-bottom:1px solid rgba(242,238,233,0.12);font-size:15px">{{ L.leggiInfo }}<span style="color:#8A837B">›</span></div>
+          </div>
+        </div>
+        <div style="padding:0 20px 24px;display:flex;flex-direction:column;gap:10px">
+          <div style="min-height:56px;padding:8px 20px;box-sizing:border-box;border-radius:999px;background:linear-gradient(180deg,#EDE7DC 0%,#D2C9B6 100%);display:flex;align-items:center;justify-content:center;text-align:center;font-size:16px;font-weight:500;color:#100F0E">{{ L.accetto }}</div>
+        </div>
+      </div>
+      <div style="font-size:13px;line-height:1.5;color:#8A837B;text-wrap:pretty">Solo i termini e la privacy. La voce ha il suo consenso, nella schermata dopo.</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;width:360px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;color:#A09890">5a.5 · CONSENSO 2 · RIFIUTABILE</div>
+      <div style="width:360px;height:740px;background:#0A0A09;border-radius:28px;border:1px solid rgba(242,238,233,0.10);overflow:hidden;display:flex;flex-direction:column;position:relative">
+        <div style="height:46px;display:flex;align-items:flex-end;padding:0 20px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.04em">21:42</div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:20px;padding:44px 20px 0">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="font-size:22px;font-weight:600;letter-spacing:-0.26px;line-height:1.25;text-wrap:pretty">{{ L.cpT }}</div>
+            <div style="font-size:15px;line-height:1.5;color:#A09890;text-wrap:pretty">Per parlare serve un secondo consenso. Mentre parli, la tua voce si registra per poco tempo e si trascrive; il testo serve alla moderazione e a costruire il tuo profilo.</div>
+          </div>
+          <div style="font-size:15px;line-height:1.5;color:#F2EEE9;text-wrap:pretty">Nessuna conversazione si può riascoltare. La voce si cancella dopo la trascrizione, il testo resta per un periodo.</div>
+        </div>
+        <div style="padding:0 20px 24px;display:flex;flex-direction:column;gap:10px">
+          <div style="min-height:56px;padding:8px 20px;box-sizing:border-box;border-radius:999px;background:linear-gradient(180deg,#EDE7DC 0%,#D2C9B6 100%);display:flex;align-items:center;justify-content:center;text-align:center;font-size:16px;font-weight:500;color:#100F0E">{{ L.acconsento }}</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="min-height:48px;padding:6px 16px;box-sizing:border-box;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;text-align:center;font-size:14px;color:#F2EEE9">{{ L.ascoltatore }}</div>
+            <div style="font-size:13px;line-height:1.45;color:#A09890;text-align:center;text-wrap:pretty;padding:0 8px">Ascolti ogni DEN come chiunque altro, senza parlare.</div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:13px;line-height:1.5;color:#8A837B;text-wrap:pretty">Due strade, nessuna è un errore: chi sceglie di ascoltare arriva all'elenco come gli altri (5a.7b).</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;width:360px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;color:#A09890">5a.6 · NOME · DECISIONE APERTA</div>
+      <div style="width:360px;height:740px;background:#0A0A09;border-radius:28px;border:1px solid rgba(242,238,233,0.10);overflow:hidden;display:flex;flex-direction:column;position:relative">
+        <div style="height:46px;display:flex;align-items:flex-end;padding:0 20px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.04em">21:42</div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:24px;padding:44px 20px 0">
+          <div style="font-size:22px;font-weight:600;letter-spacing:-0.26px;line-height:1.25">{{ L.nomeT }}</div>
+          <div style="height:180px;border-radius:14px;border:1px dashed rgba(242,238,233,0.24);background:repeating-linear-gradient(135deg,rgba(242,238,233,0.03) 0 8px,rgba(242,238,233,0) 8px 16px);display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.66px;text-transform:uppercase;color:#8A837B;text-align:center;line-height:1.6">nome, nickname o entrambi<br>da decidere</div>
+          </div>
+        </div>
+        <div style="padding:0 20px 24px;display:flex;flex-direction:column;gap:10px">
+          <div style="min-height:56px;padding:8px 20px;box-sizing:border-box;border-radius:999px;background:linear-gradient(180deg,#EDE7DC 0%,#D2C9B6 100%);display:flex;align-items:center;justify-content:center;text-align:center;font-size:16px;font-weight:500;color:#100F0E">{{ L.continua }}</div>
+        </div>
+      </div>
+      <div style="font-size:13px;line-height:1.5;color:#8A837B;text-wrap:pretty">Lo spazio resta, il contenuto no. Vale sia per chi parla sia per chi ascolta.</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;width:360px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;color:#A09890">5a.7a · ELENCO · PARTECIPANTE</div>
+      <div style="width:360px;height:740px;background:#0A0A09;border-radius:28px;border:1px solid rgba(242,238,233,0.10);overflow:hidden;display:flex;flex-direction:column;position:relative">
+        <div style="height:46px;display:flex;align-items:flex-end;padding:0 20px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.04em">21:43</div>
+        <div style="padding:20px 20px 12px;font-size:22px;font-weight:600;letter-spacing:-0.26px">DEN</div>
+        <sc-for list="{{ dens }}" as="den" hint-placeholder-count="3">
+          <div style="margin:0 20px;padding:16px 0;border-top:1px solid rgba(242,238,233,0.10);display:flex;flex-direction:column;gap:10px">
+            <div style="font-size:18px;font-weight:600;letter-spacing:-0.18px">{{ den.nome }}</div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="display:flex;gap:6px">
+                <div style="width:22px;height:22px;border-radius:57% 43% 48% 52% / 46% 54% 50% 50%;background:{{ den.t1 }}"></div>
+                <div style="width:22px;height:22px;border-radius:45% 55% 56% 44% / 53% 47% 52% 48%;background:{{ den.t2 }}"></div>
+                <div style="width:22px;height:22px;border-radius:52% 48% 43% 57% / 49% 51% 46% 54%;background:{{ den.t3 }}"></div>
+              </div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.66px;text-transform:uppercase;color:#8A837B">{{ den.info }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;width:360px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;color:#A09890">5a.7b · ELENCO · ASCOLTATORE</div>
+      <div style="width:360px;height:740px;background:#0A0A09;border-radius:28px;border:1px solid rgba(242,238,233,0.10);overflow:hidden;display:flex;flex-direction:column;position:relative">
+        <div style="height:46px;display:flex;align-items:flex-end;padding:0 20px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.04em">21:43</div>
+        <div style="padding:20px 20px 12px;display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:22px;font-weight:600;letter-spacing:-0.26px">DEN</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.66px;text-transform:uppercase;color:#A09890">{{ L.marcAscolto }}</div>
+        </div>
+        <sc-for list="{{ dens }}" as="den" hint-placeholder-count="3">
+          <div style="margin:0 20px;padding:16px 0;border-top:1px solid rgba(242,238,233,0.10);display:flex;flex-direction:column;gap:10px">
+            <div style="font-size:18px;font-weight:600;letter-spacing:-0.18px">{{ den.nome }}</div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="display:flex;gap:6px">
+                <div style="width:22px;height:22px;border-radius:57% 43% 48% 52% / 46% 54% 50% 50%;background:{{ den.t1 }}"></div>
+                <div style="width:22px;height:22px;border-radius:45% 55% 56% 44% / 53% 47% 52% 48%;background:{{ den.t2 }}"></div>
+                <div style="width:22px;height:22px;border-radius:52% 48% 43% 57% / 49% 51% 46% 54%;background:{{ den.t3 }}"></div>
+              </div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.66px;text-transform:uppercase;color:#8A837B">{{ den.info }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="font-size:13px;line-height:1.5;color:#8A837B;text-wrap:pretty">Stesso elenco, stessi DEN. Un marcatore fermo dice il fatto, senza commento e senza un invito a cambiare.</div>
+    </div>
+
+  </div>
+</section>
+
+<section data-screen-label="5d Impostazioni" style="background:#0A0A09;color:#F2EEE9;padding:48px 56px 64px;display:flex;flex-direction:column;gap:28px;border-bottom:1px solid rgba(242,238,233,0.10)">
+  <div style="display:flex;flex-direction:column;gap:8px;max-width:820px">
+    <div style="display:flex;align-items:center;gap:12px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#100F0E;background:#D9CFA8;padding:3px 8px;border-radius:999px">5d</div><div style="font-size:22px;font-weight:600;letter-spacing:-0.01em">Impostazioni — "Torna ascoltatore" e la riga finale</div></div>
+    <div style="font-size:14px;line-height:1.55;color:#A09890;text-wrap:pretty">Nessun interruttore della trascrizione. Qui solo le righe che cambiano; il resto di 5d resta com'è. Tocca "Torna ascoltatore" per vedere lo stato dopo.</div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start">
+
+    <div style="display:flex;flex-direction:column;gap:12px;width:360px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;color:#A09890">5d · {{ statoLabel }}</div>
+      <div style="width:360px;height:740px;background:#0A0A09;border-radius:28px;border:1px solid rgba(242,238,233,0.10);overflow:hidden;display:flex;flex-direction:column;position:relative">
+        <div style="height:46px;display:flex;align-items:flex-end;padding:0 20px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.04em">21:50</div>
+        <div style="padding:20px 20px 16px;font-size:22px;font-weight:600;letter-spacing:-0.26px">{{ L.impT }}</div>
+        <div style="margin:0 20px;display:flex;flex-direction:column">
+          <div style="min-height:56px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid rgba(242,238,233,0.12);font-size:15px">{{ L.bloccate }}<span style="display:flex;gap:10px;align-items:center;color:#8A837B;font-family:'IBM Plex Mono',monospace;font-size:11px">2<span style="font-family:'Instrument Sans',sans-serif;font-size:15px">›</span></span></div>
+          <sc-if value="{{ isPart }}" hint-placeholder-val="{{ true }}">
+            <div onClick="{{ torna }}" style="padding:14px 0;border-top:1px solid rgba(242,238,233,0.12);display:flex;flex-direction:column;gap:4px;cursor:pointer" style-active="transform:scale(0.98);background:rgba(242,238,233,0.06)">
+              <div style="min-height:26px;display:flex;align-items:center;font-size:15px;color:#F2EEE9">{{ L.torna }}</div>
+              <div style="font-size:13px;line-height:1.45;color:#A09890;text-wrap:pretty">{{ L.tornaConseg }}</div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ isAsc }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:14px 0;border-top:1px solid rgba(242,238,233,0.12);display:flex;flex-direction:column;gap:6px">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.66px;text-transform:uppercase;color:#A09890">{{ L.marcAscolto }}</div>
+              <div style="font-size:13px;line-height:1.45;color:#A09890;text-wrap:pretty">Ascolti ogni DEN, senza parlare.</div>
+            </div>
+          </sc-if>
+          <div style="padding:16px 0;border-top:1px solid rgba(242,238,233,0.12);font-size:13px;line-height:1.45;color:#A09890;text-wrap:pretty">Nessuna conversazione si può riascoltare. Quando qualcuno parla, la sua voce si salva per poco tempo, solo per trascriverla, poi si cancella. Il testo trascritto resta per un periodo.</div>
+        </div>
+      </div>
+      <div onClick="{{ reset }}" style="font-size:13px;line-height:1.5;color:#8A837B;cursor:pointer">{{ resetLabel }}</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;width:360px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;color:#A09890">5j · PERSONE BLOCCATE · ALPHA</div>
+      <div style="width:360px;height:740px;background:#0A0A09;border-radius:28px;border:1px solid rgba(242,238,233,0.10);overflow:hidden;display:flex;flex-direction:column;position:relative">
+        <div style="height:46px;display:flex;align-items:flex-end;padding:0 20px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A837B;letter-spacing:0.04em">21:50</div>
+        <div style="padding:20px 20px 16px;font-size:22px;font-weight:600;letter-spacing:-0.26px">{{ L.bloccate }}</div>
+        <div style="margin:0 20px;display:flex;flex-direction:column">
+          <div style="padding:0 0 10px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.66px;text-transform:uppercase;color:#8A837B">{{ L.bloccateDaTe }}</div>
+          <sc-for list="{{ bloccati }}" as="p" hint-placeholder-count="2">
+            <div style="min-height:72px;padding:12px 0;box-sizing:border-box;border-top:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;gap:12px">
+              <div style="position:relative;width:44px;height:44px;flex:none">
+                <div style="width:44px;height:44px;border-radius:44% 56% 53% 47% / 57% 43% 49% 51%;background:linear-gradient(155deg,#3D3B39 0%,#2A2927 100%);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:rgba(242,238,233,0.70)">{{ p.ini }}</div>
+              </div>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+                <div style="font-size:15px;color:#F2EEE9">{{ p.nome }}</div>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.66px;text-transform:uppercase;color:#8A837B">{{ p.quando }}</div>
+              </div>
+              <div style="min-height:44px;padding:0 16px;box-sizing:border-box;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;font-size:14px;color:#A09890;flex:none">{{ L.sblocca }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="font-size:13px;line-height:1.5;color:#8A837B;text-wrap:pretty">Un gruppo solo, con intestazione. In beta, con i DEN privati, il gruppo "ricevuti" si aggiunge sotto, con la stessa intestazione e senza azioni: la schermata non si rifà.</div>
+    </div>
+
+  </div>
+</section>
+
+<section data-screen-label="Superfici di sistema" style="background:#0A0A09;color:#F2EEE9;padding:48px 56px 64px;display:flex;flex-direction:column;gap:28px">
+  <div style="display:flex;flex-direction:column;gap:8px;max-width:820px">
+    <div style="display:flex;align-items:center;gap:12px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#100F0E;background:#D9CFA8;padding:3px 8px;border-radius:999px">5e</div><div style="font-size:22px;font-weight:600;letter-spacing:-0.01em">Superfici di sistema — il lessico del proprio microfono</div></div>
+    <div style="font-size:14px;line-height:1.55;color:#A09890;text-wrap:pretty">Sul proprio microfono l'azione è "Spegni il microfono"; "muta" resta per la voce di un altro. Lo stato spento è solo informativo: da qui il microfono non si riaccende. Le altezze dei controlli sono minimi: in tedesco il testo va a capo, non si tronca.</div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start">
+    <sc-for list="{{ superfici }}" as="s" hint-placeholder-count="2">
+    <div style="display:flex;flex-direction:column;gap:12px;width:360px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;color:#A09890">{{ s.label }}</div>
+      <div style="width:360px;padding:28px 12px;box-sizing:border-box;border-radius:28px;background:#24201E;display:flex;flex-direction:column;gap:20px">
+        <div style="border-radius:22px;background:rgba(28,25,23,0.86);padding:14px;display:flex;flex-direction:column;gap:12px;min-height:144px;box-sizing:border-box">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="position:relative;width:36px;height:36px;flex:none">
+              <div style="position:absolute;inset:-5px;border-radius:56% 44% 51% 49% / 47% 53% 53% 47%;border:2px solid rgba(245,241,236,0.62)"></div>
+              <div style="width:36px;height:36px;border-radius:56% 44% 51% 49% / 47% 53% 53% 47%;background:linear-gradient(155deg,#A83E2E 0%,#6E251C 100%)"></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0">
+              <div style="font-size:15px;font-weight:600;color:#F2EEE9">Cucina di notte</div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.66px;text-transform:uppercase;color:#A09890">5 sul palco · dalle 21:12</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px">
+            <div style="flex:1;min-height:38px;padding:6px 12px;box-sizing:border-box;border-radius:999px;background:{{ s.fondo }};border:1px solid {{ s.bordo }};display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px;line-height:1.3;color:#F2EEE9">{{ s.mic }}</div>
+            <div style="flex:none;min-height:38px;padding:6px 16px;box-sizing:border-box;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;font-size:13px;color:#A09890">{{ L.esci }}</div>
+          </div>
+        </div>
+        <div style="border-radius:24px;background:#1A1917;padding:14px;display:flex;flex-direction:column;gap:12px;box-sizing:border-box">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:32px;height:32px;flex:none;border-radius:56% 44% 51% 49% / 47% 53% 53% 47%;background:linear-gradient(155deg,#A83E2E 0%,#6E251C 100%)"></div>
+            <div style="display:flex;flex-direction:column;gap:2px;min-width:0">
+              <div style="font-size:14px;font-weight:600;color:#F2EEE9">BA · Cucina di notte</div>
+              <div style="font-size:13px;color:#A09890">{{ s.riga }}</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:20px;padding-left:42px">
+            <div style="min-height:44px;display:flex;align-items:center;font-size:13px;font-weight:500;color:#D9CFA8">{{ s.micNotifica }}</div>
+            <div style="min-height:44px;display:flex;align-items:center;font-size:13px;font-weight:500;color:#A09890">{{ L.esciNotif }}</div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:13px;line-height:1.5;color:#8A837B;text-wrap:pretty">{{ s.nota }}</div>
+    </div>
+    </sc-for>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;lingua&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;it&quot;,&quot;de&quot;],&quot;default&quot;:&quot;it&quot;,&quot;tsType&quot;:&quot;'it'|'de'&quot;},&quot;verificaOperatore&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  state = { ascoltatore: false };
+  renderVals() {
+    const de = this.props.lingua === 'de';
+    const op = !!this.props.verificaOperatore;
+    const S = {
+      it: { telT:'Il tuo numero', telCampo:'Numero di telefono', ricevi:'Ricevi il codice', continua:'Continua', smsT:'Il codice', smsB:'Mandato al +39 ••• ••• 4821.', smsRimanda:'Mandalo di nuovo', conferma:'Conferma', onbT:'Prima di entrare', capito:'Ho capito', tpT:'Termini e privacy', leggiTermini:'Leggi i termini', leggiInfo:"Leggi l'informativa", accetto:'Accetto', cpT:'Vuoi anche parlare?', acconsento:'Acconsento', ascoltatore:'Entra come ascoltatore', nomeT:'Come ti chiamano?', marcAscolto:'sei ascoltatore', impT:'Impostazioni', bloccate:'Persone bloccate', torna:'Torna ascoltatore', tornaConseg:'Non potrai più parlare. Se stai parlando, esci dalla stanza.', bloccateDaTe:'bloccate da te', sblocca:'Sblocca', spegni:'Spegni il microfono', spento:'Microfono spento', esci:'Esci', esciNotif:'Esci', rigaViva:'Sei sul palco', rigaSpento:'Sei sul palco · microfono spento' },
+      de: { telT:'Deine Telefonnummer', telCampo:'Telefonnummer', ricevi:'Code anfordern', continua:'Weiter', smsT:'Der Code', smsB:'Gesendet an +39 ••• ••• 4821.', smsRimanda:'Erneut senden', conferma:'Bestätigen', onbT:'Bevor du eintrittst', capito:'Verstanden', tpT:'Nutzungsbedingungen und Datenschutz', leggiTermini:'Nutzungsbedingungen lesen', leggiInfo:'Datenschutzhinweise lesen', accetto:'Akzeptieren', cpT:'Möchtest du auch sprechen?', acconsento:'Einwilligen', ascoltatore:'Als Zuhörer:in eintreten', nomeT:'Wie sollen dich andere nennen?', marcAscolto:'du hörst zu', impT:'Einstellungen', bloccate:'Blockierte Personen', torna:'Wieder nur zuhören', tornaConseg:'Du kannst nicht mehr sprechen. Wenn du gerade sprichst, verlässt du den Raum.', bloccateDaTe:'von dir blockiert', sblocca:'Entsperren', spegni:'Mikrofon ausschalten', spento:'Mikrofon aus', esci:'Verlassen', esciNotif:'Verlassen', rigaViva:'Du bist auf der Bühne', rigaSpento:'Auf der Bühne · Mikrofon aus' }
+    };
+    const L = de ? S.de : S.it;
+    const asc = this.state.ascoltatore;
+    return {
+      L,
+      showSms: !op,
+      telA: op ? L.continua : L.ricevi,
+      telNota: op ? "Verifica tramite operatore: il passaggio SMS non c'è e l'azione diventa \"Continua\"." : "Con verifica tramite operatore cambia solo l'etichetta dell'azione: \"Continua\".",
+      isPart: !asc, isAsc: asc,
+      statoLabel: asc ? 'DOPO "TORNA ASCOLTATORE"' : 'PARTECIPANTE',
+      torna: () => this.setState({ ascoltatore: true }),
+      reset: () => this.setState({ ascoltatore: false }),
+      resetLabel: asc ? '↺ torna allo stato partecipante' : '',
+      dens: [
+        { nome:'Cucina di notte', info:'entra chiunque · 5 sul palco', t1:'linear-gradient(155deg,#A83E2E,#6E251C)', t2:'linear-gradient(155deg,#2A6894,#1B4463)', t3:'linear-gradient(155deg,#96621A,#5F3C0B)' },
+        { nome:'Fra due turni', info:'entra chiunque · 2 sul palco', t1:'linear-gradient(155deg,#23735A,#14473A)', t2:'linear-gradient(155deg,#AC3765,#72203F)', t3:'linear-gradient(155deg,#5257AC,#33367A)' },
+        { nome:'Lettori lenti', info:'su invito · 3 sul palco', t1:'linear-gradient(155deg,#7A3080,#4E1F52)', t2:'linear-gradient(155deg,#557426,#374A18)', t3:'linear-gradient(155deg,#1C6E75,#114448)' }
+      ],
+      bloccati: [ { ini:'DV', nome:'Dario V.', quando: de ? 'im April' : 'in aprile' }, { ini:'GR', nome:'Giulio R.', quando: de ? 'heute Abend' : 'stasera' } ],
+      superfici: [
+        { label:'MICROFONO ACCESO · LOCK SCREEN E NOTIFICA ANDROID', mic:L.spegni, micNotifica:L.spegni, riga:L.rigaViva, fondo:'linear-gradient(180deg,#302A25,#1F1A15)', bordo:'rgba(217,207,168,0.42)', nota:'Azione sul proprio microfono: "Spegni il microfono". Nessun "Muta".' },
+        { label:'MICROFONO SPENTO · LOCK SCREEN E NOTIFICA ANDROID', mic:L.spento, micNotifica:'', riga:L.rigaSpento, fondo:'rgba(242,238,233,0)', bordo:'rgba(242,238,233,0)', nota:'Stato solo informativo: dal telefono bloccato il microfono si spegne e non si riaccende. Nessun contorno, nessuna azione; resta Esci.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
