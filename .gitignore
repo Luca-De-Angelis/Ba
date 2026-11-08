@@ -30,3 +30,7 @@ app/android/local.properties
 .vscode/*
 !.vscode/settings.json
 !.vscode/extensions.json
+
+# Consegne di Claude Design da importare (zip e cartelle di lavoro)
+Import/
+_import/
