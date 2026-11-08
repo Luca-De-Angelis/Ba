@@ -1,5 +1,6 @@
-<!-- Copia di lettura generata da "BA - Stanza DEN.html". Fa fede l'HTML esportato da Claude Design; i valori fanno fede in app/lib/design_system/tokens.dart. -->
-
+<!-- Copia di lettura generata da "BA - Stanza DEN.dc.html". Fa fede l'HTML esportato da Claude Design; i valori fanno fede in app/lib/design_system/tokens.dart. -->
+Documento storico · Fase 1
+Le schermate qui sotto sono la Fase 1 e non vengono aggiornate: valori, lessico ed etichette sono superati. Fa fede tokens.dart; le decisioni stanno in BA · §7 consolidato e i componenti in BA · Inventario componenti.
 <div class="section">
 BA · abbassare e bloccare
 Due azioni, due stati, nessun anello
@@ -41,7 +42,7 @@ Marta Bellini
 sul palco · sta parlando
 Abbassa questa voce
 Blocca
-Vale in ogni DEN e resta anche dopo. È l'unica cosa che BA ricorda di una persona.
+Vale in ogni DEN e resta anche dopo. Resta finché non lo togli, dalle impostazioni.
 Segnala
 Chiudi
 i quattro stati, a confronto

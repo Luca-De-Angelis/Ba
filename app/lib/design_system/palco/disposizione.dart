@@ -20,13 +20,10 @@ const List<int> tettoPerRiga = [0, 1, 2, 2, 2, 2, 2, 3, 3];
 /// Anello della voce: keyline 3 + tratto 2, dai token.
 const double _anelloTotale = BaPresenza.anelloKeyline + BaPresenza.anelloTratto;
 
-/// Crescita dell'anello al picco, in dp. NON è in tokens.dart (che la nomina
-/// solo nei commenti): da portare lì con un task di design.
-const double _crescitaAlPicco = 4;
-
 /// Margine esterno di ogni presenza dentro la scatola, per lato: anello più
-/// crescita al picco. Sono i 18 (2 × 9) della formula di T6 bis.
-const double _margineEsterno = _anelloTotale + _crescitaAlPicco;
+/// crescita al picco (`BaPresenza.anelloCrescitaPicco`). Sono i 18 (2 × 9) della
+/// formula di T6 bis.
+const double _margineEsterno = _anelloTotale + BaPresenza.anelloCrescitaPicco;
 
 /// Tolleranza per i confronti fra misure in virgola mobile.
 const double _eps = 1e-9;

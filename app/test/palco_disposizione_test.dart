@@ -7,7 +7,8 @@ import 'package:ba/design_system/palco/disposizione.dart';
 import 'package:ba/design_system/tokens.dart';
 
 const _eps = 1e-6;
-const _margine = 9.0; // anello 5 + crescita al picco 4
+// Margine esterno per lato (9 dp), dai token: anello + crescita al picco.
+const _margine = BaPresenza.anelloKeyline + BaPresenza.anelloTratto + BaPresenza.anelloCrescitaPicco;
 
 /// Quante presenze per riga, dall'alto in basso.
 List<int> _righe(List<Offset> centri) {

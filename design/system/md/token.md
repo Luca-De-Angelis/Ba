@@ -1,4 +1,4 @@
-<!-- Copia di lettura generata da "BA - Token.html". Fa fede l'HTML esportato da Claude Design; i valori fanno fede in app/lib/design_system/tokens.dart. -->
+<!-- Copia di lettura generata da "BA - Token.dc.html". Fa fede l'HTML esportato da Claude Design; i valori fanno fede in app/lib/design_system/tokens.dart. -->
 BA · brief di design · token
 # I valori, estratti dalle schermate
 La fonte di verità è **tokens.dart**. Questo documento dice **perché** quei valori sono quelli, e porta le regole d’uso che nessun valore può contenere.
@@ -66,7 +66,7 @@ I nomi sono famiglia/ruolo, in italiano, e descrivono **il mestiere del valore, 
 | voce/tratto        | \#F5F1EC                    | tratto esterno, dentro l'app                                 |
 | voce/tratto-fermo  | rgba(245,241,236,.34)       | linea instabile: c'è una voce, non ne conosco l'ampiezza     |
 | voce/tratto-stanza | rgba(245,241,236,.55–.62)   | fuori dall'app l'anello sta sulla sagoma della stanza, fermo |
-| presenza/abbassata | saturate(.25) · opacity .78 | microfono chiuso; il glifo si accende se parla lo stesso     |
+| presenza/mutata    | saturate(.25) · opacity .78 | voce mutata da me; il glifo si accende quando parla          |
 | presenza/persa     | grayscale(1) · opacity .34  | linea caduta: "questa è l'ultima cosa che ho visto"          |
 | presenza/dietro    | opacity .22 · blur 1,5      | stanza dietro un foglio aperto                               |
 
@@ -100,7 +100,7 @@ Sotto i 13 pt si scrive solo in mono e solo per fatti. **Le iniziali sulle prese
 | presenza/m        | 112          | 33           | cinque e sei                                                                                           |
 | presenza/s        | 88           | 26           | sette e otto — **fondo della scala a testo normale**. Era 92: **88 è quanto entra in 360 dp** (T6 bis) |
 | presenza/sistema  | 36 / 34 / 32 | 13 / 12 / 11 | lock screen, isola espansa, notifica Android                                                           |
-| presenza/pubblico | 22           | —            | campione del pubblico: sagome mute, senza iniziali                                                     |
+| presenza/pubblico | 22           | —            | campione del pubblico: sagome senza iniziali                                                           |
 
 **La regola delle iniziali, con il suo dominio — le righe vanno lette insieme, la formula da sola è sbagliata:**
 
@@ -130,6 +130,29 @@ i 18 sono anello (5) e crescita al picco (4) sui due bordi esterni
 
 **La formula è il vincolo, non la tabella.** L'impacchettamento deve rifiutare una fila che non ci sta invece di stringere la distanza fra i centri: sotto i 17 dp l'anello di chi parla entra nel vicino, ed è l'unico segnale che non può degradare. A otto persone e testo grande la catena di cessione fa il resto (Inventario, C6) — quella parte non cambia, perché a 32 dp otto sagome stanno in 150×150 su qualunque larghezza. **Da verificare su telefono**: otto a 88 su un 360 dp reale, che è il caso con soli 4 dp di margine.
 
+## T6 ter  La voce e gli stati — i valori che mancavano
+
+Valori già citati nel §7 e nelle schermate ma assenti da tokens.dart. Ora ci sono, con un nome; la colonna *dove* dice dove si usano.
+
+| token                      | valore                     | dove                                                                                                |
+|----------------------------|----------------------------|-----------------------------------------------------------------------------------------------------|
+| anello/escursione-scala    | 1,00 → 1,075               | respiro dell'anello a una voce, dal riposo al picco (§7.7)                                          |
+| anello/escursione-opacità  | 0,28 → 0,95                | stesso respiro, sull'opacità del tratto (§7.7)                                                      |
+| anello/crescita-picco      | 4                          | quanto l'anello si allarga al picco; entra nella distanza minima (§7.6, T6 bis)                     |
+| anello/respiro             | 8                          | luce oltre il picco fra un anello e il vicino: 5 + 4 + 8 = 17 (§7.6)                                |
+| limiter/due-voci           | scala 1,042 · opacità 0,66 | massimo per anello con due voci insieme (§7.8)                                                      |
+| limiter/oltre-due          | escursione × 1,12 / n      | da due voci in su: l'energia totale resta quella a due (§7.8). A due dà i valori sopra, arrotondati |
+| presenza/tetto-luminanza   | L ≤ 0,18                   | stop più chiaro di ogni tinta e di ogni sfumatura (§7.3)                                            |
+| presenza/velo-immagine     | rgba(8,7,6,.34)            | dentro la sagoma, su ogni foto: il tetto vale anche lì (§7.3)                                       |
+| presenza/velo-mutata       | rgba(8,7,6,.66)            | voce mutata con immagine (§7.9)                                                                     |
+| presenza/neutro-bloccata   | \#3D3B39 → \#2A2927        | bloccata: la tinta scompare, l'identità no (§7.10)                                                  |
+| presenza/iniziali-mutata   | opacità .80                | iniziali della voce mutata (§7.9)                                                                   |
+| presenza/iniziali-bloccata | opacità .70                | iniziali della bloccata (§7.10)                                                                     |
+| presenza/glifo             | 28 · ripiego 32            | glifo sulla presenza; 32 solo se a 28 non si legge su telefono, mai colorato (§7.9, aperto 2)       |
+| presenza/glifo-spento      | opacità .45 → 1            | glifo della voce mutata, spento e acceso (§7.9, T8)                                                 |
+| presenza/scheletro         | opacità .30 → .62          | sagome vuote mentre entro, in 1,8 s (attesa/skeleton, T8)                                           |
+| pubblico/campione          | 3                          | bolle del campione del pubblico (§7.11)                                                             |
+
 ## T7  Forma, spazio, controlli
 
 |                    |                                   |                                                                      |
@@ -151,14 +174,14 @@ i 18 sono anello (5) e crescita al picco (4) sui due bordi esterni
 
 Questi non emergono da una schermata: emergono dal fatto che gli elementi sono toccabili. Valgono per **ogni** elemento interattivo, comprese le presenze — che sono il bersaglio più grande dell'app e anche il più facile da dimenticare, perché non somigliano a pulsanti.
 
-|                        |                                             |                                                                                                                                                                                             |
-|------------------------|---------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| tocco/area-minima      | 44 × 44                                     | sotto questa misura nessun bersaglio, mai. I controlli a 56 e 48 sono già oltre; il bersaglio di una presenza è la sua sagoma, quindi il fondo della scala (88) la copre con 44 dp d'avanzo |
-| tocco/area-estesa      | +8 oltre il bordo visibile                  | le pillole in coppia: il dito arriva prima dell'occhio                                                                                                                                      |
-| tocco/premuto          | fondo rgba(242,238,233,.06) · scala .98     | vale per pillole e righe di elenco. 90 ms all'andata, 140 al ritorno                                                                                                                        |
-| tocco/premuto-presenza | keyline a rgba(8,7,6,1) · **nessuna scala** | sulle presenze la scala è occupata dall'assestamento e il contorno dall'anello: il premuto scurisce la keyline e basta                                                                      |
-| focus/anello           | 2 pt azione/chiara · offset 3 pt · statico  | tastiera esterna e controllo interruttori                                                                                                                                                   |
-| focus/anello-su-chiara | 2 pt \#100F0E · offset 3 pt                 | sopra un controllo già chiaro                                                                                                                                                               |
+|                        |                                             |                                                                                                                                                                                                                                                                       |
+|------------------------|---------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| tocco/area-minima      | 44 × 44                                     | sotto questa misura nessun bersaglio, mai. I controlli a 56 e 48 sono già oltre; il bersaglio di una presenza è la sua sagoma, quindi il fondo della scala (88) la copre con 44 dp d'avanzo                                                                           |
+| tocco/area-estesa      | +8 oltre il bordo visibile                  | le pillole in coppia: il dito arriva prima dell'occhio                                                                                                                                                                                                                |
+| tocco/premuto          | fondo rgba(242,238,233,.06) · scala .98     | vale per pillole e righe di elenco. 90 ms all'andata, 140 al ritorno. **Valore unico** (premutoScala), lo stesso in T8: una riga larga quanto lo schermo, a una scala più profonda, staccherebbe il bordo dal margine; a 0,98 il cedimento si vede e niente si sposta |
+| tocco/premuto-presenza | keyline a rgba(8,7,6,1) · **nessuna scala** | sulle presenze la scala è occupata dall'assestamento e il contorno dall'anello: il premuto scurisce la keyline e basta                                                                                                                                                |
+| focus/anello           | 2 pt azione/chiara · offset 3 pt · statico  | tastiera esterna e controllo interruttori                                                                                                                                                                                                                             |
+| focus/anello-su-chiara | 2 pt \#100F0E · offset 3 pt                 | sopra un controllo già chiaro                                                                                                                                                                                                                                         |
 
 **Il focus non può somigliare alla voce.** L'anello di chi parla è bianco, doppio, aderente alla sagoma e in movimento; quello di focus è **color azione, singolo, staccato di 3 pt e immobile**. Sono le tre differenze che restano leggibili anche quando cadono sulla stessa bolla — e ci cadono, perché si può mettere a fuoco chi sta parlando.
 
@@ -166,7 +189,7 @@ Questi non emergono da una schermata: emergono dal fatto che gli elementi sono t
 
 ## T8  Movimento — l'unica specifica
 
-**Questo è il punto solo**: cosa si muove, per quanti millisecondi, con quale curva, cosa deve restare fermo, e cosa non può muoversi insieme a cos'altro. Le tabelle del §7.15 e del 7.15 bis sono state fuse qui e là restano le ragioni — un valore scritto in due posti divergerà, e la copia sbagliata è sempre quella che qualcuno legge. **L'anello sta su due canali, e i token seguono la divisione.** Il canale veloce è ActiveSpeakersChanged: l'anello compare (70 ms) e scompare (140 ms), ed è un fatto booleano che regge da solo tutto il significato — con il ripiego statico resta solo questo. Il canale lento è l'ampiezza campionata dall'SDK, **LiveKit, 500 ms di default**: è il respiro, cioè decorazione informata, non informazione. **Il rilascio del respiro non può essere più corto del campionamento** — con 350 ms su campioni a 500 l'anello si sgonfia fra un campione e l'altro e si rigonfia al successivo: un dente di sega alla frequenza di campionamento, visibile e scollegato dalla voce. Da qui i 600 ms, che lasciano margine al jitter. L'attacco a 70 ms resta, ma **vale solo per la comparsa**: sull'ampiezza non significa niente. Le curve sono due, più la lineare: curva/assestamento cubic-bezier(.22,.9,.25,1) per tutto ciò che si sposta o cambia scala, curva/scheda cubic-bezier(.34,1.2,.64,1) per ciò che appare sopra il resto. Se serve una terza curva, prima serve una ragione.
+**Questo è il punto solo**: cosa si muove, per quanti millisecondi, con quale curva, cosa deve restare fermo, e cosa non può muoversi insieme a cos'altro. Le tabelle del §7.15 e del 7.15 bis sono state fuse qui e là restano le ragioni — un valore scritto in due posti divergerà, e la copia sbagliata è sempre quella che qualcuno legge. **L'anello sta su due canali, e i token seguono la divisione.** Il canale veloce è ActiveSpeakersChanged: l'anello compare (70 ms) e scompare (140 ms), ed è un fatto booleano che regge da solo tutto il significato — con il ripiego statico resta solo questo. Il canale lento è l'ampiezza campionata dall'SDK, **LiveKit, 500 ms di default**: è il respiro, cioè decorazione informata, non informazione. **Il rilascio del respiro non può essere più corto del campionamento** — con un rilascio più corto, su campioni a 500 l'anello si sgonfia fra un campione e l'altro e si rigonfia al successivo: un dente di sega alla frequenza di campionamento, visibile e scollegato dalla voce. Da qui i 600 ms, che lasciano margine al jitter. L'attacco a 70 ms resta, ma **vale solo per la comparsa**: sull'ampiezza non significa niente. Le curve sono due, più la lineare: curva/assestamento cubic-bezier(.22,.9,.25,1) per tutto ciò che si sposta o cambia scala, curva/scheda cubic-bezier(.34,1.2,.64,1) per ciò che appare sopra il resto. Se serve una terza curva, prima serve una ragione.
 
 <table>
 <colgroup>
@@ -190,12 +213,12 @@ campionamento</td>
 <tr class="odd">
 <td>stato/glifo</td>
 <td>140 ms lineare</td>
-<td>glifo dell'abbassata che si accende</td>
+<td>glifo della voce mutata che si accende, da 0,45 a 1</td>
 </tr>
 <tr class="even">
 <td>premuto</td>
 <td>90 ms andata · 140 ritorno</td>
-<td>ogni elemento toccabile (T7 bis): cede al 94,5% e torna, i vicini non si muovono</td>
+<td>ogni elemento toccabile (T7 bis): cede a scala 0,98 (tocco/premuto, T7 bis) e torna, i vicini non si muovono</td>
 </tr>
 <tr class="odd">
 <td>scheda</td>
@@ -286,9 +309,9 @@ Nessuna transizione di entrata o di uscita per le presenze: **compaiono e sparis
 
 **1. Quando compare azione/chiara.** Solo dove **l'app non può proseguire senza un gesto dell'utente**, che nessun altro può fare al posto suo. Una per schermata: se ce ne fossero due, nessuna sarebbe la condizione. Tutto il resto è hairline.
 
-**2. Nessuna informazione affidata al solo colore.** Chi parla è luminanza e movimento; abbassata e bloccata sono desaturazione più glifo; palco e pubblico sono dimensione e posizione.
+**2. Nessuna informazione affidata al solo colore.** Chi parla è luminanza e movimento; voce mutata e bloccata sono desaturazione più glifo; palco e pubblico sono dimensione e posizione.
 
-**3. Nessun contatore che accumula** (§2): si mostrano fatti fermi — l'ora d'inizio, non i minuti trascorsi. Le memorie dichiarate sono tre e non aumentano: il blocco che dai, la rimozione che ricevi da un DEN — due gruppi, una schermata, lo stesso tempo sfocato — e il profilo derivato alla registrazione.
+**3. Nessun contatore che accumula** (§2): si mostrano fatti fermi — l'ora d'inizio, non i minuti trascorsi. In alpha le memorie dichiarate sono tre: il blocco che dai, il profilo derivato alla registrazione e **il testo trascritto di chi parla, che resta per un periodo** (la voce no: si salva per poco tempo, solo per trascriverla, poi si cancella). La rimozione che ricevi da un DEN è beta, con i DEN privati: quando arriverà sarà la quarta, nella stessa schermata del blocco e con lo stesso tempo sfocato.
 
 **4. Fuori dall'app l'anello cambia proprietario**: sta sulla stanza, fermo, e dice "qui si parla". Dentro l'app sta sulla persona e segue la voce.
 
@@ -313,4 +336,4 @@ Non sono stime: sono i punti dove una scelta di design costa codice, e vanno vis
 
 La **vibrazione** resta fuori, ed è l'unica assenza voluta: è la §8.4 del brief e merita un passaggio suo. In un'app dove la voce arriva a telefono in tasca, il tocco aptico è un canale di uscita vero — dire "è entrato qualcuno" senza accendere lo schermo — non la vibrazione di conferma di un pulsante. Deciderla insieme al resto la ridurrebbe a quello.
 
-Da verificare su telefono vero, nell'ordine: il fondo della catena di cessione a scala 2,0 con otto persone (dove arriva la scala, e a che punto spariscono le iniziali), il glifo dell'abbassata a 28 pt, l'anello di focus accanto a quello della voce sulla stessa bolla, l'assestamento a 320 ms con debounce 4 s, e la leggibilità di errore/testo \#E4705B sopra fondo/stanza al buio.
+Da verificare su telefono vero, nell'ordine: il fondo della catena di cessione a scala 2,0 con otto persone (dove arriva la scala, e a che punto spariscono le iniziali), il glifo della voce mutata a 28 pt (32 di ripiego), l'anello di focus accanto a quello della voce sulla stessa bolla, l'assestamento a 320 ms con debounce 4 s, e la leggibilità di errore/testo \#E4705B sopra fondo/stanza al buio.

@@ -29,6 +29,8 @@ Un solo registro per tutte le decisioni di prodotto e di design. Le decisioni te
 | D-021 | 7/11/2026 | I nomi `Ba<Componente>` (per esempio `BaPresenza`, `BaPalco`) sono riservati ai widget. Le classi di token prendono il suffisso `Tokens` (`BaPresenza` → `BaPresenzaTokens`, `BaColor` → `BaColorTokens`…). Il cambio si fa nel task 004 | Chat di orchestrazione, su segnalazione di Claude Code | Valida |
 | D-022 | 7/11/2026 | Il telefono più stretto di riferimento è 360 dp (Android), non i 375 pt dell'iPhone citati nel brief v2.1: progettare per 360 copre entrambi | Decisioni consolidate §7; brief v2.1 §4 | Valida |
 | D-023 | 7/11/2026 | Su iPad l'app richiede lo schermo intero (UIRequiresFullScreen) finché è solo verticale: rinuncia a Split View e Slide Over. Si toglie quando arriva l'orizzontale | Task 000; D-020 | Valida |
+| D-024 | 7/11/2026 | Chi è ascoltatore diventa partecipante dalla stanza: tocca "Sali sul palco", rivede l'avviso su voce e testo, dà il consenso e sale a microfono spento. Nelle impostazioni non c'è una riga apposita | Review del 001; task 002 | Valida |
+| D-025 | 7/11/2026 | Da lock screen e notifica Android il microfono si può solo spegnere, mai riaccendere. Lo stato spento è informativo; resta "Esci" | Sintesi tecnica sull'audio §1; 001b | Valida |
 
 ## Aperte
 
@@ -38,3 +40,5 @@ Un solo registro per tutte le decisioni di prodotto e di design. Le decisioni te
 - Licenze per podcast e musica.
 - Revisione umana dei passaggi segnalati dalla moderazione.
 - Tablet Android: con target 36 il blocco in verticale viene ignorato dai 600 dp in su; esiste una deroga temporanea, che sparisce con target 37. Da decidere con lo sviluppo se attivarla.
+- Regola del limiter oltre le due voci (escursione × 1,12/n): provvisoria fino alla prova con tre o più voci vere.
+- Traduzioni: quelle tedesche, e quelle delle altre lingue, da far rivedere a madrelingua.
