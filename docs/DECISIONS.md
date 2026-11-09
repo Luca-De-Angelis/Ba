@@ -31,6 +31,9 @@ Un solo registro per tutte le decisioni di prodotto e di design. Le decisioni te
 | D-023 | 7/11/2026 | Su iPad l'app richiede lo schermo intero (UIRequiresFullScreen) finché è solo verticale: rinuncia a Split View e Slide Over. Si toglie quando arriva l'orizzontale | Task 000; D-020 | Valida |
 | D-024 | 7/11/2026 | Chi è ascoltatore diventa partecipante dalla stanza: tocca "Sali sul palco", rivede l'avviso su voce e testo, dà il consenso e sale a microfono spento. Nelle impostazioni non c'è una riga apposita | Review del 001; task 002 | Valida |
 | D-025 | 7/11/2026 | Da lock screen e notifica Android il microfono si può solo spegnere, mai riaccendere. Lo stato spento è informativo; resta "Esci" | Sintesi tecnica sull'audio §1; 001b | Valida |
+| D-026 | 8/11/2026 | Tipografia: corpo 16, secondario 14, marcatore e nota 12 (erano 15, 13, 11, 10). Raggi: foglio 24, riquadro 16 (erano 26 e 14) | Task 004; confermata da Luca | Valida |
+| D-027 | 8/11/2026 | Il tablet si decide sulla larghezza dello schermo, da 600 dp. Sul tablet la scala del palco cresce di 1,5 (312, 234, 195, 168, 132). Il tetto assoluto di presenze per riga è 3 sul telefono e 4 sul tablet; il tetto per conteggio resta nel codice del palco | Task 004, 004b; confermata da Luca | Valida |
+| D-028 | 8/11/2026 | D-021 vale per le classi di token. `BaOra`, `BaPayloadStanza` e `BaRegole` non sono né token né widget e restano senza suffisso | Task 004 | Valida |
 
 ## Aperte
 
