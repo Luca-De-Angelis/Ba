@@ -23,7 +23,7 @@ class BaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WidgetsApp(
-      color: BaColor.fondoApp,
+      color: BaColorTokens.fondoApp,
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -35,7 +35,7 @@ class BaApp extends StatelessWidget {
           pageBuilder: (context, _, _) => builder(context),
         );
       },
-      home: const ColoredBox(color: BaColor.fondoApp),
+      home: const ColoredBox(color: BaColorTokens.fondoApp),
     );
   }
 }

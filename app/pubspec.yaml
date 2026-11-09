@@ -26,7 +26,7 @@ flutter:
   # Niente Material: nessuna icona Material nell'app (CLAUDE.md, regole sul design system).
   uses-material-design: false
 
-  # I nomi di famiglia sono quelli di tokens.dart (BaTesto.famiglia, famigliaMono).
+  # I nomi di famiglia sono quelli di tokens.dart (BaTestoTokens.famiglia, famigliaMono).
   # Licenze (OFL) accanto ai file. Instrument Sans: 400 corpo, 500 controllo, 600 titoli.
   # IBM Plex Mono: solo 400, come in tokens.dart.
   fonts:

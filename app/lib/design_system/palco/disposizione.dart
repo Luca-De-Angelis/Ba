@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import '../tokens.dart';
 
 // La disposizione del palco come funzione pura: (persone, scatola) → diametro
-// e centri. Niente stato, niente widget. Fonti: tokens.dart (BaPresenza),
+// e centri. Niente stato, niente widget. Fonti: tokens.dart (BaPresenzaTokens),
 // token.md T6 e T6 bis, inventario C6 e C7.
 
 /// Quante presenze al massimo per riga, in funzione di quante persone ci sono
@@ -18,12 +18,12 @@ import '../tokens.dart';
 const List<int> tettoPerRiga = [0, 1, 2, 2, 2, 2, 2, 3, 3];
 
 /// Anello della voce: keyline 3 + tratto 2, dai token.
-const double _anelloTotale = BaPresenza.anelloKeyline + BaPresenza.anelloTratto;
+const double _anelloTotale = BaPresenzaTokens.anelloKeyline + BaPresenzaTokens.anelloTratto;
 
 /// Margine esterno di ogni presenza dentro la scatola, per lato: anello più
-/// crescita al picco (`BaPresenza.anelloCrescitaPicco`). Sono i 18 (2 × 9) della
+/// crescita al picco (`BaPresenzaTokens.anelloCrescitaPicco`). Sono i 18 (2 × 9) della
 /// formula di T6 bis.
-const double _margineEsterno = _anelloTotale + BaPresenza.anelloCrescitaPicco;
+const double _margineEsterno = _anelloTotale + BaPresenzaTokens.anelloCrescitaPicco;
 
 /// Tolleranza per i confronti fra misure in virgola mobile.
 const double _eps = 1e-9;
@@ -36,7 +36,7 @@ class BaDisposizionePalco {
     required this.sfora,
   });
 
-  /// Diametro di ogni presenza, in dp. Mai sotto `BaPresenza.minimo`.
+  /// Diametro di ogni presenza, in dp. Mai sotto `BaPresenzaTokens.minimo`.
   final double diametro;
 
   /// Centri, relativi all'angolo in alto a sinistra della scatola, dall'alto in
@@ -45,7 +45,7 @@ class BaDisposizionePalco {
   /// ricalcolare.
   final List<Offset> centri;
 
-  /// Vero se nemmeno a `BaPresenza.minimo` la disposizione entra nella scatola:
+  /// Vero se nemmeno a `BaPresenzaTokens.minimo` la disposizione entra nella scatola:
   /// nessuna presenza sparisce e nessuna distanza si stringe, si esce dai
   /// margini (su un asse, o su tutti e due se la scatola è minuscola).
   final bool sfora;
@@ -57,11 +57,16 @@ class BaDisposizionePalco {
 
 /// Dispone da 0 a 8 [persone] in [scatola].
 ///
+/// [larghezzaSchermo] è la larghezza dello SCHERMO, non della scatola: decide
+/// se vale la scala del telefono o quella del tablet (da 600 dp, D-027) e il
+/// tetto assoluto di presenze per riga (`BaPresenzaTokens.perRigaMax`). Su un
+/// tablet da 600 dp la scatola è larga 536 e non va trattata come telefono.
+///
 /// Ordine in cui prova le opzioni:
-///   1. diametro di partenza (`BaPresenza.diametro`), righe entro il tetto
+///   1. diametro di partenza (`BaPresenzaTokens.diametro`), righe entro il tetto
 ///      [tettoPerRiga];
 ///   2. stesso diametro, tetto superato di una presenza per riga alla volta;
-///   3. diametro ridotto in modo continuo fino a `BaPresenza.minimo`
+///   3. diametro ridotto in modo continuo fino a `BaPresenzaTokens.minimo`
 ///      (tetto superabile);
 ///   4. a `minimo` e ancora fuori: la disposizione più bassa, con `sfora`.
 ///
@@ -73,6 +78,7 @@ class BaDisposizionePalco {
 BaDisposizionePalco disponiPalco({
   required int persone,
   required Size scatola,
+  required double larghezzaSchermo,
 }) {
   if (persone < 0 || persone > 8) {
     throw ArgumentError.value(persone, 'persone', 'deve essere da 0 a 8');
@@ -84,18 +90,19 @@ BaDisposizionePalco disponiPalco({
         scatola, 'scatola', 'lati negativi o NaN non sono ammessi');
   }
 
-  final base = BaPresenza.diametro(persone);
+  final base = BaPresenzaTokens.diametro(persone, larghezzaSchermo);
+  final perRigaMax = BaPresenzaTokens.perRigaMax(larghezzaSchermo);
   if (persone == 0) {
     return BaDisposizionePalco(
         diametro: base, centri: const <Offset>[], sfora: false);
   }
 
-  final subito = _migliore(persone, base, w, h);
+  final subito = _migliore(persone, base, w, h, perRigaMax);
   if (subito != null) return _costruisci(subito, base, w, h, sfora: false);
 
-  const minimo = BaPresenza.minimo;
-  if (_migliore(persone, minimo, w, h) == null) {
-    final piuBassa = _migliore(persone, minimo, w, h, ignoraScatola: true)!;
+  const minimo = BaPresenzaTokens.minimo;
+  if (_migliore(persone, minimo, w, h, perRigaMax) == null) {
+    final piuBassa = _migliore(persone, minimo, w, h, perRigaMax, ignoraScatola: true)!;
     return _costruisci(piuBassa, minimo, w, h, sfora: true);
   }
 
@@ -106,13 +113,13 @@ BaDisposizionePalco disponiPalco({
   var nonEntra = base;
   for (var i = 0; i < 60; i++) {
     final medio = (entra + nonEntra) / 2;
-    if (_migliore(persone, medio, w, h) != null) {
+    if (_migliore(persone, medio, w, h, perRigaMax) != null) {
       entra = medio;
     } else {
       nonEntra = medio;
     }
   }
-  return _costruisci(_migliore(persone, entra, w, h)!, entra, w, h,
+  return _costruisci(_migliore(persone, entra, w, h, perRigaMax)!, entra, w, h,
       sfora: false);
 }
 
@@ -135,21 +142,25 @@ _Candidata? _migliore(
   int n,
   double d,
   double w,
-  double h, {
+  double h,
+  int perRigaMax, {
   bool ignoraScatola = false,
 }) {
-  final passo = BaPresenza.distanzaMinima(d);
+  final passo = BaPresenzaTokens.distanzaMinima(d);
   final corsa = w - d - 2 * _margineEsterno; // dove possono stare i centri
   if (corsa < -_eps && !ignoraScatola) return null;
 
-  final int k;
+  final int kLibero; // quante ne starebbero in una riga
   if (corsa < 0) {
-    k = 1;
+    kLibero = 1;
   } else if (corsa.isInfinite) {
-    k = n;
+    kLibero = n;
   } else {
-    k = math.min(n, (corsa / passo + _eps).floor() + 1);
+    kLibero = math.min(n, (corsa / passo + _eps).floor() + 1);
   }
+  // Mai più di perRigaMax per riga (3 sul telefono, 4 sul tablet), nemmeno
+  // quando il tetto per conteggio si supera.
+  final k = math.min(kLibero, perRigaMax);
 
   // Prima entro il tetto, poi con una presenza in più per riga alla volta,
   // fino a k: il tetto si supera il meno possibile. Con `ignoraScatola`

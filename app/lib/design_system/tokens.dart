@@ -11,7 +11,21 @@
 // In caso di divergenza vince questo file. Chi cambia un valore lo cambia qui
 // per primo: se resta scritto solo in un documento, non è stato cambiato.
 //
-// Tema unico, scuro. Nessuna coppia chiaro/scuro, nessun alias: valori assoluti.
+// Tema unico, scuro. Nessuna coppia chiaro/scuro.
+//
+// DUE LIVELLI (D-019, task 004). Le primitive (BaPaletteTokens,
+// BaPrimitiveTokens) seguono nomi e passi di Tailwind v4; i token semantici di
+// BA ci fanno riferimento e restano gli unici che i widget leggono. Un valore
+// che non sta in una primitiva è un'ECCEZIONE: ha un nome che lo dice (un
+// numero nel nome, come text22) oppure vive in un token di componente con il
+// motivo accanto. Dove Tailwind v4 accetterebbe qualunque intero (border-3,
+// scale-98, opacity-28) non si finge una scala: si dichiara l'eccezione.
+//
+// Nomi (D-021): le classi di token finiscono in Tokens. Ba<Componente> è
+// riservato ai widget.
+//
+// Layout: dipende SOLO dalla larghezza (BaLayoutTokens). Nessuna regola
+// sull'orientamento, in nessun file.
 //
 // L'app importa widgets.dart e MAI material.dart. Senza Material non esistono
 // Card, elevation, InkWell né ombre di default: la regola 7 non è una
@@ -19,93 +33,199 @@
 
 import 'package:flutter/widgets.dart';
 
+typedef _P = BaPaletteTokens;
+typedef _S = BaPrimitiveTokens;
+
+// ============================================================== PRIMITIVE
+
+/// Colori primitivi, RGB senza alfa. Famiglie con gradazioni alla Tailwind
+/// (50–950): i valori esadecimali sono quelli di prima, ciascuno al suo posto.
+/// Le gradazioni senza un valore in uso NON sono dichiarate: nessun colore
+/// nuovo. Il tema scuro vive quasi tutto sotto il 900, quindi pietra ha passi
+/// intermedi (910…975): Tailwind stesso ha aggiunto il 950 nello stesso modo.
+class BaPaletteTokens {
+  BaPaletteTokens._();
+
+  // pietra — neutri caldi
+  static const int pietra50 = 0xF5F1EC;
+  static const int pietra100 = 0xF2EEE9;
+  static const int pietra400 = 0xA09890;
+  static const int pietra500 = 0x8A837B;
+  static const int pietra600 = 0x6E6862;
+  static const int pietra700 = 0x5E5952;
+  static const int pietra800 = 0x3D3B39;
+  static const int pietra850 = 0x2A2927;
+  static const int pietra900 = 0x1C1917;
+  static const int pietra910 = 0x1A1917;
+  static const int pietra920 = 0x171413;
+  static const int pietra925 = 0x161412;
+  static const int pietra940 = 0x100F0E;
+  static const int pietra945 = 0x0B0A09;
+  static const int pietra950 = 0x0A0A09; // il fondo dell'app
+  static const int pietra975 = 0x080706; // keyline e veli
+  static const int nero = 0x000000;
+  static const int bianco = 0xFFFFFF;
+
+  // sabbia — l'azione chiara e i suoi fondi
+  static const int sabbia100 = 0xEDE7DC;
+  static const int sabbia200 = 0xE6DCBE;
+  static const int sabbia300 = 0xD9CFA8;
+  static const int sabbia400 = 0xD2C9B6;
+  static const int sabbia900 = 0x302A25;
+  static const int sabbia950 = 0x1F1A15;
+
+  // corallo — solo l'errore
+  static const int corallo400 = 0xE4705B;
+
+  // il mazzo delle presenze: 700 lo stop chiaro, 900 lo scuro
+  static const int indaco700 = 0x5257AC, indaco900 = 0x33367A;
+  static const int mattone700 = 0xA83E2E, mattone900 = 0x6E251C;
+  static const int bosco700 = 0x23735A, bosco900 = 0x14473A;
+  static const int ocra700 = 0x96621A, ocra900 = 0x5F3C0B;
+  static const int mare700 = 0x2A6894, mare900 = 0x1B4463;
+  static const int lampone700 = 0xAC3765, lampone900 = 0x72203F;
+  static const int oliva700 = 0x557426, oliva900 = 0x374A18;
+  static const int viola700 = 0x7A3080, viola900 = 0x4E1F52;
+  static const int petrolio700 = 0x1C6E75, petrolio900 = 0x114448;
+  static const int malva700 = 0x9B4A6E, malva900 = 0x67304A;
+  static const int ruggine700 = 0x8A4A2A, ruggine900 = 0x5A2C16;
+  static const int muschio700 = 0x3F7A34, muschio900 = 0x26501F;
+
+  // alfa, come il modificatore /n di Tailwind. Interi in percentuale tranne
+  // a5_5, che è l'alone di prima (0x0E) e non si arrotonda.
+  static const int opaco = 0xFF000000;
+  static const int a5_5 = 0x0E000000, a6 = 0x0F000000, a10 = 0x1A000000;
+  static const int a12 = 0x1F000000, a14 = 0x24000000, a32 = 0x52000000;
+  static const int a34 = 0x57000000, a42 = 0x6B000000, a55 = 0x8C000000;
+  static const int a62 = 0x9E000000, a66 = 0xA8000000, a86 = 0xDB000000;
+  static const int a92 = 0xEB000000;
+}
+
+/// Misure primitive. Spazio su base 4 (Tailwind v4, --spacing: 4): spN = N × 4.
+/// Ci sono solo i passi che BA usa.
+class BaPrimitiveTokens {
+  BaPrimitiveTokens._();
+
+  // spazio
+  static const double sp1 = 4, sp1_5 = 6, sp2 = 8, sp2_5 = 10, sp3 = 12;
+  static const double sp3_5 = 14, sp4 = 16, sp5 = 20, sp6 = 24, sp7 = 28;
+  static const double sp8 = 32, sp11 = 44, sp12 = 48, sp14 = 56;
+
+  // larghezze massime
+  static const double maxWLg = 512; // max-w-lg
+
+  // testo (text-*). Una sola estensione: text22, il titolo della stanza.
+  static const double textXs = 12, textSm = 14, textBase = 16;
+  static const double textLg = 18, textXl = 20;
+  static const double text22 = 22; // fuori scala, fra xl (20) e 2xl (24)
+
+  // interlinea e spaziatura
+  static const double leadingTight = 1.25, leadingNormal = 1.5;
+  static const double leadingSm = 20 / 14; // l'interlinea di text-sm
+  static const double trackingWider = 0.05; // em
+  static const double trackingMarcatore = 0.06; // em · estensione: fra wider e widest
+
+  // raggi (rounded-*)
+  static const double rounded2xl = 16, rounded3xl = 24;
+  static const double rounded22 = 22; // estensione: contenitore di iOS, non nostro
+  static const double roundedFull = 999; // Tailwind usa 9999: per una pillola è uguale
+
+  // bordi (border-*)
+  static const double border1 = 1, border2 = 2;
+
+  // breakpoint, mobile first: la base è il telefono, da 360 dp
+  static const double sm = 600; // estensione: Tailwind sm = 640
+}
+
+// ============================================================== SEMANTICI
+
 // ---------------------------------------------------------------- colore
 
-class BaColor {
-  BaColor._();
+class BaColorTokens {
+  BaColorTokens._();
 
   // fondali e superfici
-  static const Color fondoApp = Color(0xFF0A0A09);
+  static const Color fondoApp = Color(_P.opaco | _P.pietra950);
   static const List<Color> fondoStanza = [
-    Color(0xFF171413),
-    Color(0xFF100F0E), // stop 0.52
-    Color(0xFF0B0A09),
+    Color(_P.opaco | _P.pietra920),
+    Color(_P.opaco | _P.pietra940), // stop 0.52
+    Color(_P.opaco | _P.pietra945),
   ];
   static const List<double> fondoStanzaStop = [0.0, 0.52, 1.0];
-  static const Color fondoAlone = Color(0x0EE6DCBE); // radiale, closest-side, 50%/42%
-  static const Color superficieFoglio = Color(0xFF161412);
-  static const Color superficieSistema = Color(0xDB1C1917); // card Live Activity
-  static const Color superficieNotifica = Color(0xFF1A1917); // Android, opaca per obbligo
-  static const Color superficieIsola = Color(0xFF000000); // nero vero, non il nostro fondo
+  static const Color fondoAlone = Color(_P.a5_5 | _P.sabbia200); // radiale, closest-side, 50%/42%
+  static const Color superficieFoglio = Color(_P.opaco | _P.pietra925);
+  static const Color superficieSistema = Color(_P.a86 | _P.pietra900); // card Live Activity
+  static const Color superficieNotifica = Color(_P.opaco | _P.pietra910); // Android, opaca per obbligo
+  static const Color superficieIsola = Color(_P.opaco | _P.nero); // nero vero, non il nostro fondo
 
   // testo
-  static const Color testoPrimo = Color(0xFFF2EEE9);
-  static const Color testoSecondo = Color(0xFFA09890);
-  static const Color testoTerzo = Color(0xFF8A837B);
-  static const Color testoSpento = Color(0xFF6E6862);
-  static const Color testoInattivo = Color(0xFF5E5952);
-  static const Color testoSuTinta = Color(0xFFFFFFFF); // iniziali sulle presenze
-  static const Color testoSuChiara = Color(0xFF100F0E);
+  static const Color testoPrimo = Color(_P.opaco | _P.pietra100);
+  static const Color testoSecondo = Color(_P.opaco | _P.pietra400);
+  static const Color testoTerzo = Color(_P.opaco | _P.pietra500);
+  static const Color testoSpento = Color(_P.opaco | _P.pietra600);
+  static const Color testoInattivo = Color(_P.opaco | _P.pietra700);
+  static const Color testoSuTinta = Color(_P.opaco | _P.bianco); // iniziali sulle presenze
+  static const Color testoSuChiara = Color(_P.opaco | _P.pietra940);
 
   // filetti
-  static const Color filettoAppena = Color(0x0FF2EEE9); // .06
-  static const Color filettoBase = Color(0x1AF2EEE9); // .10
-  static const Color filettoDivisorio = Color(0x1FF2EEE9); // .12
-  static const Color filettoMarcato = Color(0x24F2EEE9); // .14
+  static const Color filettoAppena = Color(_P.a6 | _P.pietra100);
+  static const Color filettoBase = Color(_P.a10 | _P.pietra100);
+  static const Color filettoDivisorio = Color(_P.a12 | _P.pietra100);
+  static const Color filettoMarcato = Color(_P.a14 | _P.pietra100);
 
   // azione — vedi BaRegole.azioneChiara
-  static const Color azioneChiara = Color(0xFFD9CFA8);
-  static const List<Color> azioneChiaraPiena = [Color(0xFFEDE7DC), Color(0xFFD2C9B6)];
-  static const Color azioneAttivaBordo = Color(0x6BD9CFA8); // .42
-  static const List<Color> azioneAttivaFondo = [Color(0xFF302A25), Color(0xFF1F1A15)];
+  static const Color azioneChiara = Color(_P.opaco | _P.sabbia300);
+  static const List<Color> azioneChiaraPiena = [Color(_P.opaco | _P.sabbia100), Color(_P.opaco | _P.sabbia400)];
+  static const Color azioneAttivaBordo = Color(_P.a42 | _P.sabbia300);
+  static const List<Color> azioneAttivaFondo = [Color(_P.opaco | _P.sabbia900), Color(_P.opaco | _P.sabbia950)];
 
   // errore — testo e filetto soltanto. Non esiste erroreFondo, e non esiste
   // nessun colore "successo": le regole 6 non sono violabili perché il valore
   // che servirebbe a violarle non c'è.
-  static const Color erroreTesto = Color(0xFFE4705B);
-  static const Color erroreFiletto = Color(0x52E4705B); // .32
+  static const Color erroreTesto = Color(_P.opaco | _P.corallo400);
+  static const Color erroreFiletto = Color(_P.a32 | _P.corallo400);
 
   // la voce
-  static const Color voceKeyline = Color(0xEB080706); // tratto interno, stacca dalla foto
-  static const Color voceTratto = Color(0xFFF5F1EC); // esterno, dentro l'app
-  static const Color voceTrattoFermo = Color(0x57F5F1EC); // linea instabile
-  static const Color voceTrattoStanza = Color(0x9EF5F1EC); // fuori dall'app, sulla stanza
-  static const Color voceTrattoStanzaTenue = Color(0x8CF5F1EC); // su superficie/isola
+  static const Color voceKeyline = Color(_P.a92 | _P.pietra975); // tratto interno, stacca dalla foto
+  static const Color voceTratto = Color(_P.opaco | _P.pietra50); // esterno, dentro l'app
+  static const Color voceTrattoFermo = Color(_P.a34 | _P.pietra50); // linea instabile
+  static const Color voceTrattoStanza = Color(_P.a62 | _P.pietra50); // fuori dall'app, sulla stanza
+  static const Color voceTrattoStanzaTenue = Color(_P.a55 | _P.pietra50); // su superficie/isola
 
   // tocco e focus
   // stati della presenza
-  static const List<Color> neutroBloccata = [Color(0xFF3D3B39), Color(0xFF2A2927)]; // la tinta scompare, l'identità no
-  static const Color veloImmagine = Color(0x57080706); // .34 · tetto di luminanza sulle foto, ColorFiltered
-  static const Color veloMutataImmagine = Color(0xA8080706); // .66 · voce mutata, con immagine
+  static const List<Color> neutroBloccata = [Color(_P.opaco | _P.pietra800), Color(_P.opaco | _P.pietra850)]; // la tinta scompare, l'identità no
+  static const Color veloImmagine = Color(_P.a34 | _P.pietra975); // .34 · tetto di luminanza sulle foto, ColorFiltered
+  static const Color veloMutataImmagine = Color(_P.a66 | _P.pietra975); // .66 · voce mutata, con immagine
 
-  static const Color premutoVelo = Color(0x0FF2EEE9);
-  static const Color premutoKeyline = Color(0xFF080706);
+  static const Color premutoVelo = Color(_P.a6 | _P.pietra100);
+  static const Color premutoKeyline = Color(_P.opaco | _P.pietra975);
   static const Color focusAnello = azioneChiara;
-  static const Color focusAnelloSuChiara = Color(0xFF100F0E);
+  static const Color focusAnelloSuChiara = Color(_P.opaco | _P.pietra940);
 }
 
 /// Le dodici tinte delle presenze. Un mazzo, non una scala: nessuna ha un ruolo.
 /// La stanza ne assegna una all'ingresso; unicità garantita solo sul palco
 /// (max 8 su 12). Il pubblico può ripetere. Nessuna informazione dipende dalla
 /// sola tinta: sono tenute tutte fra L 0,09 e 0,16 apposta.
-class BaTinta {
+class BaTintaTokens {
   final Color chiaro;
   final Color scuro;
-  const BaTinta(this.chiaro, this.scuro);
+  const BaTintaTokens(this.chiaro, this.scuro);
 
-  static const List<BaTinta> mazzo = [
-    BaTinta(Color(0xFF5257AC), Color(0xFF33367A)),
-    BaTinta(Color(0xFFA83E2E), Color(0xFF6E251C)),
-    BaTinta(Color(0xFF23735A), Color(0xFF14473A)),
-    BaTinta(Color(0xFF96621A), Color(0xFF5F3C0B)),
-    BaTinta(Color(0xFF2A6894), Color(0xFF1B4463)),
-    BaTinta(Color(0xFFAC3765), Color(0xFF72203F)),
-    BaTinta(Color(0xFF557426), Color(0xFF374A18)),
-    BaTinta(Color(0xFF7A3080), Color(0xFF4E1F52)),
-    BaTinta(Color(0xFF1C6E75), Color(0xFF114448)),
-    BaTinta(Color(0xFF9B4A6E), Color(0xFF67304A)),
-    BaTinta(Color(0xFF8A4A2A), Color(0xFF5A2C16)),
-    BaTinta(Color(0xFF3F7A34), Color(0xFF26501F)),
+  static const List<BaTintaTokens> mazzo = [
+    BaTintaTokens(Color(_P.opaco | _P.indaco700), Color(_P.opaco | _P.indaco900)),
+    BaTintaTokens(Color(_P.opaco | _P.mattone700), Color(_P.opaco | _P.mattone900)),
+    BaTintaTokens(Color(_P.opaco | _P.bosco700), Color(_P.opaco | _P.bosco900)),
+    BaTintaTokens(Color(_P.opaco | _P.ocra700), Color(_P.opaco | _P.ocra900)),
+    BaTintaTokens(Color(_P.opaco | _P.mare700), Color(_P.opaco | _P.mare900)),
+    BaTintaTokens(Color(_P.opaco | _P.lampone700), Color(_P.opaco | _P.lampone900)),
+    BaTintaTokens(Color(_P.opaco | _P.oliva700), Color(_P.opaco | _P.oliva900)),
+    BaTintaTokens(Color(_P.opaco | _P.viola700), Color(_P.opaco | _P.viola900)),
+    BaTintaTokens(Color(_P.opaco | _P.petrolio700), Color(_P.opaco | _P.petrolio900)),
+    BaTintaTokens(Color(_P.opaco | _P.malva700), Color(_P.opaco | _P.malva900)),
+    BaTintaTokens(Color(_P.opaco | _P.ruggine700), Color(_P.opaco | _P.ruggine900)),
+    BaTintaTokens(Color(_P.opaco | _P.muschio700), Color(_P.opaco | _P.muschio900)),
   ];
 
   /// 155° come in tutte le superfici: la luce viene sempre da in alto a sinistra.
@@ -120,8 +240,8 @@ class BaTinta {
 
 /// Cinque sagome irregolari. Le assegna la STANZA, non la persona: la stessa
 /// persona ha una forma diversa in un altro DEN (§7.3).
-class BaSagoma {
-  BaSagoma._();
+class BaSagomaTokens {
+  BaSagomaTokens._();
 
   /// [oTL, oTR, oBR, oBL, vTL, vTR, vBR, vBL] come frazioni del diametro.
   static const List<List<double>> mazzo = [
@@ -143,39 +263,67 @@ class BaSagoma {
   }
 }
 
-class BaRaggio {
-  BaRaggio._();
-  static const double pillola = 999;
-  static const double foglio = 26;
-  static const double cardSistema = 22;
-  static const double cardNotifica = 24;
-  static const double riquadro = 14;
+class BaRaggioTokens {
+  BaRaggioTokens._();
+  static const double pillola = _S.roundedFull;
+  static const double foglio = _S.rounded3xl; // era 26: 2 dp su un foglio non si vedono
+  static const double cardSistema = _S.rounded22; // eccezione: imita il contenitore della Live Activity
+  static const double cardNotifica = _S.rounded3xl;
+  static const double riquadro = _S.rounded2xl; // era 14
 }
 
 // -------------------------------------------------------------- presenza
 
-class BaPresenza {
-  BaPresenza._();
+class BaPresenzaTokens {
+  BaPresenzaTokens._();
 
   static const double sola = 208;
   static const double xl = 156;
   static const double l = 130;
   static const double m = 112;
   static const double s = 88; // sette e otto: 88 e non 92 per stare in 360 dp (vedi baseline sotto)
+  // La scala delle presenze è un token di componente (D-009): nessuno di
+  // questi valori prende una primitiva, anche dove coincide (208 = sp52).
   static const double minimo = 32; // dove finisce la scala, e con lei le iniziali
   static const double sistema = 36; // lock screen
   static const double sistemaIsola = 34;
   static const double sistemaNotifica = 32;
   static const double pubblico = 22; // sagoma senza iniziali
 
-  /// Diametro sul palco in funzione di quante persone ci sono.
-  static double diametro(int nSulPalco) {
-    if (nSulPalco <= 1) return sola;
-    if (nSulPalco == 2) return xl;
-    if (nSulPalco <= 4) return l;
-    if (nSulPalco <= 6) return m;
-    return s; // 7 e 8: il palco non va oltre
+  /// Da sm in su la scala del palco cresce di una mezza volta: 312, 234, 195,
+  /// 168, 132. Tutti interi, rapporti invariati, una dimensione per volta
+  /// (regola 5). Il tablet si guarda da più lontano, spesso appoggiato: alla
+  /// misura del telefono il gruppo occupa un terzo della larghezza a 744 dp.
+  /// minimo (32) NON scala: è il dominio delle iniziali, non una taglia.
+  static const double scalaTablet = 1.5;
+
+  /// Diametro sul palco in funzione di quante persone ci sono e della
+  /// larghezza dello schermo. La larghezza è obbligatoria apposta: chi
+  /// chiamava diametro(n) deve decidere da dove la prende.
+  static double diametro(int nSulPalco, double larghezza) {
+    final double base;
+    if (nSulPalco <= 1) {
+      base = sola;
+    } else if (nSulPalco == 2) {
+      base = xl;
+    } else if (nSulPalco <= 4) {
+      base = l;
+    } else if (nSulPalco <= 6) {
+      base = m;
+    } else {
+      base = s; // 7 e 8: il palco non va oltre
+    }
+    return BaLayoutTokens.tablet(larghezza) ? base * scalaTablet : base;
   }
+
+  /// Tetto ASSOLUTO di presenze per riga: 3 sul telefono, 4 sul tablet.
+  /// NON è il tetto per conteggio del palco (tettoPerRiga, in codice e non
+  /// token, che dice quante ne servono per riga a ogni conteggio: da 0 a 8,
+  /// [0,1,2,2,2,2,2,3,3]). Quel tetto resta al palco; perRigaMax serve quando
+  /// il palco lo supera perché in una riga più larga non ci starebbe altrimenti.
+  /// A 680 dp utili quattro a 132 chiedono 597.
+  static int perRigaMax(double larghezza) =>
+      BaLayoutTokens.tablet(larghezza) ? 4 : 3;
 
   /// Distanza minima fra i centri: diametro + anello (5) + picco (4) + respiro (8).
   static double distanzaMinima(double d) =>
@@ -198,14 +346,14 @@ class BaPresenza {
   }
 
   // Il livello del partecipante locale e' leggibile a qualunque frequenza:
-  // va ricampionato a BaMovimento.campionamentoAmpiezza come quello degli
+  // va ricampionato a BaMovimentoTokens.campionamentoAmpiezza come quello degli
   // altri. Un anello piu' reattivo sulla propria bolla darebbe alla stessa
   // forma due comportamenti, e il primo a notarlo e' chi parla di se'.
   // anello della voce: spessori fissi a ogni scala, o spariscono a 88
-  static const double anelloKeyline = 3;
-  static const double anelloTratto = 2;
-  static const double anelloCrescitaPicco = 4;
-  static const double respiro = 8; // luce oltre il picco, fra un anello e il vicino
+  static const double anelloKeyline = 3; // eccezione: 2 o 4 cambierebbero i 17 di D-009
+  static const double anelloTratto = _S.border2;
+  static const double anelloCrescitaPicco = _S.sp1;
+  static const double respiro = _S.sp2; // luce oltre il picco, fra un anello e il vicino
 
   // escursione del respiro, a una voce
   static const double anelloScalaRiposo = 1.00;
@@ -229,12 +377,14 @@ class BaPresenza {
   static const double tettoLuminanza = 0.18;
 
   // glifo sulla presenza (voce mutata, bloccata)
-  static const double glifo = 28;
-  static const double glifoRipiego = 32; // solo se a 28 non si legge: cresce, non si colora
+  static const double glifo = _S.sp7;
+  static const double glifoRipiego = _S.sp8; // solo se a 28 non si legge: cresce, non si colora
   static const double glifoOpacitaSpento = 0.45; // → 1 quando la voce mutata parla
 
   static const int campionePubblico = 3; // bolle del pubblico, campione stabile
 
+  // Opacità e rapporti di stato: eccezioni tutte. Sono decisioni del §7, non
+  // passi di una scala; arrotondarli al 5 cambierebbe gli stati.
   // filtri di stato
   static const double mutataSaturazione = 0.25;
   static const double mutataOpacita = 0.78;
@@ -242,7 +392,7 @@ class BaPresenza {
   static const double inizialiBloccataOpacita = 0.70;
   static const double persaOpacita = 0.34; // + grayscale(1)
   static const double scheletroOpacitaMin = 0.30; // sagome vuote mentre entro,
-  static const double scheletroOpacitaMax = 0.62; // in BaMovimento.skeleton
+  static const double scheletroOpacitaMax = 0.62; // in BaMovimentoTokens.skeleton
   static const double dietroOpacita = 0.22; // + blur 1.5
   static const double dietroSfocatura = 1.5;
 }
@@ -251,43 +401,49 @@ class BaPresenza {
 
 /// Instrument Sans per ciò che si legge come una frase; IBM Plex Mono solo per
 /// i marcatori — stato, conteggi, orari — sempre maiuscolo, spaziato .06em.
-class BaTesto {
-  BaTesto._();
+class BaTestoTokens {
+  BaTestoTokens._();
 
   static const String famiglia = 'Instrument Sans';
   static const String famigliaMono = 'IBM Plex Mono';
 
+  // Il tracking dei titoli (-0,26 · -0,30 · -0,18) è ottico, per taglia:
+  // eccezione, nessun passo di tracking-* gli somiglia (tight = -0,025em).
   static const TextStyle stanza =
-      TextStyle(fontFamily: famiglia, fontSize: 22, fontWeight: FontWeight.w600, letterSpacing: -0.26);
+      TextStyle(fontFamily: famiglia, fontSize: _S.text22, fontWeight: FontWeight.w600, letterSpacing: -0.26);
   static const TextStyle foglio =
-      TextStyle(fontFamily: famiglia, fontSize: 20, fontWeight: FontWeight.w600, letterSpacing: -0.30, height: 1.25);
+      TextStyle(fontFamily: famiglia, fontSize: _S.textXl, fontWeight: FontWeight.w600, letterSpacing: -0.30, height: _S.leadingTight);
   static const TextStyle riga =
-      TextStyle(fontFamily: famiglia, fontSize: 18, fontWeight: FontWeight.w600, letterSpacing: -0.18);
+      TextStyle(fontFamily: famiglia, fontSize: _S.textLg, fontWeight: FontWeight.w600, letterSpacing: -0.18);
   static const TextStyle controllo =
-      TextStyle(fontFamily: famiglia, fontSize: 16, fontWeight: FontWeight.w500);
+      TextStyle(fontFamily: famiglia, fontSize: _S.textBase, fontWeight: FontWeight.w500);
   static const TextStyle corpo =
-      TextStyle(fontFamily: famiglia, fontSize: 15, height: 1.5); // le frasi di BA
+      TextStyle(fontFamily: famiglia, fontSize: _S.textBase, height: _S.leadingNormal); // le frasi di BA · era 15
   static const TextStyle azione =
-      TextStyle(fontFamily: famiglia, fontSize: 14);
+      TextStyle(fontFamily: famiglia, fontSize: _S.textSm);
   static const TextStyle minore =
-      TextStyle(fontFamily: famiglia, fontSize: 13, height: 1.45);
+      TextStyle(fontFamily: famiglia, fontSize: _S.textSm, height: _S.leadingSm); // era 13 / 1,45
   static const TextStyle marcatore = TextStyle(
-      fontFamily: famigliaMono, fontSize: 11, letterSpacing: 0.66); // + toUpperCase()
-  static const TextStyle nota =
-      TextStyle(fontFamily: famigliaMono, fontSize: 10, letterSpacing: 0.5);
+      fontFamily: famigliaMono, fontSize: _S.textXs,
+      letterSpacing: _S.textXs * _S.trackingMarcatore); // + toUpperCase() · era 11
+  /// Era 10: sotto il passo più piccolo e sotto la leggibilità. Ora coincide
+  /// con marcatore salvo la spaziatura; da fondere in un task successivo.
+  static const TextStyle nota = TextStyle(
+      fontFamily: famigliaMono, fontSize: _S.textXs,
+      letterSpacing: _S.textXs * _S.trackingWider);
 
   /// Le iniziali NON stanno in questa scala: dipendono dal diametro della
-  /// sagoma (BaPresenza.iniziali), non dal ruolo del testo. Fuori dal dominio
+  /// sagoma (BaPresenzaTokens.iniziali), non dal ruolo del testo. Fuori dal dominio
   /// non c'è uno stile: chi disegna deve controllare il null e non scrivere
   /// niente, non ripiegare su una taglia minima.
   static TextStyle? iniziali(double diametro, {bool sistema = false}) {
-    final d = BaPresenza.iniziali(diametro, sistema: sistema);
+    final d = BaPresenzaTokens.iniziali(diametro, sistema: sistema);
     if (d == null) return null;
     return TextStyle(
       fontFamily: famiglia,
       fontSize: d,
       fontWeight: FontWeight.w600,
-      color: BaColor.testoSuTinta,
+      color: BaColorTokens.testoSuTinta,
     );
   }
 }
@@ -295,8 +451,9 @@ class BaTesto {
 /// Dynamic Type. Il testo scala, la geometria no — ma la scatola del palco è
 /// ciò che avanza, quindi il testo che cresce rimpicciolisce le presenze.
 /// Vedi "Inventario componenti · Dynamic Type" per il ragionamento.
-class BaScala {
-  BaScala._();
+/// Eccezioni: rapporti di Dynamic Type, non misure.
+class BaScalaTokens {
+  BaScalaTokens._();
 
   static const double maxTesto = 2.0; // frasi, titoli, controlli
   static const double maxMarcatore = 1.6; // mono: etichette accanto a numeri
@@ -310,40 +467,77 @@ class BaScala {
 
 // ------------------------------------------------------------ spazio, controlli
 
-class BaSpazio {
-  BaSpazio._();
-  // scala a passo 2, non a passo 8: le card di sistema non ci starebbero
-  static const double xxs = 4, xs = 6, s = 8, sm = 10, m = 12, md = 14;
-  static const double l = 16, xl = 20, xxl = 24, xxxl = 32, sezione = 44;
-  static const double margineSchermo = 20;
+class BaSpazioTokens {
+  BaSpazioTokens._();
+  // base 4 con i mezzi passi sotto il 16: le card di sistema non starebbero
+  // in una scala a passo 8
+  static const double xxs = _S.sp1, xs = _S.sp1_5, s = _S.sp2, sm = _S.sp2_5;
+  static const double m = _S.sp3, md = _S.sp3_5, l = _S.sp4, xl = _S.sp5;
+  static const double xxl = _S.sp6, xxxl = _S.sp8, sezione = _S.sp11;
+  static const double margineSchermo = _S.sp5;
 }
 
-class BaControllo {
-  BaControllo._();
-  static const double primario = 56; // altezza minima: cresce col testo
-  static const double coppia = 48;
-  static const double gapCoppia = 10;
+/// Layout per larghezza, mobile first. La base è il telefono; da sm (600) il
+/// tablet. 600 e non 640 (sm di Tailwind) né 768 (md): è la soglia con cui
+/// Android classifica i tablet (sw600dp) e oltre la quale, da target 37,
+/// ignora il blocco dell'orientamento. L'iPad mini in verticale (744 pt) ci
+/// sta dentro. MAI una regola sull'orientamento: un tablet in orizzontale è
+/// solo uno schermo più largo, e queste funzioni lo gestiscono già.
+class BaLayoutTokens {
+  BaLayoutTokens._();
+
+  static const double tabletDa = _S.sm;
+  static bool tablet(double larghezza) => larghezza >= tabletDa;
+  static bool tabletDi(BuildContext c) => tablet(MediaQuery.sizeOf(c).width);
+
+  /// Testi, elenchi, moduli e azioni stanno in una colonna. Sul telefono è lo
+  /// schermo meno i margini; sul tablet si ferma a 512, centrata.
+  static const double colonna = _S.maxWLg;
+  static const double margineTablet = _S.sp8;
+
+  static double margine(double larghezza) =>
+      tablet(larghezza) ? margineTablet : BaSpazioTokens.margineSchermo;
+
+  static double larghezzaColonna(double larghezza) {
+    final utile = larghezza - 2 * margine(larghezza);
+    return utile < colonna ? utile : colonna;
+  }
+
+  /// Il palco NON sta nella colonna: prende la larghezza meno i margini.
+  static double larghezzaPalco(double larghezza) =>
+      larghezza - 2 * margine(larghezza);
+}
+
+class BaControlloTokens {
+  BaControlloTokens._();
+  static const double primario = _S.sp14; // altezza minima: cresce col testo
+  static const double coppia = _S.sp12;
+  static const double gapCoppia = _S.sp2_5;
+  // eccezioni: misure delle superfici di sistema, non nostre
   static const double sistemaLock = 38;
   static const double sistemaIsola = 34;
 
-  static const double areaMinima = 44; // mai sotto, per niente
-  static const double areaEstesa = 8; // oltre il bordo visibile
-  static const double focusSpessore = 2;
-  static const double focusStacco = 3;
+  static const double areaMinima = _S.sp11; // mai sotto, per niente
+  static const double areaEstesa = _S.sp2; // oltre il bordo visibile
+  static const double focusSpessore = _S.border2;
+  static const double focusStacco = 3; // eccezione: a 2 tocca la keyline, a 4 si stacca dalla sagoma
 
   /// Premuto di pillole e righe: un valore solo. Una riga larga quanto lo
   /// schermo, a una scala piu' profonda, stacca il bordo dal margine; a 0,98
   /// cede e niente si sposta.
-  /// Le presenze non scalano: scuriscono la keyline (BaColor.premutoKeyline).
+  /// Le presenze non scalano: scuriscono la keyline (BaColorTokens.premutoKeyline).
+  /// Eccezione (D-009): Tailwind ha scale-95 e scale-100, non 98.
   static const double premutoScala = 0.98;
 }
 
 // ----------------------------------------------------------------- movimento
 
 /// Tutte le durate dell'app. Due curve più la lineare: se serve una terza,
-/// prima serve una ragione.
-class BaMovimento {
-  BaMovimento._();
+/// prima serve una ragione. Eccezioni tutte: i tempi seguono il campionamento
+/// e la percezione (§7.7, D-009), non la scala duration-* di Tailwind
+/// (75 · 100 · 150 · 200 · 300 · 500 · 700 · 1000), con cui coincidono solo 200 e 500.
+class BaMovimentoTokens {
+  BaMovimentoTokens._();
 
   static const Cubic curvaAssestamento = Cubic(0.22, 0.9, 0.25, 1.0); // si sposta, cambia scala
   static const Cubic curvaScheda = Cubic(0.34, 1.2, 0.64, 1.0); // appare sopra il resto
@@ -399,9 +593,9 @@ class BaMovimento {
 /// schermo piccolo la scatola del palco si stringe; cedono, in quest'ordine:
 ///
 ///   1. l'alone e i margini verticali del palco
-///   2. la scala delle presenze, da 208 giù fino a 88
+///   2. la scala delle presenze, da 208 giù fino a 88 (sul tablet da 312 a 132)
 ///   3. le iniziali — sotto gli 88 continuano a rimpicciolirsi con la bolla e a
-///      32 escono dal dominio (BaPresenza.iniziali → null): resta la forma
+///      32 escono dal dominio (BaPresenzaTokens.iniziali → null): resta la forma
 ///      colorata, che porta comunque presenza, tinta e anello
 ///
 /// LE SAGOME NON CEDONO MAI. Nessuna presenza passa al contatore per fare
@@ -422,6 +616,11 @@ class BaMovimento {
 /// 88 e non 92. Da cui anche: la coppia a 156 non sta affiancata (347 > 320),
 /// e l'impacchettamento la mette in diagonale — vincolo del packing, non una
 /// scala nuova.
+///
+/// TABLET (da sm): palco largo quanto lo schermo meno 2*32. A 744 sono 680:
+/// quattro a 132 chiedono 3*149 + 150 = 597 e stanno, cinque (746) no; da qui
+/// perRigaMax = 4. Tre a 195 chiedono 637, la coppia a 234 affiancata 503. A
+/// testo grande il palco si abbassa e la stessa catena cede dal 312 in giù.
 
 // ------------------------------------------------------------ tempo, payload
 
@@ -441,7 +640,7 @@ class BaOra {
 ///
 /// Le sagome qui sono ALLINEATE, non impacchettate: nessuna geometria da
 /// serializzare, e BaPalco resta un'implementazione sola, in Dart. La sagoma
-/// della stanza è fissa (BaSagoma.mazzo[0]) e porta l'anello statico.
+/// della stanza è fissa (BaSagomaTokens.mazzo[0]) e porta l'anello statico.
 class BaPayloadStanza {
   final String stanza;
   final int sulPalco;
