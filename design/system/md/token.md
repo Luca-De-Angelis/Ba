@@ -76,19 +76,19 @@ Le **dodici tinte delle presenze** (tinta/01…12, ognuna con il suo secondo sto
 
 Due famiglie. **Instrument Sans** per tutto ciò che si legge come una frase; **IBM Plex Mono** solo per i marcatori — stato della stanza, conteggi, orari, etichette — sempre maiuscoletto con letter-spacing .06em. Il mono è il modo in cui l'app dice un fatto senza commentarlo.
 
-| token           | valore                       | dove                                            |
-|-----------------|------------------------------|-------------------------------------------------|
-| testo/stanza    | 22 / 600 / -.012em           | nome del DEN in intestazione                    |
-| testo/foglio    | 20 / 600 / -.015em / 1,25    | titolo di un foglio che chiede qualcosa         |
-| testo/riga      | 18 / 600 / -.01em            | nome di stanza in elenco                        |
-| testo/controllo | 16 / 500                     | pillola principale                              |
-| testo/corpo     | 15 / 400 / 1,5               | le frasi di BA — l'unico posto dove l'app parla |
-| testo/azione    | 14 / 400                     | azioni hairline in coppia                       |
-| testo/minore    | 13 / 400 / 1,45              | seconda riga di una card, spiegazioni brevi     |
-| mono/marcatore  | 11 / 400 / .06em / maiuscolo | "entra chiunque", "su invito", "8 sul palco"    |
-| mono/nota       | 10 / 400 / .05em             | note di formato, unità, misure                  |
+| token           | valore                                  | dove                                            |
+|-----------------|-----------------------------------------|-------------------------------------------------|
+| testo/stanza    | 22 / 600 / -.012em                      | nome del DEN in intestazione                    |
+| testo/foglio    | 20 / 600 / -.015em / 1,25               | titolo di un foglio che chiede qualcosa         |
+| testo/riga      | 18 / 600 / -.01em                       | nome di stanza in elenco                        |
+| testo/controllo | 16 / 500                                | pillola principale                              |
+| testo/corpo     | 16 / 400 / 1,5 · *era 15*               | le frasi di BA — l'unico posto dove l'app parla |
+| testo/azione    | 14 / 400                                | azioni hairline in coppia                       |
+| testo/minore    | 14 / 400 / 20 · *era 13 / 1,45*         | seconda riga di una card, spiegazioni brevi     |
+| mono/marcatore  | 12 / 400 / .06em / maiuscolo · *era 11* | "entra chiunque", "su invito", "8 sul palco"    |
+| mono/nota       | 12 / 400 / .05em · *era 10*             | note di formato, unità, misure                  |
 
-Sotto i 13 pt si scrive solo in mono e solo per fatti. **Le iniziali sulle presenze non sono in questa scala**: dipendono dal diametro della sagoma (T6), non dal ruolo del testo.
+Sotto i 14 pt si scrive solo in mono e solo per fatti, e niente scende sotto il 12: 10 e 11 erano sotto il passo più piccolo di Tailwind e sotto la leggibilità al buio. **Le iniziali sulle presenze non sono in questa scala**: dipendono dal diametro della sagoma (T6), non dal ruolo del testo.
 
 ## T6  Presenza — diametri e iniziali
 
@@ -155,18 +155,18 @@ Valori già citati nel §7 e nelle schermate ma assenti da tokens.dart. Ora ci s
 
 ## T7  Forma, spazio, controlli
 
-|                    |                                   |                                                                      |
-|--------------------|-----------------------------------|----------------------------------------------------------------------|
-| sagoma/01…05       | 5 border-radius irregolari        | assegnate dalla stanza, non dalla persona (§7.3)                     |
-| raggio/pillola     | 999                               | ogni controllo dell'app                                              |
-| raggio/foglio      | 26                                | fogli che salgono dal basso                                          |
-| raggio/card        | 22 · 24                           | Live Activity · notifica Android                                     |
-| raggio/riquadro    | 14                                | messaggi di stato dentro la stanza                                   |
-| passo              | 2 → 4 6 8 10 12 14 16 20 24 32 44 | scala a passo 2, non a passo 8: le card di sistema non ci starebbero |
-| margine/schermo    | 20                                | lato di ogni schermata dell'app                                      |
-| controllo/primario | h 56                              | stato del microfono, azione che chiede qualcosa                      |
-| controllo/coppia   | h 48 · gap 10                     | le due azioni hairline in fondo                                      |
-| controllo/sistema  | h 38 · h 34                       | azioni App Intent su lock screen · isola                             |
+|                    |                               |                                                                                                                                                     |
+|--------------------|-------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| sagoma/01…05       | 5 border-radius irregolari    | assegnate dalla stanza, non dalla persona (§7.3)                                                                                                    |
+| raggio/pillola     | 999                           | ogni controllo dell'app                                                                                                                             |
+| raggio/foglio      | 24 · *era 26*                 | fogli che salgono dal basso                                                                                                                         |
+| raggio/card        | 22 · 24                       | Live Activity · notifica Android                                                                                                                    |
+| raggio/riquadro    | 16 · *era 14*                 | messaggi di stato dentro la stanza                                                                                                                  |
+| passo              | 4 6 8 10 12 14 16 20 24 32 44 | base 4 con i mezzi passi (1,5 · 2,5 · 3,5) e 11: le card di sistema non starebbero in una scala a passo 8. Valori invariati, nomi sulla scala (T11) |
+| margine/schermo    | 20                            | lato di ogni schermata dell'app                                                                                                                     |
+| controllo/primario | h 56                          | stato del microfono, azione che chiede qualcosa                                                                                                     |
+| controllo/coppia   | h 48 · gap 10                 | le due azioni hairline in fondo                                                                                                                     |
+| controllo/sistema  | h 38 · h 34                   | azioni App Intent su lock screen · isola                                                                                                            |
 
 **Non esistono token di ombra né di elevazione.** Le superfici si distinguono per fondo e filetto: in una stanza al buio un'ombra è una macchia. L'unica profondità dell'app è l'alone dietro il palco.
 
@@ -331,6 +331,37 @@ Non sono stime: sono i punti dove una scelta di design costa codice, e vanno vis
 | Live Activity iOS             | **alto · rinviabile**    | estensione WidgetKit in Swift dentro Flutter, interfaccia duplicata, stato via App Group, azioni come App Intent. L'alpha vive anche senza                                                                                                                                                                                                                                                                                                                          |
 | notifica Android              | **dovuto**               | un foreground service che tiene il microfono deve mostrarla, o il sistema lo chiude                                                                                                                                                                                                                                                                                                                                                                                 |
 | degrado termico               | **medio · rinviabile**   | nessuna API affidabile: si osserva il frame rate e si scende al ripiego statico. Serve solo quando l'alpha durerà sessioni lunghe                                                                                                                                                                                                                                                                                                                                   |
+
+## T11  Due livelli, e il tablet
+
+Da D-019 i token hanno **due livelli**. Le primitive (BaPaletteTokens, BaPrimitiveTokens) seguono nomi e passi di Tailwind v4; i token semantici di questo documento ci fanno riferimento, e i widget leggono solo quelli. Un valore che non sta in una primitiva è un'**eccezione**: o porta il numero nel nome (text22, rounded22), o resta un token di componente con il motivo accanto — la scala delle presenze, le opacità di stato, i tempi. La mappa completa sta in design/handoff/004/mappa-token.md.
+
+| token                   | valore                 | nota                                                                             |
+|-------------------------|------------------------|----------------------------------------------------------------------------------|
+| sp1 … sp14              | N × 4                  | spazio: 1 · 1,5 · 2 · 2,5 · 3 · 3,5 · 4 · 5 · 6 · 7 · 8 · 11 · 12 · 14           |
+| textXs … textXl         | 12 · 14 · 16 · 18 · 20 | la scala standard; sotto il 12 non si scrive                                     |
+| text22                  | 22                     | estensione: il titolo della stanza. 20 è già il foglio, 24 ruba altezza al palco |
+| rounded2xl · 3xl · full | 16 · 24 · 999          |                                                                                  |
+| rounded22               | 22                     | estensione: imita il contenitore della Live Activity, che non disegniamo noi     |
+| pietra50 … 975          | 16 neutri caldi        | passi intermedi sotto il 900: il tema scuro vive lì                              |
+| sabbia100 … 950         | 6 valori               | l'azione chiara e i suoi fondi                                                   |
+| corallo400              | \#E4705B               | solo l'errore                                                                    |
+| \<tinta\>700 · 900      | 12 famiglie            | il mazzo: stop chiaro e scuro                                                    |
+| a5_5 … a92              | alfa                   | modificatore /n; a5_5 è l'alone e non si arrotonda                               |
+| sm                      | 600                    | estensione: Tailwind sm = 640                                                    |
+
+**Breakpoint, mobile first.** La base è il telefono, da 360 dp. Da sm = 600 il tablet: è la soglia con cui Android classifica i tablet (sw600dp) e oltre la quale ignora il blocco dell'orientamento, e l'iPad mini in verticale (744 pt) ci sta dentro. 768 (md) lo escluderebbe, 640 (sm di Tailwind) lascerebbe fuori i tablet Android da 7–8 pollici. Il layout dipende solo dalla larghezza: un tablet in orizzontale è uno schermo più largo, non un caso a parte.
+
+| token                 | valore         | nota                                                                                                                                                                                                                       |
+|-----------------------|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| layout/colonna        | 512 (max-w-lg) | testi, elenchi, moduli e azioni, centrati; sul telefono è lo schermo meno i margini                                                                                                                                        |
+| layout/margine-tablet | 32 (sp8)       | margine del palco e minimo della colonna da sm in su                                                                                                                                                                       |
+| presenza/scala-tablet | × 1,5          | 312 · 234 · 195 · 168 · 132; iniziali 92 · 69 · 58 · 50 · 39; minimo 32 invariato                                                                                                                                          |
+| presenza/per-riga-max | 3 · 4 da sm    | tetto assoluto per riga (perRigaMax), per quando il palco supera il suo tetto per conteggio perché non ci starebbe. Quel tetto (tettoPerRiga) resta nel codice e non è un token. A 680 dp utili quattro a 132 chiedono 597 |
+
+**Le azioni restano in fondo**, larghe quanto la colonna: a 744 dp la pillola arriva a 116 dp dal bordo, dove arriva il pollice con il tablet in due mani. Niente sale in alto e niente si sposta di lato: chi ha usato BA sul telefono trova le stesse cose negli stessi posti, senza guardare.
+
+**Testo grande.** Con testo grande, ciò che sta sopra le azioni scorre; le azioni restano ancorate in basso; il testo del consenso è sempre raggiungibile per intero. Vale a 360 e a 744 dp e non ha una soglia: scorre quando non ci sta. Gli screenshot in design/handoff/004b/screenshots/ mostrano consenso e attesa in tedesco a testo 2,0, all'inizio e in fondo allo scorrimento.
 
 ## Cosa manca ancora
 
