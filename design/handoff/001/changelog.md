@@ -1,5 +1,7 @@
 # Task 001 — changelog
 
+> Le sei segnalazioni sotto sono state decise in review: vedi DECISIONS.md (D-024, D-025), il giro 001b e le voci "Aperte".
+
 7 novembre 2026 · Claude Design · documenti aggiornati in `design/system/`, schermate in `design/handoff/001/Schermate 001.dc.html`, screenshot in `design/handoff/001/screenshots/`.
 
 **Non ancora applicato:** *BA · Fase 2 schermate* non era tra i file ricevuti. I punti 2 (5h), 4 (5i), la parte Fase 2 dei punti 5 (5j), 7 e 8 (5f, premuto) restano da fare su quel file. Le schermate nuove di 5a, 5d, 5j e delle superfici di sistema sono disegnate a parte e vanno sostituite in Fase 2 quando arriva.

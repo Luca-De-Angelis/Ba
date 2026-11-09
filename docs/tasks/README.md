@@ -9,10 +9,12 @@ Un file per task, `NNN-nome.md`, al massimo una pagina, nel formato di `_templat
 | 001b | Correzioni al 001: superfici di sistema e token dello scheletro (consegna in `design/handoff/001b/`) | Claude Design | Concluso |
 | 002 | `002-stati-critici.md` — gli stati critici della stanza | Claude Design | Dopo il 001 e insieme al 004 |
 | 003 | Home, connessioni, ascolto condiviso, radio | — | In attesa degli stakeholder |
-| 004 | `004-token-tailwind-e-tablet.md` — scale alla Tailwind, breakpoint e layout tablet | Claude Design | Dopo il 001 |
+| 004 | `004-token-tailwind-e-tablet.md` — scale alla Tailwind, breakpoint e layout tablet | Claude Design | Concluso |
+| 004b | Correzioni al 004: compilazione di tokens.dart, `perRigaMax`, scorrimento a testo grande, colori fuori token (consegna in `design/handoff/004b/`) | Claude Design | Concluso |
 | 005 | `005-bapalco-disposizione.md` — BaPalco: la disposizione come funzione pura | Claude Code | Concluso |
 | 005b | Anteprima SVG delle disposizioni (`design/handoff/005/disposizioni.svg`) | Claude Code | Concluso |
 | 005c | Simmetria delle disposizioni a parità di altezza | Claude Code | Concluso |
-| 006 | `006-token-001.md` — applicare i token e i documenti del 001 | Claude Code | In corso |
+| 006 | `006-token-001.md` — applicare i token e i documenti del 001 | Claude Code | Concluso |
+| 007 | `007-token-004.md` — applicare i token del 004: due livelli, rinomine, tablet | Claude Code | In corso |
 
 Da qui in avanti fanno fede questi file Markdown, non le versioni in Claude Docs.

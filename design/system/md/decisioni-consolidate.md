@@ -44,6 +44,8 @@ Le presenze si impacchettano in posizioni irregolari, senza griglia e senza post
 | 5–6       | 112 dp    | 33 dp    | 17 dp                           |
 | 7–8       | **88 dp** | 26 dp    | 17 dp                           |
 
+**Sul tablet, da 600 dp di larghezza, la scala cresce di una mezza volta**: 312, 234, 195, 168, 132, iniziali 92, 69, 58, 50, 39 (BaPresenzaTokens.scalaTablet). Rapporti, luce di 17 e fondo dei 32 restano quelli. Alla misura del telefono, a 744 dp il gruppo occuperebbe un terzo della larghezza: un tablet si guarda da più lontano, spesso appoggiato, e il palco deve leggersi a colpo d'occhio. Il palco prende la larghezza meno 2 × 32 e accetta fino a quattro presenze per riga (perRigaMax); a testo grande cede con la stessa catena del telefono.
+
 ## 7.6  Distanza minima: è un token, non un layout
 
 Distanza fra i centri ≥ diametro + banda anello (5) + crescita al picco (4) + respiro (8) = **17 pt di luce fra le sagome**. È il vincolo che tiene l'anello di chi parla fuori dal vicino anche al massimo dell'escursione. Se l'algoritmo di impacchettamento scende sotto questa soglia, il segnale si degrada: la soglia va imposta al packing, non corretta a valle.
@@ -69,7 +71,7 @@ Chi parla porta un anello che segue la propria sagoma, reattivo al livello audio
 
 ## 7.8  Più voci insieme: un limiter sulla grafica
 
-Con più voci contemporanee l'escursione di ciascun anello si comprime, così l'energia visiva totale resta costante: a due voci il massimo per anello scende a 1,042 di scala e 0,66 di opacità. **Oltre le due**, ciascun anello riceve l'escursione a una voce moltiplicata per 1,12/n, dove n è il numero di voci: l'energia visiva totale resta quella a due voci, e a otto voci ogni anello respira appena (BaPresenza.quotaEscursione). L'albero di Natale diventa impossibile per costruzione, non sconsigliato per buon gusto.
+Con più voci contemporanee l'escursione di ciascun anello si comprime, così l'energia visiva totale resta costante: a due voci il massimo per anello scende a 1,042 di scala e 0,66 di opacità. **Oltre le due**, ciascun anello riceve l'escursione a una voce moltiplicata per 1,12/n, dove n è il numero di voci: l'energia visiva totale resta quella a due voci, e a otto voci ogni anello respira appena (BaPresenzaTokens.quotaEscursione). L'albero di Natale diventa impossibile per costruzione, non sconsigliato per buon gusto.
 
 ## 7.9  Voce mutata da me — vale per la sessione
 

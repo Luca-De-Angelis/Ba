@@ -1,5 +1,6 @@
 <!-- Copia di lettura generata da "BA - Fase 2 schermate.dc.html". Fa fede l'HTML esportato da Claude Design; i valori fanno fede in app/lib/design_system/tokens.dart. -->
-
+Avviso · task 004
+Taglie del testo superate dal task 004; fa fede tokens.dart.
 <div class="section">
 BA · fase 2 · le altre superfici
 Accesso, elenco, attesa, impostazioni, e la superficie più guardata

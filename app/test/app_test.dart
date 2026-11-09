@@ -13,7 +13,7 @@ void main() {
 
     expect(find.byType(WidgetsApp), findsOneWidget);
     final fondo = tester.widget<ColoredBox>(find.byType(ColoredBox).first);
-    expect(fondo.color, BaColor.fondoApp);
+    expect(fondo.color, BaColorTokens.fondoApp);
   });
 
   testWidgets('la chiave di prova esiste nelle cinque lingue', (tester) async {
