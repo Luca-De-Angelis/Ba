@@ -121,4 +121,100 @@ void main() {
       expect(BaRaggioTokens.riquadro, 16);
     });
   });
+
+  group('barra delle azioni (task 002, punto 12)', () {
+    test('tre posti: un primario e due secondari', () {
+      expect(BaBarraAzioniTokens.posti, 3);
+    });
+
+    test('visibili(n): n da 1 a 3, poi sempre 3', () {
+      for (var n = 1; n <= 3; n++) {
+        expect(BaBarraAzioniTokens.visibili(n), n, reason: '$n azioni');
+      }
+      for (var n = 4; n <= 8; n++) {
+        expect(BaBarraAzioniTokens.visibili(n), 3, reason: '$n azioni');
+      }
+    });
+
+    test('«Altro» raccoglie le azioni oltre i tre posti', () {
+      expect(BaBarraAzioniTokens.inAltro(4), 1);
+      expect(BaBarraAzioniTokens.inAltro(5), 2);
+      expect(BaBarraAzioniTokens.conAltro(3), isFalse);
+      expect(BaBarraAzioniTokens.conAltro(4), isTrue);
+    });
+  });
+
+  group('suono (task 002)', () {
+    test('un suono non è mai consentito a microfono acceso', () {
+      expect(BaSuonoTokens.consentito(microfonoAcceso: true), isFalse);
+      expect(BaSuonoTokens.consentito(microfonoAcceso: false), isTrue);
+    });
+  });
+
+  group('vibrazione (task 002)', () {
+    final pattern = <BaPatternApticoTokens>[
+      BaApticaTokens.microfonoAcceso,
+      BaApticaTokens.microfonoSpento,
+      BaApticaTokens.salitaSulPalco,
+      BaApticaTokens.parolaRicevuta,
+      BaApticaTokens.parolaRevocata,
+      BaApticaTokens.soloGruppo,
+      BaApticaTokens.connessionePersa,
+      BaApticaTokens.connessioneRipresa,
+    ];
+
+    /// Durate degli impulsi: gli elementi in posizione dispari di `ms`
+    /// (la posizione 0 è la pausa iniziale). Niente ampiezza: con il telefono
+    /// in tasca la forza non si legge.
+    List<int> impulsi(BaPatternApticoTokens p) =>
+        [for (var i = 1; i < p.ms.length; i += 2) p.ms[i]];
+
+    test('ms e ampiezza hanno la stessa lunghezza, per ogni pattern', () {
+      for (final p in pattern) {
+        expect(p.ampiezza.length, p.ms.length, reason: p.nome);
+      }
+    });
+
+    test('i sette segnali si distinguono per numero e durata degli impulsi', () {
+      final segnali = <BaPatternApticoTokens>[
+        BaApticaTokens.microfonoAcceso,
+        BaApticaTokens.microfonoSpento,
+        BaApticaTokens.salitaSulPalco,
+        BaApticaTokens.parolaRicevuta,
+        BaApticaTokens.parolaRevocata,
+        BaApticaTokens.soloGruppo,
+        BaApticaTokens.connessionePersa,
+      ];
+      for (var i = 0; i < segnali.length; i++) {
+        for (var j = i + 1; j < segnali.length; j++) {
+          expect(impulsi(segnali[i]), isNot(impulsi(segnali[j])),
+              reason: '${segnali[i].nome} contro ${segnali[j].nome}');
+        }
+      }
+    });
+
+    test('connessioneRipresa è uguale a microfonoSpento, per progetto', () {
+      expect(impulsi(BaApticaTokens.connessioneRipresa), impulsi(BaApticaTokens.microfonoSpento));
+      expect(BaApticaTokens.connessioneRipresa.ms, BaApticaTokens.microfonoSpento.ms);
+      expect(BaApticaTokens.connessioneRipresa.ampiezza, BaApticaTokens.microfonoSpento.ampiezza);
+    });
+  });
+
+  group('disco del microfono spento (task 002)', () {
+    test('badgeDiametro sta fra glifo e badgeMax per ogni diametro della scala', () {
+      for (final d in [88.0, 112.0, 130.0, 156.0, 208.0]) {
+        final b = BaPresenzaTokens.badgeDiametro(d);
+        expect(b, greaterThanOrEqualTo(BaPresenzaTokens.glifo), reason: '$d');
+        expect(b, lessThanOrEqualTo(BaPresenzaTokens.badgeMax), reason: '$d');
+      }
+    });
+
+    test('a 312 (la presenza sola sul tablet) vale badgeMax', () {
+      expect(BaPresenzaTokens.badgeDiametro(312), BaPresenzaTokens.badgeMax);
+    });
+
+    test('la cornice sporge di 8 dp dalla scatola del palco', () {
+      expect(BaAscoltoTokens.corniceSporge, 8);
+    });
+  });
 }
