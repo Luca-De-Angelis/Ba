@@ -34,6 +34,7 @@ Un solo registro per tutte le decisioni di prodotto e di design. Le decisioni te
 | D-026 | 8/11/2026 | Tipografia: corpo 16, secondario 14, marcatore e nota 12 (erano 15, 13, 11, 10). Raggi: foglio 24, riquadro 16 (erano 26 e 14) | Task 004; confermata da Luca | Valida |
 | D-027 | 8/11/2026 | Il tablet si decide sulla larghezza dello schermo, da 600 dp. Sul tablet la scala del palco cresce di 1,5 (312, 234, 195, 168, 132). Il tetto assoluto di presenze per riga è 3 sul telefono e 4 sul tablet; il tetto per conteggio resta nel codice del palco | Task 004, 004b; confermata da Luca | Valida |
 | D-028 | 8/11/2026 | D-021 vale per le classi di token. `BaOra`, `BaPayloadStanza` e `BaRegole` non sono né token né widget e restano senza suffisso | Task 004 | Valida |
+| D-029 | 9/11/2026 | Quando cade la connessione il microfono si spegne, e alla ripresa resta spento: lo stato del microfono appartiene alla connessione. Per questo suono e vibrazione di connessione persa sono sicuri | Sintesi tecnica sull'audio §1; task 002b | Valida |
 
 ## Aperte
 
@@ -45,3 +46,5 @@ Un solo registro per tutte le decisioni di prodotto e di design. Le decisioni te
 - Tablet Android: con target 36 il blocco in verticale viene ignorato dai 600 dp in su; esiste una deroga temporanea, che sparisce con target 37. Da decidere con lo sviluppo se attivarla.
 - Regola del limiter oltre le due voci (escursione × 1,12/n): provvisoria fino alla prova con tre o più voci vere.
 - Traduzioni: quelle tedesche, e quelle delle altre lingue, da far rivedere a madrelingua.
+- Vibrazione: i pattern vanno provati su un iPhone e su un Android veri, in particolare le coppie "spento" e "solo gruppo", "acceso" e "revocata", "ricevuta" e "salita".
+- Suoni: `ba_mic_spento`, `ba_conn_persa` e `ba_conn_ripresa` esistono solo come specifica; vanno prodotti, e chi li realizza non è deciso.
