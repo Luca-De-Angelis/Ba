@@ -36,3 +36,15 @@ L'app gira su telefono e tablet dalla beta 1, per ora solo in verticale. Due pun
 - Il blocco in verticale si imposta sia nella configurazione nativa sia con `SystemChrome.setPreferredOrientations`, ma il layout non deve dipenderne: i breakpoint usano la larghezza.
 
 Nota: `tokens.dart` è la versione esportata da Claude Design prima del task 001, che ne corregge alcuni valori e nomi.
+
+## Galleria di sviluppo (D-030)
+
+Una pagina per vedere i componenti del design system in Chrome, senza emulatore né Mac. Il web serve solo a questo: i target restano iOS e Android.
+
+Da questa cartella (`app/`):
+
+```bash
+flutter run -d chrome -t lib/galleria/main_galleria.dart
+```
+
+La galleria sta in `lib/galleria/`, usa solo i token e i suoi testi sono fissi (fuori da `l10n/`). Ha tre controlli di sviluppo: mostra le aree toccabili, riduci movimento, larghezza 360 o 744.

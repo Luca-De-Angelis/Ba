@@ -17,7 +17,9 @@ Un file per task, `NNN-nome.md`, al massimo una pagina, nel formato di `_templat
 | 005c | Simmetria delle disposizioni a parità di altezza | Claude Code | Concluso |
 | 006 | `006-token-001.md` — applicare i token e i documenti del 001 | Claude Code | Concluso |
 | 007 | `007-token-004.md` — applicare i token del 004: due livelli, rinomine, tablet | Claude Code | Concluso |
-| 008 | `008-token-002.md` — applicare i token e i documenti del 002 | Claude Code | In corso |
-| 009 | Componenti base | Claude Code | Brief da scrivere |
+| 008 | `008-token-002.md` — applicare i token e i documenti del 002 | Claude Code | Concluso |
+| 009 | `009-batouchable.md` — BaTouchable e la galleria per vederlo | Claude Code | In corso |
+| 010 | BaRitratto, BaAnello, BaPresenza | Claude Code | Brief da scrivere |
+| 011 | BaPalco (widget) e la stanza vuota con una persona | Claude Code | Brief da scrivere |
 
 Da qui in avanti fanno fede questi file Markdown, non le versioni in Claude Docs.
