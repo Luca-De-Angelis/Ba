@@ -134,24 +134,44 @@ i 18 sono anello (5) e crescita al picco (4) sui due bordi esterni
 
 Valori già citati nel §7 e nelle schermate ma assenti da tokens.dart. Ora ci sono, con un nome; la colonna *dove* dice dove si usano.
 
-| token                      | valore                     | dove                                                                                                |
-|----------------------------|----------------------------|-----------------------------------------------------------------------------------------------------|
-| anello/escursione-scala    | 1,00 → 1,075               | respiro dell'anello a una voce, dal riposo al picco (§7.7)                                          |
-| anello/escursione-opacità  | 0,28 → 0,95                | stesso respiro, sull'opacità del tratto (§7.7)                                                      |
-| anello/crescita-picco      | 4                          | quanto l'anello si allarga al picco; entra nella distanza minima (§7.6, T6 bis)                     |
-| anello/respiro             | 8                          | luce oltre il picco fra un anello e il vicino: 5 + 4 + 8 = 17 (§7.6)                                |
-| limiter/due-voci           | scala 1,042 · opacità 0,66 | massimo per anello con due voci insieme (§7.8)                                                      |
-| limiter/oltre-due          | escursione × 1,12 / n      | da due voci in su: l'energia totale resta quella a due (§7.8). A due dà i valori sopra, arrotondati |
-| presenza/tetto-luminanza   | L ≤ 0,18                   | stop più chiaro di ogni tinta e di ogni sfumatura (§7.3)                                            |
-| presenza/velo-immagine     | rgba(8,7,6,.34)            | dentro la sagoma, su ogni foto: il tetto vale anche lì (§7.3)                                       |
-| presenza/velo-mutata       | rgba(8,7,6,.66)            | voce mutata con immagine (§7.9)                                                                     |
-| presenza/neutro-bloccata   | \#3D3B39 → \#2A2927        | bloccata: la tinta scompare, l'identità no (§7.10)                                                  |
-| presenza/iniziali-mutata   | opacità .80                | iniziali della voce mutata (§7.9)                                                                   |
-| presenza/iniziali-bloccata | opacità .70                | iniziali della bloccata (§7.10)                                                                     |
-| presenza/glifo             | 28 · ripiego 32            | glifo sulla presenza; 32 solo se a 28 non si legge su telefono, mai colorato (§7.9, aperto 2)       |
-| presenza/glifo-spento      | opacità .45 → 1            | glifo della voce mutata, spento e acceso (§7.9, T8)                                                 |
-| presenza/scheletro         | opacità .30 → .62          | sagome vuote mentre entro, in 1,8 s (attesa/skeleton, T8)                                           |
-| pubblico/campione          | 3                          | bolle del campione del pubblico (§7.11)                                                             |
+| token                       | valore                                    | dove                                                                                                                                               |
+|-----------------------------|-------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| anello/escursione-scala     | 1,00 → 1,075                              | respiro dell'anello a una voce, dal riposo al picco (§7.7)                                                                                         |
+| anello/escursione-opacità   | 0,28 → 0,95                               | stesso respiro, sull'opacità del tratto (§7.7)                                                                                                     |
+| anello/crescita-picco       | 4                                         | quanto l'anello si allarga al picco; entra nella distanza minima (§7.6, T6 bis)                                                                    |
+| anello/respiro              | 8                                         | luce oltre il picco fra un anello e il vicino: 5 + 4 + 8 = 17 (§7.6)                                                                               |
+| limiter/due-voci            | scala 1,042 · opacità 0,66                | massimo per anello con due voci insieme (§7.8)                                                                                                     |
+| limiter/oltre-due           | escursione × 1,12 / n                     | da due voci in su: l'energia totale resta quella a due (§7.8). A due dà i valori sopra, arrotondati                                                |
+| presenza/tetto-luminanza    | L ≤ 0,18                                  | stop più chiaro di ogni tinta e di ogni sfumatura (§7.3)                                                                                           |
+| presenza/velo-immagine      | rgba(8,7,6,.34)                           | dentro la sagoma, su ogni foto: il tetto vale anche lì (§7.3)                                                                                      |
+| presenza/velo-mutata        | rgba(8,7,6,.66)                           | voce mutata con immagine (§7.9)                                                                                                                    |
+| presenza/neutro-bloccata    | \#3D3B39 → \#2A2927                       | bloccata: la tinta scompare, l'identità no (§7.10)                                                                                                 |
+| presenza/iniziali-mutata    | opacità .80                               | iniziali della voce mutata (§7.9)                                                                                                                  |
+| presenza/iniziali-bloccata  | opacità .70                               | iniziali della bloccata (§7.10)                                                                                                                    |
+| presenza/glifo              | 28 · ripiego 32                           | glifo sulla presenza; 32 solo se a 28 non si legge su telefono, mai colorato (§7.9, aperto 2)                                                      |
+| presenza/glifo-spento       | opacità .45 → 1                           | glifo della voce mutata, spento e acceso (§7.9, T8)                                                                                                |
+| presenza/scheletro          | opacità .30 → .62                         | sagome vuote mentre entro, in 1,8 s (attesa/skeleton, T8)                                                                                          |
+| pubblico/campione           | 3                                         | bolle del campione del pubblico (§7.11)                                                                                                            |
+| colore/mic-spento-fondo     | voceKeyline (pietra975 · a92)             | disco del microfono spento sul palco, per gli altri (§7.17)                                                                                        |
+| colore/mic-spento-glifo     | pietra100 · a62 (glifoTratto)             | glifo barrato dentro il disco, per gli altri (§7.17)                                                                                               |
+| colore/mic-spento-bordo     | filettoMarcato                            | bordo del disco, per gli altri (§7.17)                                                                                                             |
+| colore/mic-spento-io        | sabbia300 · glifo pietra940               | disco chiaro sulla mia sagoma: fra più dischi trovo il mio (§7.17)                                                                                 |
+| colore/parola-tacca         | sabbia300 · bordo pietra975 · a92         | tacca sotto la sagoma di chi ha la parola (§7.18)                                                                                                  |
+| colore/ascolto-gruppo       | pietra100 · a32                           | fascia «chi mi sente» e cornice del palco, a filo: parlo al mio gruppo (§7.18)                                                                     |
+| colore/ascolto-tutti        | sabbia100 → sabbia400 · testo pietra940   | fascia piena: parlo a tutti (§7.18)                                                                                                                |
+| colore/velo-sipario         | pietra975 · a62                           | dietro un foglio aperto: consenso, scheda (§7.17)                                                                                                  |
+| presenza/badge-rapporto     | 0,20 × diametro, fra 28 e 44              | disco del microfono spento; sempre ≥ glifo, mai oltre areaMinima. Eccezione: rapporto                                                              |
+| presenza/badge-centro       | 0,854                                     | posizione del disco sul bordo della sagoma a 45° (0,5 + 0,5 cos 45°). Eccezione: geometria                                                         |
+| presenza/tacca              | altezza 6 · larghezza 0,42 × d · sporge 9 | tacca della parola, nella luce di 17: non sposta il packing. Eccezione: rapporto                                                                   |
+| ascolto/altezza-minima      | 72                                        | fascia «chi mi sente»: due righe e il riquadro. Eccezione                                                                                          |
+| ascolto/cornice             | border2 · raggio 28                       | cornice attorno al palco quando parlo al gruppo; si apre quando ho la parola. Eccezione: 28 sta sopra le sagome                                    |
+| barra/posti                 | 1 primario · 2 secondari · Altro 48       | regola della barra delle azioni; «Esci» e «Scendi dal palco» fissi (§7.19)                                                                         |
+| scheda/fisse                | 3 · righe ≥ 48                            | scheda di una persona: tre azioni fisse e un gruppo che cresce (§7.19)                                                                             |
+| movimento/badge-microfono   | 140 ms (= glifo)                          | il disco entra come il glifo e si ferma (§7.17)                                                                                                    |
+| movimento/fascia-ascolto    | 200 ms (= ricompattamento)                | la fascia cambia e il palco si apre o si chiude una volta (§7.18)                                                                                  |
+| movimento/salita-attesa-max | 8 s · eccezione                           | oltre, «Sto salendo…» torna «Mettiti in coda» (stato 2)                                                                                            |
+| aptica/\*                   | 8 pattern: vedi suono-e-vibrazione        | BaApticaTokens: microfonoAcceso, microfonoSpento, salitaSulPalco, parolaRicevuta, parolaRevocata, soloGruppo, connessionePersa, connessioneRipresa |
+| suono/\*                    | 3 suoni · 0,5 del volume                  | BaSuonoTokens: ba_mic_spento 180 ms, ba_conn_persa 300 ms, ba_conn_ripresa 220 ms; consentito() è falso a microfono acceso                         |
 
 ## T7  Forma, spazio, controlli
 

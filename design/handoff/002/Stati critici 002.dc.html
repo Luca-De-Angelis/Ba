@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#0A0A09; color:#F2EEE9; font-family:'Instrument Sans',system-ui,sans-serif; }
+  a { color:#D9CFA8; text-decoration:none; }
+  a:hover { color:#EDE7DC; }
+</style>
+</helmet>
+
+<div style="background:#0A0A09;color:#F2EEE9;display:flex;flex-direction:column">
+
+<div style="padding:40px 56px 32px;border-bottom:1px solid rgba(242,238,233,0.10);display:flex;flex-direction:column;gap:12px">
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#8A837B">BA · task 002 · gli stati critici della stanza · 360 dp e 744 dp</div>
+  <div style="font-size:34px;font-weight:600;letter-spacing:-0.02em;line-height:1.15">Salire, tacere, avere la parola</div>
+  <div style="display:flex;flex-direction:column;gap:8px;max-width:900px;font-size:16px;line-height:1.5;color:#A09890;text-wrap:pretty">
+    <div>Una famiglia di segni per ciò che una persona non sta facendo o sta facendo in un modo diverso dal solito: un disco da 28 dp all'angolo in basso a destra della sagoma, con un glifo barrato. Il microfono spento sul palco ha un microfono barrato; la voce mutata ha l'altoparlante barrato e la bloccata il cerchio barrato (§7.9, §7.10). Chi ha la parola in un sotto-DEN porta una tacca sotto la sagoma. L'anello resta di chi parla e basta.</div>
+    <div>Ogni stato si legge con tre canali indipendenti: forma (glifo, fascia piena o a filo), testo (riga di stato, etichetta dello screen reader) e vibrazione. Il colore non porta niente che gli altri non portino già. Proprietà: <span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#F2EEE9">lingua</span> per il tedesco.</div>
+    <div style="color:#D9CFA8">Il prototipo non scorre e non anima: ogni stato è un fermo immagine. Con testo grande vale la regola di T11: ciò che sta sopra le azioni scorre, le azioni restano in basso, il palco non scorre.</div>
+  </div>
+</div>
+
+<sc-for list="{{ groups }}" as="g" hint-placeholder-count="2">
+<section data-screen-label="{{ g.label }}" style="padding:44px 56px 56px;display:flex;flex-direction:column;gap:40px;border-bottom:1px solid rgba(242,238,233,0.10)">
+  <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:26px;font-weight:600;letter-spacing:-0.01em">{{ g.titolo }}</div><div style="font-size:15px;line-height:1.5;color:#A09890;max-width:820px;text-wrap:pretty">{{ g.nota }}</div></div>
+  <sc-for list="{{ g.states }}" as="st" hint-placeholder-count="3">
+  <div id="s-{{ st.id }}" style="display:flex;flex-direction:column;gap:20px">
+    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#100F0E;background:#D9CFA8;padding:3px 8px;border-radius:999px">{{ st.num }}</div><div style="font-size:22px;font-weight:600;letter-spacing:-0.01em">{{ st.name }}</div></div>
+    <div style="font-size:14px;line-height:1.5;color:#A09890;max-width:760px;text-wrap:pretty">{{ st.note }}</div>
+    <div style="display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start">
+      <sc-for list="{{ st.frames }}" as="f" hint-placeholder-count="2">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#A09890">{{ f.label }}</div>
+        <div id="f-{{ f.id }}" style="position:relative;width:{{ f.w }}px;height:{{ f.h }}px;background:linear-gradient(180deg,#171413 0%,#100F0E 52%,#0B0A09 100%);border-radius:28px;border:1px solid rgba(242,238,233,0.12);overflow:hidden;display:flex;flex-direction:column">
+          <div style="height:{{ f.statusH }}px;flex:none;display:flex;align-items:flex-end;padding:0 {{ f.m }}px 8px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8A837B">21:40</div>
+          <div style="flex:none;height:84px;box-sizing:border-box;padding:4px {{ f.m }}px 0;display:flex;flex-direction:column;gap:5px">
+            <div style="font-size:22px;line-height:1.2;font-weight:600;letter-spacing:-0.26px;text-wrap:pretty">{{ f.titolo }}</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#A09890;line-height:1.3">{{ f.s1 }}</div>
+            <div style="display:flex;align-items:center;gap:7px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#8A837B;line-height:1.3">
+              <sc-if value="{{ f.s2Glifo }}" hint-placeholder-val="{{ false }}">
+                <div style="position:relative;flex:none;width:16px;height:16px;border-radius:999px;background:rgba(8,7,6,0.92);border:1px solid rgba(242,238,233,0.16);box-sizing:border-box">
+                  <div style="position:absolute;left:36%;top:14%;width:28%;height:38%;border:1.5px solid rgba(242,238,233,0.7);border-radius:999px;box-sizing:border-box"></div>
+                  <div style="position:absolute;left:22%;top:32%;width:56%;height:30%;border:1.5px solid rgba(242,238,233,0.7);border-top:none;border-radius:0 0 999px 999px;box-sizing:border-box"></div>
+                  <div style="position:absolute;left:8%;top:calc(50% - 0.75px);width:84%;height:1.5px;background:rgba(242,238,233,0.9);transform:rotate(-45deg)"></div>
+                </div>
+              </sc-if>
+              <span>{{ f.s2 }}</span>
+            </div>
+          </div>
+          <div style="flex:1;min-height:0;margin:0 {{ f.m }}px;position:relative;display:flex;align-items:center;justify-content:center">
+            <div style="position:absolute;inset:0;background:radial-gradient(closest-side at 50% 50%,rgba(230,220,190,0.06),rgba(230,220,190,0.02) 60%,rgba(230,220,190,0) 100%);pointer-events:none"></div>
+            <sc-if value="{{ f.vuoto }}" hint-placeholder-val="{{ false }}">
+              <div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;max-width:280px">
+                <div style="font-size:22px;line-height:1.25;font-weight:600;letter-spacing:-0.26px">{{ f.vuotoT1 }}</div>
+                <div style="font-size:16px;line-height:1.5;color:#A09890;text-wrap:pretty">{{ f.vuotoT2 }}</div>
+              </div>
+            </sc-if>
+            <div style="position:relative;flex:none;width:{{ f.pal.w }}px;height:{{ f.pal.h }}px">
+              <div style="position:absolute;inset:-8px;border:{{ f.pal.cornice }};border-radius:28px;pointer-events:none"></div>
+              <sc-for list="{{ f.pal.items }}" as="p" hint-placeholder-count="5">
+                <div aria-label="{{ p.aria }}" style="position:absolute;left:{{ p.x }}px;top:{{ p.y }}px;width:{{ p.d }}px;height:{{ p.d }}px">
+                  <sc-if value="{{ p.parla }}" hint-placeholder-val="{{ false }}">
+                    <div style="position:absolute;inset:-3px;border-radius:{{ p.br }};border:3px solid rgba(8,7,6,0.92)"></div>
+                    <div style="position:absolute;inset:-5px;border-radius:{{ p.br }};border:2px solid #F5F1EC"></div>
+                  </sc-if>
+                  <div style="width:100%;height:100%;border-radius:{{ p.br }};background:{{ p.bg }};opacity:{{ p.op }};display:flex;align-items:center;justify-content:center;font-size:{{ p.fs }}px;font-weight:600;color:#FFFFFF">{{ p.ini }}</div>
+                  <sc-if value="{{ p.tacca }}" hint-placeholder-val="{{ false }}">
+                    <div style="position:absolute;left:{{ p.tX }}px;bottom:-9px;width:{{ p.tW }}px;height:6px;border-radius:999px;background:#D9CFA8;border:1.5px solid rgba(8,7,6,0.92);box-sizing:content-box"></div>
+                  </sc-if>
+                  <sc-if value="{{ p.badge }}" hint-placeholder-val="{{ false }}">
+                    <div style="position:absolute;left:{{ p.bX }}px;top:{{ p.bY }}px;width:{{ p.bD }}px;height:{{ p.bD }}px;border-radius:999px;background:{{ p.bFondo }};border:1.5px solid {{ p.bBordo }};box-sizing:border-box">
+                      <div style="position:absolute;left:36%;top:14%;width:28%;height:38%;border:2px solid {{ p.bGlifo }};border-radius:999px;box-sizing:border-box"></div>
+                      <div style="position:absolute;left:22%;top:32%;width:56%;height:30%;border:2px solid {{ p.bGlifo }};border-top:none;border-radius:0 0 999px 999px;box-sizing:border-box"></div>
+                      <div style="position:absolute;left:calc(50% - 1px);top:61%;width:2px;height:15%;background:{{ p.bGlifo }}"></div>
+                      <div style="position:absolute;left:8%;top:calc(50% - 2.5px);width:84%;height:5px;background:{{ p.bFondo }};transform:rotate(-45deg)"></div>
+                      <div style="position:absolute;left:8%;top:calc(50% - 1px);width:84%;height:2px;background:{{ p.bGlifo }};transform:rotate(-45deg)"></div>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <sc-if value="{{ f.pubblico }}" hint-placeholder-val="{{ false }}">
+            <div style="flex:none;height:44px;display:flex;align-items:center;justify-content:center;gap:10px;padding:0 {{ f.m }}px">
+              <div style="display:flex;gap:4px">
+                <div style="width:22px;height:22px;border-radius:45% 55% 56% 44% / 53% 47% 52% 48%;background:linear-gradient(155deg,#2A6894 0%,#1B4463 100%)"></div>
+                <div style="width:22px;height:22px;border-radius:57% 43% 48% 52% / 46% 54% 50% 50%;background:linear-gradient(155deg,#AC3765 0%,#72203F 100%)"></div>
+                <div style="width:22px;height:22px;border-radius:52% 48% 43% 57% / 49% 51% 46% 54%;background:linear-gradient(155deg,#557426 0%,#374A18 100%)"></div>
+              </div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#8A837B">{{ f.pubT }}</div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ f.fascia }}" hint-placeholder-val="{{ false }}">
+            <div style="flex:none;padding:0 {{ f.m }}px 12px">
+              <div style="width:100%;max-width:{{ f.col }}px;margin:0 auto;box-sizing:border-box;min-height:72px;padding:12px 16px;border-radius:16px;background:{{ f.fBg }};border:1px solid {{ f.fBorder }};display:flex;align-items:center;gap:14px">
+                <div style="position:relative;flex:none;width:24px;height:24px;border-radius:999px;border:2px solid {{ f.fCol }};box-sizing:border-box;display:flex;align-items:center;justify-content:center">
+                  <sc-if value="{{ f.fPieno }}" hint-placeholder-val="{{ false }}"><div style="width:10px;height:10px;border-radius:999px;background:{{ f.fCol }}"></div></sc-if>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:3px;min-width:0">
+                  <div style="font-size:16px;line-height:1.3;font-weight:500;color:{{ f.fCol }};text-wrap:pretty">{{ f.fT }}</div>
+                  <div style="font-size:14px;line-height:1.43;color:{{ f.fColS }};text-wrap:pretty">{{ f.fSub }}</div>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+          <div style="flex:none;height:190px;box-sizing:border-box;padding:0 {{ f.m }}px 24px;display:flex;flex-direction:column;justify-content:flex-end">
+            <div style="width:100%;max-width:{{ f.col }}px;margin:0 auto;display:flex;flex-direction:column;gap:10px">
+              <sc-if value="{{ f.hint }}" hint-placeholder-val="{{ false }}"><div style="font-size:14px;line-height:1.43;color:#A09890;text-align:center;text-wrap:pretty">{{ f.hintT }}</div></sc-if>
+              <div style="min-height:56px;padding:8px 20px;box-sizing:border-box;border-radius:999px;background:{{ f.pBg }};border:1px solid {{ f.pBorder }};display:flex;align-items:center;justify-content:center;text-align:center;font-size:16px;line-height:1.3;font-weight:500;color:{{ f.pCol }}">{{ f.pT }}</div>
+              <div style="display:flex;gap:10px">
+                <sc-for list="{{ f.sec }}" as="s" hint-placeholder-count="2">
+                  <div style="flex:1 1 0;min-width:0;min-height:48px;padding:6px 12px;box-sizing:border-box;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;text-align:center;font-size:14px;line-height:1.3;color:#A09890">{{ s.t }}</div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          <sc-if value="{{ f.sheetOn }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;inset:0;background:rgba(8,7,6,0.62)"></div>
+            <div style="position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:center">
+              <div style="width:100%;max-width:{{ f.sheetMax }}px;max-height:{{ f.sheetH }}px;box-sizing:border-box;background:#161412;border:1px solid rgba(242,238,233,0.12);border-bottom:none;border-radius:24px 24px 0 0;display:flex;flex-direction:column">
+                <div style="flex:1;min-height:0;overflow-y:auto;scrollbar-width:none;padding:24px {{ f.m }}px 8px;display:flex;flex-direction:column;gap:12px">
+                  <div style="font-size:20px;line-height:1.25;font-weight:600;letter-spacing:-0.3px;text-wrap:pretty">{{ f.sheet.titolo }}</div>
+                  <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#8A837B;line-height:1.3">{{ f.sheet.sub }}</div>
+                  <sc-for list="{{ f.sheet.par }}" as="q" hint-placeholder-count="2"><div style="font-size:16px;line-height:1.5;color:{{ q.c }};text-wrap:pretty">{{ q.t }}</div></sc-for>
+                  <sc-for list="{{ f.sheet.righe }}" as="r" hint-placeholder-count="3">
+                    <div style="min-height:56px;box-sizing:border-box;padding:8px 0;border-top:1px solid rgba(242,238,233,0.12);display:flex;flex-direction:column;justify-content:center;gap:3px">
+                      <div style="font-size:16px;line-height:1.3;color:{{ r.c }}">{{ r.t }}</div>
+                      <div style="font-size:14px;line-height:1.43;color:#8A837B;text-wrap:pretty">{{ r.sub }}</div>
+                    </div>
+                  </sc-for>
+                  <sc-if value="{{ f.sheet.slot }}" hint-placeholder-val="{{ false }}">
+                    <div style="min-height:48px;box-sizing:border-box;padding:8px 12px;border-top:1px solid rgba(242,238,233,0.12);border:1px dashed rgba(242,238,233,0.22);border-radius:12px;display:flex;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#8A837B;line-height:1.3">{{ f.sheet.slotT }}</div>
+                  </sc-if>
+                </div>
+                <div style="flex:none;padding:12px {{ f.m }}px 24px;display:flex;flex-direction:column;gap:10px">
+                  <sc-for list="{{ f.sheet.bottoni }}" as="b" hint-placeholder-count="2">
+                    <div style="min-height:{{ b.h }}px;padding:8px 20px;box-sizing:border-box;border-radius:999px;background:{{ b.bg }};border:1px solid {{ b.bd }};display:flex;align-items:center;justify-content:center;text-align:center;font-size:{{ b.fs }}px;line-height:1.3;font-weight:{{ b.fw }};color:{{ b.c }}">{{ b.t }}</div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-for>
+</section>
+</sc-for>
+
+<section data-screen-label="Distinzione" style="padding:44px 56px 56px;display:flex;flex-direction:column;gap:28px;border-bottom:1px solid rgba(242,238,233,0.10)">
+  <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:26px;font-weight:600;letter-spacing:-0.01em">Distinzione a colpo d'occhio</div><div style="font-size:15px;line-height:1.5;color:#A09890;max-width:820px;text-wrap:pretty">Le cinque presenze che si possono incontrare sul palco, in colore e in scala di grigi. Il microfono spento tiene la tinta piena e le iniziali al 100%, e porta un disco: non si confonde con la voce mutata, che perde saturazione e ha un altoparlante barrato, né con la bloccata, che è neutra e ha il cerchio barrato. «Microfono acceso» non ha nessun segno.</div></div>
+  <div id="distinzione" style="display:flex;flex-direction:column;gap:28px">
+    <sc-for list="{{ distinzione }}" as="r" hint-placeholder-count="2">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#A09890">{{ r.titolo }}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:40px;padding:28px 36px;border-radius:24px;background:#100F0E;border:1px solid rgba(242,238,233,0.10);filter:{{ r.filtro }};align-self:flex-start">
+        <sc-for list="{{ r.items }}" as="p" hint-placeholder-count="5">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:22px;width:112px">
+            <div style="position:relative;width:96px;height:96px">
+              <sc-if value="{{ p.parla }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;inset:-3px;border-radius:{{ p.br }};border:3px solid rgba(8,7,6,0.92)"></div>
+                <div style="position:absolute;inset:-5px;border-radius:{{ p.br }};border:2px solid #F5F1EC"></div>
+              </sc-if>
+              <div style="width:100%;height:100%;border-radius:{{ p.br }};background:{{ p.bg }};opacity:{{ p.op }};filter:{{ p.sat }};display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:600;color:{{ p.col }}">{{ p.ini }}</div>
+              <sc-if value="{{ p.mic }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;left:62px;top:62px;width:28px;height:28px;border-radius:999px;background:rgba(8,7,6,0.92);border:1.5px solid rgba(242,238,233,0.16);box-sizing:border-box">
+                  <div style="position:absolute;left:36%;top:14%;width:28%;height:38%;border:2px solid rgba(242,238,233,0.62);border-radius:999px;box-sizing:border-box"></div>
+                  <div style="position:absolute;left:22%;top:32%;width:56%;height:30%;border:2px solid rgba(242,238,233,0.62);border-top:none;border-radius:0 0 999px 999px;box-sizing:border-box"></div>
+                  <div style="position:absolute;left:calc(50% - 1px);top:61%;width:2px;height:15%;background:rgba(242,238,233,0.62)"></div>
+                  <div style="position:absolute;left:8%;top:calc(50% - 2.5px);width:84%;height:5px;background:rgba(8,7,6,0.92);transform:rotate(-45deg)"></div>
+                  <div style="position:absolute;left:8%;top:calc(50% - 1px);width:84%;height:2px;background:rgba(242,238,233,0.85);transform:rotate(-45deg)"></div>
+                </div>
+              </sc-if>
+              <sc-if value="{{ p.spk }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;left:62px;top:62px;width:28px;height:28px;border-radius:999px;background:rgba(8,7,6,0.92);border:1.5px solid rgba(242,238,233,0.16);box-sizing:border-box">
+                  <div style="position:absolute;left:20%;top:38%;width:16%;height:24%;background:rgba(242,238,233,0.62)"></div>
+                  <div style="position:absolute;left:34%;top:26%;width:26%;height:48%;background:rgba(242,238,233,0.62);clip-path:polygon(0 28%,100% 0,100% 100%,0 72%)"></div>
+                  <div style="position:absolute;left:8%;top:calc(50% - 2.5px);width:84%;height:5px;background:rgba(8,7,6,0.92);transform:rotate(-45deg)"></div>
+                  <div style="position:absolute;left:8%;top:calc(50% - 1px);width:84%;height:2px;background:rgba(242,238,233,0.85);transform:rotate(-45deg)"></div>
+                </div>
+              </sc-if>
+              <sc-if value="{{ p.blk }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;left:62px;top:62px;width:28px;height:28px;border-radius:999px;background:rgba(8,7,6,0.92);border:1.5px solid rgba(242,238,233,0.16);box-sizing:border-box">
+                  <div style="position:absolute;left:24%;top:24%;width:52%;height:52%;border-radius:999px;border:2px solid rgba(242,238,233,0.62);box-sizing:border-box"></div>
+                  <div style="position:absolute;left:14%;top:calc(50% - 1px);width:72%;height:2px;background:rgba(242,238,233,0.85);transform:rotate(-45deg)"></div>
+                </div>
+              </sc-if>
+            </div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#A09890;text-align:center;line-height:1.3">{{ p.l }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    </sc-for>
+  </div>
+</section>
+
+<section data-screen-label="Regole" style="padding:44px 56px 56px;display:flex;flex-direction:column;gap:28px;border-bottom:1px solid rgba(242,238,233,0.10)">
+  <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:26px;font-weight:600;letter-spacing:-0.01em">La barra delle azioni e la scheda di una persona</div><div style="font-size:15px;line-height:1.5;color:#A09890;max-width:820px;text-wrap:pretty">La regola, senza le funzioni che potrebbero arrivare. Vale a 360 dp e a 744 dp: sul tablet la colonna è di 512 e il numero di posti non cambia, così chi conosce il telefono trova le stesse cose negli stessi posti.</div></div>
+  <div style="display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start">
+    <div style="display:flex;flex-direction:column;gap:14px;max-width:420px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#A09890">Barra delle azioni · tre posti</div>
+      <div style="font-size:15px;line-height:1.55;color:#F2EEE9;text-wrap:pretty">Un posto primario e due secondari, sempre. Dalla quarta azione compare «Altro» (48 × 48 dp), che apre un foglio con le rimanenti nell'ordine in cui sono definite. «Esci» e «Scendi dal palco» hanno un posto fisso e non finiscono mai in «Altro». Il primario cambia con lo stato; il resto non si riordina.</div>
+      <sc-for list="{{ barre }}" as="b" hint-placeholder-count="3">
+        <div style="display:flex;flex-direction:column;gap:8px;padding:14px 16px 16px;border-radius:16px;background:#100F0E;border:1px solid rgba(242,238,233,0.10)">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#8A837B">{{ b.titolo }}</div>
+          <div style="min-height:56px;border-radius:999px;background:linear-gradient(180deg,#EDE7DC 0%,#D2C9B6 100%);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;color:#100F0E">{{ b.p }}</div>
+          <div style="display:flex;gap:10px">
+            <div style="flex:1;min-height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.14);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">{{ b.s1 }}</div>
+            <div style="flex:1;min-height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.14);display:flex;align-items:center;justify-content:center;font-size:14px;color:#A09890">{{ b.s2 }}</div>
+            <sc-if value="{{ b.altro }}" hint-placeholder-val="{{ false }}"><div style="flex:none;width:48px;height:48px;border-radius:999px;border:1px solid rgba(242,238,233,0.30);display:flex;align-items:center;justify-content:center;gap:3px"><div style="width:4px;height:4px;border-radius:999px;background:#F2EEE9"></div><div style="width:4px;height:4px;border-radius:999px;background:#F2EEE9"></div><div style="width:4px;height:4px;border-radius:999px;background:#F2EEE9"></div></div></sc-if>
+          </div>
+          <sc-if value="{{ b.altro }}" hint-placeholder-val="{{ false }}"><div style="font-size:14px;line-height:1.43;color:#8A837B">{{ b.resto }}</div></sc-if>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;max-width:420px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#A09890">Scheda di una persona · tre fisse e un gruppo</div>
+      <div style="font-size:15px;line-height:1.55;color:#F2EEE9;text-wrap:pretty">In alto nome e stato. Poi le tre azioni fisse, nello stesso ordine: muta questa voce, blocca, segnala. Ogni azione nuova entra in un gruppo sotto un filetto: righe da 48 dp o più, etichetta e, se ha una conseguenza, la conseguenza scritta sotto. Il gruppo cresce verso il basso e il foglio scorre; le tre fisse non si muovono. Le azioni di questo gruppo riguardano la persona, non la stanza.</div>
+      <div style="display:flex;flex-direction:column;border-radius:16px;background:#161412;border:1px solid rgba(242,238,233,0.12);padding:6px 16px 14px">
+        <div style="padding:12px 0 10px;font-size:14px;color:#8A837B;font-family:'IBM Plex Mono',monospace;letter-spacing:0.06em;text-transform:uppercase">nome · stato</div>
+        <div style="min-height:48px;display:flex;align-items:center;border-top:1px solid rgba(242,238,233,0.12);font-size:16px;color:#F2EEE9">fissa 1</div>
+        <div style="min-height:48px;display:flex;align-items:center;border-top:1px solid rgba(242,238,233,0.12);font-size:16px;color:#F2EEE9">fissa 2</div>
+        <div style="min-height:48px;display:flex;align-items:center;border-top:1px solid rgba(242,238,233,0.12);font-size:16px;color:#F2EEE9">fissa 3</div>
+        <div style="min-height:48px;display:flex;align-items:center;border:1px dashed rgba(242,238,233,0.26);border-radius:12px;margin-top:10px;padding:0 12px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#8A837B">gruppo aggiunte · una riga per azione</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Accessibilità" style="padding:44px 56px 64px;display:flex;flex-direction:column;gap:24px">
+  <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:26px;font-weight:600;letter-spacing:-0.01em">Etichette e annunci</div><div style="font-size:15px;line-height:1.5;color:#A09890;max-width:820px;text-wrap:pretty">Ogni presenza è un elemento con etichetta completa; ogni cambio di stato è un annuncio, una volta, senza ripeterlo al rientro sulla schermata. L'anello e il disco sono decorativi per lo screen reader: il significato sta nell'etichetta. Gli annunci degli altri sono quelli del §7.12 e non includono mai chi entra.</div></div>
+  <div style="display:flex;flex-direction:column;max-width:1100px;border-top:1px solid #F2EEE9">
+    <div style="display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.5fr) minmax(0,1.5fr);gap:20px;padding:10px 0;border-bottom:1px solid rgba(242,238,233,0.30);font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#A09890"><div>stato</div><div>etichetta</div><div>annuncio</div></div>
+    <sc-for list="{{ a11y }}" as="a" hint-placeholder-count="8">
+      <div style="display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.5fr) minmax(0,1.5fr);gap:20px;padding:12px 0;border-bottom:1px solid rgba(242,238,233,0.12);font-size:15px;line-height:1.45"><div style="color:#A09890">{{ a.s }}</div><div>{{ a.e }}</div><div>{{ a.a }}</div></div>
+    </sc-for>
+  </div>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;lingua&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;it&quot;,&quot;de&quot;],&quot;default&quot;:&quot;it&quot;,&quot;tsType&quot;:&quot;'it'|'de'&quot;}}">
+class Component extends DCLogic {
+  tinte = [['#5257AC', '#33367A'], ['#A83E2E', '#6E251C'], ['#23735A', '#14473A'], ['#96621A', '#5F3C0B'], ['#2A6894', '#1B4463'], ['#AC3765', '#72203F'], ['#557426', '#374A18'], ['#7A3080', '#4E1F52']];
+  sag = [[.56, .44, .51, .49, .47, .53, .53, .47], [.47, .53, .58, .42, .55, .45, .42, .58], [.52, .48, .42, .58, .43, .57, .54, .46], [.44, .56, .47, .53, .57, .43, .51, .49], [.54, .46, .52, .48, .50, .50, .55, .45]];
+  ini = ['SL', 'MB', 'AH', 'TR', 'GT', 'NV', 'LC', 'DV'];
+
+  radius(i) {
+    const s = this.sag[i % 5].map(v => Math.round(v * 100) + '%');
+    return `${s[0]} ${s[1]} ${s[2]} ${s[3]} / ${s[4]} ${s[5]} ${s[6]} ${s[7]}`;
+  }
+
+  pack(people, W, H, tablet, L) {
+    const n = people.length;
+    if (!n) return { w: 0, h: 0, items: [] };
+    const base = n <= 1 ? 208 : n === 2 ? 156 : n <= 4 ? 130 : n <= 6 ? 112 : 88;
+    const target = tablet ? base * 1.5 : base;
+    const cap = tablet ? 4 : 3;
+    const C = { 1: [[1]], 2: [[2], 'diag'], 3: [[2, 1], [3]], 4: [[2, 2], [3, 1], [4]], 5: [[2, 1, 2], [3, 2]], 6: [[2, 2, 2], [3, 3]], 7: [[2, 3, 2], [4, 3]], 8: [[3, 2, 3], [4, 4]] }[n];
+    let best = null;
+    for (const pat of C) {
+      let fit;
+      if (pat === 'diag') fit = Math.min((W - 18 - 0.7071 * 17) / 1.7071, (H - 18 - 0.7071 * 17) / 1.7071);
+      else {
+        const k = Math.max(...pat);
+        if (k > cap) continue;
+        let P = 0;
+        for (let i = 0; i < pat.length - 1; i++) P += pat[i] === pat[i + 1] ? 1 : 0.866;
+        fit = Math.min((W - 18 - 17 * (k - 1)) / k, (H - 18 - 17 * P) / (P + 1));
+      }
+      const d = Math.floor(Math.min(target, fit));
+      if (!best || d > best.d) best = { d, pat };
+    }
+    const d = Math.max(best.d, 8), p = d + 17, pos = [];
+    let w, h;
+    if (best.pat === 'diag') {
+      const o = p * 0.7071;
+      pos.push({ x: 9, y: 9 }, { x: 9 + o, y: 9 + o });
+      w = h = o + d + 18;
+    } else {
+      const pat = best.pat, k = Math.max(...pat), rowW = c => (c - 1) * p + d;
+      w = rowW(k) + 18;
+      let y = 9;
+      pat.forEach((c, i) => {
+        const x0 = 9 + (rowW(k) - rowW(c)) / 2;
+        for (let j = 0; j < c; j++) pos.push({ x: x0 + j * p, y });
+        if (i < pat.length - 1) y += pat[i] === pat[i + 1] ? p : 0.866 * p;
+      });
+      h = y + d + 9;
+    }
+    const bD = Math.round(Math.min(44, Math.max(28, d * 0.2)));
+    const bc = Math.round(d * 0.854 - bD / 2);
+    const tW = Math.round(d * 0.42);
+    const items = pos.map((it, i) => {
+      const q = people[i] || {};
+      const sk = !!q.sk;
+      const io = !!q.io;
+      let aria;
+      if (sk) aria = L.ariaSalendo;
+      else if (io && q.spento) aria = L.ariaIoSpento;
+      else if (io) aria = L.ariaIo + (q.parola ? ', ' + L.ariaParola : '');
+      else aria = L.ariaAltro + (q.spento ? ', ' + L.ariaSpento : q.parla ? ', ' + L.ariaParla : '') + (q.parola ? ', ' + L.ariaParola : '');
+      return {
+        x: Math.round(it.x), y: Math.round(it.y), d, br: this.radius(i), aria,
+        bg: sk ? 'linear-gradient(155deg,#3D3B39 0%,#2A2927 100%)' : `linear-gradient(155deg,${this.tinte[i][0]} 0%,${this.tinte[i][1]} 100%)`,
+        op: sk ? '0.62' : '1', ini: sk || d < 32 ? '' : this.ini[i], fs: Math.round(d * 0.295),
+        parla: !!q.parla, tacca: !!q.parola, tX: Math.round((d - tW) / 2), tW,
+        badge: !!q.spento, bX: bc, bY: bc, bD,
+        bFondo: io ? '#D9CFA8' : 'rgba(8,7,6,0.92)', bGlifo: io ? '#100F0E' : 'rgba(242,238,233,0.62)', bBordo: io ? 'rgba(8,7,6,0.92)' : 'rgba(242,238,233,0.16)'
+      };
+    });
+    return { w: Math.ceil(w), h: Math.ceil(h), items };
+  }
+
+  renderVals() {
+    const de = this.props.lingua === 'de';
+    const t = (a, b) => (de ? b : a);
+    const L = {
+      ariaSalendo: t('Sto salendo sul palco', 'Ich steige auf die Bühne'),
+      ariaIoSpento: t('Sei sul palco, microfono spento', 'Du bist auf der Bühne, Mikrofon aus'),
+      ariaIo: t('Sei sul palco, microfono acceso', 'Du bist auf der Bühne, Mikrofon an'),
+      ariaAltro: t('Persona sul palco', 'Person auf der Bühne'),
+      ariaSpento: t('microfono spento', 'Mikrofon aus'),
+      ariaParla: t('sta parlando', 'spricht'),
+      ariaParola: t('ha la parola', 'hat das Wort')
+    };
+    const esci = t('Esci', 'Verlassen'), scendi = t('Scendi dal palco', 'Von der Bühne gehen'), salirai = t('Salirai a microfono spento.', 'Du steigst mit ausgeschaltetem Mikrofon auf.');
+    const ascolto = t('Sei in ascolto', 'Du hörst zu');
+    const sali = t('Sali sul palco', 'Auf die Bühne');
+    const spegni = t('Spegni il microfono', 'Mikrofon ausschalten'), accendi = t('Accendi il microfono', 'Mikrofon einschalten');
+    const BTN = {
+      pieno: { bg: 'linear-gradient(180deg,#EDE7DC 0%,#D2C9B6 100%)', bd: 'transparent', c: '#100F0E' },
+      bordo: { bg: 'transparent', bd: 'rgba(242,238,233,0.30)', c: '#F2EEE9' },
+      inatt: { bg: 'transparent', bd: 'rgba(242,238,233,0.10)', c: '#8A837B' }
+    };
+    const FAS = {
+      gruppo: { bg: 'transparent', bd: 'rgba(242,238,233,0.32)', col: '#F2EEE9', colS: '#A09890', pieno: false },
+      tutti: { bg: 'linear-gradient(180deg,#EDE7DC 0%,#D2C9B6 100%)', bd: 'transparent', col: '#100F0E', colS: '#100F0E', pieno: true }
+    };
+    const par1 = t('Per parlare bisogna diventare partecipante. Serve un secondo consenso.', 'Zum Sprechen musst du Teilnehmer:in werden. Dafür brauchst du eine zweite Einwilligung.');
+    const par2 = t('Mentre parli, la tua voce si registra per poco tempo e si trascrive; il testo serve alla moderazione e a costruire il tuo profilo.', 'Während du sprichst, wird deine Stimme kurz aufgenommen und transkribiert; der Text dient der Moderation und dem Aufbau deines Profils.');
+    const par3 = t('Nessuna conversazione si può riascoltare. La voce si cancella dopo la trascrizione, il testo resta per un periodo.', 'Kein Gespräch lässt sich erneut anhören. Die Stimme wird nach der Transkription gelöscht, der Text bleibt eine Zeit lang erhalten.');
+    const sx = (n) => t(`${n} sul palco`, `${n} auf der Bühne`);
+    const SUB = t('Sotto-DEN · 8 persone', 'Sub-DEN · 8 Personen');
+    const tu = (spento) => spento ? t('Tu · microfono spento', 'Du · Mikrofon aus') : t('Tu · microfono acceso', 'Du · Mikrofon an');
+    const gruppoT = t('Ti sentono 8 persone', '8 Personen hören dich');
+    const sec = (...a) => a;
+    const q = (o) => o;
+
+    const defs = [
+      // ---- alta fedeltà
+      { g: 'hf', id: 'pubblico-sali', num: '1', name: t('Dal pubblico: «Sali sul palco»', 'Aus dem Publikum: «Auf die Bühne»'),
+        note: 'Chi è nel pubblico vede il palco com\'è e un\'unica azione piena, nella metà bassa. La riga sopra dice come si sale: a microfono spento. Nessun altro segno invita o sollecita.',
+        people: [{}, { parla: 1 }, {}], titolo: 'Cucina di notte', s1: sx(3), s2: ascolto, pub: true, pubT: t('14 in ascolto', '14 hören zu'),
+        hint: salirai, p: sali, ps: 'pieno', sec: sec(esci) },
+      { g: 'hf', id: 'sta-salendo', num: '1 bis', name: t('Sta salendo', 'Er steigt auf'),
+        note: 'La sagoma vuota (scheletro, opacità 0,30 → 0,62) occupa già il posto: il palco si ricompatta una volta sola. L\'azione diventa inattiva e porta il verbo al gerundio. Si può annullare. Se in otto secondi non c\'è posto, torna lo stato 1 con «Mettiti in coda» (stato 2).',
+        people: [{}, { parla: 1 }, {}, { sk: 1 }], titolo: 'Cucina di notte', s1: sx(3), s2: t('Sto salendo…', 'Ich steige auf …'), pub: true, pubT: t('14 in ascolto', '14 hören zu'),
+        hint: salirai, p: t('Sto salendo…', 'Ich steige auf …'), ps: 'inatt', sec: sec(t('Annulla', 'Abbrechen'), esci) },
+      { g: 'hf', id: 'palco-pieno', num: '2', name: t('Palco pieno: «Mettiti in coda»', 'Bühne voll: «In die Warteschlange»'),
+        note: 'Con otto sul palco l\'azione cambia nome e resta nello stesso posto. La coda è beta: la stanza la accoglie, ma non mostra posizioni né conteggi, perché un numero in coda diventa una classifica.',
+        people: [{}, { parla: 1 }, {}, {}, {}, {}, {}, {}], titolo: 'Cucina di notte', s1: t('8 sul palco · pieno', '8 auf der Bühne · voll'), s2: ascolto, pub: true, pubT: t('14 in ascolto', '14 hören zu'),
+        hint: t('Se si libera un posto, salirai a microfono spento.', 'Wird ein Platz frei, steigst du mit ausgeschaltetem Mikrofon auf.'), p: t('Mettiti in coda', 'In die Warteschlange'), ps: 'pieno', sec: sec(esci) },
+      { g: 'hf', id: 'in-coda', num: '2 bis', name: t('In coda', 'In der Warteschlange'),
+        note: 'Chi è in coda lo legge nella riga di stato e può uscirne con un tocco. L\'azione non è più piena: non c\'è più niente da fare, solo da potersi ritirare.',
+        people: [{}, { parla: 1 }, {}, {}, {}, {}, {}, {}], titolo: 'Cucina di notte', s1: t('8 sul palco · pieno', '8 auf der Bühne · voll'), s2: t('Sei in coda', 'Du bist in der Warteschlange'), pub: true, pubT: t('14 in ascolto', '14 hören zu'),
+        hint: t('Se si libera un posto, salirai a microfono spento.', 'Wird ein Platz frei, steigst du mit ausgeschaltetem Mikrofon auf.'), p: t('Esci dalla coda', 'Warteschlange verlassen'), ps: 'bordo', sec: sec(esci) },
+      { g: 'hf', id: 'palco-microfono-spento-io', num: '3', name: t('Sul palco, microfono spento: sono io', 'Auf der Bühne, Mikrofon aus: ich'),
+        note: 'Si sale così, sempre (D-007). La mia sagoma porta il disco in azione chiara (pieno, invertito) invece che scuro: tra più dischi trovo il mio. La riga di stato lo ripete con il glifo e le parole; l\'azione per accendere è piena e sta nella metà bassa.',
+        people: [{ io: 1, spento: 1 }, { parla: 1 }, {}, {}, {}], titolo: 'Cucina di notte', s1: sx(5), s2: tu(true), s2g: true,
+        p: accendi, ps: 'pieno', sec: sec(scendi, esci) },
+      { g: 'hf', id: 'palco-microfono-spento-altri', num: '3 bis', name: t('Sul palco, microfono spento: gli altri', 'Auf der Bühne, Mikrofon aus: die anderen'),
+        note: 'Una persona a microfono spento sul palco si vede dal disco scuro, con tinta e iniziali intatte: non è mutata (nessuna desaturazione) e non è bloccata (nessun neutro). Il mio microfono è acceso e nessun segno lo dice: l\'assenza è lo stato normale.',
+        people: [{}, { parla: 1 }, { spento: 1 }, {}, {}], titolo: 'Cucina di notte', s1: sx(5), s2: tu(false),
+        p: spegni, ps: 'bordo', sec: sec(scendi, esci) },
+      { g: 'hf', id: 'palco-vuoto', num: '4', name: t('Palco vuoto, persone in ascolto', 'Leere Bühne, Leute hören zu'),
+        note: 'Niente sedie vuote, niente conti alla rovescia, niente «tocca a te». Il palco dice che è libero e che si può salire quando si vuole; il pubblico sotto resta com\'è. L\'azione è la stessa del pubblico: non diventa più grande perché non c\'è nessuno.',
+        people: [], titolo: 'Radio insonni', s1: t('Nessuno sul palco', 'Niemand auf der Bühne'), s2: ascolto, pub: true, pubT: t('14 in ascolto', '14 hören zu'),
+        vuotoT1: t('Il palco è libero.', 'Die Bühne ist frei.'), vuotoT2: t('Puoi salire quando vuoi.', 'Du kannst jederzeit aufsteigen.'),
+        hint: salirai, p: sali, ps: 'pieno', sec: sec(esci) },
+      { g: 'hf', id: 'consenso-avviso', num: '5', name: t('Ascoltatore che vuole salire: avviso e consenso', 'Zuhörer:in will aufsteigen: Hinweis und Einwilligung'),
+        note: 'D-024: dal tocco su «Sali sul palco» si arriva qui, senza passare dalle impostazioni. L\'avviso su voce e testo è quello di Fase 2 (D-013), parola per parola. «Non ora» ha lo stesso peso visivo del rifiuto in Fase 2: nessun rosso, nessuna conseguenza scritta.',
+        people: [{}, { parla: 1 }, {}], titolo: 'Cucina di notte', s1: sx(3), s2: ascolto, pub: true, pubT: t('14 in ascolto', '14 hören zu'),
+        hint: salirai, p: sali, ps: 'pieno', sec: sec(esci),
+        sheet: { titolo: t('Vuoi salire sul palco?', 'Möchtest du auf die Bühne?'), sub: '', par: [par1, par2, par3, salirai], righe: [], bottoni: [{ t: t('Acconsento e salgo', 'Einwilligen und aufsteigen'), k: 'pieno' }, { t: t('Non ora', 'Nicht jetzt'), k: 'quiet' }] } },
+      { g: 'hf', id: 'consenso-rifiutato', num: '5 bis', name: t('Dopo «Non ora»', 'Nach «Nicht jetzt»'),
+        note: 'Identico al pubblico (stato 1). Nessun messaggio, nessun avviso di ripresentazione, nessuna etichetta sul pulsante: chi rifiuta torna dov\'era e può riprovare quando vuole. Dopo «Acconsento e salgo» segue lo stato 1 bis e poi il 3.',
+        people: [{}, { parla: 1 }, {}], titolo: 'Cucina di notte', s1: sx(3), s2: ascolto, pub: true, pubT: t('14 in ascolto', '14 hören zu'),
+        hint: salirai, p: sali, ps: 'pieno', sec: sec(esci) },
+      { g: 'sc', id: 'scheda-persona', num: '6', name: t('Scheda di una persona a microfono spento', 'Personenkarte, Mikrofon aus'),
+        note: 'Mostra il nuovo stato nella riga di stato e la regola delle azioni. «Muta questa voce» è inattiva perché si muta solo chi parla (§7.12), e lo dice. Il gruppo tratteggiato è il posto delle azioni nuove: non contiene nessuna funzione.',
+        people: [{ io: 1, spento: 1 }, { spento: 1 }, {}, { parla: 1 }, {}], titolo: 'Cucina di notte', s1: sx(5), s2: tu(true), s2g: true,
+        p: accendi, ps: 'pieno', sec: sec(scendi, esci),
+        sheet: { titolo: t('Marta S.', 'Marta S.'), sub: t('Sul palco · microfono spento', 'Auf der Bühne · Mikrofon aus'), par: [], righe: [{ t: t('Muta questa voce', 'Diese Stimme stummschalten'), sub: t('Si può mutare solo mentre parla.', 'Nur möglich, solange die Person spricht.'), off: 1 }, { t: t('Blocca', 'Blockieren'), sub: t('Resta finché non lo togli, dalle impostazioni.', 'Bleibt, bis du es in den Einstellungen aufhebst.') }, { t: t('Segnala', 'Melden'), sub: '' }], slot: t('Azioni nuove: qui, una riga ciascuna', 'Neue Aktionen: hier, je eine Zeile'), bottoni: [] } },
+      // ---- concetto
+      { g: 'cn', id: 'sotto-den-gruppo', num: '7', name: t('Chi mi sente adesso: il gruppo', 'Wer mich jetzt hört: die Gruppe'),
+        note: 'La fascia sta fra il palco e le azioni e non sparisce mai: finché sono nel sotto-DEN, in ogni momento, leggo a chi parlo. Qui è «a filo»: bordo sottile, nessun riempimento, e il palco è chiuso in una cornice. Un gruppo si legge come una stanza dentro la stanza.',
+        people: [{ io: 1 }, {}, { parla: 1 }, {}, {}, {}, {}, {}], titolo: 'Cucina di notte', s1: SUB, s2: tu(false), cornice: true,
+        fascia: { k: 'gruppo', t: gruppoT, sub: t('Il tuo gruppo. Il resto del DEN non ti sente.', 'Deine Gruppe. Der Rest des DEN hört dich nicht.') },
+        p: spegni, ps: 'bordo', sec: sec(esci) },
+      { g: 'cn', id: 'sotto-den-parola', num: '8', name: t('Hai ricevuto la parola: io', 'Du hast das Wort: ich'),
+        note: 'La fascia si riempie (azione chiara) e la cornice si apre: l\'unica volta in cui la stanza cambia di forma. Il segnale è lo stesso per tutti e otto: il cambio avviene alla stessa battuta, con la vibrazione di «parola ricevuta». La tacca sotto la mia sagoma dice chi ce l\'ha, senza un titolo.',
+        people: [{ io: 1, parola: 1 }, {}, { parla: 1 }, {}, {}, {}, {}, {}], titolo: 'Cucina di notte', s1: SUB, s2: tu(false).replace(/ · .*/, '') + ' · ' + t('hai la parola', 'hast das Wort'), cornice: false,
+        fascia: { k: 'tutti', t: t('Ti sentono tutti', 'Alle hören dich'), sub: t('Hai la parola · 214 in ascolto nel DEN', 'Du hast das Wort · 214 hören im DEN zu') },
+        p: spegni, ps: 'bordo', sec: sec(t('Parla solo al gruppo', 'Nur zur Gruppe sprechen'), esci) },
+      { g: 'cn', id: 'sotto-den-parola-altro', num: '8 bis', name: t('Hai ricevuto la parola: un altro del gruppo', 'Das Wort ist da: jemand anderes in der Gruppe'),
+        note: 'Gli altri sette ricevono lo stesso segnale nello stesso momento: la tacca compare sulla sagoma di chi ha la parola e la fascia aggiunge una riga. Per loro nulla cambia nel destinatario: continuano a parlare al gruppo.',
+        people: [{ io: 1 }, {}, {}, { parola: 1, parla: 1 }, {}, {}, {}, {}], titolo: 'Cucina di notte', s1: SUB, s2: tu(false), cornice: true,
+        fascia: { k: 'gruppo', t: gruppoT, sub: t('Chi ha la parola si sente in tutto il DEN.', 'Wer das Wort hat, ist im ganzen DEN zu hören.') },
+        p: spegni, ps: 'bordo', sec: sec(esci) },
+      { g: 'cn', id: 'sotto-den-solo-gruppo', num: '9', name: t('Parola in mano, «Parla solo al gruppo»', 'Wort in der Hand, «Nur zur Gruppe sprechen»'),
+        note: 'Si parla di nuovo solo al gruppo e la parola resta: la tacca c\'è ancora, la fascia torna a filo e la cornice si chiude. Il testo dice che la parola è mia ma il DEN non mi sente. Si distingue da «ho la parola e trasmetto» (stato 8) per fascia, cornice e azione.',
+        people: [{ io: 1, parola: 1 }, {}, { parla: 1 }, {}, {}, {}, {}, {}], titolo: 'Cucina di notte', s1: SUB, s2: t('Tu · parola, solo gruppo', 'Du · Wort, nur Gruppe'), cornice: true,
+        fascia: { k: 'gruppo', t: gruppoT, sub: t('Hai ancora la parola. Il DEN non ti sente adesso.', 'Du hast noch das Wort. Der DEN hört dich gerade nicht.') },
+        p: spegni, ps: 'bordo', sec: sec(t('Parla a tutti', 'Zu allen sprechen'), esci) },
+      { g: 'cn', id: 'sotto-den-parola-revocata', num: '10', name: t('Parola revocata', 'Wort entzogen'),
+        note: 'Una frase di fatto, senza colore e senza verbo di colpa: la parola è passata, ora ti sente il gruppo. La tacca va a un\'altra sagoma; da lì in poi lo stato è quello di partenza (stato 7). Nessun messaggio che rimane oltre la fascia.',
+        people: [{ io: 1 }, {}, { parla: 1 }, { parola: 1 }, {}, {}, {}, {}], titolo: 'Cucina di notte', s1: SUB, s2: tu(false), cornice: true,
+        fascia: { k: 'gruppo', t: gruppoT, sub: t('La parola è passata ad altri. Ora ti sente il tuo gruppo.', 'Das Wort ist weitergegangen. Jetzt hört dich deine Gruppe.') },
+        p: spegni, ps: 'bordo', sec: sec(esci) }
+    ];
+
+    const makeFrame = (d, w) => {
+      const tablet = w >= 600;
+      const h = tablet ? 1133 : 740, m = tablet ? 32 : 20, statusH = tablet ? 32 : 46, col = tablet ? 512 : 320;
+      const f = d.fascia;
+      const areaH = h - statusH - 84 - 190 - (d.pub ? 44 : 0) - (f ? 96 : 0) - 20;
+      const pal = this.pack(d.people, w - 2 * m, areaH, tablet, L);
+      const b = BTN[d.ps];
+      const fs = f ? FAS[f.k] : FAS.gruppo;
+      const sh = d.sheet;
+      const sheet = sh ? {
+        titolo: sh.titolo, sub: sh.sub,
+        par: sh.par.map((x, i) => ({ t: x, c: i === sh.par.length - 1 && sh.par.length > 1 ? '#F2EEE9' : '#A09890' })),
+        righe: sh.righe.map(r => ({ t: r.t, sub: r.sub, c: r.off ? '#8A837B' : '#F2EEE9' })),
+        slot: !!sh.slot, slotT: sh.slot || '',
+        bottoni: sh.bottoni.map(x => x.k === 'pieno' ? { t: x.t, h: 56, bg: BTN.pieno.bg, bd: 'transparent', c: '#100F0E', fs: 16, fw: 500 } : { t: x.t, h: 48, bg: 'transparent', bd: 'rgba(242,238,233,0.10)', c: '#A09890', fs: 14, fw: 400 })
+      } : { titolo: '', sub: '', par: [], righe: [], slot: false, slotT: '', bottoni: [] };
+      return {
+        id: d.id + '-' + w, w, h, m, statusH, col, label: tablet ? '744 dp · tablet, verticale' : '360 dp · telefono',
+        titolo: d.titolo, s1: d.s1, s2: d.s2, s2Glifo: !!d.s2g,
+        vuoto: !d.people.length, vuotoT1: d.vuotoT1 || '', vuotoT2: d.vuotoT2 || '',
+        pal: { w: pal.w, h: pal.h, items: pal.items, cornice: d.cornice ? '2px solid rgba(242,238,233,0.32)' : '2px solid transparent' },
+        pubblico: !!d.pub, pubT: d.pubT || '',
+        fascia: !!f, fBg: fs.bg, fBorder: fs.bd, fCol: fs.col, fColS: fs.colS, fPieno: fs.pieno, fT: f ? f.t : '', fSub: f ? f.sub : '',
+        hint: !!d.hint, hintT: d.hint || '', pT: d.p, pBg: b.bg, pBorder: b.bd, pCol: b.c, sec: d.sec.map(x => ({ t: x })),
+        sheetOn: !!sh, sheet, sheetMax: col + 2 * m, sheetH: Math.round(h * (tablet ? 0.5 : 0.78))
+      };
+    };
+
+    const GR = [
+      { id: 'hf', label: 'Alta fedeltà', titolo: 'Alta fedeltà · beta 1', nota: 'Salire sul palco, il microfono spento, il palco vuoto e il consenso dell\'ascoltatore. Ogni stato a 360 dp e a 744 dp.' },
+      { id: 'sc', label: 'Scheda', titolo: 'La scheda di una persona', nota: 'Il foglio che si apre dal tocco su una sagoma (§7.13), con lo stato nuovo e il posto per le azioni a venire.' },
+      { id: 'cn', label: 'Sotto-DEN', titolo: 'Concetto · beta 2 · sotto-DEN', nota: 'Il telefono tiene due connessioni, il DEN in solo ascolto e il sotto-DEN in ascolto e voce, ciascuna con il suo interruttore. L\'app non accende mai il microfono da sola. Gli stati sono disegnati con i segnali già definiti; il layout è quello del palco.' }
+    ].map(g => ({ ...g, states: defs.filter(d => d.g === g.id).map(d => ({ id: d.id, num: d.num, name: d.name, note: d.note, frames: [makeFrame(d, 360), makeFrame(d, 744)] })) }));
+
+    const mk = (i, o) => ({ br: this.radius(i), bg: `linear-gradient(155deg,${this.tinte[i][0]} 0%,${this.tinte[i][1]} 100%)`, op: '1', sat: 'none', col: '#FFFFFF', ini: this.ini[i], parla: false, mic: false, spk: false, blk: false, ...o });
+    const baseRow = [
+      mk(7, { l: 'microfono acceso' }),
+      mk(2, { l: 'sta parlando', parla: true }),
+      mk(4, { l: 'microfono spento', mic: true }),
+      mk(5, { l: 'voce mutata', sat: 'saturate(0.25)', op: '0.78', spk: true, col: 'rgba(255,255,255,0.8)' }),
+      { br: this.radius(3), bg: 'linear-gradient(155deg,#3D3B39 0%,#2A2927 100%)', op: '1', sat: 'none', col: 'rgba(242,238,233,0.70)', ini: this.ini[3], parla: false, mic: false, spk: false, blk: true, l: 'bloccata' }
+    ];
+    const distinzione = [
+      { titolo: 'A colori', filtro: 'none', items: baseRow },
+      { titolo: 'In scala di grigi', filtro: 'grayscale(1)', items: baseRow }
+    ];
+    const barre = [
+      { titolo: '3 azioni', p: 'Primaria', s1: 'Secondaria', s2: 'Secondaria', altro: false, resto: '' },
+      { titolo: '4 azioni', p: 'Primaria', s1: 'Fissa', s2: 'Fissa', altro: true, resto: 'Nel foglio: azione 4.' },
+      { titolo: '6 azioni', p: 'Primaria', s1: 'Fissa', s2: 'Fissa', altro: true, resto: 'Nel foglio: azioni 4, 5 e 6, nell\'ordine definito.' }
+    ];
+    const a11y = [
+      { s: 'Sul palco, microfono spento (io)', e: 'Sei sul palco, microfono spento', a: 'Sei sul palco, microfono spento' },
+      { s: 'Sul palco, microfono spento (altro)', e: 'Persona sul palco, microfono spento', a: 'Nessun annuncio: lo stato degli altri si legge, non si annuncia' },
+      { s: 'Microfono acceso (io)', e: 'Microfono acceso', a: 'Microfono acceso' },
+      { s: 'Sta salendo', e: 'Sto salendo sul palco', a: 'Stai salendo sul palco, a microfono spento' },
+      { s: 'Palco pieno', e: 'Mettiti in coda, pulsante. Palco pieno, 8 su 8', a: 'Palco pieno. Puoi metterti in coda' },
+      { s: 'In coda', e: 'Esci dalla coda, pulsante', a: 'Sei in coda' },
+      { s: 'Palco vuoto', e: 'Palco libero. Sali sul palco, pulsante', a: '(nessuno: la scena è stabile)' },
+      { s: 'Avviso e consenso', e: 'Vuoi salire sul palco? Avviso su voce e testo', a: 'Foglio aperto: legge titolo e testo, poi i due pulsanti' },
+      { s: 'Dopo il rifiuto', e: 'Sali sul palco, pulsante', a: 'Nessun annuncio' },
+      { s: 'Gruppo: chi mi sente', e: 'Ti sentono 8 persone del sotto-DEN', a: 'Parli al tuo gruppo, 8 persone' },
+      { s: 'Parola ricevuta', e: 'Hai la parola. Ti sentono tutti, 214 persone', a: 'Hai la parola. Ora ti sentono tutti' },
+      { s: 'Parola a un altro', e: 'Persona sul palco, ha la parola', a: 'Una persona del gruppo ha la parola' },
+      { s: 'Solo gruppo, parola in mano', e: 'Hai la parola. Ti sente solo il tuo gruppo', a: 'Parli solo al tuo gruppo. Hai ancora la parola' },
+      { s: 'Parola revocata', e: 'Ti sente il tuo gruppo, 8 persone', a: 'La parola è passata ad altri. Ora ti sente il tuo gruppo' }
+    ];
+    return { groups: GR, distinzione, barre, a11y };
+  }
+}
+</script>
+</body>
+</html>
