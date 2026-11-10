@@ -35,6 +35,7 @@ Un solo registro per tutte le decisioni di prodotto e di design. Le decisioni te
 | D-027 | 8/11/2026 | Il tablet si decide sulla larghezza dello schermo, da 600 dp. Sul tablet la scala del palco cresce di 1,5 (312, 234, 195, 168, 132). Il tetto assoluto di presenze per riga è 3 sul telefono e 4 sul tablet; il tetto per conteggio resta nel codice del palco | Task 004, 004b; confermata da Luca | Valida |
 | D-028 | 8/11/2026 | D-021 vale per le classi di token. `BaOra`, `BaPayloadStanza` e `BaRegole` non sono né token né widget e restano senza suffisso | Task 004 | Valida |
 | D-029 | 9/11/2026 | Quando cade la connessione il microfono si spegne, e alla ripresa resta spento: lo stato del microfono appartiene alla connessione. Per questo suono e vibrazione di connessione persa sono sicuri | Sintesi tecnica sull'audio §1; task 002b | Valida |
+| D-030 | 9/11/2026 | Il web serve solo come galleria di sviluppo per vedere i componenti in Chrome: non è una piattaforma di prodotto. I target restano iOS e Android | Task 009 | Valida |
 
 ## Aperte
 
