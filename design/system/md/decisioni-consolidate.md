@@ -127,6 +127,18 @@ Il ripiego senza movimento non è una versione ridotta di questo: è il 7.16, e 
 
 Con movimento ridotto, screen reader attivo o degrado termico, gli stessi stati si comunicano senza alcun movimento: l'anello resta fermo sul valore alto (chi parla è l'unica presenza cerchiata), il glifo di una voce mutata resta acceso mentre parla, il re-incastro diventa istantaneo. Nessuno stato dipende dall'animazione per esistere: l'animazione ne è la resa continua, non la definizione.
 
+## 7.17  Sul palco, microfono spento: un disco, non un colore · task 002
+
+Si sale sempre a microfono spento (D-007), quindi è lo stato più comune sul palco. Si segna con un disco da 28 dp o più all'angolo in basso a destra della sagoma, con un microfono barrato; le tinte e le iniziali restano al 100%. Si distingue dalla voce mutata (§7.9: desaturata, altoparlante barrato) e dalla bloccata (§7.10: neutra, cerchio barrato) anche in scala di grigi, perché cambiano forma e glifo, non solo colore. La mia sagoma ha il disco chiaro (azione chiara) e le altre scuro: fra più dischi trovo il mio. Per me l'azione «Accendi il microfono» è piena e sta nella metà bassa; a microfono acceso il segno scompare e l'azione diventa «Spegni». Chi è nel pubblico vede «Sali sul palco» come azione piena e, se il palco è pieno, «Mettiti in coda» (beta). Un ascoltatore che vuole salire rivede l'avviso su voce e testo, dà il consenso e sale a microfono spento (D-024); se rifiuta torna com'era, senza messaggi. Il palco vuoto dice «Il palco è libero. Puoi salire quando vuoi.»: nessun conto, nessuna sedia vuota. Suono e vibrazione: design/handoff/002/suono-e-vibrazione.md.
+
+## 7.18  Chi mi sente adesso, la parola · task 002
+
+Nel sotto-DEN una fascia sta sempre fra il palco e le azioni e dice a chi parlo: *a filo* (bordo sottile, nessun riempimento, il palco in una cornice) se parlo al mio gruppo di otto; *piena* (azione chiara) e senza cornice se ho la parola e parlo a tutto il DEN. La fascia non è un avviso che sparisce: se dopo trenta secondi una persona può dimenticarsene, il design non ha funzionato. Chi ha la parola porta una tacca sotto la sagoma; il segnale della parola ricevuta arriva a tutti e otto nello stesso istante, programmato dal server e non sul tempo di arrivo, con la forza del microfono acceso. Con «Parla solo al gruppo» la parola resta (tacca e frase lo dicono) ma fascia e cornice tornano a filo. La cornice sta fuori dalla scatola che il layout passa al palco, nel margine dello schermo (sporge di 8 dp): non riduce la larghezza disponibile. A 360 dp otto presenze a 88 chiedono 316 su 320 e non c'è niente da cedere. La parola revocata è una frase di fatto, senza colore. Sono funzioni, non status: la tacca è l'unico segno e non porta titolo.
+
+## 7.19  Barra e scheda accolgono funzioni nuove · task 002
+
+Barra delle azioni: tre posti, un primario e due secondari; dalla quarta azione compare «Altro», che apre un foglio con le rimanenti. «Esci» e «Scendi dal palco» hanno un posto fisso, e il controllo del microfono sta sempre in uno dei tre posti: non finisce mai in un menu. Scheda di una persona: tre fisse (muta questa voce, blocca, segnala) e un gruppo sotto un filetto per le nuove, che cresce verso il basso e scorre. Valgono a 360 e a 744 dp senza cambiare numero di posti. Con testo grande scorre ciò che sta sopra le azioni (T11).
+
 ## Beta — da non precludere
 
 Quello che segue **non si costruisce in alpha**: nei DEN pubblici non ci sono amministratori, quindi nessuno può rimuovere nessuno. Esisterà con i DEN privati, e niente di ciò che si costruisce ora deve impedirlo.

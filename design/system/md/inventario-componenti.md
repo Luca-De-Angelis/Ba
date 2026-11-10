@@ -20,6 +20,8 @@ Tre stati valgono **per ogni componente toccabile** e non si ripetono riga per r
 
 **BaPalco riceve una scatola, non una dimensione.** Calcola la scala dal numero di presenze *e* dallo spazio che avanza (C6): è l'unico punto dell'app dove un layout decide una misura, e per questo è l'unico che va testato con il testo di sistema al massimo. **Esiste in un'implementazione sola, in Dart**, perché nessun'altra superficie impacchetta: le card di sistema allineano le sagome in fila (C5), quindi non c'è geometria da ricalcolare in Swift né da serializzare nel payload.
 
+**Sul palco, microfono spento (task 002).** Variante di BaPresenza: tinta e iniziali intatte e un disco BaPresenzaTokens.badgeDiametro sul bordo della sagoma, in basso a destra. Per gli altri il disco è scuro con il microfono barrato; per me è chiaro: tra più dischi trovo il mio. Non porta nulla che il testo non dica già: la riga di stato e l'etichetta dello screen reader lo ripetono. «Microfono acceso» non ha nessun segno. Chi ha la parola in un sotto-DEN porta in più una tacca sotto la sagoma. Il disco non prende il posto dell'anello e non cambia la distanza di 17.
+
 ## C2  Struttura della stanza
 
 |                |                                                                           |                                                                                                                                                  |                                               |
@@ -42,6 +44,8 @@ Tre stati valgono **per ogni componente toccabile** e non si ripetono riga per r
 | BaGlifo          | altoparlante barrato (voce mutata) · bloccata · negato | spento · acceso (la voce mutata parla) · in errore                                              | BaPresenzaTokens.glifo\* · movimento.glifo · erroreTesto    |
 
 Le altezze dei controlli in tokens.dart sono **minimi, non misure**: il contenuto può alzarli, mai abbassarli. È la condizione perché il testo grande non tronchi (C6).
+
+**Barra delle azioni e scheda di una persona (task 002).** BaBarraAzioniTokens: un posto primario e due secondari; dalla quarta azione compare «Altro» (48 × 48), che apre un foglio con le rimanenti nell'ordine definito. «Esci» e «Scendi dal palco» non vi finiscono mai. BaSchedaPersonaTokens: tre azioni fisse in alto (muta questa voce, blocca, segnala) e sotto un filetto un gruppo per le nuove, righe da 48 o più, con la conseguenza scritta sotto. BaAscoltoTokens: la fascia «chi mi sente adesso», fra il palco e le azioni, sempre sullo schermo dentro un sotto-DEN. La cornice a filo attorno al palco sta fuori dalla scatola passata al layout, nel margine dello schermo (corniceSporge = 8): non riduce la larghezza del palco, perché a 360 dp otto presenze a 88 ne chiedono 316 su 320. «Altro» raccoglie le azioni oltre i tre posti (inAltro(n)) e mai il microfono.
 
 ## C4  Elenco e impostazioni
 
