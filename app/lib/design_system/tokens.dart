@@ -202,6 +202,23 @@ class BaColorTokens {
   static const Color premutoKeyline = Color(_P.opaco | _P.pietra975);
   static const Color focusAnello = azioneChiara;
   static const Color focusAnelloSuChiara = Color(_P.opaco | _P.pietra940);
+
+  // Task 002 · microfono spento sul palco, chi mi sente, tacca della parola.
+  // Nessun colore nuovo: tutto è composto da primitive e da token già qui.
+  // Il segno è una forma (disco con glifo barrato) e non un colore: in scala
+  // di grigi si legge uguale. Vedi BaPresenzaTokens.badgeDiametro.
+  static const Color glifoTratto = Color(_P.a62 | _P.pietra100); // glifo barrato del disco, per gli altri
+  static const Color micSpentoFondo = voceKeyline; // disco scuro: la presenza di un altro
+  static const Color micSpentoGlifo = glifoTratto;
+  static const Color micSpentoBordo = filettoMarcato;
+  static const Color micSpentoIoFondo = azioneChiara; // disco chiaro: la mia presenza, si trova fra gli altri
+  static const Color micSpentoIoGlifo = testoSuChiara;
+  static const Color parolaTacca = azioneChiara; // chi ha la parola, sotto la sagoma
+  static const Color parolaTaccaBordo = voceKeyline;
+  static const Color ascoltoGruppoBordo = Color(_P.a32 | _P.pietra100); // fascia e cornice a filo: parlo al mio gruppo
+  static const List<Color> ascoltoTuttiFondo = azioneChiaraPiena; // fascia piena: parlo a tutti
+  static const Color ascoltoTuttiTesto = testoSuChiara;
+  static const Color veloSipario = Color(_P.a62 | _P.pietra975); // dietro un foglio aperto
 }
 
 /// Le dodici tinte delle presenze. Un mazzo, non una scala: nessuna ha un ruolo.
@@ -382,6 +399,20 @@ class BaPresenzaTokens {
   static const double glifoOpacitaSpento = 0.45; // → 1 quando la voce mutata parla
 
   static const int campionePubblico = 3; // bolle del pubblico, campione stabile
+
+  // Disco del microfono spento (task 002): angolo in basso a destra della
+  // sagoma, sul bordo della sagoma e non sul bordo del riquadro. Cresce con la
+  // presenza fino a areaMinima (44), sempre >= glifo (28).
+  static const double badgeRapporto = 0.2; // eccezione: rapporto col diametro
+  static const double badgeMax = _S.sp11;
+  static const double badgeCentro = 0.854; // eccezione: 0,5 + 0,5 * cos 45°, il punto del bordo a 45°
+  static double badgeDiametro(double d) => (d * badgeRapporto).clamp(glifo, badgeMax).toDouble();
+
+  // Tacca della parola (sotto-DEN): una funzione, non un titolo. Sta nella
+  // luce di 17 fra le sagome e non sposta il packing.
+  static const double parolaTaccaAltezza = _S.sp1_5;
+  static const double parolaTaccaRapporto = 0.42; // eccezione: rapporto con il diametro
+  static const double parolaTaccaSporge = 9; // eccezione: 6 di tacca + 3 di keyline
 
   // Opacità e rapporti di stato: eccezioni tutte. Sono decisioni del §7, non
   // passi di una scala; arrotondarli al 5 cambierebbe gli stati.
@@ -567,6 +598,12 @@ class BaMovimentoTokens {
   static const Duration foglio = Duration(milliseconds: 240);
   static const Duration assestamento = Duration(milliseconds: 320);
   static const Duration ricompattamento = Duration(milliseconds: 200);
+  // Task 002. Il disco del microfono spento entra come il glifo; la fascia di
+  // ascolto cambia con il ricompattamento. Niente di continuo: il movimento
+  // accompagna il cambio e si ferma.
+  static const Duration badgeMicrofono = glifo;
+  static const Duration fasciaAscolto = ricompattamento;
+  static const Duration salitaAttesaMax = Duration(seconds: 8); // eccezione: oltre, torna «Mettiti in coda»
   static const Duration comparsa = Duration.zero; // le presenze ci sono o non ci sono
 
   static const Duration attesaIngresso = Duration(seconds: 4); // debounce prima di assestare
@@ -695,4 +732,104 @@ abstract class BaRegole {
   /// ereditato dal palco invece che passato dal chiamante (Inventario, C8).
   /// Resta convenzione la 2, e va guardata in revisione: nessun tipo può
   /// impedire di affidare un significato a una tinta.
+}
+
+// ------------------------------------------------------------ barra e scheda
+
+/// Regola della barra delle azioni (task 002, punto 12): un posto primario e
+/// due secondari; dalla quarta azione compare «Altro», che apre un foglio con
+/// le rimanenti nell'ordine in cui sono definite. «Esci» e «Scendi dal palco»
+/// hanno un posto fisso e non finiscono mai in «Altro». Stessa regola a 360 e
+/// a 744 dp: la colonna è di 512 e il numero di posti non cambia.
+class BaBarraAzioniTokens {
+  BaBarraAzioniTokens._();
+  static const int primari = 1;
+  static const int secondari = 2;
+  static const int posti = primari + secondari; // tre posti, sempre
+  static const double altroLato = _S.sp12;
+  // Il controllo del microfono sta sempre in uno dei tre posti, mai in
+  // «Altro»: chi chiama ordina le azioni in modo che Esci, Scendi dal palco e
+  // il microfono siano fra le prime tre.
+  static int visibili(int azioni) => azioni < posti ? azioni : posti;
+  static int inAltro(int azioni) => azioni > posti ? azioni - posti : 0;
+  static bool conAltro(int azioni) => azioni > posti;
+}
+
+/// Scheda di una persona: tre azioni fisse (muta, blocca, segnala) e un gruppo
+/// sotto un filetto per le azioni nuove, che cresce verso il basso.
+class BaSchedaPersonaTokens {
+  BaSchedaPersonaTokens._();
+  static const int fisse = 3;
+  static const double rigaMinima = _S.sp12;
+  static const double rigaFissa = _S.sp14;
+}
+
+/// Fascia «chi mi sente adesso» (sotto-DEN): sempre sullo schermo, mai un
+/// avviso che sparisce. A filo = parlo al mio gruppo; piena = parlo a tutti.
+class BaAscoltoTokens {
+  BaAscoltoTokens._();
+  static const double altezzaMinima = 72; // eccezione: due righe di testo e il riquadro (sp18 non esiste)
+  static const double raggio = BaRaggioTokens.riquadro;
+  static const double spessore = _S.border1;
+  static const double corniceSpessore = _S.border2;
+  // La cornice sta FUORI dalla scatola che il palco riceve dal layout, nel
+  // margine dello schermo (sp5 = 20): non toglie larghezza al palco. A 360 dp
+  // otto presenze a 88 chiedono 316 su 320, e non c'è margine da cedere.
+  static const double corniceRaggio = 28; // eccezione: attorno al palco, sopra le sagome da 22
+  static const double corniceSporge = _S.sp2; // quanto esce dalla scatola del palco
+}
+
+// ------------------------------------------------------------ aptica e suono
+
+/// Un pattern di vibrazione come lo leggono Android (createWaveform) e iOS
+/// (Core Haptics): durate in ms alternate fra pausa e impulso, e ampiezza
+/// 0–255 per ogni elemento. Si distinguono per numero e durata degli impulsi,
+/// non per forza: con il telefono in tasca la forza non si legge.
+class BaPatternApticoTokens {
+  final String nome;
+  final List<int> ms;
+  final List<int> ampiezza;
+  const BaPatternApticoTokens(this.nome, this.ms, this.ampiezza);
+}
+
+/// Un segnale per ogni evento, nessuno per gli altri. Tabella e motivi in
+/// design/handoff/002/suono-e-vibrazione.md.
+class BaApticaTokens {
+  BaApticaTokens._();
+  // uno lungo e pieno: aperto
+  static const BaPatternApticoTokens microfonoAcceso = BaPatternApticoTokens('microfonoAcceso', [0, 90], [0, 255]);
+  // due corti e leggeri: chiuso
+  static const BaPatternApticoTokens microfonoSpento = BaPatternApticoTokens('microfonoSpento', [0, 35, 70, 35], [0, 140, 0, 140]);
+  // tre che salgono, pausa, e la firma di «spento»: sei salito, il microfono è spento
+  static const BaPatternApticoTokens salitaSulPalco = BaPatternApticoTokens(
+      'salitaSulPalco', [0, 25, 50, 25, 50, 60, 450, 35, 70, 35], [0, 90, 0, 150, 0, 220, 0, 140, 0, 140]);
+  // tre uguali, alla stessa forza di microfonoAcceso: tutti ti sentono. Vale anche per «Parla a tutti»
+  static const BaPatternApticoTokens parolaRicevuta = BaPatternApticoTokens('parolaRicevuta', [0, 50, 90, 50, 90, 50], [0, 255, 0, 255, 0, 255]);
+  // uno solo, molto lungo e debole: la parola è passata. Si distingue per
+  // durata (250 ms contro 90 di microfonoAcceso) e non conta sull'ampiezza
+  static const BaPatternApticoTokens parolaRevocata = BaPatternApticoTokens('parolaRevocata', [0, 250], [0, 120]);
+  // uno corto e leggero: ora solo il gruppo («Parla solo al gruppo»)
+  static const BaPatternApticoTokens soloGruppo = BaPatternApticoTokens('soloGruppo', [0, 35], [0, 140]);
+  // due lunghi e deboli: il filo è caduto
+  static const BaPatternApticoTokens connessionePersa = BaPatternApticoTokens('connessionePersa', [0, 200, 150, 200], [0, 90, 0, 90]);
+  // la firma di «spento»: dopo una ripresa il microfono torna spento
+  static const BaPatternApticoTokens connessioneRipresa = microfonoSpento;
+}
+
+/// Tre suoni soltanto. Un suono mentre il microfono è aperto finisce nella
+/// stanza: per questo sono tutti e tre a microfono spento, e
+/// consentito() rende il caso contrario irrappresentabile. Nel sotto-DEN i
+/// microfoni sono due (DEN principale e sotto-DEN): microfonoAcceso vuol dire
+/// che ALMENO UNO dei due è aperto, e in quel caso nessun suono.
+class BaSuonoTokens {
+  final String nome;
+  final Duration durata;
+  const BaSuonoTokens(this.nome, this.durata);
+
+  static const BaSuonoTokens microfonoSpento = BaSuonoTokens('ba_mic_spento', Duration(milliseconds: 180)); // due note che scendono
+  static const BaSuonoTokens connessionePersa = BaSuonoTokens('ba_conn_persa', Duration(milliseconds: 300)); // una nota bassa
+  static const BaSuonoTokens connessioneRipresa = BaSuonoTokens('ba_conn_ripresa', Duration(milliseconds: 220)); // due note che salgono
+  static const double volumeRelativo = 0.5; // eccezione: metà del volume dei contenuti; rispetta silenzioso e cuffie
+  /// microfonoAcceso = almeno uno dei due microfoni è aperto.
+  static bool consentito({required bool microfonoAcceso}) => !microfonoAcceso;
 }
