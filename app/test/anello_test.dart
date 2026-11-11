@@ -185,6 +185,28 @@ void main() {
     });
   });
 
+  group('crescita al picco', () {
+    // Serve al task 011 (BaPalco): quanto l'anello sporge oltre la banda a
+    // riposo (5) al picco. La scala 1,075 agisce sull'anello intero, che misura
+    // d + 10: la crescita per lato è (d + 10) × (scala − 1) / 2. A 88 dp sta
+    // nei 4 di anelloCrescitaPicco; oltre no.
+    for (final voci in [1, 2]) {
+      testWidgets('crescita per lato (voci: $voci)', (tester) async {
+        for (final d in [88.0, 112.0, 130.0, 156.0, 208.0]) {
+          await tester.pumpWidget(const SizedBox()); // stato nuovo a ogni diametro
+          await tester.pumpWidget(_app(d: d, ampiezza: 0, voci: voci));
+          final riposo = tester.getRect(find.descendant(of: _fadeTratto(), matching: find.byType(DecoratedBox)));
+          await tester.pumpWidget(_app(d: d, ampiezza: 1, voci: voci));
+          await _avanza(tester, 500);
+          final picco = tester.getRect(find.descendant(of: _fadeTratto(), matching: find.byType(DecoratedBox)));
+          final crescita = (picco.width - riposo.width) / 2;
+          final scala = 1 + (BaPresenzaTokens.anelloScalaPicco - BaPresenzaTokens.anelloScalaRiposo) * BaPresenzaTokens.quotaEscursione(voci);
+          expect(crescita, closeTo((d + 10) * (scala - 1) / 2, 0.01), reason: 'd = $d');
+        }
+      });
+    }
+  });
+
   group('geometria', () {
     for (final d in [88.0, 208.0]) {
       testWidgets('aderente alla sagoma a ${d.toInt()} dp: 3 + 2, fissi a ogni scala',
