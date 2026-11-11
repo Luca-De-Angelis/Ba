@@ -406,6 +406,9 @@ class BaPresenzaTokens {
   static const double badgeRapporto = 0.2; // eccezione: rapporto col diametro
   static const double badgeMax = _S.sp11;
   static const double badgeCentro = 0.854; // eccezione: 0,5 + 0,5 * cos 45°, il punto del bordo a 45°
+  // Bordo del disco: 1,5 dp. Eccezione: border1 sparisce sul disco da 28 e
+  // border2 mangia il glifo; Tailwind non ha 1,5. Colore: micSpentoBordo.
+  static const double badgeBordo = 1.5;
   static double badgeDiametro(double d) => (d * badgeRapporto).clamp(glifo, badgeMax).toDouble();
 
   // Tacca della parola (sotto-DEN): una funzione, non un titolo. Sta nella
@@ -732,6 +735,40 @@ abstract class BaRegole {
   /// ereditato dal palco invece che passato dal chiamante (Inventario, C8).
   /// Resta convenzione la 2, e va guardata in revisione: nessun tipo può
   /// impedire di affidare un significato a una tinta.
+}
+
+// ------------------------------------------------------------ glifi del disco
+
+/// Proporzioni dei tre glifi del disco (§7.17), in frazione del LATO del disco
+/// misurato dentro il bordo (badgeBordo). Il lato è badgeDiametro(d), da 28 a
+/// 44. Il tratto è lo stesso per tutti e a ogni misura: non scala col disco,
+/// perché a 28 un tratto da 1 sparisce e a 44 uno da 3 pesa. Origine: il
+/// microfono segue il prototipo; l'altoparlante e il cerchio sono la proposta
+/// dello sviluppo, corretta da 012c (anello da 84% a 72%).
+class BaGlifoTokens {
+  BaGlifoTokens._();
+  static const double tratto = _S.border2;
+
+  // barra obliqua che segna lo stato, a -45°, ritagliata dal glifo da un alone
+  static const double barraGradi = -45;
+  static const double barraLato = 0.84; // microfono e altoparlante: lunghezza lungo la diagonale
+  static const double barraAlone = 5; // eccezione: tratto + 3
+
+  // microfono: capsula, culla (arco sotto la capsula) e stelo
+  static const double capsulaX = 0.36, capsulaY = 0.14, capsulaL = 0.28, capsulaA = 0.38;
+  static const double cullaX = 0.22, cullaY = 0.32, cullaL = 0.56, cullaA = 0.30;
+  static const double steloY = 0.61, steloA = 0.15; // centrato, largo quanto il tratto
+
+  // altoparlante: corpo, cono e due onde
+  static const double corpoX = 0.20, corpoY = 0.38, corpoL = 0.16, corpoA = 0.24;
+  static const double conoX = 0.34, conoY = 0.26, conoL = 0.26, conoA = 0.48;
+  static const double conoBocca = 0.44; // lato stretto del cono, in frazione della sua altezza
+  static const double ondeCentroX = 0.60; // le onde partono dal bordo destro del cono
+  static const double ondaInternaRaggio = 0.12, ondaEsternaRaggio = 0.26; // distanza fra le onde 3,5 dp a 28: più del tratto
+  static const double ondeGradi = 40; // da -40° a +40°
+
+  // cerchio barrato: anello e barra hanno lo stesso diametro, la barra finisce sull'anello
+  static const double cerchioLato = 0.72;
 }
 
 // ------------------------------------------------------------ barra e scheda
