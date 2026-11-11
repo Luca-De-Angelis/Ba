@@ -65,6 +65,7 @@ class BaTouchable extends StatefulWidget {
     this.suChiara = false,
     this.estensione = EdgeInsets.zero,
     this.raggio = BaRaggioTokens.pillola,
+    this.bordo,
     this.child,
     this.builder,
   }) : assert(
@@ -96,6 +97,11 @@ class BaTouchable extends StatefulWidget {
   /// Un cerchio su un quadrato con il raggio pillola resta un cerchio.
   final double raggio;
 
+  /// Angoli della forma, quando non sono un cerchio di raggio unico (le sagome
+  /// delle presenze hanno angoli ellittici diversi). Se c'è, ha la precedenza
+  /// su [raggio] per il velo e per l'anello di focus.
+  final BorderRadius? bordo;
+
   final Widget? child;
   final BaTouchableBuilder? builder;
 
@@ -111,6 +117,20 @@ class _BaTouchableState extends State<BaTouchable> {
   bool _aFuoco = false;
 
   bool get _attivo => widget.onTap != null;
+
+  BorderRadius get _forma => widget.bordo ?? BorderRadius.circular(widget.raggio);
+
+  /// Gli stessi angoli, ingranditi di [t] su entrambi gli assi: per gli angoli
+  /// ellittici è un'approssimazione (l'offset di un'ellisse non è un'ellisse).
+  static BorderRadius _ingrandita(BorderRadius b, double t) {
+    Radius r(Radius o) => Radius.elliptical(o.x + t, o.y + t);
+    return BorderRadius.only(
+      topLeft: r(b.topLeft),
+      topRight: r(b.topRight),
+      bottomRight: r(b.bottomRight),
+      bottomLeft: r(b.bottomLeft),
+    );
+  }
 
   @override
   void didUpdateWidget(BaTouchable vecchio) {
@@ -163,7 +183,7 @@ class _BaTouchableState extends State<BaTouchable> {
                 duration: durata,
                 decoration: BoxDecoration(
                   color: stato.premuto ? velo : velo.withValues(alpha: 0),
-                  borderRadius: BorderRadius.circular(widget.raggio),
+                  borderRadius: _forma,
                 ),
               ),
             ),
@@ -198,7 +218,7 @@ class _BaTouchableState extends State<BaTouchable> {
             child: IgnorePointer(
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(widget.raggio + fuori),
+                  borderRadius: _ingrandita(_forma, fuori),
                   border: Border.all(
                     color: widget.suChiara
                         ? BaColorTokens.focusAnelloSuChiara
