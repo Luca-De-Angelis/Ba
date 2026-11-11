@@ -22,7 +22,9 @@ Un file per task, `NNN-nome.md`, al massimo una pagina, nel formato di `_templat
 | 010 | `010-presenza.md` — BaRitratto, BaAnello e BaPresenza (stati di base) | Claude Code | Concluso |
 | 010b | Correzione al 010: crescita dell'anello limitata a 4 dp (consegna in `docs/reports/010b.md`) | Claude Code | Concluso |
 | 011 | `011-palco.md` — BaPalco (widget) e la stanza vuota con una persona | Claude Code | Concluso |
-| 012 | `012-glifi.md` — BaGlifo e stati con glifo (mutata, bloccata, microfono spento, tacca) | Claude Code | In corso |
+| 012 | `012-glifi.md` — BaGlifo e stati con glifo (mutata, bloccata, microfono spento, tacca) | Claude Code | Concluso |
+| 012c | Conferma dei glifi: token `BaGlifoTokens` e `badgeBordo` (consegna in `design/handoff/012c/`) | Claude Design | Concluso |
+| 012d | `012d-glifi-token.md` — applicare l'esito del 012c: token dei glifi e geometria corretta | Claude Code | In corso |
 | 013 | Accesso con email e verifica del numero | Claude Design | Brief da scrivere |
 | 014 | Creare e gestire i DEN | Claude Design | Brief da scrivere |
 | 015 | Coda e attesa | Claude Design | Brief da scrivere |

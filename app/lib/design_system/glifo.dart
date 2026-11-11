@@ -1,18 +1,19 @@
 // BaGlifo: il segno dentro il disco di una presenza (C3). Tre glifi, tutti
 // barrati, tutti nello stesso disco in basso a destra (§7.17):
-//   microfono   → microfono spento
+//   microfono    → microfono spento
 //   altoparlante → voce mutata
-//   bloccata    → cerchio barrato, persona bloccata
+//   bloccata     → cerchio barrato, persona bloccata
 // Mai al centro della presenza: le iniziali non si coprono.
 //
 // «A due tratti come l'anello» (C7, §7.9): sotto il tratto chiaro della barra
-// c'è un casing scuro, così il segno non dipende da ciò che c'è sotto.
+// c'è un alone scuro, così il segno non dipende da ciò che c'è sotto. Fa
+// eccezione il cerchio barrato, che nel prototipo (Stati critici 002) ha la
+// barra del solo tratto, senza alone: l'anello non si interrompe.
 //
-// Geometria: il microfono viene dal prototipo del task 002 (Stati critici
-// 002, `bGlifo`/`bFondo`), in percentuale del lato. L'altoparlante e il cerchio
-// il prototipo non li disegna: le proporzioni sono una PROPOSTA del task 012,
-// da confermare con Claude Design. Le percentuali stanno qui, come costanti
-// con nome, perché tokens.dart non le ha (segnalato nel report).
+// Geometria: tutte le proporzioni sono in `BaGlifoTokens` (consegna 012c: il
+// microfono segue il prototipo del task 002, l'altoparlante e il cerchio sono
+// confermati), in frazione del LATO del riquadro del glifo. Qui non ci sono
+// numeri di design.
 import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
@@ -45,10 +46,11 @@ class BaGlifo extends StatelessWidget {
   final bool ripiego;
 
   /// Un lato diverso, per quando il glifo riempie un disco più grande o più
-  /// piccolo di 28 (il disco cresce con la presenza, `badgeDiametro`).
+  /// piccolo di 28 (il disco cresce con la presenza, `badgeDiametro`). Nel disco
+  /// è il lato misurato DENTRO il bordo: `badgeDiametro(d) − 2 × badgeBordo`.
   final double? lato;
 
-  /// Colore del tratto chiaro e del casing scuro sotto la barra.
+  /// Colore del tratto chiaro e dell'alone scuro sotto la barra.
   final Color tratto;
   final Color fondo;
 
@@ -72,38 +74,6 @@ class BaGlifo extends StatelessWidget {
   }
 }
 
-// ------------------------------------------------------------- proporzioni
-
-/// Spessori: il tratto chiaro è quello dell'anello; il casing sotto la barra è
-/// keyline + tratto, cioè la banda dell'anello (5).
-const double _spessoreTratto = BaPresenzaTokens.anelloTratto;
-const double _spessoreCasing = BaPresenzaTokens.anelloKeyline + BaPresenzaTokens.anelloTratto;
-
-// La barra: x 8 %, larga 84 %, a metà altezza, ruotata di −45° (prototipo).
-const double _barraX = 0.08;
-const double _barraLarghezza = 0.84;
-const double _barraAngolo = -math.pi / 4;
-
-// Microfono, in % del lato (prototipo): capsula, culla, stelo.
-const Rect _capsula = Rect.fromLTWH(0.36, 0.14, 0.28, 0.38);
-const Rect _culla = Rect.fromLTWH(0.22, 0.32, 0.56, 0.30);
-const double _steloY = 0.61;
-const double _steloAltezza = 0.15;
-
-// Altoparlante (proposta): corpo, cono, due onde.
-const double _corpoX = 0.14;
-const double _conoX = 0.30;
-const double _bordoX = 0.50;
-const double _corpoAlto = 0.38;
-const double _corpoBasso = 0.62;
-const double _conoAlto = 0.22;
-const double _conoBasso = 0.78;
-const List<double> _onde = [0.14, 0.26];
-const double _ondaSemiapertura = 40 * math.pi / 180;
-
-// Cerchio della bloccata (proposta): come la barra, 8 % di margine.
-const Rect _cerchio = Rect.fromLTWH(0.08, 0.08, 0.84, 0.84);
-
 class _PittoreGlifo extends CustomPainter {
   const _PittoreGlifo(this.tipo, this.tratto, this.fondo);
 
@@ -111,37 +81,55 @@ class _PittoreGlifo extends CustomPainter {
   final Color tratto;
   final Color fondo;
 
+  /// Da gradi (come nei token) a radianti.
+  static double _rad(double gradi) => gradi * math.pi / 180;
+
   @override
   void paint(Canvas canvas, Size size) {
     final l = size.width;
     final linea = Paint()
       ..color = tratto
       ..style = PaintingStyle.stroke
-      ..strokeWidth = _spessoreTratto;
+      ..strokeWidth = BaGlifoTokens.tratto;
+    final pieno = Paint()..color = tratto;
 
+    // Lunghezza della barra e alone: microfono e altoparlante hanno la barra
+    // lunga `barraLato` con l'alone; il cerchio ha la barra lunga quanto il suo
+    // anello, che finisce sull'anello, e nessun alone (prototipo).
+    final double barra;
+    final bool alone;
     switch (tipo) {
       case BaTipoGlifo.microfono:
         _microfono(canvas, l, linea);
+        barra = BaGlifoTokens.barraLato;
+        alone = true;
       case BaTipoGlifo.altoparlante:
-        _altoparlante(canvas, l, linea);
+        _altoparlante(canvas, l, pieno, linea);
+        barra = BaGlifoTokens.barraLato;
+        alone = true;
       case BaTipoGlifo.bloccata:
-        // Il bordo CSS sta dentro il riquadro: il tratto va a metà spessore.
-        final r = _scala(_cerchio, l).deflate(_spessoreTratto / 2);
-        canvas.drawCircle(r.center, r.width / 2, linea);
+        _cerchio(canvas, l, linea);
+        barra = BaGlifoTokens.cerchioLato;
+        alone = false;
     }
-    _barra(canvas, l);
+    _barra(canvas, l, barra * l, alone);
   }
 
-  Rect _scala(Rect r, double l) =>
-      Rect.fromLTWH(r.left * l, r.top * l, r.width * l, r.height * l);
+  Rect _scala(double x, double y, double larghezza, double altezza, double l) =>
+      Rect.fromLTWH(x * l, y * l, larghezza * l, altezza * l);
 
   void _microfono(Canvas canvas, double l, Paint linea) {
-    final mezzo = _spessoreTratto / 2;
+    // Il bordo CSS sta dentro il riquadro: il tratto va a metà spessore.
+    final mezzo = BaGlifoTokens.tratto / 2;
     // Capsula: tutta rotonda.
-    final c = _scala(_capsula, l).deflate(mezzo);
+    final c = _scala(BaGlifoTokens.capsulaX, BaGlifoTokens.capsulaY, BaGlifoTokens.capsulaL,
+            BaGlifoTokens.capsulaA, l)
+        .deflate(mezzo);
     canvas.drawRRect(RRect.fromRectAndRadius(c, Radius.circular(c.shortestSide / 2)), linea);
     // Culla: senza il lato alto, rotonda in basso (semicerchio).
-    final u = _scala(_culla, l).deflate(mezzo);
+    final u = _scala(BaGlifoTokens.cullaX, BaGlifoTokens.cullaY, BaGlifoTokens.cullaL,
+            BaGlifoTokens.cullaA, l)
+        .deflate(mezzo);
     final raggio = u.width / 2;
     final culla = Path()
       ..moveTo(u.left, u.top)
@@ -154,58 +142,82 @@ class _PittoreGlifo extends CustomPainter {
       )
       ..lineTo(u.right, u.top);
     canvas.drawPath(culla, linea);
-    // Stelo.
+    // Stelo: centrato, largo quanto il tratto.
     canvas.drawLine(
-      Offset(l / 2, _steloY * l),
-      Offset(l / 2, (_steloY + _steloAltezza) * l),
+      Offset(l / 2, BaGlifoTokens.steloY * l),
+      Offset(l / 2, (BaGlifoTokens.steloY + BaGlifoTokens.steloA) * l),
       linea,
     );
   }
 
-  void _altoparlante(Canvas canvas, double l, Paint linea) {
-    final corpo = Path()
-      ..moveTo(_corpoX * l, _corpoAlto * l)
-      ..lineTo(_conoX * l, _corpoAlto * l)
-      ..lineTo(_bordoX * l, _conoAlto * l)
-      ..lineTo(_bordoX * l, _conoBasso * l)
-      ..lineTo(_conoX * l, _corpoBasso * l)
-      ..lineTo(_corpoX * l, _corpoBasso * l)
-      ..close();
-    canvas.drawPath(corpo, linea);
-    for (final raggio in _onde) {
+  void _altoparlante(Canvas canvas, double l, Paint pieno, Paint linea) {
+    // Corpo: rettangolo pieno.
+    canvas.drawRect(
+      _scala(BaGlifoTokens.corpoX, BaGlifoTokens.corpoY, BaGlifoTokens.corpoL,
+          BaGlifoTokens.corpoA, l),
+      pieno,
+    );
+    // Cono: trapezio pieno nel suo riquadro. A sinistra il lato stretto, alto
+    // `conoBocca` dell'altezza e centrato; a destra l'altezza intera.
+    final cono = _scala(BaGlifoTokens.conoX, BaGlifoTokens.conoY, BaGlifoTokens.conoL,
+        BaGlifoTokens.conoA, l);
+    final margine = cono.height * (1 - BaGlifoTokens.conoBocca) / 2;
+    canvas.drawPath(
+      Path()
+        ..moveTo(cono.left, cono.top + margine)
+        ..lineTo(cono.right, cono.top)
+        ..lineTo(cono.right, cono.bottom)
+        ..lineTo(cono.left, cono.bottom - margine)
+        ..close(),
+      pieno,
+    );
+    // Onde: due archi a tratto, con il centro al bordo destro del cono.
+    final centro = Offset(BaGlifoTokens.ondeCentroX * l, l / 2);
+    for (final raggio in [BaGlifoTokens.ondaInternaRaggio, BaGlifoTokens.ondaEsternaRaggio]) {
       canvas.drawArc(
-        Rect.fromCircle(center: Offset(_bordoX * l, l / 2), radius: raggio * l),
-        -_ondaSemiapertura,
-        2 * _ondaSemiapertura,
+        Rect.fromCircle(center: centro, radius: raggio * l),
+        -_rad(BaGlifoTokens.ondeGradi),
+        2 * _rad(BaGlifoTokens.ondeGradi),
         false,
         linea,
       );
     }
   }
 
-  /// La barra diagonale, a due tratti: il casing scuro sotto, il tratto chiaro
-  /// sopra. Estremi a capo piatto, come nel prototipo.
-  void _barra(Canvas canvas, double l) {
+  void _cerchio(Canvas canvas, double l, Paint linea) {
+    // Anello nel suo riquadro: il tratto sta dentro, come il bordo CSS.
+    final lato = BaGlifoTokens.cerchioLato * l;
+    final r = Rect.fromCenter(center: Offset(l / 2, l / 2), width: lato, height: lato)
+        .deflate(BaGlifoTokens.tratto / 2);
+    canvas.drawCircle(r.center, r.width / 2, linea);
+  }
+
+  /// La barra diagonale, lunga [lunghezza] e centrata, a `barraGradi`. Con
+  /// [alone] il tratto chiaro sta sopra un alone scuro di `barraAlone`. Estremi
+  /// a capo piatto, come nel prototipo.
+  void _barra(Canvas canvas, double l, double lunghezza, bool alone) {
     canvas.save();
     canvas.translate(l / 2, l / 2);
-    canvas.rotate(_barraAngolo);
-    final da = Offset((_barraX - 0.5) * l, 0);
-    final a = Offset((_barraX + _barraLarghezza - 0.5) * l, 0);
-    canvas.drawLine(
-      da,
-      a,
-      Paint()
-        ..color = fondo
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = _spessoreCasing,
-    );
+    canvas.rotate(_rad(BaGlifoTokens.barraGradi));
+    final da = Offset(-lunghezza / 2, 0);
+    final a = Offset(lunghezza / 2, 0);
+    if (alone) {
+      canvas.drawLine(
+        da,
+        a,
+        Paint()
+          ..color = fondo
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = BaGlifoTokens.barraAlone,
+      );
+    }
     canvas.drawLine(
       da,
       a,
       Paint()
         ..color = tratto
         ..style = PaintingStyle.stroke
-        ..strokeWidth = _spessoreTratto,
+        ..strokeWidth = BaGlifoTokens.tratto,
     );
     canvas.restore();
   }
