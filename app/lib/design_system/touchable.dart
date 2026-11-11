@@ -14,6 +14,7 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import 'forma.dart';
 import 'tokens.dart';
 
 /// Come si comporta un elemento toccabile.
@@ -120,18 +121,6 @@ class _BaTouchableState extends State<BaTouchable> {
 
   BorderRadius get _forma => widget.bordo ?? BorderRadius.circular(widget.raggio);
 
-  /// Gli stessi angoli, ingranditi di [t] su entrambi gli assi: per gli angoli
-  /// ellittici è un'approssimazione (l'offset di un'ellisse non è un'ellisse).
-  static BorderRadius _ingrandita(BorderRadius b, double t) {
-    Radius r(Radius o) => Radius.elliptical(o.x + t, o.y + t);
-    return BorderRadius.only(
-      topLeft: r(b.topLeft),
-      topRight: r(b.topRight),
-      bottomRight: r(b.bottomRight),
-      bottomLeft: r(b.bottomLeft),
-    );
-  }
-
   @override
   void didUpdateWidget(BaTouchable vecchio) {
     super.didUpdateWidget(vecchio);
@@ -218,7 +207,7 @@ class _BaTouchableState extends State<BaTouchable> {
             child: IgnorePointer(
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                  borderRadius: _ingrandita(_forma, fuori),
+                  borderRadius: ingrandisci(_forma, fuori),
                   border: Border.all(
                     color: widget.suChiara
                         ? BaColorTokens.focusAnelloSuChiara
