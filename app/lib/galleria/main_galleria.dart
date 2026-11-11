@@ -6,9 +6,12 @@
 // Da app/:
 //   flutter run -d chrome -t lib/galleria/main_galleria.dart
 import 'package:flutter/widgets.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../design_system/tokens.dart';
+import '../l10n/app_localizations.dart';
 import 'comuni.dart';
+import 'galleria_palco.dart';
 import 'galleria_presenza.dart';
 import 'galleria_touchable.dart';
 
@@ -21,6 +24,12 @@ class GalleriaApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return WidgetsApp(
       color: BaColorTokens.fondoApp,
+      // I testi del palco si compongono con le chiavi ARB (cinque lingue).
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: AppLocalizations.supportedLocales,
       textStyle: BaTestoTokens.corpo.copyWith(color: BaColorTokens.testoPrimo),
       pageRouteBuilder: <T>(settings, builder) => PageRouteBuilder<T>(
         settings: settings,
@@ -32,7 +41,7 @@ class GalleriaApp extends StatelessWidget {
 }
 
 /// Le pagine della galleria, una per componente (o gruppo di componenti).
-enum _Pagina { touchable, presenza }
+enum _Pagina { touchable, presenza, palco }
 
 class _Galleria extends StatefulWidget {
   const _Galleria();
@@ -69,6 +78,11 @@ class _GalleriaState extends State<_Galleria> {
                     _pagina == _Pagina.presenza,
                     () => setState(() => _pagina = _Pagina.presenza),
                   ),
+                  galleriaInterruttore(
+                    'BaPalco',
+                    _pagina == _Pagina.palco,
+                    () => setState(() => _pagina = _Pagina.palco),
+                  ),
                 ],
               ),
             ),
@@ -77,6 +91,7 @@ class _GalleriaState extends State<_Galleria> {
             child: switch (_pagina) {
               _Pagina.touchable => const GalleriaTouchable(),
               _Pagina.presenza => const GalleriaPresenza(),
+              _Pagina.palco => const GalleriaPalco(),
             },
           ),
         ],
