@@ -12,14 +12,15 @@ Questi termini valgono nell'interfaccia, nei documenti e nei nomi del codice (D-
 | Microfono acceso / spento | Stato del proprio microfono. È per stanza, non globale |
 | Muta una voce / voce mutata | Preferenza personale: non sentire più una persona. Non è un atto pubblico |
 | Blocca / persona bloccata | La persona resta visibile ma mutata d'ufficio |
-| Ascoltatore | Account che ascolta e non parla: non viene mai trascritto |
-| Partecipante | Account che ha dato il consenso a parlare: registrazione temporanea della voce, trascrizione, profilazione e moderazione |
+| Ascoltatore | Account di base, con email, senza numero: ascolta, non parla e non viene mai trascritto |
+| Partecipante | Account con numero verificato e consenso a parlare |
 | Torna ascoltatore | Ritiro del consenso a parlare (D-003) |
 | Coda | Lista d'attesa per il palco, anche su più DEN insieme |
 | Ingresso automatico | "Fammi entrare automaticamente" quando si libera un posto |
 | DEN programmato | DEN con data e ora, creato da qualunque utente (D-016) |
 | Connessione | Legame fra due persone; fra le connessioni si scelgono gli invitati (D-014) |
 | Ascolto condiviso | Contenuto riprodotto nel DEN che tutti sentono insieme; si abbassa da solo quando qualcuno parla (D-017) |
+| Modalità radio | Quando il DEN finisce o si svuota, si passa da soli a uno simile per tema e lingua (B10, solo annotata) |
 
 **Da non usare:** "Loggia" (si dice sotto-DEN), "abbassa / abbassata" (si dice muta / mutata), "Mutami" o "Muta" per il proprio microfono (si dice spegni il microfono).
 
