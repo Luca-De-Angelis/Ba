@@ -7,7 +7,7 @@ Un solo registro per tutte le decisioni di prodotto e di design. Le decisioni te
 | ID | Data | Decisione | Fonte | Stato |
 | --- | --- | --- | --- | --- |
 | D-001 | 17/10/2026 | Se il design diverge da una decisione di prodotto, vince il brief; le scelte estetiche restano del design | Luca | Valida |
-| D-002 | 17/10/2026 | Accesso con numero di telefono e codice SMS, poi due consensi separati: termini e privacy (necessario) e consenso a parlare (rifiutabile). Chi rifiuta resta ascoltatore. Il flusso regge la sparizione del passaggio SMS | Brief §5; Guida §3, §5; sintesi tecnica §2 | Valida, aggiornata il 6/11 |
+| D-002 | 17/10/2026 | Accesso con numero di telefono e codice SMS, poi due consensi separati: termini e privacy (necessario) e consenso a parlare (rifiutabile). Chi rifiuta resta ascoltatore. Il flusso regge la sparizione del passaggio SMS | Brief §5; Guida §3, §5; sintesi tecnica §2 | Superata da D-031 |
 | D-003 | 17/10/2026 | Il consenso a parlare si ritira dalle impostazioni con "Torna ascoltatore": non si parla più e, se si sta parlando, si esce dalla stanza. Non esiste un interruttore della trascrizione separato | Brief §5; sintesi tecnica §2 | Valida, aggiornata il 6/11 |
 | D-004 | 17/10/2026 | Nessuna conversazione si può riascoltare. La voce di chi parla si salva per poco tempo per trascriverla, poi si cancella; il testo resta per un periodo. L'interfaccia lo dice nell'onboarding, quando si diventa partecipante e nelle impostazioni | Sintesi tecnica §1, §2; D-013 | Valida, aggiornata il 6/11 |
 | D-005 | 17/10/2026 | La rimozione di una persona da un DEN è fuori dall'alpha; esisterà nei DEN privati, quindi non va preclusa | Brief §5.A; Guida §4 | Valida |
@@ -23,7 +23,7 @@ Un solo registro per tutte le decisioni di prodotto e di design. Le decisioni te
 | D-015 | Novembre 2026 | Home ricca, in stile Spotify: DEN dal vivo e programmati a sezioni, contenuti di terzi, suggerimenti su misura | Call con gli stakeholder | Valida nel principio; rilascio aperto |
 | D-016 | Novembre 2026 | Ogni utente può programmare un DEN e invitare le sue connessioni | Call con gli stakeholder | Valida |
 | D-017 | Novembre 2026 | Podcast e musica si ascoltano insieme dentro un DEN (ascolto condiviso) | Call con gli stakeholder | Valida nel principio; nessuna licenza |
-| D-018 | Novembre 2026 | Le emittenti radio possono programmare DEN per interagire con i loro ascoltatori | Call con gli stakeholder | Valida nel principio; rilascio aperto |
+| D-018 | Novembre 2026 | Le emittenti radio possono programmare DEN per interagire con i loro ascoltatori | Call con gli stakeholder | Superata da D-032 |
 | D-019 | 6/11/2026 | Il framework resta Flutter. Token e scale seguono il modello di Tailwind: due livelli, scale primitive con nomi e passi alla Tailwind e token semantici di BA che vi fanno riferimento | Luca | Valida |
 | D-020 | 6/11/2026 | Approccio mobile first. Il tablet è supportato dalla beta 1, per ora solo in verticale. Il layout dipende dalla larghezza dello schermo, non dall'orientamento, così l'orizzontale si potrà aggiungere | Luca | Valida; orizzontale da rivalutare |
 | D-021 | 7/11/2026 | I nomi `Ba<Componente>` (per esempio `BaPresenza`, `BaPalco`) sono riservati ai widget. Le classi di token prendono il suffisso `Tokens` (`BaPresenza` → `BaPresenzaTokens`, `BaColor` → `BaColorTokens`…). Il cambio si fa nel task 004 | Chat di orchestrazione, su segnalazione di Claude Code | Valida |
@@ -36,6 +36,9 @@ Un solo registro per tutte le decisioni di prodotto e di design. Le decisioni te
 | D-028 | 8/11/2026 | D-021 vale per le classi di token. `BaOra`, `BaPayloadStanza` e `BaRegole` non sono né token né widget e restano senza suffisso | Task 004 | Valida |
 | D-029 | 9/11/2026 | Quando cade la connessione il microfono si spegne, e alla ripresa resta spento: lo stato del microfono appartiene alla connessione. Per questo suono e vibrazione di connessione persa sono sicuri | Sintesi tecnica sull'audio §1; task 002b | Valida |
 | D-030 | 9/11/2026 | Il web serve solo come galleria di sviluppo per vedere i componenti in Chrome: non è una piattaforma di prodotto. I target restano iOS e Android | Task 009 | Valida |
+| D-031 | 10/11/2026 | L'account di base è da ascoltatore: si entra con un codice via email (A01), si vedono solo i DEN pubblici e non si ha voce. Il numero di telefono verificato e il consenso a parlare servono solo per parlare, e si chiedono in «Sali sul palco» (A03, D-024). Google e Apple arrivano dopo l'alpha (A02). Sostituisce D-002 | Catalogo dei servizi (A01, A02, A03); risposta dei soci | Valida |
+| D-032 | 10/11/2026 | Le emittenti radio non programmano DEN. La «radio» è la modalità radio (B10): quando il DEN finisce o si svuota, si passa da soli a uno simile per tema e lingua. Sostituisce D-018 | Catalogo dei servizi (B10); risposta dei soci | Valida |
+| D-033 | 10/11/2026 | Perimetro di lavoro: si prende nota di tutti i servizi del catalogo, ma si lavora (design, codice, domande ai soci) solo su quelli segnati Confermato, Ipotesi o Previsto, più i verdi con un punto aperto: 48 servizi. Gli altri 67 sono solo annotati in `FEATURES.md` e si predispone il sistema ad accoglierli senza precluderli. Le sezioni N e X valgono come principi | Indicazione di Luca | Valida |
 
 ## Aperte
 
@@ -49,3 +52,4 @@ Un solo registro per tutte le decisioni di prodotto e di design. Le decisioni te
 - Traduzioni: quelle tedesche, e quelle delle altre lingue, da far rivedere a madrelingua.
 - Vibrazione: i pattern vanno provati su un iPhone e su un Android veri, in particolare le coppie "spento" e "solo gruppo", "acceso" e "revocata", "ricevuta" e "salita".
 - Suoni: `ba_mic_spento`, `ba_conn_persa` e `ba_conn_ripresa` esistono solo come specifica; vanno prodotti, e chi li realizza non è deciso.
+- Catalogo LIVE.BA (10/11/2026): in attesa dei soci le voci D07, E06, G10; vedi docs/FEATURES.md. Task 013 (accesso con email) da scrivere dopo le risposte su ascoltatori e DEN privati, e su «Torna ascoltatore».
