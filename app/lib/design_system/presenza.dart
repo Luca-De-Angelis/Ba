@@ -150,6 +150,7 @@ class BaPresenza extends StatelessWidget {
               children: [
                 sagoma,
                 BaAnello(
+                  diametro: d,
                   bordo: bordo,
                   parla: conAnello,
                   ampiezza: ampiezza,

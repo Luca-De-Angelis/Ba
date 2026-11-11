@@ -14,6 +14,8 @@
 //     senza gradini e senza dente di sega;
 //   - l'opacità del respiro è sul tratto; la keyline non respira;
 //   - il ripiego statico ("riduci movimento") è scala di riposo e tratto pieno.
+import 'dart:math' as math;
+
 import 'package:flutter/widgets.dart';
 
 import 'forma.dart';
@@ -22,6 +24,7 @@ import 'tokens.dart';
 class BaAnello extends StatefulWidget {
   const BaAnello({
     super.key,
+    required this.diametro,
     required this.bordo,
     this.parla = false,
     this.ampiezza = 0,
@@ -29,6 +32,10 @@ class BaAnello extends StatefulWidget {
     this.lineaInstabile = false,
     this.keyline = BaColorTokens.voceKeyline,
   });
+
+  /// Il diametro della sagoma: serve a limitare la crescita al picco a
+  /// `anelloCrescitaPicco` per lato (vedi [scalaMassima]).
+  final double diametro;
 
   /// Gli angoli della sagoma che l'anello abbraccia. L'anello riempie la
   /// scatola che riceve e disegna fuori da essa, senza toccare il layout.
@@ -51,6 +58,17 @@ class BaAnello extends StatefulWidget {
 
   /// Colore della keyline: `premutoKeyline` quando la presenza è premuta.
   final Color keyline;
+
+  /// Scala al picco a una voce. `anelloScalaPicco` (1,075) vale dove la crescita
+  /// resta nei 4 dp riservati (`anelloCrescitaPicco`, che entra nella distanza
+  /// minima): a diametri maggiori la scala scende, perché l'anello (lato =
+  /// diametro + banda a riposo) cresca al più di 4 dp per lato. A 88 dp: 1,075.
+  static double scalaMassima(double diametro) {
+    const banda = BaPresenzaTokens.anelloKeyline + BaPresenzaTokens.anelloTratto;
+    final limite = BaPresenzaTokens.anelloScalaRiposo +
+        2 * BaPresenzaTokens.anelloCrescitaPicco / (diametro + 2 * banda);
+    return math.min(BaPresenzaTokens.anelloScalaPicco, limite);
+  }
 
   @override
   State<BaAnello> createState() => _BaAnelloState();
@@ -167,7 +185,7 @@ class _BaAnelloState extends State<BaAnello> with TickerProviderStateMixin {
       scala = _respiro.drive(Tween(
         begin: BaPresenzaTokens.anelloScalaRiposo,
         end: BaPresenzaTokens.anelloScalaRiposo +
-            (BaPresenzaTokens.anelloScalaPicco - BaPresenzaTokens.anelloScalaRiposo) * quota,
+            (BaAnello.scalaMassima(widget.diametro) - BaPresenzaTokens.anelloScalaRiposo) * quota,
       ));
       opacitaTratto = _respiro.drive(Tween(
         begin: BaPresenzaTokens.anelloOpacitaRiposo,
