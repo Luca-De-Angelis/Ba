@@ -12,7 +12,7 @@ Widget _app({
   int voci = 1,
   bool lineaInstabile = false,
   bool riduciMovimento = false,
-  double d = 100,
+  double d = 88,
   Color keyline = BaColorTokens.voceKeyline,
 }) =>
     Directionality(
@@ -25,6 +25,7 @@ Widget _app({
             width: d,
             height: d,
             child: BaAnello(
+              diametro: d,
               bordo: BorderRadius.circular(d / 2),
               parla: parla,
               ampiezza: ampiezza,
@@ -111,7 +112,7 @@ void main() {
       expect(_opacita(tester), closeTo(BaPresenzaTokens.anelloOpacitaRiposo, 0.001));
     });
 
-    testWidgets('ampiezza 1: scala 1,075 e opacità 0,95', (tester) async {
+    testWidgets('a 88 dp, ampiezza 1: scala 1,075 e opacità 0,95', (tester) async {
       await tester.pumpWidget(_app(ampiezza: 0));
       await tester.pumpWidget(_app(ampiezza: 1));
       await _avanza(tester, 500);
@@ -119,7 +120,7 @@ void main() {
       expect(_opacita(tester), closeTo(0.95, 0.001));
     });
 
-    testWidgets('con due voci: 1,042 e 0,66 (±0,01)', (tester) async {
+    testWidgets('a 88 dp, con due voci: 1,042 e 0,66 (±0,01)', (tester) async {
       await tester.pumpWidget(_app(ampiezza: 0, voci: 2));
       await tester.pumpWidget(_app(ampiezza: 1, voci: 2));
       await _avanza(tester, 500);
@@ -186,24 +187,43 @@ void main() {
   });
 
   group('crescita al picco', () {
-    // Serve al task 011 (BaPalco): quanto l'anello sporge oltre la banda a
-    // riposo (5) al picco. La scala 1,075 agisce sull'anello intero, che misura
-    // d + 10: la crescita per lato è (d + 10) × (scala − 1) / 2. A 88 dp sta
-    // nei 4 di anelloCrescitaPicco; oltre no.
+    // Per il task 011 (BaPalco). L'anello intero misura L = d + 10 (sagoma +
+    // banda a riposo) e cresce per lato di L × (scala − 1) / 2, mai oltre i
+    // 4 dp di anelloCrescitaPicco: scala massima = min(1,075; 1 + 2 × 4 / L),
+    // quindi 1,075 solo a 88 dp. Con più voci: 1 + (massima − 1) × quota.
+    const limite = BaPresenzaTokens.anelloCrescitaPicco;
+    const tolleranza = 1e-6;
+
+    Future<double> crescita(WidgetTester tester, double d, int voci) async {
+      await tester.pumpWidget(const SizedBox()); // stato nuovo a ogni diametro
+      await tester.pumpWidget(_app(d: d, ampiezza: 0, voci: voci));
+      final strato = find.descendant(of: _fadeTratto(), matching: find.byType(DecoratedBox));
+      final riposo = tester.getRect(strato);
+      await tester.pumpWidget(_app(d: d, ampiezza: 1, voci: voci));
+      await _avanza(tester, 500);
+      return (tester.getRect(strato).width - riposo.width) / 2;
+    }
+
+    testWidgets('a 88 dp non cambia niente: scala massima 1,075', (tester) async {
+      expect(BaAnello.scalaMassima(88), closeTo(BaPresenzaTokens.anelloScalaPicco, 1e-9));
+      expect(await crescita(tester, 88, 1), closeTo(98 * 0.075 / 2, 0.01));
+    });
+
     for (final voci in [1, 2]) {
-      testWidgets('crescita per lato (voci: $voci)', (tester) async {
-        for (final d in [88.0, 112.0, 130.0, 156.0, 208.0]) {
-          await tester.pumpWidget(const SizedBox()); // stato nuovo a ogni diametro
-          await tester.pumpWidget(_app(d: d, ampiezza: 0, voci: voci));
-          final riposo = tester.getRect(find.descendant(of: _fadeTratto(), matching: find.byType(DecoratedBox)));
-          await tester.pumpWidget(_app(d: d, ampiezza: 1, voci: voci));
-          await _avanza(tester, 500);
-          final picco = tester.getRect(find.descendant(of: _fadeTratto(), matching: find.byType(DecoratedBox)));
-          final crescita = (picco.width - riposo.width) / 2;
-          final scala = 1 + (BaPresenzaTokens.anelloScalaPicco - BaPresenzaTokens.anelloScalaRiposo) * BaPresenzaTokens.quotaEscursione(voci);
-          expect(crescita, closeTo((d + 10) * (scala - 1) / 2, 0.01), reason: 'd = $d');
-        }
-      });
+      for (final d in [112.0, 130.0, 156.0, 208.0]) {
+        testWidgets('a ${d.toInt()} dp la crescita per lato è ≤ 4 dp (voci: $voci)', (tester) async {
+          final misurata = await crescita(tester, d, voci);
+          expect(misurata, lessThanOrEqualTo(limite + tolleranza));
+          if (voci == 1) {
+            expect(misurata, closeTo(limite, tolleranza), reason: 'a una voce vale 4 dp da 112');
+          } else {
+            // Con due voci: 1 + (massima − 1) × quota, mai oltre il valore a una voce.
+            final quota = BaPresenzaTokens.quotaEscursione(voci);
+            expect(misurata, closeTo(limite * quota, tolleranza));
+            expect(misurata, lessThan(limite));
+          }
+        });
+      }
     }
   });
 
