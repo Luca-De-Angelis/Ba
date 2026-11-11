@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 
 import '../design_system/tokens.dart';
 import '../design_system/touchable.dart';
+import 'comuni.dart';
 
 const double _telefono = 360;
 const double _tablet = 744;
@@ -59,19 +60,19 @@ class _GalleriaTouchableState extends State<GalleriaTouchable> {
                     const SizedBox(height: sezione),
                     _controlli(),
                     const SizedBox(height: sezione),
-                    _titolo('Pillola grande · 56'),
+                    galleriaTitolo('Pillola grande · 56'),
                     _pillolaGrande(),
                     const SizedBox(height: sezione),
-                    _titolo('Coppia · 48 · gap 10 · area estesa'),
+                    galleriaTitolo('Coppia · 48 · gap 10 · area estesa'),
                     _coppia(),
                     const SizedBox(height: sezione),
-                    _titolo('Riga larga quanto lo schermo'),
+                    galleriaTitolo('Riga larga quanto lo schermo'),
                     _riga(),
                     const SizedBox(height: sezione),
-                    _titolo('Inattiva'),
+                    galleriaTitolo('Inattiva'),
                     _inattiva(),
                     const SizedBox(height: sezione),
-                    _titolo('Su presenza · keyline, senza scala'),
+                    galleriaTitolo('Su presenza · keyline, senza scala'),
                     _suPresenza(),
                   ],
                 ),
@@ -90,48 +91,22 @@ class _GalleriaTouchableState extends State<GalleriaTouchable> {
       spacing: BaControlloTokens.gapCoppia,
       runSpacing: BaControlloTokens.gapCoppia,
       children: [
-        _interruttore(
+        galleriaInterruttore(
           'Mostra le aree toccabili',
           _mostraAree,
           () => setState(() => _mostraAree = !_mostraAree),
         ),
-        _interruttore(
+        galleriaInterruttore(
           'Riduci movimento',
           _riduciMovimento,
           () => setState(() => _riduciMovimento = !_riduciMovimento),
         ),
-        _interruttore(
+        galleriaInterruttore(
           'Larghezza ${_larghezza.toInt()}',
           _larghezza == _tablet,
           () => setState(() => _larghezza = _larghezza == _telefono ? _tablet : _telefono),
         ),
       ],
-    );
-  }
-
-  Widget _interruttore(String testo, bool acceso, VoidCallback onTap) {
-    return BaTouchable(
-      semanticsLabel: testo,
-      onTap: onTap,
-      builder: (context, stato) => Container(
-        constraints: const BoxConstraints(minHeight: BaControlloTokens.areaMinima),
-        padding: const EdgeInsets.symmetric(horizontal: BaSpazioTokens.l),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(BaRaggioTokens.pillola),
-          border: Border.all(
-            color: acceso ? BaColorTokens.azioneAttivaBordo : BaColorTokens.filettoBase,
-          ),
-          gradient: acceso
-              ? LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: BaColorTokens.azioneAttivaFondo,
-                )
-              : null,
-        ),
-        child: Text(testo, style: BaTestoTokens.azione),
-      ),
     );
   }
 
@@ -304,19 +279,11 @@ class _GalleriaTouchableState extends State<GalleriaTouchable> {
           ),
         ),
         conteggio: _tocchi['presenza'] ?? 0,
+        larga: false,
       ),
     );
   }
 
-  Widget _titolo(String testo) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: BaSpazioTokens.m),
-      child: Text(
-        testo.toUpperCase(),
-        style: BaTestoTokens.marcatore.copyWith(color: BaColorTokens.testoTerzo),
-      ),
-    );
-  }
 }
 
 /// Mostra, a richiesta, l'area toccabile vera di un [BaTouchable]: il suo
@@ -328,17 +295,23 @@ class _ConAree extends StatelessWidget {
     required this.mostra,
     required this.touchable,
     required this.conteggio,
+    this.larga = true,
   });
 
   final bool mostra;
   final BaTouchable touchable;
   final int conteggio;
 
+  /// Larga quanto lo spazio che c'è (pillole e righe) o quanto il contenuto
+  /// (la presenza): l'area mostrata deve essere quella vera del widget.
+  final bool larga;
+
   @override
   Widget build(BuildContext context) {
     final e = touchable.estensione;
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: larga ? CrossAxisAlignment.stretch : CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Stack(
           clipBehavior: Clip.none,
@@ -361,14 +334,14 @@ class _ConAree extends StatelessWidget {
               ),
           ],
         ),
-        if (conteggio > 0)
-          Padding(
-            padding: const EdgeInsets.only(top: BaSpazioTokens.xs),
-            child: Text(
-              'TOCCHI: $conteggio',
-              style: BaTestoTokens.nota.copyWith(color: BaColorTokens.testoTerzo),
-            ),
+        // La riga c'è sempre, anche vuota: il primo tocco non sposta chi sta sotto.
+        Padding(
+          padding: const EdgeInsets.only(top: BaSpazioTokens.xs),
+          child: Text(
+            conteggio > 0 ? 'TOCCHI: $conteggio' : ' ',
+            style: BaTestoTokens.nota.copyWith(color: BaColorTokens.testoTerzo),
           ),
+        ),
       ],
     );
   }

@@ -379,4 +379,39 @@ void main() {
       expect(BaTouchable.estesa.left, 8);
     });
   });
+
+  group('bordo', () {
+    testWidgets('l\'anello di focus e il velo seguono gli angoli ellittici di bordo', (tester) async {
+      final bordo = BaSagomaTokens.bordo(0, 100);
+      await tester.pumpWidget(_app(
+        BaTouchable(
+          semanticsLabel: 'b',
+          onTap: () {},
+          bordo: bordo,
+          raggio: 3, // ignorato: bordo ha la precedenza
+          child: _contenuto(100),
+        ),
+      ));
+      // Il velo (a riposo trasparente) ha gli angoli di bordo.
+      expect(
+        find.descendant(
+          of: find.byType(BaTouchable),
+          matching: find.byWidgetPredicate((w) =>
+              w is DecoratedBox &&
+              w.decoration is BoxDecoration &&
+              (w.decoration as BoxDecoration).borderRadius == bordo),
+        ),
+        findsOneWidget,
+      );
+
+      _nodoDelTouchable().requestFocus();
+      await _dopoFocus(tester);
+      const fuori = BaControlloTokens.focusStacco + BaControlloTokens.focusSpessore;
+      final anello = tester.widget<DecoratedBox>(_anello());
+      final r = (anello.decoration as BoxDecoration).borderRadius! as BorderRadius;
+      expect(r.topLeft, Radius.elliptical(bordo.topLeft.x + fuori, bordo.topLeft.y + fuori));
+      expect(r.bottomRight, Radius.elliptical(bordo.bottomRight.x + fuori, bordo.bottomRight.y + fuori));
+      expect(r.topLeft.x, isNot(r.topLeft.y), reason: 'gli angoli restano ellittici');
+    });
+  });
 }
