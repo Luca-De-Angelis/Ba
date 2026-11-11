@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:ba/design_system/palco.dart';
 import 'package:ba/design_system/presenza.dart';
+import 'package:ba/design_system/tokens.dart';
 import 'package:ba/galleria/main_galleria.dart';
 
 Future<void> _tocca(WidgetTester tester, String testo) async {
@@ -90,10 +92,27 @@ void main() {
     expect(find.byType(BaPresenza), findsNWidgets(8));
     expect(diametro(), 88);
 
-    // Testo di sistema 2,0: il palco cede, nessuna presenza sparisce.
+    // Testo di sistema 2,0 e altezza della stanza 700 → 620 → 560 → 520: il
+    // palco cede in modo continuo, nessuna presenza sparisce.
     await _tocca(tester, 'Testo 1,0');
-    expect(find.byType(BaPresenza), findsNWidgets(8));
-    expect(diametro(), lessThan(88));
+    final diametri = [diametro()];
+    for (final altezza in [700, 620, 560]) {
+      await _tocca(tester, 'Altezza: $altezza');
+      diametri.add(diametro());
+      expect(find.byType(BaPresenza), findsNWidgets(8), reason: 'altezza $altezza');
+    }
+    for (var i = 1; i < diametri.length; i++) {
+      expect(diametri[i], lessThanOrEqualTo(diametri[i - 1]), reason: 'non cresce mai');
+    }
+    expect(diametri.last, lessThan(88), reason: 'a 520 dp il palco è sceso sotto 88');
+    expect(diametri.last, greaterThanOrEqualTo(BaPresenzaTokens.minimo));
+    expect(diametri.toSet().length, 4, reason: 'scende per gradi, non di colpo');
+
+    // La riga di debug va a capo dentro il palco, non esce dal bordo.
+    final riga = find.textContaining('d = ');
+    expect(tester.getRect(riga).right, lessThanOrEqualTo(tester.getRect(find.byType(BaPalco)).right));
+    expect(tester.getRect(riga).left, greaterThanOrEqualTo(tester.getRect(find.byType(BaPalco)).left));
+    await _tocca(tester, 'Altezza: 520'); // torna a 700
     await _tocca(tester, 'Testo 2,0');
 
     // Tablet: presenze più grandi (otto: 132).

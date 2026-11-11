@@ -12,12 +12,17 @@ import '../design_system/tokens.dart';
 import '../l10n/app_localizations.dart';
 import 'comuni.dart';
 
-/// I due dispositivi di riferimento (D-022, D-027) e l'altezza della stanza
-/// finta a ciascuno: dati di prova, non misure di design.
+/// I due dispositivi di riferimento (D-022, D-027).
 const double _telefono = 360;
 const double _tablet = 744;
-const double _altezzaTelefono = 640;
-const double _altezzaTablet = 900;
+
+/// Le altezze della stanza finta, dalla più alta: per far cedere il palco
+/// senza ridimensionare la finestra. Dati di prova, non misure di design.
+/// Scelte per il caso del testo 2,0 con otto persone, dove intestazione e riga
+/// prendono circa 376 dp: il palco resta con 324, 244, 184 e 144 dp e il
+/// diametro scende per gradi (88, 72, 50, 35). Sotto i 520 la stanza non
+/// contiene più nemmeno intestazione e riga.
+const List<double> _altezze = [700, 620, 560, 520];
 
 /// I due testi del testo di sistema da provare (C6: oltre 2,0 non si scala).
 const double _testoNormale = 1.0;
@@ -48,6 +53,7 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
   bool _scheletro = false;
   bool _congelato = false;
   double _larghezza = _telefono;
+  int _altezza = 0; // indice in _altezze
   double _testo = _testoNormale;
   bool _riduciMovimento = false;
   int _lingua = 0;
@@ -135,6 +141,11 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
           () => setState(() => _larghezza = _larghezza == _telefono ? _tablet : _telefono),
         ),
         galleriaInterruttore(
+          'Altezza: ${_altezze[_altezza].toInt()}',
+          _altezza != 0,
+          () => setState(() => _altezza = (_altezza + 1) % _altezze.length),
+        ),
+        galleriaInterruttore(
           'Testo ${_testo == _testoNormale ? '1,0' : '2,0'}',
           _testo == _testoGrande,
           () => setState(() => _testo = _testo == _testoNormale ? _testoGrande : _testoNormale),
@@ -179,7 +190,7 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
 
   Widget _stanza(BuildContext context, MediaQueryData base) {
     final l = AppLocalizations.of(context)!;
-    final altezza = _larghezza == _tablet ? _altezzaTablet : _altezzaTelefono;
+    final altezza = _altezze[_altezza];
     final margine = BaLayoutTokens.margine(_larghezza);
 
     return Container(
@@ -256,9 +267,12 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
               invitoTesto: l.palcoInvito,
             ),
             // Indicatore di sviluppo: diametro, scatola e sfora.
+            // left e right: la riga è larga quanto il palco e va a capo dentro di lui
+            // (un Positioned senza i due lati non limita la larghezza del figlio).
             Positioned(
               left: 0,
               top: 0,
+              right: 0,
               child: IgnorePointer(
                 child: Text(
                   'd = ${disposizione.diametro.toStringAsFixed(0)} dp · '
