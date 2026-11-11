@@ -15,6 +15,9 @@ analyzer:
     - android/**
     - ios/**
     - web/**
+    # Codice generato da `flutter gen-l10n` (gitignored): include i delegati
+    # Material e Cupertino, deprecati dal Flutter piu' recente. Non e' nostro.
+    - lib/l10n/app_localizations*.dart
 
 linter:
   # The lint rules applied to this project can be customized in the
