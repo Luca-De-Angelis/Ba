@@ -4,5 +4,9 @@
   "palcoLibero": "The stage is free.",
   "palcoInvito": "Come up whenever you like.",
   "palcoEtichetta": "{n, plural, =0{Stage, nobody} =1{Stage, 1 person} other{Stage, {n} people}}",
-  "presenzaParla": "{nome}, is speaking"
+  "presenzaParla": "{nome}, is speaking",
+  "presenzaMutata": "{nome}, voice muted by you",
+  "presenzaBloccata": "{nome}, blocked",
+  "presenzaMicSpento": "{nome}, microphone off",
+  "presenzaHaLaParola": "{nome}, has the floor"
 }

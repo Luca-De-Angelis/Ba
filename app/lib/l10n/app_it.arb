@@ -29,5 +29,41 @@
         "type": "String"
       }
     }
+  },
+  "presenzaMutata": "{nome}, voce mutata da te",
+  "@presenzaMutata": {
+    "description": "Etichetta di una presenza con la voce mutata da me, per lo screen reader.",
+    "placeholders": {
+      "nome": {
+        "type": "String"
+      }
+    }
+  },
+  "presenzaBloccata": "{nome}, bloccata",
+  "@presenzaBloccata": {
+    "description": "Etichetta di una persona bloccata, per lo screen reader.",
+    "placeholders": {
+      "nome": {
+        "type": "String"
+      }
+    }
+  },
+  "presenzaMicSpento": "{nome}, microfono spento",
+  "@presenzaMicSpento": {
+    "description": "Etichetta di una presenza a microfono spento, per lo screen reader.",
+    "placeholders": {
+      "nome": {
+        "type": "String"
+      }
+    }
+  },
+  "presenzaHaLaParola": "{nome}, ha la parola",
+  "@presenzaHaLaParola": {
+    "description": "Etichetta di chi ha la parola nel sotto-DEN, per lo screen reader.",
+    "placeholders": {
+      "nome": {
+        "type": "String"
+      }
+    }
   }
 }

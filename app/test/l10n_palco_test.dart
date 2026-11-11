@@ -49,4 +49,33 @@ void main() {
     expect(fr.palcoEtichetta(1), 'Scène, 1 personne');
     expect(fr.palcoEtichetta(4), 'Scène, 4 personnes');
   });
+
+  test('le etichette degli stati con glifo esistono nelle cinque lingue (task 012)', () async {
+    for (final lingua in _lingue) {
+      final l = await _carica(lingua);
+      final testi = [
+        l.presenzaMutata('Marta B.'),
+        l.presenzaBloccata('Marta B.'),
+        l.presenzaMicSpento('Marta B.'),
+        l.presenzaHaLaParola('Marta B.'),
+      ];
+      for (final t in testi) {
+        expect(t, startsWith('Marta B.'), reason: '$lingua: $t');
+      }
+      expect(testi.toSet(), hasLength(4), reason: '$lingua: quattro frasi diverse');
+    }
+  });
+
+  test('italiano e tedesco: i testi dei quattro stati', () async {
+    final it = await _carica('it');
+    expect(it.presenzaMutata('Marta B.'), 'Marta B., voce mutata da te');
+    expect(it.presenzaBloccata('Marta B.'), 'Marta B., bloccata');
+    expect(it.presenzaMicSpento('Marta B.'), 'Marta B., microfono spento');
+    expect(it.presenzaHaLaParola('Marta B.'), 'Marta B., ha la parola');
+
+    // Dal handoff 002 (Stati critici 002.dc.html): «Mikrofon aus», «hat das Wort».
+    final de = await _carica('de');
+    expect(de.presenzaMicSpento('Marta B.'), 'Marta B., Mikrofon aus');
+    expect(de.presenzaHaLaParola('Marta B.'), 'Marta B., hat das Wort');
+  });
 }
