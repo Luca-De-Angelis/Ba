@@ -18,9 +18,10 @@ Un file per task, `NNN-nome.md`, al massimo una pagina, nel formato di `_templat
 | 006 | `006-token-001.md` — applicare i token e i documenti del 001 | Claude Code | Concluso |
 | 007 | `007-token-004.md` — applicare i token del 004: due livelli, rinomine, tablet | Claude Code | Concluso |
 | 008 | `008-token-002.md` — applicare i token e i documenti del 002 | Claude Code | Concluso |
-| 009 | `009-batouchable.md` — BaTouchable e la galleria per vederlo | Claude Code | In corso |
-| 010 | BaRitratto, BaAnello, BaPresenza | Claude Code | Brief da scrivere |
-| 011 | BaPalco (widget) e la stanza vuota con una persona | Claude Code | Brief da scrivere |
+| 009 | `009-batouchable.md` — BaTouchable e la galleria per vederlo | Claude Code | Concluso |
+| 010 | `010-presenza.md` — BaRitratto, BaAnello e BaPresenza (stati di base) | Claude Code | In corso |
+| 011 | BaPalco (widget) e la stanza vuota con una persona: brief da scrivere | Claude Code | Brief da scrivere |
+| 012 | BaGlifo e stati con glifo (mutata, bloccata, microfono spento, tacca): brief da scrivere | Claude Code | Brief da scrivere |
 | 013 | Accesso con email e verifica del numero | Claude Design | Brief da scrivere |
 | 014 | Creare e gestire i DEN | Claude Design | Brief da scrivere |
 | 015 | Coda e attesa | Claude Design | Brief da scrivere |
