@@ -9,7 +9,7 @@ Un file per task, `NNN-nome.md`, al massimo una pagina, nel formato di `_templat
 | 001b | Correzioni al 001: superfici di sistema e token dello scheletro (consegna in `design/handoff/001b/`) | Claude Design | Concluso |
 | 002 | `002-stati-critici.md` — gli stati critici della stanza | Claude Design | Concluso |
 | 002b | Correzioni al 002: regola della barra, `soloGruppo`, `parolaRevocata`, cornice fuori dalla scatola (consegna in `design/handoff/002b/`) | Claude Design | Concluso |
-| 003 | Home, connessioni, ascolto condiviso, radio | — | In attesa degli stakeholder |
+| 003 | Home, connessioni, ascolto condiviso, radio | — | Sostituito dai pacchetti 013–019 (D-033) |
 | 004 | `004-token-tailwind-e-tablet.md` — scale alla Tailwind, breakpoint e layout tablet | Claude Design | Concluso |
 | 004b | Correzioni al 004: compilazione di tokens.dart, `perRigaMax`, scorrimento a testo grande, colori fuori token (consegna in `design/handoff/004b/`) | Claude Design | Concluso |
 | 005 | `005-bapalco-disposizione.md` — BaPalco: la disposizione come funzione pura | Claude Code | Concluso |
@@ -21,5 +21,12 @@ Un file per task, `NNN-nome.md`, al massimo una pagina, nel formato di `_templat
 | 009 | `009-batouchable.md` — BaTouchable e la galleria per vederlo | Claude Code | In corso |
 | 010 | BaRitratto, BaAnello, BaPresenza | Claude Code | Brief da scrivere |
 | 011 | BaPalco (widget) e la stanza vuota con una persona | Claude Code | Brief da scrivere |
+| 013 | Accesso con email e verifica del numero | Claude Design | Brief da scrivere |
+| 014 | Creare e gestire i DEN | Claude Design | Brief da scrivere |
+| 015 | Coda e attesa | Claude Design | Brief da scrivere |
+| 016 | Scoperta | Claude Design | Brief da scrivere |
+| 017 | Creator | Claude Design | Brief da scrivere |
+| 018 | Podcast condivisi | Claude Design | Brief da scrivere |
+| 019 | Abbonamento e pubblicità | Claude Design | Brief da scrivere |
 
 Da qui in avanti fanno fede questi file Markdown, non le versioni in Claude Docs.
