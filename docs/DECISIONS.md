@@ -39,6 +39,7 @@ Un solo registro per tutte le decisioni di prodotto e di design. Le decisioni te
 | D-031 | 10/11/2026 | L'account di base è da ascoltatore: si entra con un codice via email (A01), si vedono solo i DEN pubblici e non si ha voce. Il numero di telefono verificato e il consenso a parlare servono solo per parlare, e si chiedono in «Sali sul palco» (A03, D-024). Google e Apple arrivano dopo l'alpha (A02). Sostituisce D-002 | Catalogo dei servizi (A01, A02, A03); risposta dei soci | Valida |
 | D-032 | 10/11/2026 | Le emittenti radio non programmano DEN. La «radio» è la modalità radio (B10): quando il DEN finisce o si svuota, si passa da soli a uno simile per tema e lingua. Sostituisce D-018 | Catalogo dei servizi (B10); risposta dei soci | Valida |
 | D-033 | 10/11/2026 | Perimetro di lavoro: si prende nota di tutti i servizi del catalogo, ma si lavora (design, codice, domande ai soci) solo su quelli segnati Confermato, Ipotesi o Previsto, più i verdi con un punto aperto: 48 servizi. Gli altri 67 sono solo annotati in `FEATURES.md` e si predispone il sistema ad accoglierli senza precluderli. Le sezioni N e X valgono come principi | Indicazione di Luca | Valida |
+| D-034 | 10/11/2026 | Lo screen reader annuncia i cambi di stato di chi usa l'app (il proprio microfono, la salita sul palco, la parola ricevuta o revocata, la linea persa e ripresa), mai l'ingresso o l'uscita di altre persone né il loro stato: si leggono sul palco (ingresso morbido) | Report del task 011; task 002 | Valida |
 
 ## Aperte
 

@@ -22,7 +22,7 @@ BA è un social vocale basato sulla presenza. Le persone stanno nei DEN: un palc
 - **Nomi.** Classi, variabili e testi usano i termini di `docs/GLOSSARY.md`. Mai "Loggia", "abbassa/abbassata", "Mutami". I nomi `Ba<Componente>` sono dei widget; le classi di token hanno il suffisso `Tokens` (D-021). `BaOra`, `BaPayloadStanza` e `BaRegole` restano senza suffisso (D-028).
 - **Testi.** Nessuna stringa fissa nell'interfaccia: tutto in `app/lib/l10n/` (file ARB, configurati da `app/l10n.yaml`), cinque lingue (IT, EN, FR, ES, DE). Il tedesco allunga le etichette fino al 30%.
 - **Traduzioni nuove.** Le chiavi ARB nuove richiedono la revisione dei madrelingua prima del rilascio: il report del task elenca quelle da rivedere.
-- **Accessibilità.** Ogni presenza ha un'etichetta per lo screen reader; ogni cambio di stato del palco viene annunciato; aree toccabili di almeno 44 pt; contrasto AA; rispetto della riduzione delle animazioni.
+- **Accessibilità.** Ogni presenza ha un'etichetta per lo screen reader; lo screen reader annuncia i cambi di stato di chi usa l'app (il proprio microfono, la salita sul palco, la parola ricevuta o revocata, la linea persa e ripresa), mai l'ingresso o l'uscita di altre persone né il loro stato: si leggono sul palco (ingresso morbido, D-034); aree toccabili di almeno 44 pt; contrasto AA; rispetto della riduzione delle animazioni.
 - **Stati critici.** Microfono acceso o spento, chi ti sente, parola ricevuta: mai affidati solo alla vista o solo al colore.
 - **Dati personali.** Nessun audio con voci vere nella repo: i test usano file sintetici. Chiavi e credenziali solo in `.env`, mai committate.
 - **Decisioni.** Se il task chiede di cambiare qualcosa che è in `docs/DECISIONS.md`, fermati e chiedi.
