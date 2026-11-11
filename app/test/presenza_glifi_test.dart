@@ -281,6 +281,22 @@ void main() {
       }
     });
 
+    for (final d in _diametri) {
+      testWidgets('a ${d.toInt()} dp: bordo badgeBordo, glifo grande quanto il disco dentro il bordo',
+          (tester) async {
+        await tester.pumpWidget(_app(_p(microfonoSpento: true), d: d));
+        final bordo = ((_decoDisco(tester).border! as Border).top).width;
+        expect(bordo, BaPresenzaTokens.badgeBordo);
+        expect(BaPresenzaTokens.badgeBordo, 1.5);
+        // Le proporzioni dei glifi sono in frazione del lato misurato dentro il bordo.
+        final dentro = BaPresenzaTokens.badgeDiametro(d) - 2 * BaPresenzaTokens.badgeBordo;
+        expect(tester.getSize(_glifo()), Size.square(dentro));
+        // E il glifo è centrato nel disco.
+        expect(tester.getCenter(_glifo()).dx, closeTo(tester.getCenter(_disco()).dx, 1e-6));
+        expect(tester.getCenter(_glifo()).dy, closeTo(tester.getCenter(_disco()).dy, 1e-6));
+      });
+    }
+
     testWidgets('altri: scuro; io: chiaro, solo per il microfono', (tester) async {
       Color bordo() => (_decoDisco(tester).border! as Border).top.color;
 

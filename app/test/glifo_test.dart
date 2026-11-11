@@ -91,6 +91,7 @@ void main() {
     });
   });
 
+
   group('disegno', () {
     Finder pittura() => find.descendant(of: find.byType(BaGlifo), matching: find.byType(CustomPaint));
 
@@ -99,39 +100,42 @@ void main() {
       expect(
         pittura(),
         paints
-          ..rrect(color: BaColorTokens.glifoTratto, strokeWidth: BaPresenzaTokens.anelloTratto)
-          ..path(color: BaColorTokens.glifoTratto, strokeWidth: BaPresenzaTokens.anelloTratto)
-          ..line(color: BaColorTokens.glifoTratto, strokeWidth: BaPresenzaTokens.anelloTratto)
-          // casing scuro sotto, tratto chiaro sopra
-          ..line(
-            color: BaColorTokens.voceKeyline,
-            strokeWidth: BaPresenzaTokens.anelloKeyline + BaPresenzaTokens.anelloTratto,
-          )
-          ..line(color: BaColorTokens.glifoTratto, strokeWidth: BaPresenzaTokens.anelloTratto),
+          ..rrect(color: BaColorTokens.glifoTratto, strokeWidth: BaGlifoTokens.tratto)
+          ..path(color: BaColorTokens.glifoTratto, strokeWidth: BaGlifoTokens.tratto)
+          ..line(color: BaColorTokens.glifoTratto, strokeWidth: BaGlifoTokens.tratto)
+          // alone scuro sotto, tratto chiaro sopra
+          ..line(color: BaColorTokens.voceKeyline, strokeWidth: BaGlifoTokens.barraAlone)
+          ..line(color: BaColorTokens.glifoTratto, strokeWidth: BaGlifoTokens.tratto),
       );
     });
 
-    testWidgets('altoparlante: corpo, due onde e la barra', (tester) async {
+    testWidgets('altoparlante: corpo e cono pieni, due onde a tratto e la barra a due tratti',
+        (tester) async {
       await tester.pumpWidget(_app(const BaGlifo(tipo: BaTipoGlifo.altoparlante, acceso: true)));
       expect(
         pittura(),
         paints
-          ..path(color: BaColorTokens.glifoTratto)
-          ..arc(color: BaColorTokens.glifoTratto)
-          ..arc(color: BaColorTokens.glifoTratto)
-          ..line(color: BaColorTokens.voceKeyline)
-          ..line(color: BaColorTokens.glifoTratto),
+          ..rect(color: BaColorTokens.glifoTratto, style: PaintingStyle.fill) // corpo
+          ..path(color: BaColorTokens.glifoTratto, style: PaintingStyle.fill) // cono
+          ..arc(color: BaColorTokens.glifoTratto, strokeWidth: BaGlifoTokens.tratto)
+          ..arc(color: BaColorTokens.glifoTratto, strokeWidth: BaGlifoTokens.tratto)
+          ..line(color: BaColorTokens.voceKeyline, strokeWidth: BaGlifoTokens.barraAlone)
+          ..line(color: BaColorTokens.glifoTratto, strokeWidth: BaGlifoTokens.tratto),
       );
     });
 
-    testWidgets('bloccata: cerchio e la barra', (tester) async {
+    testWidgets('bloccata: anello e barra del solo tratto, senza alone', (tester) async {
       await tester.pumpWidget(_app(const BaGlifo(tipo: BaTipoGlifo.bloccata, acceso: true)));
       expect(
         pittura(),
         paints
-          ..circle(color: BaColorTokens.glifoTratto)
-          ..line(color: BaColorTokens.voceKeyline)
-          ..line(color: BaColorTokens.glifoTratto),
+          ..circle(color: BaColorTokens.glifoTratto, strokeWidth: BaGlifoTokens.tratto)
+          ..line(color: BaColorTokens.glifoTratto, strokeWidth: BaGlifoTokens.tratto),
+      );
+      expect(
+        pittura(),
+        isNot(paints..line(color: BaColorTokens.voceKeyline)),
+        reason: 'nel prototipo la barra del cerchio non ha alone',
       );
     });
 
@@ -151,6 +155,116 @@ void main() {
           ..line(color: BaColorTokens.micSpentoIoFondo)
           ..line(color: BaColorTokens.micSpentoIoGlifo),
       );
+    });
+  });
+
+  group('geometria dai token (012c)', () {
+    Finder pittura() => find.descendant(of: find.byType(BaGlifo), matching: find.byType(CustomPaint));
+
+    // Lo stesso tratto a ogni misura: a 28 un tratto da 1 sparisce, a 44 uno da 3 pesa.
+    for (final lato in [28.0, 44.0]) {
+      testWidgets('lo stesso tratto di 2 dp a lato ${lato.toInt()}, per tutti e tre i glifi',
+          (tester) async {
+        expect(BaGlifoTokens.tratto, 2);
+        const t = BaGlifoTokens.tratto;
+        // Microfono: capsula, culla e stelo, poi la barra (alone e tratto).
+        await tester.pumpWidget(_app(BaGlifo(tipo: BaTipoGlifo.microfono, acceso: true, lato: lato)));
+        expect(
+          pittura(),
+          paints
+            ..rrect(strokeWidth: t)
+            ..path(strokeWidth: t)
+            ..line(strokeWidth: t)
+            ..line(strokeWidth: BaGlifoTokens.barraAlone)
+            ..line(strokeWidth: t),
+        );
+        // Altoparlante: due onde, poi la barra.
+        await tester.pumpWidget(_app(BaGlifo(tipo: BaTipoGlifo.altoparlante, acceso: true, lato: lato)));
+        expect(
+          pittura(),
+          paints
+            ..arc(strokeWidth: t)
+            ..arc(strokeWidth: t)
+            ..line(strokeWidth: BaGlifoTokens.barraAlone)
+            ..line(strokeWidth: t),
+        );
+        // Cerchio: anello e barra.
+        await tester.pumpWidget(_app(BaGlifo(tipo: BaTipoGlifo.bloccata, acceso: true, lato: lato)));
+        expect(pittura(), paints..circle(strokeWidth: t)..line(strokeWidth: t));
+      });
+    }
+
+    testWidgets('le due onde distano più del tratto a 28 di lato', (tester) async {
+      // A 28 di lato del disco, il glifo misura 28 − 2 × badgeBordo = 25 dentro il bordo.
+      const dentro = 28 - 2 * BaPresenzaTokens.badgeBordo;
+      const distanza = (BaGlifoTokens.ondaEsternaRaggio - BaGlifoTokens.ondaInternaRaggio) * dentro;
+      expect(distanza, closeTo(3.5, 1e-9));
+      expect(distanza, greaterThan(BaGlifoTokens.tratto));
+      // E sono disegnate proprio a quei raggi, con il centro al 60 % del lato.
+      await tester.pumpWidget(_app(const BaGlifo(tipo: BaTipoGlifo.altoparlante, acceso: true, lato: dentro)));
+      Rect onda(double raggio) => Rect.fromCircle(
+            center: const Offset(BaGlifoTokens.ondeCentroX * dentro, dentro / 2),
+            radius: raggio * dentro,
+          );
+      expect(
+        pittura(),
+        paints
+          ..arc(rect: onda(BaGlifoTokens.ondaInternaRaggio))
+          ..arc(rect: onda(BaGlifoTokens.ondaEsternaRaggio)),
+      );
+      // Anche a 28 e a 44 di lato: la distanza cresce col glifo, mai sotto il tratto.
+      for (final lato in [28.0, 44.0]) {
+        expect(
+          (BaGlifoTokens.ondaEsternaRaggio - BaGlifoTokens.ondaInternaRaggio) * lato,
+          greaterThan(BaGlifoTokens.tratto),
+        );
+      }
+    });
+
+    testWidgets('il cerchio e la sua barra hanno lo stesso diametro', (tester) async {
+      const lato = 25.0;
+      await tester.pumpWidget(_app(const BaGlifo(tipo: BaTipoGlifo.bloccata, acceso: true, lato: lato)));
+      const esterno = BaGlifoTokens.cerchioLato * lato;
+      expect(
+        pittura(),
+        paints
+          // l'anello è disegnato a metà tratto dentro il suo riquadro: il raggio
+          // della linea è quello esterno meno mezzo tratto
+          ..circle(
+            x: lato / 2,
+            y: lato / 2,
+            radius: esterno / 2 - BaGlifoTokens.tratto / 2,
+          )
+          // la barra, nel sistema ruotato: lunga quanto il diametro esterno
+          ..line(p1: const Offset(-esterno / 2, 0), p2: const Offset(esterno / 2, 0)),
+      );
+    });
+
+    testWidgets("la barra di microfono e altoparlante è lunga barraLato, con l'alone", (tester) async {
+      const lato = 25.0;
+      for (final tipo in [BaTipoGlifo.microfono, BaTipoGlifo.altoparlante]) {
+        await tester.pumpWidget(_app(BaGlifo(tipo: tipo, acceso: true, lato: lato)));
+        const lunga = BaGlifoTokens.barraLato * lato;
+        final matcher = paints;
+        if (tipo == BaTipoGlifo.microfono) matcher.line(); // lo stelo, prima della barra
+        expect(
+          pittura(),
+          matcher
+            ..line(
+              p1: const Offset(-lunga / 2, 0),
+              p2: const Offset(lunga / 2, 0),
+              color: BaColorTokens.voceKeyline,
+              strokeWidth: BaGlifoTokens.barraAlone,
+            )
+            ..line(
+              p1: const Offset(-lunga / 2, 0),
+              p2: const Offset(lunga / 2, 0),
+              color: BaColorTokens.glifoTratto,
+              strokeWidth: BaGlifoTokens.tratto,
+            ),
+          reason: '$tipo',
+        );
+      }
     });
   });
 }

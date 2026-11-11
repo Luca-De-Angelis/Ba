@@ -312,11 +312,11 @@ class BaPresenza extends StatelessWidget {
   }
 }
 
-/// Lo spessore del bordo del disco e della tacca: la tacca sporge
-/// `parolaTaccaSporge` (9) ed è alta `parolaTaccaAltezza` (6), il resto sono i
-/// due bordi (1,5 l'uno, come nel prototipo). tokens.dart non ha un token per il
-/// bordo del disco: uso questo (segnalato nel report del task 012).
-const double _bordoSegno =
+/// Lo spessore del bordo della tacca: sporge `parolaTaccaSporge` (9) ed è alta
+/// `parolaTaccaAltezza` (6), il resto sono i due bordi (1,5 l'uno, come nel
+/// prototipo). Per la tacca non c'è un token: il bordo resta ricavato. Il bordo
+/// del disco, invece, è `BaPresenzaTokens.badgeBordo`.
+const double _bordoTacca =
     (BaPresenzaTokens.parolaTaccaSporge - BaPresenzaTokens.parolaTaccaAltezza) / 2;
 
 /// Il disco in basso a destra della sagoma, con il glifo dello stato dentro
@@ -414,10 +414,10 @@ class _BaDiscoGlifoState extends State<BaDiscoGlifo> with SingleTickerProviderSt
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: fondo,
-              border: Border.all(color: bordo, width: _bordoSegno),
+              border: Border.all(color: bordo, width: BaPresenzaTokens.badgeBordo),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(_bordoSegno),
+              padding: const EdgeInsets.all(BaPresenzaTokens.badgeBordo),
               child: LayoutBuilder(
                 builder: (context, vincoli) => BaGlifo(
                   tipo: tipo,
@@ -452,7 +452,7 @@ class BaTaccaParola extends StatelessWidget {
           decoration: BoxDecoration(
             color: BaColorTokens.parolaTacca,
             borderRadius: BorderRadius.circular(BaRaggioTokens.pillola),
-            border: Border.all(color: BaColorTokens.parolaTaccaBordo, width: _bordoSegno),
+            border: Border.all(color: BaColorTokens.parolaTaccaBordo, width: _bordoTacca),
           ),
         ),
       ),
