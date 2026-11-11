@@ -4,5 +4,9 @@
   "palcoLibero": "Die Bühne ist frei.",
   "palcoInvito": "Du kannst jederzeit aufsteigen.",
   "palcoEtichetta": "{n, plural, =0{Bühne, niemand} =1{Bühne, 1 Person} other{Bühne, {n} Personen}}",
-  "presenzaParla": "{nome}, spricht"
+  "presenzaParla": "{nome}, spricht",
+  "presenzaMutata": "{nome}, Stimme von dir stummgeschaltet",
+  "presenzaBloccata": "{nome}, blockiert",
+  "presenzaMicSpento": "{nome}, Mikrofon aus",
+  "presenzaHaLaParola": "{nome}, hat das Wort"
 }

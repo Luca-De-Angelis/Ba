@@ -11,6 +11,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/widgets.dart';
 
+import '../design_system/glifo.dart';
 import '../design_system/presenza.dart';
 import '../design_system/tokens.dart';
 import 'comuni.dart';
@@ -50,6 +51,10 @@ class _GalleriaPresenzaState extends State<GalleriaPresenza> {
   bool _instabile = false;
   bool _persa = false;
   bool _scheletro = false;
+  bool _mutata = false;
+  bool _bloccata = false;
+  int _microfono = 0; // 0 = acceso, 1 = spento (altri), 2 = spento (io)
+  bool _haLaParola = false;
   bool _riduciMovimento = false;
   bool _simula = false;
   _Immagine _immagine = _Immagine.nessuna;
@@ -137,7 +142,7 @@ class _GalleriaPresenzaState extends State<GalleriaPresenza> {
                   Text('BaPresenza', style: BaTestoTokens.stanza),
                   const SizedBox(height: BaSpazioTokens.s),
                   Text(
-                    'Ferma, parla, persa, scheletro, premuta e a fuoco (tasto Tab). '
+                    'Ferma, parla, persa, scheletro, premuta e a fuoco (tasto Tab), mutata (con Parla: mutata che parla), bloccata, microfono spento (altri e io) e ha la parola. '
                     'Voce e focus insieme: Parla, Ampiezza 1, poi Tab. '
                     "Strumento di sviluppo: non fa parte dell'app.",
                     style: BaTestoTokens.minore.copyWith(color: BaColorTokens.testoSecondo),
@@ -153,6 +158,9 @@ class _GalleriaPresenzaState extends State<GalleriaPresenza> {
                   const SizedBox(height: BaSpazioTokens.xxl),
                   galleriaTitolo('Cinque sagome · 112'),
                   _cinqueSagome(),
+                  const SizedBox(height: BaSpazioTokens.xxl),
+                  galleriaTitolo('Glifi · 28 e 32, spenti e accesi'),
+                  _glifi(),
                 ],
               ),
             ),
@@ -191,6 +199,27 @@ class _GalleriaPresenzaState extends State<GalleriaPresenza> {
           'Scheletro',
           _scheletro,
           () => setState(() => _scheletro = !_scheletro),
+        ),
+        galleriaInterruttore('Mutata', _mutata, () => setState(() => _mutata = !_mutata)),
+        galleriaInterruttore(
+          'Bloccata',
+          _bloccata,
+          () => setState(() => _bloccata = !_bloccata),
+        ),
+        galleriaInterruttore(
+          'Microfono spento: altri',
+          _microfono == 1,
+          () => setState(() => _microfono = _microfono == 1 ? 0 : 1),
+        ),
+        galleriaInterruttore(
+          'Microfono spento: io',
+          _microfono == 2,
+          () => setState(() => _microfono = _microfono == 2 ? 0 : 2),
+        ),
+        galleriaInterruttore(
+          'Ha la parola',
+          _haLaParola,
+          () => setState(() => _haLaParola = !_haLaParola),
         ),
         galleriaInterruttore(
           'Immagine caricata',
@@ -232,6 +261,11 @@ class _GalleriaPresenzaState extends State<GalleriaPresenza> {
         lineaInstabile: _instabile,
         persa: _persa,
         scheletro: _scheletro,
+        mutata: _mutata,
+        bloccata: _bloccata,
+        microfonoSpento: _microfono != 0,
+        io: _microfono == 2,
+        haLaParola: _haLaParola,
         onTap: () => setState(() => _tocchi++),
       ),
     );
@@ -269,6 +303,23 @@ class _GalleriaPresenzaState extends State<GalleriaPresenza> {
       children: [
         for (var i = 0; i < BaTintaTokens.mazzo.length; i++)
           _presenza(BaPresenzaTokens.s, i, 0, _iniziali[i]),
+      ],
+    );
+  }
+
+  /// I tre glifi a 28 e a 32 (il ripiego), spenti e accesi, su due righe.
+  Widget _glifi() {
+    return Wrap(
+      spacing: BaSpazioTokens.xl,
+      runSpacing: BaSpazioTokens.xl,
+      children: [
+        for (final tipo in BaTipoGlifo.values)
+          for (final ripiego in [false, true])
+            for (final acceso in [false, true])
+              _etichettata(
+                '${tipo.name} ${ripiego ? 32 : 28} ${acceso ? 'acceso' : 'spento'}',
+                BaGlifo(tipo: tipo, ripiego: ripiego, acceso: acceso),
+              ),
       ],
     );
   }
