@@ -278,4 +278,10 @@ void main() {
       expect(_bordoDi(BaColorTokens.focusAnello, BaControlloTokens.focusSpessore), findsNothing);
     });
   });
+
+  test('ingombro: il diametro più la banda dell\'anello a riposo per lato', () {
+    expect(BaPresenza.banda, 5);
+    expect(BaPresenza.ingombro(88), 98);
+    expect(BaPresenza.ingombro(208), 218);
+  });
 }

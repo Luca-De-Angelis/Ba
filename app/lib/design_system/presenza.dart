@@ -93,6 +93,15 @@ class BaPresenza extends StatelessWidget {
   /// Nullo = non toccabile. Lo scheletro non lo è mai.
   final VoidCallback? onTap;
 
+  /// La banda dell'anello a riposo, per lato: keyline più tratto.
+  static const double banda =
+      BaPresenzaTokens.anelloKeyline + BaPresenzaTokens.anelloTratto;
+
+  /// Quanto occupa nel layout una presenza di diametro [d]: la sagoma più la
+  /// banda su ogni lato. Il palco centra questo riquadro sul centro della
+  /// presenza.
+  static double ingombro(double d) => d + 2 * banda;
+
   // Grayscale(1) di T4 (presenza/persa): i pesi di luminanza Rec. 709. Sono la
   // definizione del filtro, non un valore di design; tokens.dart non li ha
   // (segnalato nel report del task 010).
@@ -110,7 +119,6 @@ class BaPresenza extends StatelessWidget {
   Widget build(BuildContext context) {
     final d = BaDiametro.of(context);
     const keyline = BaPresenzaTokens.anelloKeyline;
-    const banda = keyline + BaPresenzaTokens.anelloTratto;
     final bordo = BaSagomaTokens.bordo(indiceSagoma, d);
     final tinta = BaTintaTokens.mazzo[indiceTinta % BaTintaTokens.mazzo.length];
     final conAnello = parla && !persa && !scheletro;
@@ -140,8 +148,8 @@ class BaPresenza extends StatelessWidget {
       bordo: ingrandisci(bordo, banda),
       builder: (context, stato) {
         return SizedBox(
-          width: d + 2 * banda,
-          height: d + 2 * banda,
+          width: ingombro(d),
+          height: ingombro(d),
           child: Padding(
             padding: const EdgeInsets.all(banda),
             child: Stack(
