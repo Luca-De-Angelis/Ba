@@ -23,6 +23,8 @@ jobs:
       - uses: subosito/flutter-action@v2
         if: steps.check.outputs.ok == 'true'
         with:
+          # Versione fissata per riprodurre la CI in locale; si aggiorna di proposito, in un task a parte.
+          flutter-version: 3.47.9
           channel: stable
           cache: true
 
