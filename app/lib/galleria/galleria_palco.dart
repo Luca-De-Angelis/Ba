@@ -18,11 +18,12 @@ const double _tablet = 744;
 
 /// Le altezze della stanza finta, dalla più alta: per far cedere il palco
 /// senza ridimensionare la finestra. Dati di prova, non misure di design.
-/// Scelte per il caso del testo 2,0 con otto persone, dove intestazione e riga
-/// prendono circa 376 dp: il palco resta con 324, 244, 184 e 144 dp e il
-/// diametro scende per gradi (88, 72, 50, 35). Sotto i 520 la stanza non
-/// contiene più nemmeno intestazione e riga.
-const List<double> _altezze = [700, 620, 560, 520];
+/// Scelte per il caso del testo 2,0 con otto persone: intestazione, indicatore e
+/// riga prendono circa 420 dp (nei test, con il font di prova, più largo di
+/// quello vero), il palco resta con 280, 230, 190 e 150 dp e il diametro scende
+/// per gradi senza mai sfiorare. Sotto i 570 il palco avrebbe meno dei 150 dp che
+/// servono a otto presenze al minimo e uscirebbe sull'intestazione (`sfora`).
+const List<double> _altezze = [700, 650, 610, 570];
 
 /// I due testi del testo di sistema da provare (C6: oltre 2,0 non si scala).
 const double _testoNormale = 1.0;
@@ -38,6 +39,20 @@ const List<Locale> _lingue = [
 
 /// Quante persone possono parlare insieme nella prova: 0–3.
 const int _parlanoMax = 3;
+
+/// Gli stati con glifo che si possono dare alla prima persona (task 012).
+const List<String> _statiPrimo = [
+  'nessuno',
+  'mutata',
+  'mutata che parla',
+  'bloccata',
+  'microfono spento',
+  'microfono spento (io)',
+  'ha la parola',
+];
+
+/// Quello che l'indicatore mostra: diametro, scatola del palco e sfora.
+typedef _Misura = (double, Size, bool);
 
 class GalleriaPalco extends StatefulWidget {
   const GalleriaPalco({super.key});
@@ -57,6 +72,14 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
   double _testo = _testoNormale;
   bool _riduciMovimento = false;
   int _lingua = 0;
+  int _primo = 0; // indice in _statiPrimo
+  final ValueNotifier<_Misura?> _misura = ValueNotifier(null);
+
+  @override
+  void dispose() {
+    _misura.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -156,6 +179,11 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
           () => setState(() => _riduciMovimento = !_riduciMovimento),
         ),
         galleriaInterruttore(
+          'Prima persona: ${_statiPrimo[_primo]}',
+          _primo != 0,
+          () => setState(() => _primo = (_primo + 1) % _statiPrimo.length),
+        ),
+        galleriaInterruttore(
           'Lingua: ${_lingue[_lingua].languageCode.toUpperCase()}',
           _lingua != 0,
           () => setState(() => _lingua = (_lingua + 1) % _lingue.length),
@@ -166,21 +194,42 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
 
   // ---------------------------------------------------------------- stanza
 
+  /// La prima persona porta lo stato scelto con «Prima persona»; le etichette si
+  /// compongono con una sola chiave per stato (la combinazione la compone chi
+  /// costruisce la riga di palco).
   List<BaPersonaPalco> _gente(AppLocalizations l) => [
         for (var i = 0; i < _persone; i++)
-          BaPersonaPalco(
-            id: 'p$i',
-            indiceTinta: i,
-            indiceSagoma: i % BaSagomaTokens.mazzo.length,
-            iniziali: _nomi[i].substring(0, 1) + _nomi[i].split(' ').last.substring(0, 1),
-            semanticsLabel: _nomi[i],
-            semanticsLabelParla: l.presenzaParla(_nomi[i]),
-            parla: i < _parlano,
-            ampiezza: 1,
-            persa: _persa && i == 0,
-            onTap: () {},
-          ),
+          _persona(l, i),
       ];
+
+  BaPersonaPalco _persona(AppLocalizations l, int i) {
+    final nome = _nomi[i];
+    final primo = i == 0 ? _primo : 0;
+    final etichetta = switch (primo) {
+      1 || 2 => l.presenzaMutata(nome),
+      3 => l.presenzaBloccata(nome),
+      4 || 5 => l.presenzaMicSpento(nome),
+      6 => l.presenzaHaLaParola(nome),
+      _ => nome,
+    };
+    return BaPersonaPalco(
+      id: 'p$i',
+      indiceTinta: i,
+      indiceSagoma: i % BaSagomaTokens.mazzo.length,
+      iniziali: nome.substring(0, 1) + nome.split(' ').last.substring(0, 1),
+      semanticsLabel: etichetta,
+      semanticsLabelParla: primo == 0 ? l.presenzaParla(nome) : etichetta,
+      parla: i < _parlano || primo == 2,
+      ampiezza: 1,
+      persa: _persa && i == 0,
+      mutata: primo == 1 || primo == 2,
+      bloccata: primo == 3,
+      microfonoSpento: primo == 4 || primo == 5,
+      io: primo == 5,
+      haLaParola: primo == 6,
+      onTap: () {},
+    );
+  }
 
   BaStatoPalco get _stato => _congelato
       ? const BaStatoPalco.congelato()
@@ -225,6 +274,25 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
                 ],
               ),
             ),
+            // L'indicatore sta nel flusso, sopra il palco, a altezza naturale e senza
+            // scalare col testo: non può sovrapporsi alle presenze né falsare la
+            // misura di quanto cede il palco.
+            Padding(
+              padding: EdgeInsets.fromLTRB(margine, BaSpazioTokens.s, margine, 0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: MediaQuery(
+                  data: base.copyWith(
+                    size: Size(_larghezza, altezza),
+                    textScaler: TextScaler.noScaling,
+                  ),
+                  child: ValueListenableBuilder<_Misura?>(
+                    valueListenable: _misura,
+                    builder: (context, m, _) => _indicatore(m),
+                  ),
+                ),
+              ),
+            ),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: margine),
@@ -244,6 +312,19 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
     );
   }
 
+  Widget _indicatore(_Misura? m) {
+    if (m == null) return const SizedBox.shrink();
+    final (diametro, scatola, sfora) = m;
+    return Text(
+      'd = ${diametro.toStringAsFixed(0)} dp · '
+      'scatola ${scatola.width.toStringAsFixed(0)} × ${scatola.height.toStringAsFixed(0)} · '
+      'sfora: ${sfora ? 'sì' : 'no'}',
+      style: BaTestoTokens.nota.copyWith(
+        color: sfora ? BaColorTokens.erroreTesto : BaColorTokens.testoTerzo,
+      ),
+    );
+  }
+
   Widget _palco(AppLocalizations l) {
     return LayoutBuilder(
       builder: (context, vincoli) {
@@ -254,37 +335,20 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
           scatola: scatola,
           larghezzaSchermo: _larghezza,
         );
-        return Stack(
-          fit: StackFit.expand,
-          clipBehavior: Clip.none,
-          children: [
-            BaPalco(
-              persone: _gente(l),
-              larghezzaSchermo: _larghezza,
-              stato: _stato,
-              semanticsLabel: l.palcoEtichetta(n),
-              invitoTitolo: l.palcoLibero,
-              invitoTesto: l.palcoInvito,
-            ),
-            // Indicatore di sviluppo: diametro, scatola e sfora.
-            // left e right: la riga è larga quanto il palco e va a capo dentro di lui
-            // (un Positioned senza i due lati non limita la larghezza del figlio).
-            Positioned(
-              left: 0,
-              top: 0,
-              right: 0,
-              child: IgnorePointer(
-                child: Text(
-                  'd = ${disposizione.diametro.toStringAsFixed(0)} dp · '
-                  'scatola ${scatola.width.toStringAsFixed(0)} × ${scatola.height.toStringAsFixed(0)} · '
-                  'sfora: ${disposizione.sfora ? 'sì' : 'no'}',
-                  style: BaTestoTokens.nota.copyWith(
-                    color: disposizione.sfora ? BaColorTokens.erroreTesto : BaColorTokens.testoTerzo,
-                  ),
-                ),
-              ),
-            ),
-          ],
+        // L'indicatore sta fuori dal palco: si aggiorna dopo il frame, solo se cambia.
+        final misura = (disposizione.diametro, scatola, disposizione.sfora);
+        if (_misura.value != misura) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) _misura.value = misura;
+          });
+        }
+        return BaPalco(
+          persone: _gente(l),
+          larghezzaSchermo: _larghezza,
+          stato: _stato,
+          semanticsLabel: l.palcoEtichetta(n),
+          invitoTitolo: l.palcoLibero,
+          invitoTesto: l.palcoInvito,
         );
       },
     );
