@@ -3,7 +3,7 @@
 Il progetto Flutter c'è (iOS, Android e, solo per la galleria, web). Lo stato oggi:
 
 - **Token**: `lib/design_system/tokens.dart`, la copia unica dei valori di design, a due livelli (D-019).
-- **Componenti** in `lib/design_system/`: `BaTouchable` (task 009), `BaRitratto`, `BaAnello` e `BaPresenza` con `BaDiametro` (task 010, stati di base), la funzione `disposizionePalco` in `palco/disposizione.dart`. Mancano `BaPalco` (widget), `BaGlifo` e gli stati con glifo (task 011 e 012).
+- **Componenti** in `lib/design_system/`: `BaTouchable` (task 009), `BaRitratto`, `BaAnello` e `BaPresenza` con `BaDiametro` (task 010 e 010b, stati di base), `BaPalco` (task 011, widget sopra `disponiPalco` in `palco/disposizione.dart`). Manca `BaGlifo` con gli stati con glifo (task 012). I testi di `BaPalco` gli arrivano dal chiamante: non importa le traduzioni.
 - **Traduzioni**: file ARB in `lib/l10n/`, `l10n.yaml`, `generate: true`. Cinque lingue (IT, EN, FR, ES, DE); per ora c'è solo la chiave di prova `appNome`.
 - **Font**: Instrument Sans e IBM Plex Mono (OFL) in `assets/fonts/`, dichiarati nel `pubspec.yaml`.
 - **Galleria di sviluppo**: vedi sotto.
@@ -46,3 +46,4 @@ La galleria sta in `lib/galleria/`, usa solo i token e i suoi testi sono fissi (
 
 - **BaTouchable**: mostra le aree toccabili, riduci movimento, larghezza 360 o 744.
 - **BaPresenza**: le presenze ai cinque diametri, le 12 tinte e le 5 sagome, con i controlli per parla, ampiezza (0, 0,5, 1), voci insieme (1, 2, 3), linea instabile, persa, scheletro, immagine caricata e fallita, riduci movimento e «Simula voce» (una ampiezza nuova ogni 500 ms). Per vedere insieme la voce al massimo e il focus sulla stessa presenza: Parla, Ampiezza 1, poi Tab.
+- **BaPalco**: una stanza finta (intestazione, palco, riga sotto) con persone da 0 a 8, quante parlano (0–3), persa, scheletro, congelato, larghezza 360 o 744, testo di sistema 1,0 o 2,0, riduci movimento e lingua (IT, EN, FR, ES, DE); un indicatore mostra diametro, scatola e «sfora». Con 1 persona e testo normale: la stanza vuota con una persona a 208 dp.
