@@ -51,6 +51,8 @@ flutter test
 flutter test --update-goldens   # solo se il task lo chiede esplicitamente
 ```
 
+La CI usa la versione di Flutter fissata in `ci.yml`: quando si aggiorna in locale, si aggiorna anche lì.
+
 ## Cosa non è in questa repo (per ora)
 
 Server (Servizio), LiveKit, coturn e la pipeline di trascrizione non sono ancora collocati: potrebbero vivere in un'altra repo. Vedi `README.md`.
