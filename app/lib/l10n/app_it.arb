@@ -3,5 +3,31 @@
   "appNome": "BA",
   "@appNome": {
     "description": "Chiave di prova del task 000: nome dell'app."
+  },
+  "palcoLibero": "Il palco è libero.",
+  "@palcoLibero": {
+    "description": "Palco vuoto, prima riga. Non mette pressione (D-006)."
+  },
+  "palcoInvito": "Puoi salire quando vuoi.",
+  "@palcoInvito": {
+    "description": "Palco vuoto, seconda riga. Nessun conto alla rovescia, nessun «tocca a te»."
+  },
+  "palcoEtichetta": "{n, plural, =0{Palco, nessuna persona} =1{Palco, 1 persona} other{Palco, {n} persone}}",
+  "@palcoEtichetta": {
+    "description": "Etichetta del palco per lo screen reader. Casi 0 e 1 espliciti: in francese 0 e 1 sono entrambi «uno».",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "presenzaParla": "{nome}, sta parlando",
+  "@presenzaParla": {
+    "description": "Etichetta di una presenza che sta parlando, per lo screen reader.",
+    "placeholders": {
+      "nome": {
+        "type": "String"
+      }
+    }
   }
 }

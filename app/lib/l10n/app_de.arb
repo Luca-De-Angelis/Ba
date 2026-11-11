@@ -1,4 +1,8 @@
 {
   "@@locale": "de",
-  "appNome": "BA"
+  "appNome": "BA",
+  "palcoLibero": "Die Bühne ist frei.",
+  "palcoInvito": "Du kannst jederzeit aufsteigen.",
+  "palcoEtichetta": "{n, plural, =0{Bühne, niemand} =1{Bühne, 1 Person} other{Bühne, {n} Personen}}",
+  "presenzaParla": "{nome}, spricht"
 }
