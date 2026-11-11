@@ -463,4 +463,104 @@ void main() {
       expect(tester.takeException(), isAssertionError);
     });
   });
+
+  group('stati con glifo', () {
+    BaPersonaPalco con(
+      int i, {
+      bool parla = false,
+      bool mutata = false,
+      bool bloccata = false,
+      bool microfonoSpento = false,
+      bool haLaParola = false,
+      bool io = false,
+    }) =>
+        BaPersonaPalco(
+          id: 'p$i',
+          indiceTinta: i,
+          indiceSagoma: i % 5,
+          iniziali: 'P$i',
+          semanticsLabel: 'Persona $i',
+          parla: parla,
+          ampiezza: 1,
+          mutata: mutata,
+          bloccata: bloccata,
+          microfonoSpento: microfonoSpento,
+          haLaParola: haLaParola,
+          io: io,
+          onTap: () {},
+        );
+
+    testWidgets('i campi nuovi arrivano alle presenze', (tester) async {
+      await tester.pumpWidget(_app(_palco([
+        con(0, mutata: true),
+        con(1, bloccata: true),
+        con(2, microfonoSpento: true, io: true),
+        con(3, haLaParola: true),
+        con(4),
+      ])));
+      final p = tester.widgetList<BaPresenza>(_presenze()).toList();
+      expect(p.map((e) => e.mutata), [true, false, false, false, false]);
+      expect(p.map((e) => e.bloccata), [false, true, false, false, false]);
+      expect(p.map((e) => e.microfonoSpento), [false, false, true, false, false]);
+      expect(p.map((e) => e.io), [false, false, true, false, false]);
+      expect(p.map((e) => e.haLaParola), [false, false, false, true, false]);
+    });
+
+    testWidgets('il limiter non conta le voci mutate né bloccate', (tester) async {
+      await tester.pumpWidget(_app(_palco([
+        con(0, parla: true),
+        con(1, parla: true, mutata: true),
+        con(2, parla: true, bloccata: true),
+        con(3),
+      ])));
+      expect(_anelli(tester).map((a) => a.voci), [1], reason: 'solo la prima ha un anello');
+      for (final p in tester.widgetList<BaPresenza>(_presenze())) {
+        expect(p.voci, 1);
+      }
+      // Due voci con l'anello e una mutata che parla: voci 2, non 3.
+      await tester.pumpWidget(_app(_palco([
+        con(0, parla: true),
+        con(1, parla: true),
+        con(2, parla: true, mutata: true),
+      ])));
+      expect(_anelli(tester).map((a) => a.voci), [2, 2]);
+    });
+
+    testWidgets('l\'ordine di lettura non cambia con gli stati nuovi', (tester) async {
+      final semantica = tester.ensureSemantics();
+      await tester.pumpWidget(_app(_palco([
+        con(0, mutata: true),
+        con(1, bloccata: true),
+        con(2, microfonoSpento: true),
+        con(3, haLaParola: true),
+        con(4, parla: true),
+      ])));
+      final fuori = <String>[];
+      void visita(SemanticsNode nodo) {
+        if (nodo.label.startsWith('Persona')) fuori.add(nodo.label);
+        for (final f in nodo.debugListChildrenInOrder(DebugSemanticsDumpOrder.traversalOrder)) {
+          visita(f);
+        }
+      }
+
+      visita(tester.getSemantics(find.byType(BaPalco)));
+      expect(fuori, [for (var i = 0; i < 5; i++) 'Persona $i']);
+      semantica.dispose();
+    });
+
+    testWidgets('dischi e tacche stanno dentro la scatola che il palco riserva', (tester) async {
+      await tester.pumpWidget(_app(_palco([
+        for (var i = 0; i < 8; i++) con(i, haLaParola: true, microfonoSpento: true),
+      ])));
+      final palco = tester.getRect(find.byType(BaPalco));
+      expect(find.byType(BaTaccaParola), findsNWidgets(8));
+      // I widget const sono la stessa istanza: si cerca per posizione.
+      for (final r in [
+        for (var i = 0; i < 8; i++) tester.getRect(find.byType(BaTaccaParola).at(i)),
+        for (var i = 0; i < 8; i++) tester.getRect(find.byType(BaDiscoGlifo).at(i)),
+      ]) {
+        expect(palco.contains(r.topLeft) && palco.contains(r.bottomRight), isTrue, reason: '$r fuori da $palco');
+      }
+    });
+  });
 }

@@ -47,6 +47,11 @@ class BaPersonaPalco {
     this.parla = false,
     this.ampiezza = 0,
     this.persa = false,
+    this.mutata = false,
+    this.bloccata = false,
+    this.microfonoSpento = false,
+    this.haLaParola = false,
+    this.io = false,
     this.onTap,
   });
 
@@ -69,6 +74,22 @@ class BaPersonaPalco {
 
   /// Linea persa per questa persona: scala di grigi, nessun anello.
   final bool persa;
+
+  /// Voce mutata da me: sagoma sbiadita e altoparlante barrato nel disco; senza
+  /// anello anche se parla (il glifo si accende).
+  final bool mutata;
+
+  /// Persona bloccata: neutra, cerchio barrato nel disco, mai l'anello.
+  final bool bloccata;
+
+  /// Microfono spento: microfono barrato nel disco.
+  final bool microfonoSpento;
+
+  /// Ha la parola nel sotto-DEN: la tacca sotto la sagoma.
+  final bool haLaParola;
+
+  /// È la mia presenza: il disco del microfono spento è chiaro.
+  final bool io;
 
   /// Etichette per lo screen reader, già composte in lingua dal chiamante.
   final String semanticsLabel;
@@ -147,11 +168,14 @@ class _BaPalcoState extends State<BaPalco> {
         _ => widget.persone.length,
       };
 
-  /// Una voce per ogni persona che parla e non ha perso la linea. Nessuna o una:
-  /// 1 (nessun limiter).
+  /// Una voce per ogni persona che parla CON UN ANELLO: non ha perso la linea,
+  /// non è mutata e non è bloccata (quelle non hanno anello). Nessuna o una: 1
+  /// (nessun limiter).
   int get _voci {
     if (widget.stato is! _BaPalcoVivo) return 1;
-    final parlano = widget.persone.where((p) => p.parla && !p.persa).length;
+    final parlano = widget.persone
+        .where((p) => p.parla && !p.persa && !p.mutata && !p.bloccata)
+        .length;
     return parlano < 1 ? 1 : parlano;
   }
 
@@ -272,6 +296,11 @@ class _BaPalcoState extends State<BaPalco> {
           ampiezza: p.ampiezza,
           voci: _voci,
           persa: p.persa || congelato,
+          mutata: p.mutata,
+          bloccata: p.bloccata,
+          microfonoSpento: p.microfonoSpento,
+          haLaParola: p.haLaParola,
+          io: p.io,
           onTap: p.onTap,
         );
     }
