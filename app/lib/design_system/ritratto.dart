@@ -21,6 +21,8 @@ class BaRitratto extends StatelessWidget {
     required this.diametro,
     this.iniziali,
     this.immagine,
+    this.opacitaIniziali = 1,
+    this.velo = BaColorTokens.veloImmagine,
   });
 
   /// Il diametro della sagoma che lo contiene: decide la taglia delle iniziali.
@@ -33,6 +35,14 @@ class BaRitratto extends StatelessWidget {
   /// L'immagine, se c'è. Nessuna rete qui: la fornisce il chiamante.
   final ImageProvider? immagine;
 
+  /// Opacità delle iniziali: 1 di norma, `inizialiMutataOpacita` (0,80) per la
+  /// voce mutata, `inizialiBloccataOpacita` (0,70) per la bloccata.
+  final double opacitaIniziali;
+
+  /// Il velo sull'immagine: `veloImmagine` di norma, `veloMutataImmagine` per
+  /// la voce mutata.
+  final Color velo;
+
   /// Le iniziali, o niente: sotto i 32 dp lo stile non esiste e non si scrive.
   Widget? _scritta() {
     final stile = BaTestoTokens.iniziali(diametro);
@@ -40,13 +50,16 @@ class BaRitratto extends StatelessWidget {
     if (stile == null || testo == null || testo.isEmpty) return null;
     return ExcludeSemantics(
       child: Center(
-        child: Text(
-          testo,
-          style: stile,
-          maxLines: 1,
-          softWrap: false,
-          // Un ritratto non scala col testo di sistema (BaScalaTokens.iniziali).
-          textScaler: TextScaler.noScaling,
+        child: Opacity(
+          opacity: opacitaIniziali,
+          child: Text(
+            testo,
+            style: stile,
+            maxLines: 1,
+            softWrap: false,
+            // Un ritratto non scala col testo di sistema (BaScalaTokens.iniziali).
+            textScaler: TextScaler.noScaling,
+          ),
         ),
       ),
     );
@@ -71,7 +84,7 @@ class BaRitratto extends StatelessWidget {
             fit: StackFit.expand,
             children: [
               figlio,
-              const ColoredBox(color: BaColorTokens.veloImmagine),
+              ColoredBox(color: velo),
             ],
           );
         },
