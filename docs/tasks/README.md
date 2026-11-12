@@ -24,13 +24,14 @@ Un file per task, `NNN-nome.md`, al massimo una pagina, nel formato di `_templat
 | 011 | `011-palco.md` — BaPalco (widget) e la stanza vuota con una persona | Claude Code | Concluso |
 | 012 | `012-glifi.md` — BaGlifo e stati con glifo (mutata, bloccata, microfono spento, tacca) | Claude Code | Concluso |
 | 012c | Conferma dei glifi: token `BaGlifoTokens` e `badgeBordo` (consegna in `design/handoff/012c/`) | Claude Design | Concluso |
-| 012d | `012d-glifi-token.md` — applicare l'esito del 012c: token dei glifi e geometria corretta | Claude Code | In corso |
-| 013 | Accesso con email e verifica del numero | Claude Design | Brief da scrivere |
-| 014 | Creare e gestire i DEN | Claude Design | Brief da scrivere |
-| 015 | Coda e attesa | Claude Design | Brief da scrivere |
-| 016 | Scoperta | Claude Design | Brief da scrivere |
-| 017 | Creator | Claude Design | Brief da scrivere |
-| 018 | Podcast condivisi | Claude Design | Brief da scrivere |
-| 019 | Abbonamento e pubblicità | Claude Design | Brief da scrivere |
+| 012d | `012d-glifi-token.md` — applicare l'esito del 012c: token dei glifi e geometria corretta | Claude Code | Concluso |
+| 013 | `013-accesso-email.md` — Accesso con email e verifica del numero per parlare | Claude Design | Brief scritto, da lanciare |
+| 014 | Creare e gestire i DEN | Claude Design | Brief da scrivere (numero provvisorio) |
+| 015 | Coda e attesa | Claude Design | Brief da scrivere (numero provvisorio) |
+| 016 | Scoperta | Claude Design | Brief da scrivere (numero provvisorio) |
+| 017 | Creator | Claude Design | Brief da scrivere (numero provvisorio) |
+| 018 | Podcast condivisi | Claude Design | Brief da scrivere (numero provvisorio) |
+| 019 | Abbonamento e pubblicità | Claude Design | Brief da scrivere (numero provvisorio) |
+| 020 | Controlli e barra delle azioni | Claude Code | Brief da scrivere (numero provvisorio) |
 
 Da qui in avanti fanno fede questi file Markdown, non le versioni in Claude Docs.
