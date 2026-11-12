@@ -20,7 +20,7 @@ Questi termini valgono nell'interfaccia, nei documenti e nei nomi del codice (D-
 | DEN programmato | DEN con data e ora, creato da qualunque utente (D-016) |
 | Connessione | Legame fra due persone; fra le connessioni si scelgono gli invitati (D-014) |
 | Ascolto condiviso | Contenuto riprodotto nel DEN che tutti sentono insieme; si abbassa da solo quando qualcuno parla (D-017) |
-| Modalità radio | Quando il DEN finisce o si svuota, si passa da soli a uno simile per tema e lingua (B10, solo annotata) |
+| Modalità radio | Quando il DEN finisce o si svuota, si passa da soli a uno simile per tema e lingua (B10, solo annotata, D-032) |
 
 **Da non usare:** "Loggia" (si dice sotto-DEN), "abbassa / abbassata" (si dice muta / mutata), "Mutami" o "Muta" per il proprio microfono (si dice spegni il microfono).
 
