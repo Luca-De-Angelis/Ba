@@ -133,11 +133,11 @@ void main() {
     expect(find.byType(BaPresenza), findsNWidgets(8));
     expect(diametro(), 88);
 
-    // Testo di sistema 2,0 e altezza della stanza 980 → 930 → 880 → 830: il
+    // Testo di sistema 2,0 e altezza della stanza 1060 → 1010 → 960 → 910: il
     // palco cede in modo continuo, nessuna presenza sparisce.
     await _tocca(tester, 'Testo 1,0');
     final diametri = [diametro()];
-    for (final altezza in [980, 930, 880]) {
+    for (final altezza in [1060, 1010, 960]) {
       await _tocca(tester, 'Altezza: $altezza');
       diametri.add(diametro());
       expect(find.byType(BaPresenza), findsNWidgets(8), reason: 'altezza $altezza');
@@ -145,7 +145,7 @@ void main() {
     for (var i = 1; i < diametri.length; i++) {
       expect(diametri[i], lessThanOrEqualTo(diametri[i - 1]), reason: 'non cresce mai');
     }
-    expect(diametri.last, lessThan(88), reason: 'a 830 dp il palco è sceso sotto 88');
+    expect(diametri.last, lessThan(88), reason: 'a 910 dp il palco è sceso sotto 88');
     expect(diametri.last, greaterThanOrEqualTo(BaPresenzaTokens.minimo));
     expect(diametri.toSet().length, 4, reason: 'scende per gradi, non di colpo');
 
@@ -153,7 +153,7 @@ void main() {
     // bordo e non copre le presenze.
     await tester.pump();
     _controllaStanza(tester);
-    await _tocca(tester, 'Altezza: 830'); // torna a 980
+    await _tocca(tester, 'Altezza: 910'); // torna a 1060
     await _tocca(tester, 'Testo 2,0');
 
     // Tablet: presenze più grandi (otto: 132).
@@ -216,7 +216,7 @@ void main() {
     _controllaStanza(tester);
 
     // A ogni altezza della stanza, il palco parte sotto l'intestazione.
-    for (final altezza in [980, 930, 880]) {
+    for (final altezza in [1060, 1010, 960]) {
       await _tocca(tester, 'Altezza: $altezza');
       await tester.pump();
       _controllaStanza(tester);

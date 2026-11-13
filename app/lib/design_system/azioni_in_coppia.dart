@@ -1,6 +1,9 @@
 // BaAzioniInCoppia: due pillole secondarie affiancate (hairline), oppure una
 // sola centrata. Gli stati sono indipendenti: ognuna ha il suo BaTouchable.
 //
+// Le due pillole hanno la stessa altezza, quella della più alta (misurata con
+// BaPillola.altezzaNecessaria).
+//
 // Aree toccabili: ogni pillola estende la propria area di mezzo gap verso la
 // vicina, così le due si toccano nel mezzo del gap e non si sovrappongono (a
 // 3 dp dal bordo della sinistra il tocco va a sinistra, a 7 dp a destra). Sugli
@@ -41,13 +44,14 @@ class BaAzioniInCoppia extends StatelessWidget {
 
   static const double _mezzoGap = BaControlloTokens.gapCoppia / 2;
 
-  Widget _pillola(BaAzioneCoppia a, EdgeInsets estensione) => BaPillola(
+  Widget _pillola(BaAzioneCoppia a, EdgeInsets estensione, [double altezza = BaControlloTokens.coppia]) =>
+      BaPillola(
         testo: a.testo,
         semanticsLabel: a.semanticsLabel,
         onTap: a.onTap,
         variante: BaVariantePillola.spenta,
         estensione: estensione,
-        altezzaMinima: BaControlloTokens.coppia,
+        altezzaMinima: altezza,
       );
 
   @override
@@ -66,13 +70,29 @@ class BaAzioniInCoppia extends StatelessWidget {
         },
       );
     }
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(child: _pillola(prima, const EdgeInsets.only(right: _mezzoGap))),
-        const SizedBox(width: BaControlloTokens.gapCoppia),
-        Expanded(child: _pillola(seconda, const EdgeInsets.only(left: _mezzoGap))),
-      ],
+    // Le due pillole della riga hanno la stessa altezza: quella della più alta.
+    // Si misura prima, con la larghezza che ognuna avrà.
+    return LayoutBuilder(
+      builder: (context, vincoli) {
+        final larghezza = (vincoli.maxWidth - BaControlloTokens.gapCoppia) / 2;
+        double altezza(BaAzioneCoppia a) => BaPillola.altezzaNecessaria(
+              context,
+              testo: a.testo,
+              larghezza: larghezza,
+              variante: BaVariantePillola.spenta,
+              inattiva: a.onTap == null,
+              altezzaMinima: BaControlloTokens.coppia,
+            );
+        final h = altezza(prima) > altezza(seconda) ? altezza(prima) : altezza(seconda);
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(child: _pillola(prima, const EdgeInsets.only(right: _mezzoGap), h)),
+            const SizedBox(width: BaControlloTokens.gapCoppia),
+            Expanded(child: _pillola(seconda, const EdgeInsets.only(left: _mezzoGap), h)),
+          ],
+        );
+      },
     );
   }
 }

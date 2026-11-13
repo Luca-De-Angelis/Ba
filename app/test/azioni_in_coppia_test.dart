@@ -68,4 +68,17 @@ void main() {
         .toList();
     expect(stati, [true, false]);
   });
+
+  testWidgets('etichette di lunghezza diversa: le due pillole hanno la stessa altezza (la più alta)',
+      (tester) async {
+    await tester.pumpWidget(_app(BaAzioniInCoppia(
+      prima: BaAzioneCoppia(testo: 'Esci', semanticsLabel: 'a', onTap: () {}),
+      seconda: BaAzioneCoppia(testo: 'Scendi dal palco ora', semanticsLabel: 'b', onTap: () {}),
+    )));
+    final a = tester.getRect(find.byType(BaPillola).first);
+    final b = tester.getRect(find.byType(BaPillola).last);
+    expect(a.top, b.top);
+    expect(a.height, b.height);
+    expect(b.height, greaterThan(BaControlloTokens.coppia));
+  });
 }

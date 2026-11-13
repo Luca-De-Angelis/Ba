@@ -67,6 +67,67 @@ class BaPillola extends StatelessWidget {
   /// coppia o di una barra usano `coppia`.
   final double altezzaMinima;
 
+  // --------------------------------------------------------------- misure
+  //
+  // Chi mette più pillole in una riga ha bisogno di due risposte prima di
+  // costruirle: quanto sarebbe alta ognuna (per dare a tutte quella della più
+  // alta) e se la parola più lunga ci entra (altrimenti la riga si dispone in
+  // colonna). Si misurano con TextPainter, con lo stesso stile, lo stesso
+  // padding e lo stesso TextScaler con cui la pillola disegna.
+
+  static double _bordo(BaVariantePillola variante, bool inattiva) =>
+      (variante == BaVariantePillola.chiara && !inattiva) ? 0 : const BorderSide().width;
+
+  static TextPainter _misuratore(BuildContext context, String testo) => TextPainter(
+        text: TextSpan(text: testo, style: BaTestoTokens.controllo),
+        textDirection: Directionality.of(context),
+        textScaler: MediaQuery.textScalerOf(context),
+        textAlign: TextAlign.center,
+      );
+
+  /// La larghezza che il testo ha a disposizione in una pillola larga
+  /// [larghezza]: tolti il padding orizzontale e il filetto.
+  static double _larghezzaUtile(double larghezza, BaVariantePillola variante, bool inattiva) =>
+      larghezza - 2 * BaSpazioTokens.xl - 2 * _bordo(variante, inattiva);
+
+  /// L'altezza che la pillola avrebbe, larga [larghezza], col testo e il testo
+  /// di sistema correnti: mai sotto [altezzaMinima].
+  static double altezzaNecessaria(
+    BuildContext context, {
+    required String testo,
+    required double larghezza,
+    BaVariantePillola variante = BaVariantePillola.attiva,
+    bool inattiva = false,
+    double altezzaMinima = BaControlloTokens.primario,
+  }) {
+    final m = _misuratore(context, testo)
+      ..layout(maxWidth: _larghezzaUtile(larghezza, variante, inattiva).clamp(0, double.infinity));
+    final h = m.height + 2 * BaSpazioTokens.sm + 2 * _bordo(variante, inattiva);
+    m.dispose();
+    return h > altezzaMinima ? h : altezzaMinima;
+  }
+
+  /// Se la parola più lunga di [testo] entra, intera, in una pillola larga
+  /// [larghezza] (al testo di sistema corrente). Una parola spezzata non è un
+  /// ripiego accettabile: chi dispone le pillole sceglie un'altra disposizione.
+  static bool parolaEntra(
+    BuildContext context, {
+    required String testo,
+    required double larghezza,
+    BaVariantePillola variante = BaVariantePillola.attiva,
+    bool inattiva = false,
+  }) {
+    final utile = _larghezzaUtile(larghezza, variante, inattiva);
+    for (final parola in testo.split(RegExp(r'\s+'))) {
+      if (parola.isEmpty) continue;
+      final m = _misuratore(context, parola)..layout();
+      final larga = m.width;
+      m.dispose();
+      if (larga > utile) return false;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     if (variante == BaVariantePillola.informativa) {

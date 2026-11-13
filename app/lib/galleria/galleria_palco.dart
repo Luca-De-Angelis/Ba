@@ -21,12 +21,12 @@ const double _tablet = 744;
 /// Le altezze della stanza finta, dalla più alta: per far cedere il palco
 /// senza ridimensionare la finestra. Dati di prova, non misure di design.
 /// Scelte per il caso del testo 2,0 con otto persone: intestazione, indicatore,
-/// pubblico e barra delle azioni (task 020) prendono circa 660 dp (nei test, con
+/// pubblico e barra delle azioni (task 020) prendono circa 740 dp (nei test, con
 /// il font di prova, più largo di quello vero: con quello vero il palco ha più
 /// spazio), il palco resta con 322, 272, 222 e 172 dp e il diametro scende per
-/// gradi senza mai sfiorare. Sotto gli 830 il palco avrebbe meno dei 150 dp che
+/// gradi senza mai sfiorare. Sotto i 910 il palco avrebbe meno dei 150 dp che
 /// servono a otto presenze al minimo e uscirebbe sull'intestazione (`sfora`).
-const List<double> _altezze = [980, 930, 880, 830];
+const List<double> _altezze = [1060, 1010, 960, 910];
 
 /// I due testi del testo di sistema da provare (C6: oltre 2,0 non si scala).
 const double _testoNormale = 1.0;
@@ -339,15 +339,17 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
         ),
         BaAzioneBarra(
           ruolo: BaRuoloAzione.secondaria,
-          testo: 'Esci',
-          semanticsLabel: 'Esci',
+          testo: 'Scendi dal palco',
+          semanticsLabel: 'Scendi dal palco',
           fissa: true,
           onTap: () {},
         ),
+        // L'ultima secondaria sta accanto a «Altro»: la breve, così se la riga
+        // va in colonna (testo grande) la parola ci entra.
         BaAzioneBarra(
           ruolo: BaRuoloAzione.secondaria,
-          testo: 'Scendi',
-          semanticsLabel: 'Scendi dal palco',
+          testo: 'Esci',
+          semanticsLabel: 'Esci',
           fissa: true,
           onTap: () {},
         ),

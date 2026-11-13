@@ -1,3 +1,4 @@
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -224,6 +225,104 @@ void main() {
       final r = tester.getRect(find.byType(BaBarraAzioni));
       expect(r.bottom, basso1);
       expect(r.top, lessThanOrEqualTo(alto1));
+    });
+  });
+
+  group('stessa altezza e ripiego in colonna (020b)', () {
+    List<BaAzioneBarra> conTesti(List<String> testi) => [
+          for (var i = 0; i < testi.length; i++)
+            BaAzioneBarra(
+              ruolo: i == 0 ? BaRuoloAzione.primaria : BaRuoloAzione.secondaria,
+              testo: testi[i],
+              semanticsLabel: testi[i],
+              fissa: i < 3,
+              onTap: () {},
+            ),
+        ];
+    Widget barra(List<String> testi) => BaBarraAzioni(
+          azioni: conTesti(testi),
+          onAltro: () {},
+          semanticsLabelAltro: 'Altro',
+        );
+
+    /// Quante righe occupa un testo di una pillola e quante ne avrebbe se nessuna
+    /// parola si spezzasse: se sono uguali, nessuna parola è spezzata.
+    int righe(WidgetTester tester, String testo) {
+      final p = tester.renderObject<RenderParagraph>(find.text(testo));
+      final una = TextPainter(
+        text: TextSpan(text: 'x', style: p.text.style),
+        textDirection: TextDirection.ltr,
+        textScaler: p.textScaler,
+      )..layout();
+      return (p.size.height / una.height).round();
+    }
+
+    testWidgets('due pillole nella stessa riga, etichette di lunghezza diversa: stessa altezza', (tester) async {
+      await tester.pumpWidget(_app(barra(['Microfono', 'Esci', 'Scendi dal palco ora'])));
+      final a = tester.getRect(find.byType(BaPillola).at(1));
+      final b = tester.getRect(find.byType(BaPillola).at(2));
+      expect(a.top, b.top, reason: 'sulla stessa riga');
+      expect(a.height, b.height);
+      expect(b.height, greaterThan(BaControlloTokens.coppia), reason: 'la lunga va a capo e alza la riga');
+    });
+
+    testWidgets('con «Altro»: stessa altezza e «Altro» 48 × 48, centrato sulla riga', (tester) async {
+      await tester.pumpWidget(_app(barra(['Microfono', 'Esci', 'Scendi dal palco ora', 'Invita'])));
+      final a = tester.getRect(find.byType(BaPillola).at(1));
+      final b = tester.getRect(find.byType(BaPillola).at(2));
+      final altro = tester.getRect(find.byKey(BaBarraAzioni.chiaveAltro));
+      expect(a.height, b.height);
+      expect(altro.size, const Size(48, 48));
+      expect(altro.center.dy, closeTo(a.center.dy, 0.01));
+    });
+
+    testWidgets('testo 1,0: «Scendi dal palco» e «Esci» restano affiancate', (tester) async {
+      await tester.pumpWidget(_app(barra(['Microfono', 'Scendi dal palco', 'Esci'])));
+      final a = tester.getRect(find.byType(BaPillola).at(1));
+      final b = tester.getRect(find.byType(BaPillola).at(2));
+      expect(a.top, b.top);
+      expect(a.left, lessThan(b.left));
+    });
+
+    testWidgets('testo 2,0: le secondarie vanno in colonna, a tutta larghezza, senza parole spezzate',
+        (tester) async {
+      await tester.pumpWidget(_app(barra(['Microfono', 'Scendi dal palco', 'Esci']), testo: 2.0));
+      expect(tester.takeException(), isNull);
+      final a = tester.getRect(find.byType(BaPillola).at(1));
+      final b = tester.getRect(find.byType(BaPillola).at(2));
+      expect(b.top, greaterThanOrEqualTo(a.bottom), reason: 'una sotto l\'altra');
+      expect(a.width, 360);
+      expect(b.width, 360);
+      expect(righe(tester, 'Scendi dal palco'), 2, reason: 'a capo fra le parole: «Scendi» e «dal palco»');
+      expect(righe(tester, 'Esci'), 1);
+      expect(find.byType(BaPillola), findsNWidgets(3));
+    });
+
+    testWidgets('testo 2,0 con «Altro»: in colonna, «Altro» a destra in fondo sulla riga dell\'ultima, 48 × 48',
+        (tester) async {
+      await tester.pumpWidget(_app(barra(['Microfono', 'Scendi dal palco', 'Esci', 'Invita']), testo: 2.0));
+      expect(tester.takeException(), isNull);
+      final a = tester.getRect(find.byType(BaPillola).at(1));
+      final b = tester.getRect(find.byType(BaPillola).at(2));
+      final altro = tester.getRect(find.byKey(BaBarraAzioni.chiaveAltro));
+      expect(b.top, greaterThanOrEqualTo(a.bottom));
+      expect(a.width, 360);
+      expect(altro.size, const Size(48, 48));
+      expect(altro.left, greaterThanOrEqualTo(b.right));
+      expect(altro.right, a.right);
+      expect(altro.center.dy, closeTo(b.center.dy, 0.01));
+      expect(righe(tester, 'Scendi dal palco'), 2);
+      expect(find.byType(BaPillola), findsNWidgets(3));
+    });
+
+    testWidgets('con il testo normale la disposizione non cambia: «Altro» 48 × 48 e tre pillole',
+        (tester) async {
+      await tester.pumpWidget(_app(barra(['Microfono', 'Scendi dal palco', 'Esci', 'Invita'])));
+      expect(find.byType(BaPillola), findsNWidgets(3));
+      expect(tester.getSize(find.byKey(BaBarraAzioni.chiaveAltro)), const Size(48, 48));
+      final a = tester.getRect(find.byType(BaPillola).at(1));
+      final b = tester.getRect(find.byType(BaPillola).at(2));
+      expect(a.top, b.top);
     });
   });
 }

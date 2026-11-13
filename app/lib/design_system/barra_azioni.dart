@@ -5,7 +5,10 @@
 //
 // Disposizione, come nel prototipo del 002: la primaria sopra, a tutta
 // larghezza; sotto, in una riga, le due secondarie e, se c'è, «Altro» a destra.
-// Con due azioni c'è una sola secondaria, centrata come in BaAzioniInCoppia; con
+// Le pillole della stessa riga hanno la stessa altezza (la più alta). A testo
+// grande, se la parola più lunga di una secondaria non entra nella sua pillola,
+// le secondarie vanno in colonna e «Altro» sta sulla riga dell’ultima (020b).
+// Con due azioni c’è una sola secondaria, centrata come in BaAzioniInCoppia; con
 // una sola, c'è la primaria.
 //
 // Le azioni restano ancorate in basso (T11): la barra è una colonna della sua
@@ -100,14 +103,15 @@ class BaBarraAzioni extends StatelessWidget {
   EdgeInsets _estensione(int i, int n) =>
       EdgeInsets.only(left: i > 0 ? _mezzoGap : 0, right: i < n - 1 ? _mezzoGap : 0);
 
-  Widget _pillola(BaAzioneBarra a, {EdgeInsets estensione = EdgeInsets.zero, bool primaria = false}) =>
+  Widget _pillola(BaAzioneBarra a,
+          {EdgeInsets estensione = EdgeInsets.zero, bool primaria = false, double? altezza}) =>
       BaPillola(
         testo: a.testo,
         semanticsLabel: a.semanticsLabel,
         onTap: a.onTap,
         variante: a.varianteEffettiva,
         estensione: estensione,
-        altezzaMinima: primaria ? BaControlloTokens.primario : BaControlloTokens.coppia,
+        altezzaMinima: altezza ?? (primaria ? BaControlloTokens.primario : BaControlloTokens.coppia),
       );
 
   @override
@@ -118,22 +122,6 @@ class BaBarraAzioni extends StatelessWidget {
       for (final a in visibili)
         if (!identical(a, primaria)) a,
     ];
-    final conAltro = BaBarraAzioniTokens.conAltro(azioni.length);
-    final voci = secondarie.length + (conAltro ? 1 : 0); // elementi della riga
-
-    final riga = <Widget>[];
-    for (var i = 0; i < secondarie.length; i++) {
-      if (i > 0) riga.add(const SizedBox(width: BaControlloTokens.gapCoppia));
-      riga.add(Expanded(child: _pillola(secondarie[i], estensione: _estensione(i, voci))));
-    }
-    if (conAltro) {
-      riga.add(const SizedBox(width: BaControlloTokens.gapCoppia));
-      riga.add(_Altro(
-        semanticsLabel: semanticsLabelAltro,
-        onTap: onAltro,
-        estensione: _estensione(voci - 1, voci),
-      ));
-    }
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -142,19 +130,106 @@ class BaBarraAzioni extends StatelessWidget {
         _pillola(primaria, estensione: BaTouchable.estesa, primaria: true),
         if (secondarie.isNotEmpty) ...[
           const SizedBox(height: BaControlloTokens.gapCoppia),
-          if (secondarie.length == 1 && !conAltro)
-            // Una sola secondaria, centrata, larga come una di due.
-            LayoutBuilder(
-              builder: (context, vincoli) => Center(
-                child: SizedBox(
-                  width: (vincoli.maxWidth - BaControlloTokens.gapCoppia) / 2,
-                  child: _pillola(secondarie.single, estensione: BaTouchable.estesa),
-                ),
-              ),
-            )
-          else
-            Row(crossAxisAlignment: CrossAxisAlignment.center, children: riga),
+          LayoutBuilder(
+            builder: (context, vincoli) => _secondarie(context, vincoli.maxWidth, secondarie),
+          ),
         ],
+      ],
+    );
+  }
+
+  /// Le secondarie e «Altro». Due disposizioni:
+  /// - **affiancate** (la normale): tutte sulla stessa riga, con la stessa
+  ///   altezza (quella della più alta); «Altro» resta 48 × 48 e centrato in
+  ///   verticale sulla riga;
+  /// - **in colonna** (il ripiego): se la parola più lunga di una secondaria non
+  ///   entra, intera, nella sua pillola al testo di sistema corrente, le due
+  ///   secondarie vanno una sotto l'altra a tutta larghezza e «Altro» sta a
+  ///   destra in fondo, sulla riga dell'ultima. Niente parole spezzate. Si decide
+  ///   misurando (BaPillola.parolaEntra) con la larghezza che la pillola
+  ///   avrebbe affiancata; la riga di «Altro» in colonna non si ricontrolla.
+  Widget _secondarie(BuildContext context, double larghezza, List<BaAzioneBarra> secondarie) {
+    final conAltro = BaBarraAzioniTokens.conAltro(azioni.length);
+    const gap = BaControlloTokens.gapCoppia;
+
+    bool entra(BaAzioneBarra a, double l) => BaPillola.parolaEntra(
+          context,
+          testo: a.testo,
+          larghezza: l,
+          variante: a.varianteEffettiva,
+          inattiva: a.onTap == null,
+        );
+    double altezza(BaAzioneBarra a, double l) => BaPillola.altezzaNecessaria(
+          context,
+          testo: a.testo,
+          larghezza: l,
+          variante: a.varianteEffettiva,
+          inattiva: a.onTap == null,
+          altezzaMinima: BaControlloTokens.coppia,
+        );
+
+    // Una sola secondaria, senza «Altro»: centrata, larga come una di due; se la
+    // sua parola più lunga non entra, a tutta larghezza.
+    if (secondarie.length == 1 && !conAltro) {
+      final meta = (larghezza - gap) / 2;
+      return Center(
+        child: SizedBox(
+          width: entra(secondarie.single, meta) ? meta : larghezza,
+          child: _pillola(secondarie.single, estensione: BaTouchable.estesa),
+        ),
+      );
+    }
+
+    final voci = secondarie.length + (conAltro ? 1 : 0);
+    final affiancata = conAltro
+        ? (larghezza - secondarie.length * gap - BaBarraAzioniTokens.altroLato) / secondarie.length
+        : (larghezza - (secondarie.length - 1) * gap) / secondarie.length;
+    final affiancate = secondarie.every((a) => entra(a, affiancata));
+
+    Widget altro(EdgeInsets estensione) =>
+        _Altro(semanticsLabel: semanticsLabelAltro, onTap: onAltro, estensione: estensione);
+
+    if (affiancate) {
+      final h = secondarie.map((a) => altezza(a, affiancata)).reduce((a, b) => a > b ? a : b);
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          for (var i = 0; i < secondarie.length; i++) ...[
+            if (i > 0) const SizedBox(width: gap),
+            Expanded(child: _pillola(secondarie[i], estensione: _estensione(i, voci), altezza: h)),
+          ],
+          if (conAltro) ...[
+            const SizedBox(width: gap),
+            altro(_estensione(voci - 1, voci)),
+          ],
+        ],
+      );
+    }
+
+    // In colonna: tutte a tutta larghezza; l'ultima con «Altro» a destra.
+    final ultima = secondarie.length - 1;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        for (var i = 0; i < ultima; i++) ...[
+          _pillola(secondarie[i], estensione: BaTouchable.estesa),
+          const SizedBox(height: gap),
+        ],
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: _pillola(
+                secondarie[ultima],
+                estensione: conAltro ? const EdgeInsets.only(right: _mezzoGap) : BaTouchable.estesa,
+              ),
+            ),
+            if (conAltro) ...[
+              const SizedBox(width: gap),
+              altro(const EdgeInsets.only(left: _mezzoGap)),
+            ],
+          ],
+        ),
       ],
     );
   }
