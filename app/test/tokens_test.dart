@@ -325,4 +325,90 @@ void main() {
       expect(BaCreazioneTokens.aggancioAltezza, greaterThanOrEqualTo(BaControlloTokens.areaMinima));
     });
   });
+
+  group('«Altro» (task 015)', () {
+    test('tre punti da 4 con 3 di spazio', () {
+      expect(BaBarraAzioniTokens.altroPuntoLato, 4);
+      expect(BaBarraAzioniTokens.altroPuntoGap, 3);
+    });
+
+    test('il filetto di «Altro» ha la trasparenza di a32, come il filetto dell\'ascolto di gruppo', () {
+      expect(BaBarraAzioniTokens.altroBordo.a, closeTo(0.32, 0.005));
+      expect(BaBarraAzioniTokens.altroBordo, BaColorTokens.ascoltoGruppoBordo);
+    });
+  });
+
+  group('coda e attesa (task 015)', () {
+    test('l\'interruttore ha la forma di quello del «quando»', () {
+      expect(BaCodaTokens.interruttoreLarghezza, BaCreazioneTokens.quandoInterruttoreLarghezza);
+      expect(BaCodaTokens.interruttoreAltezza, BaCreazioneTokens.quandoInterruttoreAltezza);
+      expect(BaCodaTokens.interruttorePallino, BaCreazioneTokens.quandoPallino);
+    });
+
+    test('bordo 1, bordo acceso 2', () {
+      expect(BaCodaTokens.interruttoreBordo, 1);
+      expect(BaCodaTokens.interruttoreBordoAcceso, 2);
+    });
+
+    test('la riga e l\'uscita non scendono sotto areaMinima', () {
+      expect(BaCodaTokens.rigaAltezza, greaterThanOrEqualTo(BaControlloTokens.areaMinima));
+      expect(BaCodaTokens.uscitaAltezza, greaterThanOrEqualTo(BaControlloTokens.areaMinima));
+    });
+
+    test('il gruppo d\'attesa è di 8 al massimo', () {
+      expect(BaCodaTokens.gruppoMax, 8);
+    });
+
+    test('durate: posto conservato 30 s (Free) e 3 min (Pro), permanenza 60 min, soglia 2 min', () {
+      expect(BaCodaTokens.postoConservatoFree, const Duration(seconds: 30));
+      expect(BaCodaTokens.postoConservatoPro, const Duration(minutes: 3));
+      expect(BaCodaTokens.permanenzaMassima, const Duration(minutes: 60));
+      expect(BaCodaTokens.sogliaMomento, const Duration(minutes: 2));
+    });
+
+    group('oraDelPosto', () {
+      test('sotto la soglia non c\'è un\'ora: 30 secondi e 1 minuto 59', () {
+        final persa = DateTime(2026, 11, 13, 21, 40, 50);
+        expect(BaCodaTokens.oraDelPosto(persa, BaCodaTokens.postoConservatoFree), isNull);
+        expect(BaCodaTokens.oraDelPosto(persa, const Duration(minutes: 1, seconds: 59)), isNull);
+      });
+
+      test('da due minuti in su: l\'ora di fine troncata al minuto', () {
+        expect(
+          BaCodaTokens.oraDelPosto(DateTime(2026, 11, 13, 21, 40, 50), const Duration(minutes: 3)),
+          DateTime(2026, 11, 13, 21, 43),
+        );
+        expect(
+          BaCodaTokens.oraDelPosto(DateTime(2026, 11, 13, 21, 40, 0), BaCodaTokens.sogliaMomento),
+          DateTime(2026, 11, 13, 21, 42),
+        );
+        expect(
+          BaCodaTokens.oraDelPosto(DateTime(2026, 11, 13, 21, 40, 50), const Duration(minutes: 5)),
+          DateTime(2026, 11, 13, 21, 45),
+        );
+      });
+
+      test('passa la mezzanotte: 23:59:30 + 3 min → 00:02 del giorno dopo', () {
+        expect(
+          BaCodaTokens.oraDelPosto(DateTime(2026, 11, 13, 23, 59, 30), const Duration(minutes: 3)),
+          DateTime(2026, 11, 14, 0, 2),
+        );
+      });
+
+      test('non promette mai più del reale: mai oltre persa + durata, e senza secondi', () {
+        for (var secondo = 0; secondo < 60; secondo++) {
+          for (var minuti = 2; minuti <= 60; minuti++) {
+            final persa = DateTime(2026, 11, 13, 21, 40, secondo);
+            final durata = Duration(minutes: minuti);
+            final ora = BaCodaTokens.oraDelPosto(persa, durata)!;
+            expect(ora.isAfter(persa.add(durata)), isFalse, reason: '$secondo s + $minuti min');
+            expect(ora.second, 0);
+            expect(ora.millisecond, 0);
+            // E per difetto di meno di un minuto: non toglie più del dovuto.
+            expect(persa.add(durata).difference(ora), lessThan(const Duration(minutes: 1)));
+          }
+        }
+      });
+    });
+  });
 }
