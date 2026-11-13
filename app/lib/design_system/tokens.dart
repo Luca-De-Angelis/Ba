@@ -870,3 +870,42 @@ class BaSuonoTokens {
   /// microfonoAcceso = almeno uno dei due microfoni è aperto.
   static bool consentito({required bool microfonoAcceso}) => !microfonoAcceso;
 }
+
+// ------------------------------------------------------------------ accesso
+
+/// Accesso dell'ascoltatore e verifica del numero (task 013, D-031). Nessun
+/// colore nuovo: l'errore usa BaColorTokens.erroreTesto e erroreFiletto, il
+/// segno «ipotesi» usa azioneChiara e azioneAttivaBordo. L'errore non è mai
+/// affidato al colore: porta il segno «!» e una frase.
+class BaAccessoTokens {
+  BaAccessoTokens._();
+
+  // campo del codice (BaCampoCodice): sei caselle, email e SMS uguali
+  static const int codiceCaselle = 6;
+  static const double codiceAltezza = _S.sp14;
+  static const double codiceGap = _S.sp2;
+  static const double codiceRaggio = _S.rounded2xl;
+  static const double codiceBordo = _S.border1;
+  static const double codiceBordoAttivo = _S.border2; // la casella in scrittura e quelle in errore
+
+  // campo email e numero: una riga con la linea sotto, non una scatola
+  static const double campoAltezza = _S.sp14;
+  static const double campoLinea = _S.border2;
+
+  // segno «ipotesi · da confermare»: pillola a filo tratteggiata, si toglie in un punto solo
+  static const double segnoBordo = _S.border1;
+  static const double segnoRaggio = _S.rounded2xl; // non roundedFull: con il testo a capo la pillola deve crescere e non tagliarlo
+
+  // segno «!» dell'errore del codice: cerchio con il punto esclamativo
+  static const double erroreSegnoLato = 22; // eccezione: sta sull'altezza della riga di testo, fra sp5 e sp6
+  static const double erroreSegnoTratto = _S.border2;
+
+  // dopo un nuovo invio il codice non si richiede per un po': nessun conto alla
+  // rovescia a schermo, solo la frase. Eccezione: il valore lo decide il server.
+  static const Duration nuovoInvioAttesa = Duration(seconds: 30);
+
+  // foglio «Sali sul palco» a più passi: una scheda sola, il contenuto scorre,
+  // le azioni restano. Altezza massima del foglio in frazione dello schermo.
+  static const double foglioAltezzaTelefono = 0.8; // eccezione: lascia visibile il palco
+  static const double foglioAltezzaTablet = 0.62; // eccezione
+}

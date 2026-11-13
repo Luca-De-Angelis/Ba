@@ -217,4 +217,63 @@ void main() {
       expect(BaAscoltoTokens.corniceSporge, 8);
     });
   });
+
+  group('accesso (task 013)', () {
+    test('il codice ha sei caselle', () {
+      expect(BaAccessoTokens.codiceCaselle, 6);
+    });
+
+    test('codice e campo sono alti quanto un controllo primario', () {
+      expect(BaAccessoTokens.codiceAltezza, BaControlloTokens.primario);
+      expect(BaAccessoTokens.campoAltezza, BaControlloTokens.primario);
+    });
+
+    test('le caselle distano 8 dp', () {
+      expect(BaAccessoTokens.codiceGap, 8);
+    });
+
+    test('le caselle e il segno «ipotesi» hanno il raggio del riquadro', () {
+      expect(BaAccessoTokens.codiceRaggio, BaRaggioTokens.riquadro);
+      expect(BaAccessoTokens.segnoRaggio, BaRaggioTokens.riquadro);
+    });
+
+    test('bordi e tratti: casella 1 e attiva 2, linea del campo 2, segno 1', () {
+      expect(BaAccessoTokens.codiceBordo, 1);
+      expect(BaAccessoTokens.codiceBordoAttivo, 2);
+      expect(BaAccessoTokens.campoLinea, 2);
+      expect(BaAccessoTokens.segnoBordo, 1);
+    });
+
+    test('il segno «!» dell\'errore: cerchio da 22 con tratto da 2', () {
+      expect(BaAccessoTokens.erroreSegnoLato, 22);
+      expect(BaAccessoTokens.erroreSegnoTratto, 2);
+    });
+
+    test('dopo un nuovo invio il codice non si richiede per 30 secondi', () {
+      expect(BaAccessoTokens.nuovoInvioAttesa, const Duration(seconds: 30));
+    });
+
+    test('il foglio «Sali sul palco» sta a 0,8 dello schermo sul telefono e a 0,62 sul tablet', () {
+      expect(BaAccessoTokens.foglioAltezzaTelefono, 0.8);
+      expect(BaAccessoTokens.foglioAltezzaTablet, 0.62);
+    });
+
+    // Sei caselle nella colonna, senza scendere sotto l'area toccabile minima:
+    // (colonna − 5 gap) / 6 ≥ areaMinima.
+    for (final larghezza in [360.0, 744.0]) {
+      test('sei caselle stanno nella colonna a ${larghezza.toInt()} dp, mai sotto areaMinima', () {
+        final colonna = BaLayoutTokens.larghezzaColonna(larghezza);
+        final casella = (colonna -
+                (BaAccessoTokens.codiceCaselle - 1) * BaAccessoTokens.codiceGap) /
+            BaAccessoTokens.codiceCaselle;
+        expect(casella, greaterThanOrEqualTo(BaControlloTokens.areaMinima));
+      });
+    }
+
+    test('a 360 dp la colonna è larga 320 e ogni casella 46,7', () {
+      expect(BaLayoutTokens.larghezzaColonna(360), 320);
+      final casella = (320 - 5 * BaAccessoTokens.codiceGap) / BaAccessoTokens.codiceCaselle;
+      expect(casella, closeTo(46.67, 0.01));
+    });
+  });
 }

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#0A0A09; color:#F2EEE9; font-family:'Instrument Sans',system-ui,sans-serif; }
+  a { color:#D9CFA8; text-decoration:none; }
+  a:hover { color:#EDE7DC; }
+</style>
+</helmet>
+
+<div style="--ts: {{ ts }};background:#0A0A09;color:#F2EEE9;display:flex;flex-direction:column">
+
+<div style="padding:40px 56px 32px;border-bottom:1px solid rgba(242,238,233,0.10);display:flex;flex-direction:column;gap:12px">
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#8A837B">BA · task 013 · accesso con email e verifica del numero per parlare · 360 dp e 744 dp</div>
+  <div style="font-size:34px;font-weight:600;letter-spacing:-0.02em;line-height:1.15">Si entra per ascoltare, si verifica il numero per parlare</div>
+  <div style="display:flex;flex-direction:column;gap:8px;max-width:900px;font-size:16px;line-height:1.5;color:#A09890;text-wrap:pretty">
+    <div>L'account di base è da ascoltatore: email, codice via email, solo DEN pubblici (D-031). Numero di telefono e consenso a parlare si chiedono quando l'ascoltatore tocca «Sali sul palco» (D-024), in un foglio con un solo passo per volta e «Non ora» in ogni passo. Il passo del codice SMS è tratteggiato: può sparire con la verifica tramite operatore e gli altri passi non cambiano.</div>
+    <div>Tre ipotesi in attesa dei soci portano un segno tratteggiato «ipotesi»: nessun DEN privato su invito per l'ascoltatore, il numero resta verificato dopo «Torna ascoltatore», il passo del nome resta aperto. Il segno si toglie dalla proprietà <span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#F2EEE9">segniIpotesi</span>, in un punto solo. Altre proprietà: <span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#F2EEE9">lingua</span>, <span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#F2EEE9">testo</span> (fino a 2,0), <span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#F2EEE9">scorri</span> (inizio o fine).</div>
+    <div style="color:#D9CFA8">{{ scorriNota }}</div>
+  </div>
+</div>
+
+<sc-for list="{{ groups }}" as="g" hint-placeholder-count="3">
+<section data-screen-label="{{ g.label }}" style="padding:44px 56px 56px;display:flex;flex-direction:column;gap:40px;border-bottom:1px solid rgba(242,238,233,0.10)">
+  <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:26px;font-weight:600;letter-spacing:-0.01em">{{ g.titolo }}</div><div style="font-size:15px;line-height:1.5;color:#A09890;max-width:820px;text-wrap:pretty">{{ g.nota }}</div></div>
+  <sc-for list="{{ g.screens }}" as="s" hint-placeholder-count="4">
+  <div style="display:flex;flex-direction:column;gap:20px">
+    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#100F0E;background:#D9CFA8;padding:3px 8px;border-radius:999px">{{ s.num }}</div><div style="font-size:22px;font-weight:600;letter-spacing:-0.01em">{{ s.name }}</div></div>
+    <div style="font-size:14px;line-height:1.5;color:#A09890;max-width:760px;text-wrap:pretty">{{ s.note }}</div>
+    <div style="display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start">
+      <sc-for list="{{ s.frames }}" as="f" hint-placeholder-count="2">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#A09890">{{ f.label }}</div>
+        <div id="f-{{ f.id }}" style="position:relative;width:{{ f.w }}px;height:{{ f.h }}px;background:#0A0A09;border-radius:28px;border:{{ f.frameBorder }};overflow:hidden;display:flex;flex-direction:column">
+          <div style="height:{{ f.statusH }}px;flex:none;display:flex;align-items:flex-end;padding:0 {{ f.m }}px 8px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8A837B">21:40</div>
+          <sc-if value="{{ f.backdrop }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;left:0;right:0;top:{{ f.statusH }}px;bottom:0;background:linear-gradient(180deg,#171413 0%,#100F0E 52%,#0B0A09 100%);display:flex;flex-direction:column">
+              <div style="padding:4px {{ f.m }}px 0;display:flex;flex-direction:column;gap:5px">
+                <div style="font-size:22px;line-height:1.2;font-weight:600;letter-spacing:-0.26px">Cucina di notte</div>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#A09890">{{ f.bdS1 }}</div>
+              </div>
+              <div style="flex:1;display:flex;align-items:center;justify-content:center;gap:17px">
+                <div style="width:{{ f.bdD }}px;height:{{ f.bdD }}px;border-radius:56% 44% 51% 49% / 47% 53% 53% 47%;background:linear-gradient(155deg,#A83E2E 0%,#6E251C 100%)"></div>
+                <div style="width:{{ f.bdD }}px;height:{{ f.bdD }}px;border-radius:47% 53% 58% 42% / 55% 45% 42% 58%;background:linear-gradient(155deg,#23735A 0%,#14473A 100%)"></div>
+                <sc-if value="{{ f.bdSk }}" hint-placeholder-val="{{ false }}"><div style="width:{{ f.bdD }}px;height:{{ f.bdD }}px;border-radius:52% 48% 42% 58% / 43% 57% 54% 46%;background:linear-gradient(155deg,#3D3B39 0%,#2A2927 100%);opacity:0.62"></div></sc-if>
+              </div>
+              <div style="padding:0 {{ f.m }}px 24px;display:flex;flex-direction:column;gap:10px"><div style="width:100%;max-width:{{ f.col }}px;margin:0 auto;box-sizing:border-box;min-height:56px;border-radius:999px;background:{{ f.bdPBg }};border:1px solid {{ f.bdPBd }};display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;color:{{ f.bdPC }}">{{ f.bdP }}</div></div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ f.sheet }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:rgba(8,7,6,0.62)"></div></sc-if>
+          <div style="{{ f.panelStyle }}">
+            <div style="flex:1;min-height:0;overflow-y:auto;scrollbar-width:none;display:flex;flex-direction:column;justify-content:{{ f.justify }};padding:{{ f.padTop }}px {{ f.m }}px 12px">
+              <div style="width:100%;max-width:{{ f.col }}px;margin:0 auto;display:flex;flex-direction:column;gap:18px">
+                <sc-for list="{{ f.blocks }}" as="b" hint-placeholder-count="4">
+                  <div>
+                    <sc-if value="{{ b.isH }}" hint-placeholder-val="{{ false }}"><div style="font-size:calc({{ b.size }}px * var(--ts, 1));line-height:1.25;font-weight:600;letter-spacing:-0.26px;text-wrap:pretty">{{ b.t }}</div></sc-if>
+                    <sc-if value="{{ b.isP }}" hint-placeholder-val="{{ false }}"><div style="font-size:calc({{ b.size }}px * var(--ts, 1));line-height:1.5;color:{{ b.c }};text-wrap:pretty">{{ b.t }}</div></sc-if>
+                    <sc-if value="{{ b.isMark }}" hint-placeholder-val="{{ false }}"><div style="font-family:'IBM Plex Mono',monospace;font-size:calc(12px * min(var(--ts, 1), 1.6));letter-spacing:0.06em;text-transform:uppercase;color:#8A837B;line-height:1.3">{{ b.t }}</div></sc-if>
+                    <sc-if value="{{ b.isField }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;flex-direction:column;gap:8px">
+                        <div style="font-family:'IBM Plex Mono',monospace;font-size:calc(12px * min(var(--ts, 1), 1.6));letter-spacing:0.06em;text-transform:uppercase;color:#8A837B">{{ b.label }}</div>
+                        <div style="min-height:56px;display:flex;align-items:center;gap:12px;border-bottom:2px solid #D9CFA8;font-size:calc(20px * var(--ts, 1));letter-spacing:0.01em;flex-wrap:wrap;word-break:break-all"><span style="color:#A09890">{{ b.pre }}</span><span style="color:{{ b.vc }}">{{ b.value }}</span></div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ b.isCode }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;gap:8px">
+                        <sc-for list="{{ b.cells }}" as="c" hint-placeholder-count="6"><div style="flex:1 1 0;min-width:0;height:56px;box-sizing:border-box;border-radius:16px;border:{{ c.bd }};display:flex;align-items:center;justify-content:center;font-size:22px;color:#F2EEE9">{{ c.t }}</div></sc-for>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ b.isErr }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;align-items:flex-start;gap:10px">
+                        <div style="flex:none;width:22px;height:22px;box-sizing:border-box;border-radius:999px;border:2px solid #E4705B;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#E4705B;line-height:1;margin-top:1px">!</div>
+                        <div style="font-size:calc(16px * var(--ts, 1));line-height:1.4;color:#E4705B;text-wrap:pretty">{{ b.t }}</div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ b.isLink }}" hint-placeholder-val="{{ false }}"><div style="min-height:48px;box-sizing:border-box;padding:8px 0;border-top:1px solid rgba(242,238,233,0.12);display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:calc(16px * var(--ts, 1));line-height:1.3"><span>{{ b.t }}</span><span style="color:#A09890">›</span></div></sc-if>
+                    <sc-if value="{{ b.isTxtAct }}" hint-placeholder-val="{{ false }}"><div style="min-height:44px;display:flex;align-items:center;font-size:calc(14px * var(--ts, 1));line-height:1.3;color:{{ b.c }}">{{ b.t }}</div></sc-if>
+                    <sc-if value="{{ b.isTag }}" hint-placeholder-val="{{ false }}"><div style="display:block;width:fit-content;max-width:min(100%,26em);box-sizing:border-box;padding:8px 14px;border-radius:16px;border:1px dashed rgba(217,207,168,0.42);text-wrap:pretty;font-family:'IBM Plex Mono',monospace;font-size:calc(12px * min(var(--ts, 1), 1.6));letter-spacing:0.06em;text-transform:uppercase;color:#D9CFA8;line-height:1.3">{{ b.t }}</div></sc-if>
+                    <sc-if value="{{ b.isHead }}" hint-placeholder-val="{{ false }}"><div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap"><div style="font-size:calc(22px * var(--ts, 1));line-height:1.2;font-weight:600;letter-spacing:-0.26px">{{ b.t }}</div><div style="font-family:'IBM Plex Mono',monospace;font-size:calc(12px * min(var(--ts, 1), 1.6));letter-spacing:0.06em;text-transform:uppercase;color:#8A837B">{{ b.mark }}</div></div></sc-if>
+                    <sc-if value="{{ b.isDen }}" hint-placeholder-val="{{ false }}">
+                      <div style="padding:14px 0;border-top:1px solid rgba(242,238,233,0.10);display:flex;flex-direction:column;gap:8px">
+                        <div style="font-size:calc(18px * var(--ts, 1));line-height:1.3;font-weight:600;letter-spacing:-0.18px;text-wrap:pretty">{{ b.t }}</div>
+                        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                          <div style="display:flex;gap:4px"><sc-for list="{{ b.blobs }}" as="o" hint-placeholder-count="2"><div style="width:22px;height:22px;border-radius:{{ o.br }};background:{{ o.bg }}"></div></sc-for></div>
+                          <div style="font-family:'IBM Plex Mono',monospace;font-size:calc(12px * min(var(--ts, 1), 1.6));letter-spacing:0.06em;text-transform:uppercase;color:#8A837B;line-height:1.4">{{ b.info }}</div>
+                        </div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ b.isRow }}" hint-placeholder-val="{{ false }}">
+                      <div style="min-height:48px;box-sizing:border-box;padding:10px 0;border-top:1px solid rgba(242,238,233,0.12);display:flex;flex-direction:column;justify-content:center;gap:4px"><div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:calc(16px * var(--ts, 1));line-height:1.3;color:{{ b.c }}"><span>{{ b.t }}</span><span style="color:#A09890">{{ b.v }}</span></div><div style="font-size:calc(14px * var(--ts, 1));line-height:1.43;color:#A09890;text-wrap:pretty">{{ b.sub }}</div></div>
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="flex:none;padding:12px {{ f.m }}px 24px">
+              <div style="width:100%;max-width:{{ f.col }}px;margin:0 auto;display:flex;flex-direction:column;gap:10px">
+                <sc-if value="{{ f.act1 }}" hint-placeholder-val="{{ true }}"><div style="min-height:56px;padding:8px 20px;box-sizing:border-box;border-radius:999px;background:{{ f.pBg }};border:1px solid {{ f.pBd }};display:flex;align-items:center;justify-content:center;text-align:center;font-size:calc(16px * var(--ts, 1));line-height:1.3;font-weight:500;color:{{ f.pC }};text-wrap:pretty">{{ f.act1T }}</div></sc-if>
+                <sc-if value="{{ f.act2 }}" hint-placeholder-val="{{ false }}"><div style="min-height:48px;padding:6px 14px;box-sizing:border-box;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;text-align:center;font-size:calc(14px * var(--ts, 1));line-height:1.3;color:#A09890">{{ f.act2T }}</div></sc-if>
+                <sc-if value="{{ f.slot }}" hint-placeholder-val="{{ false }}"><div style="min-height:48px;box-sizing:border-box;padding:8px 14px;border:1px dashed rgba(242,238,233,0.22);border-radius:999px;display:flex;align-items:center;justify-content:center;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:calc(12px * min(var(--ts, 1), 1.6));letter-spacing:0.06em;text-transform:uppercase;color:#8A837B;line-height:1.3">{{ f.slotT }}</div></sc-if>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-for>
+</section>
+</sc-for>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;lingua&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;it&quot;,&quot;de&quot;],&quot;default&quot;:&quot;it&quot;,&quot;tsType&quot;:&quot;'it'|'de'&quot;},&quot;testo&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:1,&quot;max&quot;:2,&quot;step&quot;:0.1,&quot;default&quot;:1,&quot;tsType&quot;:&quot;number&quot;},&quot;scorri&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;inizio&quot;,&quot;fine&quot;],&quot;default&quot;:&quot;inizio&quot;,&quot;tsType&quot;:&quot;'inizio'|'fine'&quot;},&quot;segniIpotesi&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const de = this.props.lingua === 'de';
+    const ts = Math.min(2, Math.max(1, Number(this.props.testo ?? 1)));
+    const ip = this.props.segniIpotesi !== false;
+    const fine = this.props.scorri === 'fine';
+    const t = (a, b) => (de ? b : a);
+    const C1 = '#A09890', C0 = '#F2EEE9';
+    const H = (s, size = 22) => ({ isH: true, t: s, size });
+    const P = (s, c = C1, size = 16) => ({ isP: true, t: s, c, size });
+    const MK = s => ({ isMark: true, t: s });
+    const FLD = (label, value, pre = '', vc = C0) => ({ isField: true, label, value, pre, vc });
+    const CODE = (vals, st) => ({ isCode: true, cells: [0, 1, 2, 3, 4, 5].map(i => ({ t: vals[i] || '', bd: st === 'err' ? '2px solid rgba(228,112,91,0.62)' : st === 'muted' ? '1px solid rgba(242,238,233,0.10)' : (vals.length === i && st !== 'full') ? '2px solid #D9CFA8' : '1px solid rgba(242,238,233,0.14)' })) });
+    const ERR = s => ({ isErr: true, t: s });
+    const LINK = s => ({ isLink: true, t: s });
+    const TX = (s, c = C1) => ({ isTxtAct: true, t: s, c });
+    const TAG = s => ({ isTag: true, t: s });
+    const HEAD = (s, m) => ({ isHead: true, t: s, mark: m });
+    const bl = (a, b, c) => ({ br: a, bg: `linear-gradient(155deg,${b} 0%,${c} 100%)` });
+    const DEN = (n, info, bl2) => ({ isDen: true, t: n, info, blobs: bl2 });
+    const ROW = (tt, sub, v = '', c = C0) => ({ isRow: true, t: tt, sub, v, c });
+    const TAGIP = s => (ip ? [TAG(s)] : []);
+
+    const tIp = {
+      priv: t('ipotesi · nessun DEN privato su invito per l\'ascoltatore', 'Annahme · kein privater DEN auf Einladung für Zuhörer:innen'),
+      num: t('ipotesi · il numero resta verificato · da confermare', 'Annahme · die Nummer bleibt verifiziert · zu bestätigen'),
+      nome: t('da decidere · il contenuto del passo è aperto', 'offen · der Inhalt des Schritts ist noch offen')
+    };
+    const mail = 'sara.m@example.it';
+    const salirai = t('Salirai a microfono spento.', 'Du steigst mit ausgeschaltetem Mikrofon auf.');
+    const par1 = t('Per parlare bisogna diventare partecipante. Servono un numero di telefono verificato e il consenso a parlare.', 'Zum Sprechen musst du Teilnehmer:in werden. Dafür brauchst du eine verifizierte Telefonnummer und die Einwilligung zum Sprechen.');
+    const par1b = t('Per parlare bisogna diventare partecipante. Serve un secondo consenso.', 'Zum Sprechen musst du Teilnehmer:in werden. Dafür brauchst du eine zweite Einwilligung.');
+    const par2 = t('Mentre parli, la tua voce si registra per poco tempo e si trascrive; il testo serve alla moderazione e a costruire il tuo profilo.', 'Während du sprichst, wird deine Stimme kurz aufgenommen und transkribiert; der Text dient der Moderation und dem Aufbau deines Profils.');
+    const par3 = t('Nessuna conversazione si può riascoltare. La voce si cancella dopo la trascrizione, il testo resta per un periodo.', 'Kein Gespräch lässt sich erneut anhören. Die Stimme wird nach der Transkription gelöscht, der Text bleibt eine Zeit lang erhalten.');
+    const nonOra = t('Non ora', 'Nicht jetzt');
+
+    const S = [];
+    const add = (g, id, num, name, note, o) => S.push({ g, id, num, name, note, ...o });
+
+    add('acc', 'email', 'A1', t('Email', 'E-Mail'), 'Un campo e un\'azione. Sotto l\'azione c\'è il punto di aggancio per A02 («Continua con…», dopo l\'alpha): un posto con la stessa larghezza dell\'azione secondaria. Quando arriverà, l\'email e il resto non si spostano.',
+      { blocks: [H(t('La tua email', 'Deine E-Mail')), FLD(t('Email', 'E-Mail'), mail), P(t('Ti mandiamo un codice. Niente password.', 'Wir schicken dir einen Code. Kein Passwort.'))], a1: t('Ricevi il codice', 'Code erhalten'), slot: t('Qui, dopo l\'alpha: «Continua con…»', 'Hier, nach der Alpha: «Weiter mit …»'), center: true });
+    add('acc', 'codice', 'A2', t('Codice via email', 'Code per E-Mail'), 'Sei caselle (BaCampoCodice). Il codice scritto a metà. «Mandalo di nuovo» è un\'azione testuale, a 44 dp.',
+      { blocks: [H(t('Il codice', 'Der Code')), P(t('Mandato a ', 'Gesendet an ') + mail + '.'), CODE(['4', '8', '1']), TX(t('Mandalo di nuovo', 'Noch einmal senden'))], a1: t('Conferma', 'Bestätigen') });
+    add('acc', 'codice-errore', 'A2 bis', t('Codice sbagliato', 'Falscher Code'), 'Una frase sola, con il segno «!» e il bordo delle caselle: lo stato non è affidato al colore. Non dice di chi è la colpa.',
+      { blocks: [H(t('Il codice', 'Der Code')), CODE(['4', '8', '1', '9', '0', '2'], 'err'), ERR(t('Il codice non è giusto. Controlla l\'email e riprova.', 'Der Code stimmt nicht. Prüfe die E-Mail und versuche es noch einmal.')), TX(t('Mandalo di nuovo', 'Noch einmal senden'))], a1: t('Conferma', 'Bestätigen') });
+    add('acc', 'codice-scaduto', 'A2 ter', t('Codice scaduto', 'Code abgelaufen'), 'Le caselle si svuotano e si spengono; l\'azione diventa quella che serve: chiedere un codice nuovo.',
+      { blocks: [H(t('Il codice', 'Der Code')), CODE([], 'muted'), ERR(t('Il codice è scaduto. Te ne mandiamo uno nuovo.', 'Der Code ist abgelaufen. Wir schicken dir einen neuen.'))], a1: t('Manda un nuovo codice', 'Neuen Code senden') });
+    add('acc', 'codice-attesa', 'A2 quater', t('Nuovo invio, con attesa', 'Erneutes Senden, mit Wartezeit'), 'Dopo un nuovo invio, per un po\' non se ne può chiedere un altro. Una frase sola lo dice, senza conto alla rovescia (nessun numero che scende); l\'azione resta com\'è, inattiva.',
+      { blocks: [H(t('Il codice', 'Der Code')), P(t('Nuovo codice mandato a ', 'Neuer Code gesendet an ') + mail + '.'), CODE([]), TX(t('Mandalo di nuovo', 'Noch einmal senden'), '#6E6862'), P(t('Ne puoi chiedere un altro fra poco.', 'Du kannst gleich einen weiteren anfordern.'), C1, 14)], a1: t('Conferma', 'Bestätigen'), inatt: true });
+    add('acc', 'onboarding', 'A3', t('Onboarding · primo accesso', 'Onboarding · erster Zugang'), 'L\'avviso su voce e testo del 001b (D-013), parola per parola. Compare una volta sola, al primissimo accesso. Il testo definitivo lo approva il legale: è un segnaposto.',
+      { blocks: [H(t('Prima di entrare', 'Bevor du eintrittst')), P(t('Nessuna conversazione si può riascoltare.', 'Kein Gespräch lässt sich erneut anhören.'), C0), P(t('Quando qualcuno parla, la sua voce si salva per poco tempo, solo per trascriverla. Poi si cancella.', 'Wenn jemand spricht, wird die Stimme kurz gespeichert, nur um sie zu transkribieren. Danach wird sie gelöscht.')), P(t('Il testo trascritto resta per un periodo.', 'Der transkribierte Text bleibt eine Zeit lang erhalten.'))], a1: t('Ho capito', 'Verstanden') });
+    add('acc', 'termini', 'A4', t('Termini e privacy', 'Nutzungsbedingungen und Datenschutz'), 'Un solo consenso, quello necessario. La voce ha il suo, più avanti, solo per chi sale sul palco.',
+      { blocks: [H(t('Termini e privacy', 'Bedingungen und Datenschutz')), P(t('Per usare BA servono i termini d\'uso e l\'informativa sulla privacy.', 'Zur Nutzung von BA brauchst du die Nutzungsbedingungen und die Datenschutzerklärung.')), LINK(t('Leggi i termini', 'Bedingungen lesen')), LINK(t('Leggi l\'informativa', 'Datenschutzerklärung lesen')), P(t('Solo i termini e la privacy. Per parlare, ti chiediamo il consenso quando sali sul palco.', 'Nur Bedingungen und Datenschutz. Zum Sprechen fragen wir dich beim Aufsteigen auf die Bühne nach deiner Einwilligung.'), C1, 14)], a1: t('Accetto', 'Akzeptieren') });
+    add('acc', 'nome', 'A5', t('Nome · decisione aperta', 'Name · offen'), 'Lo spazio resta, il contenuto no. Il segno tratteggiato lo dice e si toglie con le altre ipotesi.',
+      { blocks: [H(t('Come ti chiamano?', 'Wie nennt man dich?')), FLD(t('nome, nickname o entrambi', 'Name, Nickname oder beides'), t('da decidere', 'noch offen'), '', '#8A837B'), ...TAGIP(tIp.nome)], a1: t('Continua', 'Weiter') });
+    add('acc', 'elenco', 'A6', t('Elenco · ascoltatore', 'Liste · Zuhörer:in'), 'Solo DEN pubblici (entra chiunque), nessun DEN su invito. Un marcatore fermo dice «sei ascoltatore», senza commento e senza invito a cambiare. Nessuna azione in fondo: l\'azione è entrare.',
+      { blocks: [HEAD('DEN', t('sei ascoltatore', 'du hörst zu')), DEN('Cucina di notte', t('entra chiunque · 5 sul palco', 'offen für alle · 5 auf der Bühne'), [bl('57% 43% 48% 52% / 46% 54% 50% 50%', '#A83E2E', '#6E251C'), bl('45% 55% 56% 44% / 53% 47% 52% 48%', '#2A6894', '#1B4463'), bl('52% 48% 43% 57% / 49% 51% 46% 54%', '#96621A', '#5F3C0B')]), DEN('Fra due turni', t('entra chiunque · 2 sul palco', 'offen für alle · 2 auf der Bühne'), [bl('45% 55% 56% 44% / 53% 47% 52% 48%', '#23735A', '#14473A'), bl('57% 43% 48% 52% / 46% 54% 50% 50%', '#7A3080', '#4E1F52')]), DEN('Radio insonni', t('entra chiunque · vuoto', 'offen für alle · leer'), []), ...TAGIP(tIp.priv)], noAct: true });
+
+    add('par', 'sali-avviso', 'P1', t('Sali sul palco · avviso su voce e testo', 'Auf die Bühne · Hinweis zu Stimme und Text'), 'Un ascoltatore senza numero tocca «Sali sul palco» e vede prima l\'avviso (D-013), parola per parola. Una sola azione; «Non ora» chiude il foglio senza conseguenze, ed è identico in tutti i passi.',
+      { sheet: true, blocks: [H(t('Vuoi salire sul palco?', 'Möchtest du auf die Bühne?'), 20), P(par1), P(par2), P(par3, C0)], a1: t('Continua', 'Weiter'), a2: nonOra });
+    add('par', 'sali-numero', 'P2', t('Sali sul palco · numero', 'Auf die Bühne · Nummer'), 'Il numero serve solo per parlare. Con la verifica tramite operatore cambia solo l\'etichetta dell\'azione («Continua») e il passo successivo sparisce.',
+      { sheet: true, blocks: [H(t('Il tuo numero', 'Deine Nummer'), 20), FLD(t('Numero di telefono', 'Telefonnummer'), '320 000 0000', '+39'), P(t('Ti mandiamo un codice per SMS. Il numero serve solo per parlare.', 'Wir schicken dir einen Code per SMS. Die Nummer brauchst du nur zum Sprechen.'), C1, 14)], a1: t('Ricevi il codice', 'Code erhalten'), a2: nonOra });
+    add('par', 'sali-codice', 'P3', t('Sali sul palco · codice SMS · rimovibile', 'Auf die Bühne · SMS-Code · entfernbar'), 'Il passo tratteggiato sparisce se l\'operatore verifica il numero: P2 porta a P4 con «Continua». Nessun altro passo ne dipende.',
+      { sheet: true, dashed: true, blocks: [H(t('Il codice', 'Der Code'), 20), P(t('Mandato al +39 ••• ••• 0000.', 'Gesendet an +39 ••• ••• 0000.')), CODE(['4', '8', '1']), TX(t('Mandalo di nuovo', 'Noch einmal senden'))], a1: t('Conferma', 'Bestätigen'), a2: nonOra });
+    add('par', 'sali-consenso', 'P4', t('Sali sul palco · consenso a parlare', 'Auf die Bühne · Einwilligung zum Sprechen'), 'Il consenso è il passo che porta in cima. «Acconsento e salgo» dice cosa succede, e la riga sotto dice come: a microfono spento.',
+      { sheet: true, blocks: [H(t('Vuoi parlare?', 'Möchtest du sprechen?'), 20), P(t('Acconsenti che, mentre parli, la tua voce si registri per poco tempo e si trascriva.', 'Du willst einwilligen, dass deine Stimme beim Sprechen kurz aufgenommen und transkribiert wird.')), P(salirai, C0)], a1: t('Acconsento e salgo', 'Einwilligen und aufsteigen'), a2: nonOra });
+    add('par', 'sali-sale', 'P5', t('Sale a microfono spento', 'Steigt mit ausgeschaltetem Mikrofon auf'), 'Il foglio si chiude e la sagoma vuota occupa già il posto (stato 1 bis del task 002). Da qui in poi è la stanza: il microfono resta spento finché la persona non lo accende.',
+      { backdrop: true, bdSk: true, bdS1: t('3 sul palco', '3 auf der Bühne'), bdP: t('Sto salendo…', 'Ich steige auf …'), blocks: [], noAct: true, panelOff: true });
+    add('par', 'sali-con-numero', 'P6', t('Con numero già verificato: avviso e consenso', 'Mit bereits verifizierter Nummer: Hinweis und Einwilligung'), 'Chi ha già il numero verificato (ipotesi) salta numero e SMS: il foglio è quello del task 002, con avviso e consenso insieme.',
+      { sheet: true, blocks: [H(t('Vuoi salire sul palco?', 'Möchtest du auf die Bühne?'), 20), P(par1b), P(par2), P(par3), P(salirai, C0), ...TAGIP(tIp.num)], a1: t('Acconsento e salgo', 'Einwilligen und aufsteigen'), a2: nonOra });
+
+    add('torna', 'torna-prima', 'T1', t('Impostazioni · «Torna ascoltatore»', 'Einstellungen · «Wieder nur zuhören»'), 'Il testo della riga cambia: dice che il numero resta verificato e che per tornare a parlare basta il consenso. È un\'ipotesi da confermare con i soci: il segno si toglie dalla proprietà segniIpotesi.',
+      { blocks: [H(t('Impostazioni', 'Einstellungen')), ROW(t('Lingua', 'Sprache'), '', t('Italiano', 'Deutsch')), ROW(t('Microfono', 'Mikrofon'), '', t('Consentito', 'Erlaubt')), ROW(t('Persone bloccate', 'Blockierte Personen'), '', t('3 persone', '3 Personen')), ROW(t('Torna ascoltatore', 'Wieder nur zuhören'), t('Non potrai più parlare. Il numero resta verificato: per tornare a parlare basta il consenso. Se stai parlando, esci dalla stanza.', 'Du kannst nicht mehr sprechen. Die Nummer bleibt verifiziert: zum Sprechen genügt wieder die Einwilligung. Wenn du gerade sprichst, verlässt du den Raum.')), ROW(t('Esci da BA', 'Von BA abmelden'), '', '', C1), ...TAGIP(tIp.num)], noAct: true, rowsOnly: true });
+    add('torna', 'torna-dopo', 'T2', t('Dopo il tocco: sei ascoltatore', 'Nach dem Tippen: du hörst zu'), 'La riga diventa un fatto, non un\'azione: «Sei ascoltatore». Per parlare di nuovo non c\'è una riga nelle impostazioni (D-024): si sale dalla stanza e si dà il consenso, senza rifare numero e SMS.',
+      { blocks: [H(t('Impostazioni', 'Einstellungen')), ROW(t('Lingua', 'Sprache'), '', t('Italiano', 'Deutsch')), ROW(t('Microfono', 'Mikrofon'), '', t('Consentito', 'Erlaubt')), ROW(t('Persone bloccate', 'Blockierte Personen'), '', t('3 persone', '3 Personen')), ROW(t('Sei ascoltatore', 'Du hörst zu'), t('Il numero resta verificato. Per tornare a parlare basta il consenso: lo dai da «Sali sul palco».', 'Die Nummer bleibt verifiziert. Zum Sprechen genügt wieder die Einwilligung: du gibst sie bei «Auf die Bühne».'), '', C1), ROW(t('Esci da BA', 'Von BA abmelden'), '', '', C1), ...TAGIP(tIp.num)], noAct: true, rowsOnly: true });
+
+    const GR = [
+      { id: 'acc', label: 'Accesso', titolo: 'Accesso dell\'ascoltatore', nota: 'Email, codice, onboarding, termini, nome, elenco. Una sola azione chiara per schermata, nessun numero, nessun SMS e nessun consenso a parlare.' },
+      { id: 'par', label: 'Partecipante', titolo: 'Diventare partecipante, dalla stanza', nota: 'Il foglio «Vuoi salire sul palco?» del task 002, esteso: avviso, numero, codice SMS, consenso, si sale a microfono spento. Per chi ha già il numero, solo avviso e consenso.' },
+      { id: 'torna', label: 'Torna ascoltatore', titolo: '«Torna ascoltatore» nelle impostazioni', nota: 'Solo le righe che cambiano. Il numero resta verificato (ipotesi).' }
+    ];
+    const make = (d, w) => {
+      const tablet = w >= 600;
+      const h = tablet ? 1133 : 740, m = tablet ? 32 : 20, col = tablet ? 512 : 320;
+      const sheetH = Math.round(h * (tablet ? 0.62 : 0.8));
+      const sheet = !!d.sheet;
+      const act1 = !!d.a1, inatt = !!d.inatt;
+      const panelStyle = d.panelOff ? 'display:none' : sheet
+        ? `position:absolute;left:0;right:0;bottom:0;max-height:${sheetH}px;display:flex;flex-direction:column;background:#161412;border:1px ${d.dashed ? 'dashed' : 'solid'} rgba(242,238,233,${d.dashed ? 0.24 : 0.12});border-bottom:none;border-radius:24px 24px 0 0;${tablet ? 'margin:0 auto;max-width:' + (col + 2 * m) + 'px;' : ''}`
+        : 'flex:1;min-height:0;display:flex;flex-direction:column';
+      const blocks = (d.blocks || []).map(b => ({ size: 16, c: '#A09890', label: '', pre: '', vc: '#F2EEE9', value: '', mark: '', cells: [], blobs: [], info: '', sub: '', v: '', t: '', ...b }));
+      return {
+        id: d.id + '-' + w, w, h, m, col, statusH: tablet ? 32 : 46, label: tablet ? '744 dp · tablet, verticale' : '360 dp · telefono',
+        frameBorder: d.dashed ? '1px dashed rgba(242,238,233,0.24)' : '1px solid rgba(242,238,233,0.12)',
+        backdrop: sheet || !!d.backdrop, sheet, bdS1: d.bdS1 || t('3 sul palco', '3 auf der Bühne'), bdD: tablet ? 130 : 88, bdSk: !!d.bdSk,
+        bdP: d.bdP || t('Sali sul palco', 'Auf die Bühne'), bdPBg: d.bdSk ? 'transparent' : 'linear-gradient(180deg,#EDE7DC 0%,#D2C9B6 100%)', bdPBd: d.bdSk ? 'rgba(242,238,233,0.10)' : 'transparent', bdPC: d.bdSk ? '#8A837B' : '#100F0E',
+        panelStyle, justify: fine ? 'flex-end' : (d.center && !tablet ? 'flex-start' : (d.center ? 'center' : 'flex-start')), padTop: sheet ? 24 : (d.rowsOnly ? 8 : (tablet ? 56 : 40)),
+        blocks,
+        act1: act1, act1T: d.a1 || '', pBg: inatt ? 'transparent' : 'linear-gradient(180deg,#EDE7DC 0%,#D2C9B6 100%)', pBd: inatt ? 'rgba(242,238,233,0.10)' : 'transparent', pC: inatt ? '#8A837B' : '#100F0E',
+        act2: !!d.a2, act2T: d.a2 || '', slot: !!d.slot, slotT: d.slot || ''
+      };
+    };
+    const groups = GR.map(g => ({ ...g, screens: S.filter(s => s.g === g.id).map(s => ({ num: s.num, name: s.name, note: s.note, frames: [make(s, 360), make(s, 744)] })) }));
+    return {
+      ts: String(ts), groups,
+      scorriNota: fine ? 'Il prototipo non scorre: questo è lo stato scrollato in fondo. Con scorri = inizio si vede lo stato iniziale.' : 'Il prototipo non scorre: con testo grande, scorri = fine mostra lo stato scrollato in fondo; le azioni restano ancorate.'
+    };
+  }
+}
+</script>
+</body>
+</html>

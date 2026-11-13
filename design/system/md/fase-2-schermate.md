@@ -36,8 +36,9 @@ L 0,153 · nuova
 **Regola di assegnazione, per esteso.** Il DEN assegna a ciascuno una tinta libera fra le 12 al momento dell'ingresso, e la tinta vale finché resti. **L'unicità è garantita sul palco** — al massimo 8 presenze su 12 tinte, quindi nessuna collisione è possibile fra le voci che si sentono. **Il pubblico può ripetere**: da nove persone in su le tinte si riusano, perché nel pubblico la tinta non identifica nessuno (non c'è voce da attribuire) e serve solo a dire "sono persone diverse". Chi sale sul palco riceve, se necessario, una tinta libera al momento della salita: la promozione può cambiare tinta, e non è un problema — la tinta è effimera per costruzione.
 **Corollario, e vale come divieto.** Dodici tinte tenute dentro L 0,09–0,16 sono poco distinguibili fra loro a 22 pt e al buio: vanno bene per accompagnare le iniziali, non per portare informazione. **Nessuna distinzione dell'app può dipendere dal solo colore** — chi parla è luminanza e movimento, voce mutata e bloccata sono desaturazione più glifo, il palco si distingue dal pubblico per dimensione e posizione. Se una futura funzione ha bisogno di essere letta a colpo d'occhio, il canale non è la tinta.
 5a
-Accesso — dal numero all'elenco
-Un'azione chiara per schermata. I due consensi sono due schermate e due controlli. Nessun codice di invito e nessuna email.
+Accesso — superato dal task 013
+Superata da task 013 (D-031): l'accesso è email → codice via email → onboarding → termini → nome → elenco dei DEN pubblici, da ascoltatore. Numero, SMS e consenso a parlare (5a.1, 5a.2, 5a.5) si chiedono in «Sali sul palco» (D-024). 5a.7a non esiste più: l'ascoltatore vede solo i DEN pubblici. Le schermate qui sotto restano come riferimento; le nuove sono in design/handoff/013.
+Un'azione chiara per schermata. I due consensi sono due schermate e due controlli. Nessun codice di invito. (Prima del 013: nessuna email.)
 5a.1 · NUMERO
 21:40
 Il tuo numero
