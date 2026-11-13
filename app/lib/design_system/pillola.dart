@@ -36,7 +36,11 @@ class BaPillola extends StatelessWidget {
     this.variante = BaVariantePillola.attiva,
     this.estensione = EdgeInsets.zero,
     this.allarga = true,
-  });
+    this.altezzaMinima = BaControlloTokens.primario,
+  }) : assert(
+          altezzaMinima >= BaControlloTokens.areaMinima,
+          'la pillola non scende mai sotto areaMinima',
+        );
 
   /// Il testo che si vede. Arriva già tradotto: il design system non conosce
   /// l10n.
@@ -57,6 +61,11 @@ class BaPillola extends StatelessWidget {
   /// Riempie la larghezza che il genitore le dà. Con `false` prende quella del
   /// testo (serve solo dove la larghezza è illimitata, come in un `Row`).
   final bool allarga;
+
+  /// Un minimo, non una misura: il contenuto può alzare la pillola, mai
+  /// abbassarla. `primario` per la pillola da sola; le secondarie di una
+  /// coppia o di una barra usano `coppia`.
+  final double altezzaMinima;
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +120,7 @@ class BaPillola extends StatelessWidget {
     // estremità, così la curva non lo taglia.
     return Container(
       constraints: BoxConstraints(
-        minHeight: BaControlloTokens.primario,
+        minHeight: altezzaMinima,
         minWidth: allarga ? double.infinity : 0,
       ),
       padding: const EdgeInsets.symmetric(
