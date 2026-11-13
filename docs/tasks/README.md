@@ -27,8 +27,10 @@ Un file per task, `NNN-nome.md`, al massimo una pagina, nel formato di `_templat
 | 012d | `012d-glifi-token.md` — applicare l'esito del 012c: token dei glifi e geometria corretta | Claude Code | Concluso |
 | 013 | `013-accesso-email.md` — Accesso con email e verifica del numero per parlare | Claude Design | Concluso |
 | 013b | Correzioni al 013: testi del consenso e del nuovo invio, segno «ipotesi» a capo, numero fittizio (consegna in `design/handoff/013b/`) | Claude Design | Concluso |
-| 013c | `013c-token-accesso.md` — applicare i token e i documenti del 013: `BaAccessoTokens` | Claude Code | In corso |
-| 014 | Creare e gestire i DEN | Claude Design | Brief da scrivere (numero provvisorio) |
+| 013c | `013c-token-accesso.md` — applicare i token e i documenti del 013: `BaAccessoTokens` | Claude Code | Concluso |
+| 014 | Creare e gestire i DEN: tipo, nome, descrizione, tema e lingua, invitati, riepilogo, sotto-DEN e «Gestisci» (consegna in `design/handoff/014/`) | Claude Design | Concluso |
+| 014b | Correzioni al 014: pillole con filetto, percorso da ascoltatore, presenza di chi ha creato (consegna in `design/handoff/014/changelog-014b.md`) | Claude Design | Concluso |
+| 014c | `014c-token-creare-den.md` — applicare i token e i documenti del 014: `BaCreazioneTokens` | Claude Code | In corso |
 | 015 | Coda e attesa | Claude Design | Brief da scrivere (numero provvisorio) |
 | 016 | Scoperta | Claude Design | Brief da scrivere (numero provvisorio) |
 | 017 | Creator | Claude Design | Brief da scrivere (numero provvisorio) |
