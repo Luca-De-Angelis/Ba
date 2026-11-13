@@ -276,4 +276,53 @@ void main() {
       expect(casella, closeTo(46.67, 0.01));
     });
   });
+
+  group('creazione (task 014)', () {
+    test('la scelta del tipo: altezza del controllo primario, raggio del riquadro', () {
+      expect(BaCreazioneTokens.sceltaAltezza, BaControlloTokens.primario);
+      expect(BaCreazioneTokens.sceltaRaggio, BaRaggioTokens.riquadro);
+    });
+
+    test('la scelta: bordo 1, bordo spesso 2 quando è scelta, segno come il «!» dell\'errore', () {
+      expect(BaCreazioneTokens.sceltaBordo, 1);
+      expect(BaCreazioneTokens.sceltaBordoScelta, 2);
+      expect(BaCreazioneTokens.sceltaSegnoLato, BaAccessoTokens.erroreSegnoLato);
+      expect(BaCreazioneTokens.sceltaSegnoLato, 22);
+    });
+
+    test('i chip: alti 48, distanti 8, a pillola', () {
+      expect(BaCreazioneTokens.chipAltezza, 48);
+      expect(BaCreazioneTokens.chipGap, 8);
+      expect(BaCreazioneTokens.chipRaggio, BaRaggioTokens.pillola);
+    });
+
+    test('la descrizione sta in 96 dp', () {
+      expect(BaCreazioneTokens.descrizioneAltezza, 96);
+    });
+
+    test('il punto di aggancio: alto 48, raggio del riquadro, bordo 1', () {
+      expect(BaCreazioneTokens.aggancioAltezza, 48);
+      expect(BaCreazioneTokens.aggancioRaggio, BaRaggioTokens.riquadro);
+      expect(BaCreazioneTokens.aggancioBordo, 1);
+    });
+
+    test('l\'interruttore del «quando» spento: 44 × 26 con il pallino da 16', () {
+      expect(BaCreazioneTokens.quandoInterruttoreLarghezza, 44);
+      expect(BaCreazioneTokens.quandoInterruttoreAltezza, 26);
+      expect(BaCreazioneTokens.quandoPallino, 16);
+    });
+
+    test('co-amministratori: uno nel Free, tre nel Pro', () {
+      expect(BaCreazioneTokens.coAmministratoriFree, 1);
+      expect(BaCreazioneTokens.coAmministratoriPro, 3);
+    });
+
+    // Tutto ciò che si tocca sta sopra l'area minima (44 × 44). L'interruttore
+    // del «quando» (26 di altezza) è spento e non si può toccare: non è qui.
+    test('la scelta, il chip e l\'aggancio non scendono sotto areaMinima', () {
+      expect(BaCreazioneTokens.sceltaAltezza, greaterThanOrEqualTo(BaControlloTokens.areaMinima));
+      expect(BaCreazioneTokens.chipAltezza, greaterThanOrEqualTo(BaControlloTokens.areaMinima));
+      expect(BaCreazioneTokens.aggancioAltezza, greaterThanOrEqualTo(BaControlloTokens.areaMinima));
+    });
+  });
 }
