@@ -909,3 +909,42 @@ class BaAccessoTokens {
   static const double foglioAltezzaTelefono = 0.8; // eccezione: lascia visibile il palco
   static const double foglioAltezzaTablet = 0.62; // eccezione
 }
+
+// ------------------------------------------------------------------ creare e gestire i DEN
+
+/// Creare e gestire i DEN (task 014: D01, D02, D03, D04, D08). Nessun colore
+/// nuovo: la scelta e i chip usano azioneChiara e azioneAttivaBordo, gli
+/// errori erroreTesto e erroreFiletto. Lo stato scelto non è mai solo colore:
+/// ha il bordo spesso e il cerchio pieno (scelta) o il segno di spunta (chip).
+class BaCreazioneTokens {
+  BaCreazioneTokens._();
+
+  // scelta del tipo di DEN (privato / pubblico): una riga per tipo
+  static const double sceltaAltezza = _S.sp14; // minima: cresce col testo
+  static const double sceltaRaggio = _S.rounded2xl;
+  static const double sceltaBordo = _S.border1;
+  static const double sceltaBordoScelta = _S.border2;
+  static const double sceltaSegnoLato = BaAccessoTokens.erroreSegnoLato; // eccezione: la stessa del segno «!», sta sull'altezza della riga di testo
+
+  // chip del tema e della lingua: vanno a capo e restano a vista
+  static const double chipAltezza = _S.sp12;
+  static const double chipGap = _S.sp2;
+  static const double chipRaggio = _S.roundedFull;
+
+  // campo della descrizione: tre righe a 16/24 più il respiro
+  static const double descrizioneAltezza = 96; // eccezione: sp24 non esiste
+
+  // punto di aggancio: riga tratteggiata che tiene il posto (invitati, persone)
+  static const double aggancioAltezza = _S.sp12;
+  static const double aggancioRaggio = _S.rounded2xl;
+  static const double aggancioBordo = _S.border1; // tratteggiato
+
+  // campo «quando» spento (D07): l'interruttore c'è già e non si può toccare
+  static const double quandoInterruttoreLarghezza = _S.sp11;
+  static const double quandoInterruttoreAltezza = 26; // eccezione
+  static const double quandoPallino = _S.sp4;
+
+  // co-amministratori (D04): l'interfaccia mostra il limite, mai il livello
+  static const int coAmministratoriFree = 1; // eccezione: regola di prodotto, non stile
+  static const int coAmministratoriPro = 3; // eccezione: regola di prodotto, non stile
+}
