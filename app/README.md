@@ -3,7 +3,7 @@
 Il progetto Flutter c'è (iOS, Android e, solo per la galleria, web). Lo stato oggi:
 
 - **Token**: `lib/design_system/tokens.dart`, la copia unica dei valori di design, a due livelli (D-019).
-- **Componenti** in `lib/design_system/`: `BaTouchable` (task 009), `BaRitratto`, `BaAnello` e `BaPresenza` con `BaDiametro` (task 010 e 010b, stati di base), `BaPalco` (task 011, widget sopra `disponiPalco` in `palco/disposizione.dart`). `BaGlifo` (task 012) e gli stati di `BaPresenza` con glifo: mutata, bloccata, microfono spento e la tacca della parola; i tre glifi stanno nel disco in basso a destra della sagoma, mai al centro. I testi di `BaPalco` gli arrivano dal chiamante: non importa le traduzioni.
+- **Componenti** in `lib/design_system/`: `BaTouchable` (task 009), `BaRitratto`, `BaAnello` e `BaPresenza` con `BaDiametro` (task 010 e 010b, stati di base), `BaPalco` (task 011, widget sopra `disponiPalco` in `palco/disposizione.dart`). `BaGlifo` (task 012) e gli stati di `BaPresenza` con glifo: mutata, bloccata, microfono spento e la tacca della parola; i tre glifi stanno nel disco in basso a destra della sagoma, mai al centro. I testi di `BaPalco` gli arrivano dal chiamante: non importa le traduzioni. I controlli (task 020): `BaPillola` (informativa, attiva, chiara, spenta; altezza minima `primario`, raggio a stadio), `BaAzioniInCoppia` (due pillole spente o una centrata), `BaBarraAzioni` (un posto primario e due secondari; «Altro» dalla quarta azione, che chiama `onAltro`: il foglio arriva con il 021) e `BaPubblico` (campione di tre sagome e contatore, senza animazione). Nessuno importa le traduzioni: i testi arrivano dal chiamante.
 - **Traduzioni**: file ARB in `lib/l10n/`, `l10n.yaml`, `generate: true`. Cinque lingue (IT, EN, FR, ES, DE); per ora c'è solo la chiave di prova `appNome`.
 - **Font**: Instrument Sans e IBM Plex Mono (OFL) in `assets/fonts/`, dichiarati nel `pubspec.yaml`.
 - **Galleria di sviluppo**: vedi sotto.
@@ -13,7 +13,7 @@ Struttura di `lib/`:
 
 ```
 lib/
-├── design_system/   # tokens.dart, BaTouchable, BaPresenza, palco/…
+├── design_system/   # tokens.dart, BaTouchable, BaPresenza, BaPillola, barra delle azioni, palco/…
 ├── galleria/        # pagine di sviluppo (D-030), esenti da l10n
 ├── features/        # access, home, room, settings (vuota)
 ├── l10n/            # file ARB
@@ -46,4 +46,5 @@ La galleria sta in `lib/galleria/`, usa solo i token e i suoi testi sono fissi (
 
 - **BaTouchable**: mostra le aree toccabili, riduci movimento, larghezza 360 o 744.
 - **BaPresenza**: le presenze ai cinque diametri, le 12 tinte e le 5 sagome, con i controlli per parla, ampiezza (0, 0,5, 1), voci insieme (1, 2, 3), linea instabile, persa, scheletro, immagine caricata e fallita, riduci movimento e «Simula voce» (una ampiezza nuova ogni 500 ms). Dal task 012: mutata (con Parla, mutata che parla), bloccata, microfono spento (altri e io), ha la parola e una riga con i tre glifi a 28 e 32, spenti e accesi. Per vedere insieme la voce al massimo e il focus sulla stessa presenza: Parla, Ampiezza 1, poi Tab.
-- **BaPalco**: una stanza finta (intestazione, palco, riga sotto) con persone da 0 a 8, quante parlano (0–3), persa, scheletro, congelato, larghezza 360 o 744, testo di sistema 1,0 o 2,0, riduci movimento e lingua (IT, EN, FR, ES, DE); un indicatore mostra diametro, scatola e «sfora». «Prima persona» le dà uno stato con glifo; «Altezza» fa cedere il palco senza ridimensionare la finestra. Con 1 persona e testo normale: la stanza vuota con una persona a 208 dp.
+- **BaPalco**: una stanza finta (intestazione, palco, pubblico e barra delle azioni veri in basso, dal task 020) con persone da 0 a 8, quante parlano (0–3), persa, scheletro, congelato, larghezza 360 o 744, testo di sistema 1,0 o 2,0, riduci movimento e lingua (IT, EN, FR, ES, DE); un indicatore mostra diametro, scatola e «sfora». «Prima persona» le dà uno stato con glifo; «Altezza» fa cedere il palco senza ridimensionare la finestra. Con 1 persona e testo normale: la stanza vuota con una persona a 208 dp.
+- **Controlli** (task 020): le quattro varianti di `BaPillola` a riposo e inattive, la coppia (due e una), la barra con da 1 a 6 azioni («Altro» dalla quarta), il pubblico con 0, 1, 2, 3 e 14, e i controlli di sempre (testo 1,0 e 2,0, riduci movimento, larghezza 360 e 744). Il premuto si prova toccando, il focus con Tab.

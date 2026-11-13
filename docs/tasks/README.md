@@ -36,6 +36,7 @@ Un file per task, `NNN-nome.md`, al massimo una pagina, nel formato di `_templat
 | 017 | Creator | Claude Design | Brief da scrivere (numero provvisorio) |
 | 018 | Podcast condivisi | Claude Design | Brief da scrivere (numero provvisorio) |
 | 019 | Abbonamento e pubblicità | Claude Design | Brief da scrivere (numero provvisorio) |
-| 020 | Controlli e barra delle azioni | Claude Code | Brief da scrivere (numero provvisorio) |
+| 020 | `020-controlli.md` — Controlli e barra delle azioni: BaPillola, BaAzioniInCoppia, BaBarraAzioni, BaPubblico | Claude Code | In corso |
+| 021 | BaFoglio, scheda della persona e BaMessaggio | Claude Code | Brief da scrivere |
 
 Da qui in avanti fanno fede questi file Markdown, non le versioni in Claude Docs.
