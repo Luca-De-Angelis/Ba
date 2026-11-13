@@ -54,7 +54,7 @@ Le altezze dei controlli in tokens.dart sono **minimi, non misure**: il contenut
 | BaRigaDen          | viva · spenta · su invito · rimossobeta                                                                             | con campione di presenze · con sagoma vuota (spenta) · con anello su chi parla · premuta · a fuoco · **inerte** (rimosso: né premuta né a fuoco)beta                                                                                                           | BaTestoTokens.riga · marcatore · filettoBase |
 | BaRigaImpostazione | interruttore · valore · azione con conseguenza scritta ("Torna ascoltatore") · conseguenza (permesso negato)        | acceso · spento · negato dal sistema (con via d'uscita) · + i tre comuni. **Nessuno stato "deciso dalla stanza"**: un DEN non impone nessuna impostazione. **Nessun interruttore della trascrizione**: il consenso a parlare si ritira con "Torna ascoltatore" | BaTestoTokens.minore · filettoDivisorio      |
 | BaRigaBloccata     | **dato da te** · **ricevuto**beta (un DEN, non una persona). Schermata in alpha: "Persone bloccate", un gruppo solo | bloccata · sblocco in corso · sbloccata (esce dall'elenco) · ricevuto (beta): **nessuna azione**, sagoma vuota al posto della presenza                                                                                                                         | BaPresenza (neutra) · BaGlifo                |
-| BaCampoCodice      | accesso · invito                                                                                                    | vuoto · in scrittura · in verifica · rifiutato (errore) · scaduto                                                                                                                                                                                              | azioneChiara · erroreTesto                   |
+| BaCampoCodice      | accesso (email) · verifica del numero (sali sul palco)                                                              | vuoto · in scrittura · in verifica · rifiutato (errore) · scaduto                                                                                                                                                                                              | azioneChiara · erroreTesto                   |
 
 ## C5  Superfici di sistema
 
@@ -259,8 +259,8 @@ La colonna di destra non è un elenco di cose brutte: è quello che si può **sp
 </tr>
 <tr class="even">
 <td>BaCampoCodice</td>
-<td>vuoto, in scrittura, rifiutato</td>
-<td>gli stati in verifica e scaduto come stati a sé: in alpha un errore solo basta</td>
+<td>vuoto, in scrittura, sbagliato, scaduto, nuovo invio con attesa</td>
+<td>task 013: sbagliato e scaduto sono stati a sé, ciascuno con il segno «!» e una frase; nuovo invio con attesa è inattivo, senza conto alla rovescia. Valori in <span>BaAccessoTokens</span></td>
 </tr>
 <tr class="odd">
 <td>BaCardLive · BaIsola<br />

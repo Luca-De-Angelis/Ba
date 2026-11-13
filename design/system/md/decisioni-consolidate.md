@@ -3,6 +3,12 @@ BA · brief di design · sostituisce il §7
 # Decisioni consolidate sulla rappresentazione, lo stato e il movimento
 Questo documento porta le **decisioni e le motivazioni**. La fonte di verità per i valori è **tokens.dart**: i numeri citati qui sono copie di lettura e, se divergono, vince il file.
 Direzione scelta: impacchettamento adattivo con sagome irregolari. Perimetro alpha, tema scuro. Ogni valore qui è destinato a tokens.dart: dove manca un valore è dichiarato mancante, non lasciato al codice.
+## 5.A  Accesso: si entra per ascoltare, il numero serve per parlare · task 013 · D-031
+
+L'account di base è da **ascoltatore**: email, codice via email, onboarding con l'avviso su voce e testo (D-013), termini e privacy, nome (il contenuto è aperto), elenco dei DEN pubblici. Una sola azione per schermata. L'elenco mostra solo i DEN pubblici e il marcatore fermo «sei ascoltatore», senza invito a cambiare. Numero, SMS e consenso a parlare non si chiedono più all'ingresso: sostituiscono il flusso 5a del task 001. Il codice ha gli stati sbagliato, scaduto e nuovo invio con attesa, ciascuno in una frase e con il segno «!»; l'attesa non ha un conto alla rovescia. La schermata dell'email lascia sotto l'azione il posto per «Continua con…» (A02, dopo l'alpha), senza essere ridisegnata.
+
+**Diventare partecipante** (D-024, A03) si fa dalla stanza, in un foglio con un passo per volta: avviso su voce e testo, numero, codice SMS, consenso a parlare; poi si sale a microfono spento. Ogni passo ha una sola azione e «Non ora», senza conseguenze. Il passo SMS può sparire (verifica tramite operatore) senza ridisegnare gli altri. Chi ha già il numero verificato salta numero e SMS. Tre ipotesi restano da confermare con i soci e portano un segno tratteggiato: nessun DEN privato su invito per l'ascoltatore, il numero resta verificato dopo «Torna ascoltatore» (e per tornare a parlare basta il consenso), il passo del nome è aperto. Schermate: design/handoff/013/.
+
 ## 7.1  Come si rappresenta una persona
 
 La persona è rappresentata dall'**immagine che ha scelto**, usata come riempimento della sagoma assegnata dalla stanza. Le **iniziali su tinta assegnata** sono il ripiego. In alpha il ripiego è il caso dominante: è progettato come principale, e ogni stato deve leggersi identico nelle due varianti. Nessun nome visibile accanto alle presenze.
