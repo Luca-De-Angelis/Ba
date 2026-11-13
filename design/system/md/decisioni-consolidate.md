@@ -17,6 +17,14 @@ L'account di base è da **ascoltatore**: email, codice via email, onboarding con
 
 **Stati.** Limite di DEN attivi raggiunto (una frase, senza numero e senza spinta all'acquisto), creazione non riuscita, nome vuoto, nome già usato: ciascuno con una frase e un segno «!», mai il solo colore. Quattro ipotesi in attesa dei soci portano il segno tratteggiato: chi crea entra sul palco a microfono spento; la fonte degli invitati non è decisa (D-014); la lista dei temi è di prova; il numero di DEN attivi insieme non è deciso. Dedotte e segnate: chi crea il DEN crea i sotto-DEN, cosa succede dopo la rimozione, i nomi unici. Schermate: design/handoff/014/. Token: BaCreazioneTokens.
 
+## 5.C  Coda e attesa · task 015 · C02–C06, B05 · D-007, D-025, D-029, D-034
+
+**Code (C02).** Le code sono un fatto di sfondo: l'app non ne parla finché non serve. Una superficie minima, «Le tue code», dall'«Altro» della barra e solo quando si è in coda: una riga per DEN, con l'uscita «Esci dalla coda». Nessuna posizione, nessun conteggio e nessun numero massimo (non è deciso). «Mettiti in coda» porta l'interruttore «Fammi entrare automaticamente» (C04), spento: spento, la notifica porta alla stanza; acceso, si sale da soli. In entrambi i casi si sale sempre a microfono spento (D-007). Dal telefono bloccato la notifica non ha azioni sul microfono (D-025).
+
+**Sotto-DEN d'attesa (C05).** Mentre si è in coda, un gruppo di chi aspetta, fino a 8, che non è il palco: si sente il DEN e si parla al gruppo. A scelta e non predefinito (ipotesi). Chi non ha questa capacità non vede la riga, né un'etichetta o un invito, e nessun altro vede se ce l'hai. Quando il posto si libera si lascia il gruppo e si sale a microfono spento.
+
+**Posto conservato (C06).** Dopo la linea persa il microfono è spento e resta spento (D-029). Il tempo non promette mai più del reale e non è un conto alla rovescia: sotto i due minuti la banda dice «Il posto resta tuo ancora per un momento» (30 secondi, Free); da due minuti in su, un'ora arrotondata per difetto al minuto («fino alle 21:43», 3 minuti, Pro, ipotesi). La stessa banda regge entrambi i casi. Al ritorno: il posto c'era, si è sul palco a microfono spento; oppure è passato, si è fra il pubblico e la coda è proposta con una pillola con filetto. **Permanenza massima (B05, in revisione):** solo un punto di aggancio, tratteggiato, con un messaggio calmo («fino alle 22:40. Poi puoi rientrare») per chi sta fra il pubblico (ipotesi). Schermate: design/handoff/015/. Token: BaCodaTokens.
+
 ## 7.1  Come si rappresenta una persona
 
 La persona è rappresentata dall'**immagine che ha scelto**, usata come riempimento della sagoma assegnata dalla stanza. Le **iniziali su tinta assegnata** sono il ripiego. In alpha il ripiego è il caso dominante: è progettato come principale, e ogni stato deve leggersi identico nelle due varianti. Nessun nome visibile accanto alle presenze.

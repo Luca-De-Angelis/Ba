@@ -784,6 +784,11 @@ class BaBarraAzioniTokens {
   static const int secondari = 2;
   static const int posti = primari + secondari; // tre posti, sempre
   static const double altroLato = _S.sp12;
+  // «Altro»: tre punti da 4 con 3 di spazio e un filetto a 0,32 (nel 002 era 0,30:
+  // due punti di opacità non si vedono e a32 è la primitiva che c'è già)
+  static const double altroPuntoLato = _S.sp1;
+  static const double altroPuntoGap = 3; // eccezione: fra sp1 (4) e zero non c'è un passo
+  static const Color altroBordo = Color(_P.a32 | _P.pietra100);
   // Il controllo del microfono sta sempre in uno dei tre posti, mai in
   // «Altro»: chi chiama ordina le azioni in modo che Esci, Scendi dal palco e
   // il microfono siano fra le prime tre.
@@ -947,4 +952,49 @@ class BaCreazioneTokens {
   // co-amministratori (D04): l'interfaccia mostra il limite, mai il livello
   static const int coAmministratoriFree = 1; // eccezione: regola di prodotto, non stile
   static const int coAmministratoriPro = 3; // eccezione: regola di prodotto, non stile
+}
+
+// ------------------------------------------------------------------ coda e attesa
+
+/// Coda e attesa (task 015: C02–C06, B05). Nessun colore nuovo: l'interruttore
+/// acceso usa azioneAttivaBordo, la presenza «persa» usa BaPresenzaTokens.persaOpacita.
+/// Il tempo è sempre un fatto fermo, un'ora: nessun valore qui è un conto alla rovescia.
+class BaCodaTokens {
+  BaCodaTokens._();
+
+  // interruttore («Fammi entrare automaticamente», «Aspetta con altri»): stessa forma di quello del «quando»
+  static const double interruttoreLarghezza = BaCreazioneTokens.quandoInterruttoreLarghezza;
+  static const double interruttoreAltezza = BaCreazioneTokens.quandoInterruttoreAltezza;
+  static const double interruttorePallino = _S.sp4;
+  static const double interruttoreBordo = _S.border1;
+  static const double interruttoreBordoAcceso = _S.border2; // acceso: bordo spesso e la parola «Acceso», non solo il colore
+
+  // riga di una coda (le tue code): nome, stato e uscita
+  static const double rigaAltezza = _S.sp14; // minima: cresce col testo
+  static const double uscitaAltezza = _S.sp11; // «Esci dalla coda»: minimo di tocco
+
+  // sotto-DEN d'attesa: un gruppo di chi aspetta, non il palco
+  static const int gruppoMax = 8; // eccezione: regola di prodotto (glossario: sotto-DEN), non stile
+  static const double gruppoPresenzaLato = _S.sp8;
+  static const double gruppoPresenzaGap = _S.sp1_5;
+
+  // banda del posto conservato e della permanenza massima: un fatto fermo, una frase
+  static const double bandaRaggio = BaRaggioTokens.riquadro;
+  static const double bandaBordo = _S.border1; // tratteggiato per B05 (in revisione)
+
+  // durate: regole di prodotto, non stile. Si mostrano come ora («fino alle 21:41»), mai come conto alla rovescia
+  static const Duration postoConservatoFree = Duration(seconds: 30); // eccezione: C06
+  static const Duration postoConservatoPro = Duration(minutes: 3); // eccezione: C06, ipotesi (3 o 5 minuti: si usa 3)
+  static const Duration permanenzaMassima = Duration(minutes: 60); // eccezione: B05, in revisione
+
+  /// Il tempo non promette mai più del reale. Sotto i due minuti non si mostra
+  /// un'ora: la frase dice «ancora per un momento». Da due minuti in su l'ora è
+  /// quella di fine arrotondata per DIFETTO al minuto (persa 21:40:50 + 3 min =
+  /// 21:43:50 → «fino alle 21:43»). La stessa banda regge 30 secondi e 5 minuti.
+  static const Duration sogliaMomento = Duration(minutes: 2); // eccezione: sotto, niente ora
+  static DateTime? oraDelPosto(DateTime persa, Duration durata) {
+    if (durata < sogliaMomento) return null;
+    final DateTime fine = persa.add(durata);
+    return DateTime(fine.year, fine.month, fine.day, fine.hour, fine.minute);
+  }
 }
