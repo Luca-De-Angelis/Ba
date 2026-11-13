@@ -30,13 +30,16 @@ Un file per task, `NNN-nome.md`, al massimo una pagina, nel formato di `_templat
 | 013c | `013c-token-accesso.md` — applicare i token e i documenti del 013: `BaAccessoTokens` | Claude Code | Concluso |
 | 014 | Creare e gestire i DEN: tipo, nome, descrizione, tema e lingua, invitati, riepilogo, sotto-DEN e «Gestisci» (consegna in `design/handoff/014/`) | Claude Design | Concluso |
 | 014b | Correzioni al 014: pillole con filetto, percorso da ascoltatore, presenza di chi ha creato (consegna in `design/handoff/014/changelog-014b.md`) | Claude Design | Concluso |
-| 014c | `014c-token-creare-den.md` — applicare i token e i documenti del 014: `BaCreazioneTokens` | Claude Code | In corso |
-| 015 | Coda e attesa | Claude Design | Brief da scrivere (numero provvisorio) |
+| 014c | `014c-token-creare-den.md` — applicare i token e i documenti del 014: `BaCreazioneTokens` | Claude Code | Concluso |
+| 015 | Coda e attesa: mettiti in coda, «Le tue code», sotto-DEN d'attesa, posto conservato, permanenza massima (consegna in `design/handoff/015/`) | Claude Design | Concluso |
+| 015b | Correzioni al 015 (consegna in `design/handoff/015/changelog-015b.md`) | Claude Design | Concluso |
+| 015c | `015c-token-coda.md` — applicare i token e i documenti del 015: `BaCodaTokens` e i token di «Altro» | Claude Code | In corso |
 | 016 | Scoperta | Claude Design | Brief da scrivere (numero provvisorio) |
 | 017 | Creator | Claude Design | Brief da scrivere (numero provvisorio) |
 | 018 | Podcast condivisi | Claude Design | Brief da scrivere (numero provvisorio) |
 | 019 | Abbonamento e pubblicità | Claude Design | Brief da scrivere (numero provvisorio) |
-| 020 | `020-controlli.md` — Controlli e barra delle azioni: BaPillola, BaAzioniInCoppia, BaBarraAzioni, BaPubblico | Claude Code | In corso |
+| 020 | `020-controlli.md` — Controlli e barra delle azioni: BaPillola, BaAzioniInCoppia, BaBarraAzioni, BaPubblico | Claude Code | Concluso |
+| 020b | Correzioni alla barra delle azioni: pillole della riga alte uguali e ripiego in colonna a testo grande (unito con la PR del 020) | Claude Code | Concluso |
 | 021 | BaFoglio, scheda della persona e BaMessaggio | Claude Code | Brief da scrivere |
 
 Da qui in avanti fanno fede questi file Markdown, non le versioni in Claude Docs.
