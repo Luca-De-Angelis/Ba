@@ -6,8 +6,10 @@
 // Con 1 persona e testo normale si vede la stanza vuota con una persona a 208 dp.
 import 'package:flutter/widgets.dart';
 
+import '../design_system/barra_azioni.dart';
 import '../design_system/palco.dart';
 import '../design_system/palco/disposizione.dart';
+import '../design_system/pubblico.dart';
 import '../design_system/tokens.dart';
 import '../l10n/app_localizations.dart';
 import 'comuni.dart';
@@ -18,12 +20,13 @@ const double _tablet = 744;
 
 /// Le altezze della stanza finta, dalla più alta: per far cedere il palco
 /// senza ridimensionare la finestra. Dati di prova, non misure di design.
-/// Scelte per il caso del testo 2,0 con otto persone: intestazione, indicatore e
-/// riga prendono circa 420 dp (nei test, con il font di prova, più largo di
-/// quello vero), il palco resta con 280, 230, 190 e 150 dp e il diametro scende
-/// per gradi senza mai sfiorare. Sotto i 570 il palco avrebbe meno dei 150 dp che
+/// Scelte per il caso del testo 2,0 con otto persone: intestazione, indicatore,
+/// pubblico e barra delle azioni (task 020) prendono circa 660 dp (nei test, con
+/// il font di prova, più largo di quello vero: con quello vero il palco ha più
+/// spazio), il palco resta con 322, 272, 222 e 172 dp e il diametro scende per
+/// gradi senza mai sfiorare. Sotto gli 830 il palco avrebbe meno dei 150 dp che
 /// servono a otto presenze al minimo e uscirebbe sull'intestazione (`sfora`).
-const List<double> _altezze = [700, 650, 610, 570];
+const List<double> _altezze = [980, 930, 880, 830];
 
 /// I due testi del testo di sistema da provare (C6: oltre 2,0 non si scala).
 const double _testoNormale = 1.0;
@@ -36,6 +39,10 @@ const List<String> _nomi = [
 const List<Locale> _lingue = [
   Locale('it'), Locale('en'), Locale('fr'), Locale('es'), Locale('de'), //
 ];
+
+/// Quante persone ascoltano nella stanza finta: più di tre, quindi il pubblico
+/// mostra il campione e il contatore.
+const int _ascoltano = 12;
 
 /// Quante persone possono parlare insieme nella prova: 0–3.
 const int _parlanoMax = 3;
@@ -299,16 +306,60 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
                 child: _palco(l),
               ),
             ),
+            // In fondo, ancorati: il pubblico e la barra delle azioni veri (task
+            // 020). A testo grande crescono loro e il palco, sopra, cede.
+            BaPubblico(
+              conteggio: _ascoltano,
+              testo: '$_ascoltano in ascolto',
+              tinte: const [0, 1, 2],
+              sagome: const [0, 1, 2],
+            ),
             Padding(
-              padding: EdgeInsets.fromLTRB(margine, 0, margine, BaSpazioTokens.l),
-              child: Text(
-                'Parli a tutti · 12 in ascolto',
-                style: BaTestoTokens.marcatore.copyWith(color: BaColorTokens.testoTerzo),
-              ),
+              padding: EdgeInsets.fromLTRB(margine, BaSpazioTokens.s, margine, BaSpazioTokens.l),
+              child: _barra(),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  /// Le azioni della stanza finta: il microfono (attiva: «Spegni il microfono»
+  /// non è un gesto senza cui l'app non prosegue), «Esci» e «Scendi dal palco»
+  /// fra le prime tre, e una quarta in «Altro».
+  Widget _barra() {
+    return BaBarraAzioni(
+      azioni: [
+        BaAzioneBarra(
+          ruolo: BaRuoloAzione.primaria,
+          testo: 'Microfono',
+          semanticsLabel: 'Spegni il microfono',
+          fissa: true,
+          onTap: () {},
+        ),
+        BaAzioneBarra(
+          ruolo: BaRuoloAzione.secondaria,
+          testo: 'Esci',
+          semanticsLabel: 'Esci',
+          fissa: true,
+          onTap: () {},
+        ),
+        BaAzioneBarra(
+          ruolo: BaRuoloAzione.secondaria,
+          testo: 'Scendi',
+          semanticsLabel: 'Scendi dal palco',
+          fissa: true,
+          onTap: () {},
+        ),
+        BaAzioneBarra(
+          ruolo: BaRuoloAzione.secondaria,
+          testo: 'Invita',
+          semanticsLabel: 'Invita',
+          onTap: () {},
+        ),
+      ],
+      onAltro: () {},
+      semanticsLabelAltro: 'Altro',
     );
   }
 

@@ -11,6 +11,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import '../design_system/tokens.dart';
 import '../l10n/app_localizations.dart';
 import 'comuni.dart';
+import 'galleria_controlli.dart';
 import 'galleria_palco.dart';
 import 'galleria_presenza.dart';
 import 'galleria_touchable.dart';
@@ -41,7 +42,7 @@ class GalleriaApp extends StatelessWidget {
 }
 
 /// Le pagine della galleria, una per componente (o gruppo di componenti).
-enum _Pagina { touchable, presenza, palco }
+enum _Pagina { touchable, presenza, palco, controlli }
 
 class _Galleria extends StatefulWidget {
   const _Galleria();
@@ -83,6 +84,11 @@ class _GalleriaState extends State<_Galleria> {
                     _pagina == _Pagina.palco,
                     () => setState(() => _pagina = _Pagina.palco),
                   ),
+                  galleriaInterruttore(
+                    'Controlli',
+                    _pagina == _Pagina.controlli,
+                    () => setState(() => _pagina = _Pagina.controlli),
+                  ),
                 ],
               ),
             ),
@@ -92,6 +98,7 @@ class _GalleriaState extends State<_Galleria> {
               _Pagina.touchable => const GalleriaTouchable(),
               _Pagina.presenza => const GalleriaPresenza(),
               _Pagina.palco => const GalleriaPalco(),
+              _Pagina.controlli => const GalleriaControlli(),
             },
           ),
         ],
