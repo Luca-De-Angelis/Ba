@@ -17,6 +17,8 @@ Questi termini valgono nell'interfaccia, nei documenti e nei nomi del codice (D-
 | Torna ascoltatore | Ritiro del consenso a parlare (D-003) |
 | Coda | Lista d'attesa per il palco, anche su più DEN insieme |
 | Ingresso automatico | "Fammi entrare automaticamente" quando si libera un posto |
+| Sotto-DEN d'attesa | Nell'interfaccia «Aspetta con altri». Un gruppo di chi aspetta nella stessa coda, fino a 8: sente il gruppo e parla al gruppo, il palco non lo sente; si lascia quando si libera un posto (C05) |
+| Gruppo d'attesa | Il gruppo di chi, nella stessa coda, ha scelto di aspettare insieme |
 | DEN programmato | DEN con data e ora, creato da qualunque utente (D-016) |
 | DEN privato | Si entra solo su invito; ha un amministratore, chi lo ha creato |
 | DEN pubblico | Entra chiunque; non ha amministratore, lo modera l'app (D-011) |
