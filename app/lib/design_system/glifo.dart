@@ -10,6 +10,14 @@
 // eccezione il cerchio barrato, che nel prototipo (Stati critici 002) ha la
 // barra del solo tratto, senza alone: l'anello non si interrompe.
 //
+// Tratti chiari SENZA MACCHIE (task 021b): `glifoTratto` è semitrasparente, e due
+// tratti semitrasparenti che si incrociano si sommano (1 − (1 − .62)² ≈ .86) e
+// lasciano un punto più chiaro. Per questo i tratti si disegnano OPACHI dentro un
+// livello (`saveLayer`) e la trasparenza di `tratto` si applica al livello
+// intero: ogni punto ha lo stesso colore. Il cerchio barrato è un livello solo
+// (anello e barra); microfono e altoparlante ne hanno due, il corpo e la barra,
+// con in mezzo il casing scuro della barra, che resta com'era.
+//
 // Geometria: tutte le proporzioni sono in `BaGlifoTokens` (consegna 012c: il
 // microfono segue il prototipo del task 002, l'altoparlante e il cerchio sono
 // confermati), in frazione del LATO del riquadro del glifo. Qui non ci sono
@@ -87,32 +95,42 @@ class _PittoreGlifo extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final l = size.width;
+    // I tratti chiari sono OPACHI (stesso colore, alfa 255): la trasparenza di
+    // `tratto` la porta il livello che li contiene, una volta sola.
+    final opaco = tratto.withValues(alpha: 1);
     final linea = Paint()
-      ..color = tratto
+      ..color = opaco
       ..style = PaintingStyle.stroke
       ..strokeWidth = BaGlifoTokens.tratto;
-    final pieno = Paint()..color = tratto;
+    final pieno = Paint()..color = opaco;
+    final livello = Paint()..color = Color.fromRGBO(0, 0, 0, tratto.a);
+    final limiti = (Offset.zero & size).inflate(BaGlifoTokens.tratto);
 
-    // Lunghezza della barra e alone: microfono e altoparlante hanno la barra
-    // lunga `barraLato` con l'alone; il cerchio ha la barra lunga quanto il suo
-    // anello, che finisce sull'anello, e nessun alone (prototipo).
-    final double barra;
-    final bool alone;
     switch (tipo) {
       case BaTipoGlifo.microfono:
-        _microfono(canvas, l, linea);
-        barra = BaGlifoTokens.barraLato;
-        alone = true;
       case BaTipoGlifo.altoparlante:
-        _altoparlante(canvas, l, pieno, linea);
-        barra = BaGlifoTokens.barraLato;
-        alone = true;
+        // Livello 1: il corpo. Poi il casing scuro sotto la barra, come prima.
+        // Livello 2: la barra chiara, lunga `barraLato`.
+        canvas.saveLayer(limiti, livello);
+        if (tipo == BaTipoGlifo.microfono) {
+          _microfono(canvas, l, linea);
+        } else {
+          _altoparlante(canvas, l, pieno, linea);
+        }
+        canvas.restore();
+        _casing(canvas, l, BaGlifoTokens.barraLato * l);
+        canvas.saveLayer(limiti, livello);
+        _barra(canvas, l, BaGlifoTokens.barraLato * l, linea);
+        canvas.restore();
       case BaTipoGlifo.bloccata:
+        // Un livello solo, anello e barra: è qui che si incrociano. La barra è
+        // lunga quanto l'anello, che finisce sull'anello, e non ha casing
+        // (prototipo): l'anello non si interrompe.
+        canvas.saveLayer(limiti, livello);
         _cerchio(canvas, l, linea);
-        barra = BaGlifoTokens.cerchioLato;
-        alone = false;
+        _barra(canvas, l, BaGlifoTokens.cerchioLato * l, linea);
+        canvas.restore();
     }
-    _barra(canvas, l, barra * l, alone);
   }
 
   Rect _scala(double x, double y, double larghezza, double altezza, double l) =>
@@ -192,33 +210,35 @@ class _PittoreGlifo extends CustomPainter {
     canvas.drawCircle(r.center, r.width / 2, linea);
   }
 
-  /// La barra diagonale, lunga [lunghezza] e centrata, a `barraGradi`. Con
-  /// [alone] il tratto chiaro sta sopra un alone scuro di `barraAlone`. Estremi
-  /// a capo piatto, come nel prototipo.
-  void _barra(Canvas canvas, double l, double lunghezza, bool alone) {
+  /// Mette il canvas sulla diagonale della barra: origine al centro, ruotato di
+  /// `barraGradi`. Chi lo usa lo chiude con `restore`.
+  void _sullaBarra(Canvas canvas, double l) {
     canvas.save();
     canvas.translate(l / 2, l / 2);
     canvas.rotate(_rad(BaGlifoTokens.barraGradi));
-    final da = Offset(-lunghezza / 2, 0);
-    final a = Offset(lunghezza / 2, 0);
-    if (alone) {
-      canvas.drawLine(
-        da,
-        a,
-        Paint()
-          ..color = fondo
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = BaGlifoTokens.barraAlone,
-      );
-    }
+  }
+
+  /// L'alone scuro sotto la barra chiara, largo `barraAlone`: il segno non
+  /// dipende da ciò che c'è sotto. Colore `fondo`, fuori dai livelli dei tratti
+  /// chiari; estremi a capo piatto, come nel prototipo.
+  void _casing(Canvas canvas, double l, double lunghezza) {
+    _sullaBarra(canvas, l);
     canvas.drawLine(
-      da,
-      a,
+      Offset(-lunghezza / 2, 0),
+      Offset(lunghezza / 2, 0),
       Paint()
-        ..color = tratto
+        ..color = fondo
         ..style = PaintingStyle.stroke
-        ..strokeWidth = BaGlifoTokens.tratto,
+        ..strokeWidth = BaGlifoTokens.barraAlone,
     );
+    canvas.restore();
+  }
+
+  /// Il tratto chiaro della barra, lungo [lunghezza] e centrato, a `barraGradi`.
+  /// Opaco: la trasparenza la porta il livello. Estremi a capo piatto.
+  void _barra(Canvas canvas, double l, double lunghezza, Paint linea) {
+    _sullaBarra(canvas, l);
+    canvas.drawLine(Offset(-lunghezza / 2, 0), Offset(lunghezza / 2, 0), linea);
     canvas.restore();
   }
 

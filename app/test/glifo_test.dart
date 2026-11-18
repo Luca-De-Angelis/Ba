@@ -12,6 +12,10 @@ Widget _app(Widget child, {bool riduciMovimento = false}) => Directionality(
       ),
     );
 
+/// I tratti chiari si disegnano opachi dentro un livello (task 021b): la
+/// trasparenza di glifoTratto la porta il livello, non il singolo tratto.
+final Color _trattoOpaco = BaColorTokens.glifoTratto.withValues(alpha: 1);
+
 Finder _opacita() => find.descendant(of: find.byType(BaGlifo), matching: find.byType(FadeTransition));
 
 double _valore(WidgetTester tester) => tester.widget<FadeTransition>(_opacita()).opacity.value;
@@ -100,12 +104,12 @@ void main() {
       expect(
         pittura(),
         paints
-          ..rrect(color: BaColorTokens.glifoTratto, strokeWidth: BaGlifoTokens.tratto)
-          ..path(color: BaColorTokens.glifoTratto, strokeWidth: BaGlifoTokens.tratto)
-          ..line(color: BaColorTokens.glifoTratto, strokeWidth: BaGlifoTokens.tratto)
+          ..rrect(color: _trattoOpaco, strokeWidth: BaGlifoTokens.tratto)
+          ..path(color: _trattoOpaco, strokeWidth: BaGlifoTokens.tratto)
+          ..line(color: _trattoOpaco, strokeWidth: BaGlifoTokens.tratto)
           // alone scuro sotto, tratto chiaro sopra
           ..line(color: BaColorTokens.voceKeyline, strokeWidth: BaGlifoTokens.barraAlone)
-          ..line(color: BaColorTokens.glifoTratto, strokeWidth: BaGlifoTokens.tratto),
+          ..line(color: _trattoOpaco, strokeWidth: BaGlifoTokens.tratto),
       );
     });
 
@@ -115,12 +119,12 @@ void main() {
       expect(
         pittura(),
         paints
-          ..rect(color: BaColorTokens.glifoTratto, style: PaintingStyle.fill) // corpo
-          ..path(color: BaColorTokens.glifoTratto, style: PaintingStyle.fill) // cono
-          ..arc(color: BaColorTokens.glifoTratto, strokeWidth: BaGlifoTokens.tratto)
-          ..arc(color: BaColorTokens.glifoTratto, strokeWidth: BaGlifoTokens.tratto)
+          ..rect(color: _trattoOpaco, style: PaintingStyle.fill) // corpo
+          ..path(color: _trattoOpaco, style: PaintingStyle.fill) // cono
+          ..arc(color: _trattoOpaco, strokeWidth: BaGlifoTokens.tratto)
+          ..arc(color: _trattoOpaco, strokeWidth: BaGlifoTokens.tratto)
           ..line(color: BaColorTokens.voceKeyline, strokeWidth: BaGlifoTokens.barraAlone)
-          ..line(color: BaColorTokens.glifoTratto, strokeWidth: BaGlifoTokens.tratto),
+          ..line(color: _trattoOpaco, strokeWidth: BaGlifoTokens.tratto),
       );
     });
 
@@ -129,8 +133,8 @@ void main() {
       expect(
         pittura(),
         paints
-          ..circle(color: BaColorTokens.glifoTratto, strokeWidth: BaGlifoTokens.tratto)
-          ..line(color: BaColorTokens.glifoTratto, strokeWidth: BaGlifoTokens.tratto),
+          ..circle(color: _trattoOpaco, strokeWidth: BaGlifoTokens.tratto)
+          ..line(color: _trattoOpaco, strokeWidth: BaGlifoTokens.tratto),
       );
       expect(
         pittura(),
@@ -259,7 +263,7 @@ void main() {
             ..line(
               p1: const Offset(-lunga / 2, 0),
               p2: const Offset(lunga / 2, 0),
-              color: BaColorTokens.glifoTratto,
+              color: _trattoOpaco,
               strokeWidth: BaGlifoTokens.tratto,
             ),
           reason: '$tipo',
