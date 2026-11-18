@@ -105,4 +105,22 @@ void main() {
     expect(find.byType(Semantics).evaluate().where((e) => (e.widget as Semantics).properties.label != null), isEmpty);
     semantica.dispose();
   });
+
+  testWidgets('.sopra disegna solo il lato in alto, tratteggiato', (tester) async {
+    await tester.pumpWidget(Directionality(
+      textDirection: TextDirection.ltr,
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: RepaintBoundary(
+          key: _chiave,
+          child: const BaTratteggio.sopra(child: SizedBox(width: _larghezza, height: _altezza)),
+        ),
+      ),
+    ));
+    final alfa = await _alfa(tester);
+    final w = _larghezza.toInt();
+    expect(_salti(alfa, 0, da: 4, a: w - 4), greaterThan(8), reason: 'in alto alterna');
+    // Né i lati né il fondo: tutto il resto è vuoto.
+    expect(alfa.sublist(w).every((a) => a == 0), isTrue, reason: 'sotto la prima riga non c\'è niente');
+  });
 }

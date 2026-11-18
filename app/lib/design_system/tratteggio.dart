@@ -18,13 +18,24 @@ import 'package:flutter/widgets.dart';
 import 'tokens.dart';
 
 class BaTratteggio extends StatelessWidget {
+  /// Il contorno intero, con gli angoli arrotondati.
   const BaTratteggio({
     super.key,
     this.raggio = BaRaggioTokens.riquadro,
     this.spessore = BaCreazioneTokens.aggancioBordo,
     this.colore = BaColorTokens.ascoltoGruppoBordo,
     this.child,
-  });
+  }) : soloSopra = false;
+
+  /// Solo il filetto in alto, tratteggiato: una riga che tiene il posto senza
+  /// scatola (il «Quando» spento).
+  const BaTratteggio.sopra({
+    super.key,
+    this.spessore = BaCreazioneTokens.aggancioBordo,
+    this.colore = BaColorTokens.ascoltoGruppoBordo,
+    this.child,
+  })  : raggio = 0,
+        soloSopra = true;
 
   /// Raggio degli angoli. `BaRaggioTokens.pillola` dà un contorno a stadio.
   final double raggio;
@@ -33,6 +44,9 @@ class BaTratteggio extends StatelessWidget {
   final double spessore;
 
   final Color colore;
+
+  /// Disegna solo il lato in alto.
+  final bool soloSopra;
 
   /// Ciò che sta dentro il bordo. Il bordo si disegna sopra, ai margini.
   final Widget? child;
@@ -44,26 +58,47 @@ class BaTratteggio extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      foregroundPainter: _PittoreTratteggio(raggio: raggio, spessore: spessore, colore: colore),
+      foregroundPainter: _PittoreTratteggio(
+        raggio: raggio,
+        spessore: spessore,
+        colore: colore,
+        soloSopra: soloSopra,
+      ),
       child: child,
     );
   }
 }
 
 class _PittoreTratteggio extends CustomPainter {
-  const _PittoreTratteggio({required this.raggio, required this.spessore, required this.colore});
+  const _PittoreTratteggio({
+    required this.raggio,
+    required this.spessore,
+    required this.colore,
+    required this.soloSopra,
+  });
 
   final double raggio;
   final double spessore;
   final Color colore;
+  final bool soloSopra;
 
   @override
   void paint(Canvas canvas, Size size) {
     // Il tratto sta dentro il riquadro, come un bordo CSS: a metà spessore.
     final rettangolo = (Offset.zero & size).deflate(spessore / 2);
-    if (rettangolo.isEmpty) return;
-    final contorno = Path()
-      ..addRRect(RRect.fromRectAndRadius(rettangolo, Radius.circular(raggio)));
+    if (soloSopra) {
+      if (size.width <= 0) return;
+    } else if (rettangolo.isEmpty) {
+      return;
+    }
+    final contorno = Path();
+    if (soloSopra) {
+      contorno
+        ..moveTo(0, spessore / 2)
+        ..lineTo(size.width, spessore / 2);
+    } else {
+      contorno.addRRect(RRect.fromRectAndRadius(rettangolo, Radius.circular(raggio)));
+    }
 
     final tratteggiato = Path();
     for (final metrica in contorno.computeMetrics()) {
@@ -89,5 +124,8 @@ class _PittoreTratteggio extends CustomPainter {
 
   @override
   bool shouldRepaint(_PittoreTratteggio vecchio) =>
-      vecchio.raggio != raggio || vecchio.spessore != spessore || vecchio.colore != colore;
+      vecchio.raggio != raggio ||
+      vecchio.spessore != spessore ||
+      vecchio.colore != colore ||
+      vecchio.soloSopra != soloSopra;
 }
