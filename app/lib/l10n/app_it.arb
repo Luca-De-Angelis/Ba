@@ -39,7 +39,7 @@
       }
     }
   },
-  "presenzaBloccata": "{nome}, bloccata",
+  "presenzaBloccata": "{nome}, persona bloccata",
   "@presenzaBloccata": {
     "description": "Etichetta di una persona bloccata, per lo screen reader.",
     "placeholders": {

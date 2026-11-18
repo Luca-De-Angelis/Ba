@@ -6,7 +6,7 @@
   "palcoEtichetta": "{n, plural, =0{Scène, personne} =1{Scène, 1 personne} other{Scène, {n} personnes}}",
   "presenzaParla": "{nome}, parle",
   "presenzaMutata": "{nome}, voix coupée par toi",
-  "presenzaBloccata": "{nome}, bloquée",
+  "presenzaBloccata": "{nome}, personne bloquée",
   "presenzaMicSpento": "{nome}, micro coupé",
   "presenzaHaLaParola": "{nome}, a la parole"
 }
