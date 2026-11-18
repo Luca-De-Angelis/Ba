@@ -27,7 +27,7 @@ Provati il 18 novembre 2026 su Windows 11, con Flutter 3.47.9 (la versione fissa
 | `flutter analyze` | l'analisi statica, la stessa della CI | sì: nessun avviso |
 | `flutter test` | tutti i test, la stessa cosa che fa la CI. Non ci sono test golden (immagini di riferimento) | sì: tutti verdi |
 | `flutter run -d chrome -t lib/galleria/main_galleria.dart` | apre la **galleria** in Chrome | sì: compila, apre Chrome, avvia l'applicazione («Starting application from main method») e mostra i comandi interattivi (`r` hot reload, `R` hot restart, `q` esci). L'aspetto delle pagine non è verificabile da un comando: va guardato |
-| `flutter build web -t lib/galleria/main_galleria.dart` | compila la galleria per il web senza aprirla | da verificare (vedi la nota in fondo) |
+| `flutter build web -t lib/galleria/main_galleria.dart` | compila la galleria per il web senza aprirla; scrive in `app/build/web` (cartella ignorata da git) | sì: compila in circa 110 secondi. Stampa un avviso sui font delle icone Material e Cupertino, che non ci sono (`uses-material-design: false` in `pubspec.yaml`): l'avviso non è un errore e la build riesce |
 
 Note:
 
