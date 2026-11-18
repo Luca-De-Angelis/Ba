@@ -497,6 +497,7 @@ void main() {
     await tester.pumpWidget(const GalleriaApp());
     await tester.pump();
     await _tocca(tester, 'BaPalco');
+    await tester.pumpAndSettle(); // la riga dell'indicatore compare al secondo frame
     bool dietro() => tester.widget<BaPalco>(find.byType(BaPalco)).dietro;
     double opacita() => tester
         .widget<Opacity>(find.descendant(
