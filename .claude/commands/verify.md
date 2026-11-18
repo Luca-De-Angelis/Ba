@@ -7,4 +7,5 @@ Verifica il task $ARGUMENTS prima della pull request. Esegui i passi in ordine e
 5. Controlla che le stringhe nuove siano in `app/lib/l10n/` in tutte e cinque le lingue.
 6. Rileggi l'acceptance check in `docs/tasks/$ARGUMENTS-*.md` e segna, per ogni punto, verificato / non verificato / non verificabile, con il motivo.
 7. Scrivi `docs/reports/$ARGUMENTS.md` seguendo `docs/reports/_template.md`, massimo 30 righe.
-8. Se hai cambiato `tokens.dart` o toccato una decisione, dillo in cima al report.
+8. Controlla che il report contenga la riga «Impatto sull'handoff» (la sezione `## Impatto sull'handoff` del template) e che non sia vuota: che cosa cambia in `docs/handoff/` (componenti, schermate, regole, ipotesi, produzione). «Nessuno» è una risposta valida; una sezione mancante o vuota no, e va completata prima della pull request.
+9. Se hai cambiato `tokens.dart` o toccato una decisione, dillo in cima al report.

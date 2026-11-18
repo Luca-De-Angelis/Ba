@@ -26,6 +26,8 @@ BA è un social vocale basato sulla presenza. Le persone stanno nei DEN: un palc
 - **Stati critici.** Microfono acceso o spento, chi ti sente, parola ricevuta: mai affidati solo alla vista o solo al colore.
 - **Dati personali.** Nessun audio con voci vere nella repo: i test usano file sintetici. Chiavi e credenziali solo in `.env`, mai committate.
 - **Decisioni.** Se il task chiede di cambiare qualcosa che è in `docs/DECISIONS.md`, fermati e chiedi.
+- **Handoff.** `docs/handoff/` è la porta d'ingresso per il team di sviluppo: va aggiornata quando si aggiunge un componente (una riga in `docs/handoff/componenti.md`; il test `app/test/documentazione_test.dart` fallisce se manca).
+- **Impatto sull'handoff.** Ogni report di task contiene una riga «Impatto sull'handoff»: che cosa cambia in componenti, schermate, regole, ipotesi o produzione (`docs/handoff/`); «nessuno» se non cambia niente. L'aggiornamento completo di `docs/handoff/` è un task finale (026), da fare prima della consegna, dopo le risposte degli stakeholder e dopo i task 022–024.
 
 ## Come si lavora
 
