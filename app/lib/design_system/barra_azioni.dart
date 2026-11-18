@@ -245,15 +245,13 @@ class _Altro extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Il prototipo ha punti da 4 con 3 di spazio e un filetto a .30: nessuno
-    // dei due ha un token. Uso xxs (4) per punto e spazio e filettoMarcato,
-    // e lo segnalo nel report.
+    // «Altro»: tre punti e un filetto, tutti da BaBarraAzioniTokens (015c).
     Widget punto() => const DecoratedBox(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: BaColorTokens.testoPrimo,
           ),
-          child: SizedBox.square(dimension: BaSpazioTokens.xxs),
+          child: SizedBox.square(dimension: BaBarraAzioniTokens.altroPuntoLato),
         );
     return BaTouchable(
       key: BaBarraAzioni.chiaveAltro,
@@ -266,15 +264,15 @@ class _Altro extends StatelessWidget {
         height: BaBarraAzioniTokens.altroLato,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          border: Border.all(color: BaColorTokens.filettoMarcato),
+          border: Border.all(color: BaBarraAzioniTokens.altroBordo),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             punto(),
-            const SizedBox(width: BaSpazioTokens.xxs),
+            const SizedBox(width: BaBarraAzioniTokens.altroPuntoGap),
             punto(),
-            const SizedBox(width: BaSpazioTokens.xxs),
+            const SizedBox(width: BaBarraAzioniTokens.altroPuntoGap),
             punto(),
           ],
         ),

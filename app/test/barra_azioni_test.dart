@@ -325,4 +325,43 @@ void main() {
       expect(a.top, b.top);
     });
   });
+
+  group('«Altro» con i token di BaBarraAzioniTokens (021b)', () {
+    Finder punti() => find.descendant(
+          of: find.byKey(BaBarraAzioni.chiaveAltro),
+          matching: find.byWidgetPredicate((w) =>
+              w is DecoratedBox &&
+              w.decoration is BoxDecoration &&
+              (w.decoration as BoxDecoration).color == BaColorTokens.testoPrimo),
+        );
+
+    testWidgets('tre punti da altroPuntoLato, a distanza altroPuntoGap', (tester) async {
+      await tester.pumpWidget(_app(_barra(4)));
+      expect(punti(), findsNWidgets(3));
+      expect(BaBarraAzioniTokens.altroPuntoLato, 4);
+      expect(BaBarraAzioniTokens.altroPuntoGap, 3);
+      final r = [for (var i = 0; i < 3; i++) tester.getRect(punti().at(i))];
+      for (final p in r) {
+        expect(p.size, const Size.square(BaBarraAzioniTokens.altroPuntoLato));
+      }
+      expect(r[1].left - r[0].right, BaBarraAzioniTokens.altroPuntoGap);
+      expect(r[2].left - r[1].right, BaBarraAzioniTokens.altroPuntoGap);
+      // I tre punti stanno al centro del cerchio.
+      final altro = tester.getRect(find.byKey(BaBarraAzioni.chiaveAltro));
+      expect((r.first.left + r.last.right) / 2, closeTo(altro.center.dx, 0.01));
+    });
+
+    testWidgets('il filetto è altroBordo (a32), non filettoMarcato', (tester) async {
+      await tester.pumpWidget(_app(_barra(4)));
+      final cerchio = tester.widget<Container>(find.descendant(
+        of: find.byKey(BaBarraAzioni.chiaveAltro),
+        matching: find.byWidgetPredicate((w) =>
+            w is Container && w.decoration is BoxDecoration && w.constraints?.maxWidth == BaBarraAzioniTokens.altroLato),
+      ));
+      final bordo = (cerchio.decoration! as BoxDecoration).border! as Border;
+      expect(bordo.top.color, BaBarraAzioniTokens.altroBordo);
+      expect(bordo.top.color, isNot(BaColorTokens.filettoMarcato));
+      expect(BaBarraAzioniTokens.altroBordo.a, closeTo(0.32, 0.005));
+    });
+  });
 }
