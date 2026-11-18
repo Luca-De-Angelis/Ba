@@ -7,12 +7,16 @@
 import 'package:flutter/widgets.dart';
 
 import '../design_system/barra_azioni.dart';
+import '../design_system/foglio.dart';
 import '../design_system/palco.dart';
 import '../design_system/palco/disposizione.dart';
+import '../design_system/pillola.dart';
 import '../design_system/pubblico.dart';
+import '../design_system/scheda_persona.dart';
 import '../design_system/tokens.dart';
 import '../l10n/app_localizations.dart';
 import 'comuni.dart';
+import 'galleria_navigator.dart';
 
 /// I due dispositivi di riferimento (D-022, D-027).
 const double _telefono = 360;
@@ -39,6 +43,9 @@ const List<String> _nomi = [
 const List<Locale> _lingue = [
   Locale('it'), Locale('en'), Locale('fr'), Locale('es'), Locale('de'), //
 ];
+
+/// Le azioni oltre la terza della barra: finiscono in «Altro». Testi neutri.
+const List<String> _azioniInAltro = ['Azione 4', 'Azione 5'];
 
 /// Quante persone ascoltano nella stanza finta: più di tre, quindi il pubblico
 /// mostra il campione e il contatore.
@@ -204,12 +211,12 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
   /// La prima persona porta lo stato scelto con «Prima persona»; le etichette si
   /// compongono con una sola chiave per stato (la combinazione la compone chi
   /// costruisce la riga di palco).
-  List<BaPersonaPalco> _gente(AppLocalizations l) => [
+  List<BaPersonaPalco> _gente(AppLocalizations l, BuildContext contesto) => [
         for (var i = 0; i < _persone; i++)
-          _persona(l, i),
+          _persona(l, contesto, i),
       ];
 
-  BaPersonaPalco _persona(AppLocalizations l, int i) {
+  BaPersonaPalco _persona(AppLocalizations l, BuildContext contesto, int i) {
     final nome = _nomi[i];
     final primo = i == 0 ? _primo : 0;
     final etichetta = switch (primo) {
@@ -234,7 +241,7 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
       microfonoSpento: primo == 4 || primo == 5,
       io: primo == 5,
       haLaParola: primo == 6,
-      onTap: () {},
+      onTap: () => _apriScheda(contesto, i),
     );
   }
 
@@ -264,7 +271,11 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
           textScaler: TextScaler.linear(_testo),
           disableAnimations: _riduciMovimento,
         ),
-        child: Column(
+        // La stanza ha il suo Navigator: i fogli (la scheda, «Altro») coprono
+        // la stanza e leggono gli stessi override di larghezza e testo.
+        child: GalleriaNavigator(
+          child: Builder(
+            builder: (contesto) => Column(
           children: [
             Padding(
               padding: EdgeInsets.fromLTRB(margine, BaSpazioTokens.l, margine, 0),
@@ -303,7 +314,7 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
             Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: margine),
-                child: _palco(l),
+                child: _palco(l, contesto),
               ),
             ),
             // In fondo, ancorati: il pubblico e la barra delle azioni veri (task
@@ -316,18 +327,103 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(margine, BaSpazioTokens.s, margine, BaSpazioTokens.l),
-              child: _barra(),
+              child: _barra(contesto),
             ),
           ],
+            ),
+          ),
         ),
+      ),
+    );
+  }
+
+  // ----------------------------------------------------------------- fogli
+
+  /// Gli stati della persona, in parole fisse (la galleria è esente da l10n).
+  String _statoDi(int i) {
+    final primo = i == 0 ? _primo : 0;
+    return switch (primo) {
+      1 || 2 => 'Voce mutata',
+      3 => 'Bloccata',
+      4 || 5 => 'Microfono spento',
+      6 => 'Ha la parola',
+      _ => i < _parlano ? 'Parla' : 'Sul palco',
+    };
+  }
+
+  /// Il tocco su una presenza: la scheda della persona, con le tre fisse e,
+  /// sotto, due azioni nuove di prova (testi neutri: il punto di aggancio).
+  void _apriScheda(BuildContext contesto, int i) {
+    final primo = i == 0 ? _primo : 0;
+    final parla = i < _parlano || primo == 2;
+    showBaFoglio<void>(
+      contesto,
+      etichettaVelo: 'Chiudi',
+      builder: (foglio) => BaFoglio.scheda(
+        semanticsLabel: _nomi[i],
+        corpo: BaSchedaPersona(
+          nome: _nomi[i],
+          stato: _statoDi(i),
+          parla: parla,
+          mutaTesto: 'Muta questa voce',
+          mutaNonDisponibile: 'Si può mutare solo mentre parla',
+          bloccaTesto: 'Blocca',
+          segnalaTesto: 'Segnala',
+          onMuta: () => Navigator.of(foglio).pop(),
+          onBlocca: () => Navigator.of(foglio).pop(),
+          onSegnala: () => Navigator.of(foglio).pop(),
+          nuove: [
+            BaAzioneScheda(
+              titolo: 'Azione nuova 1',
+              spiegazione: 'Una conseguenza, scritta sotto',
+              onTap: () => Navigator.of(foglio).pop(),
+            ),
+            BaAzioneScheda(titolo: 'Azione nuova 2', onTap: () => Navigator.of(foglio).pop()),
+          ],
+        ),
+        chiudi: BaAzioneFoglio(
+          testo: 'Chiudi',
+          semanticsLabel: 'Chiudi',
+          onTap: () => Navigator.of(foglio).pop(),
+        ),
+      ),
+    );
+  }
+
+  /// «Altro»: le azioni oltre la terza, come righe.
+  void _apriAltro(BuildContext contesto) {
+    showBaFoglio<void>(
+      contesto,
+      etichettaVelo: 'Chiudi',
+      builder: (foglio) => BaFoglio(
+        semanticsLabel: 'Altro',
+        corpo: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: BaSpazioTokens.m),
+              child: Text('Altro', style: BaTestoTokens.foglio.copyWith(color: BaColorTokens.testoPrimo)),
+            ),
+            for (final t in _azioniInAltro)
+              BaRigaAzione(titolo: t, onTap: () => Navigator.of(foglio).pop()),
+          ],
+        ),
+        azioni: [
+          BaPillola(
+            testo: 'Chiudi',
+            semanticsLabel: 'Chiudi',
+            variante: BaVariantePillola.spenta,
+            onTap: () => Navigator.of(foglio).pop(),
+          ),
+        ],
       ),
     );
   }
 
   /// Le azioni della stanza finta: il microfono (attiva: «Spegni il microfono»
   /// non è un gesto senza cui l'app non prosegue), «Esci» e «Scendi dal palco»
-  /// fra le prime tre, e una quarta in «Altro».
-  Widget _barra() {
+  /// fra le prime tre, e due azioni in «Altro».
+  Widget _barra(BuildContext contesto) {
     return BaBarraAzioni(
       azioni: [
         BaAzioneBarra(
@@ -353,14 +449,17 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
           fissa: true,
           onTap: () {},
         ),
-        BaAzioneBarra(
-          ruolo: BaRuoloAzione.secondaria,
-          testo: 'Invita',
-          semanticsLabel: 'Invita',
-          onTap: () {},
-        ),
+        // Dalla quarta azione in poi sta in «Altro»: testi neutri, nessuna
+        // funzione suggerita.
+        for (final t in _azioniInAltro)
+          BaAzioneBarra(
+            ruolo: BaRuoloAzione.secondaria,
+            testo: t,
+            semanticsLabel: t,
+            onTap: () {},
+          ),
       ],
-      onAltro: () {},
+      onAltro: () => _apriAltro(contesto),
       semanticsLabelAltro: 'Altro',
     );
   }
@@ -378,7 +477,7 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
     );
   }
 
-  Widget _palco(AppLocalizations l) {
+  Widget _palco(AppLocalizations l, BuildContext contesto) {
     return LayoutBuilder(
       builder: (context, vincoli) {
         final scatola = vincoli.biggest;
@@ -396,7 +495,7 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
           });
         }
         return BaPalco(
-          persone: _gente(l),
+          persone: _gente(l, contesto),
           larghezzaSchermo: _larghezza,
           stato: _stato,
           semanticsLabel: l.palcoEtichetta(n),

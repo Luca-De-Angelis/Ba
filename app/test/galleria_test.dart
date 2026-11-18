@@ -2,6 +2,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:ba/design_system/azioni_in_coppia.dart';
+import 'package:ba/design_system/foglio.dart';
+import 'package:ba/design_system/messaggio.dart';
+import 'package:ba/design_system/scheda_persona.dart';
 import 'package:ba/design_system/barra_azioni.dart';
 import 'package:ba/design_system/glifo.dart';
 import 'package:ba/design_system/palco.dart';
@@ -53,6 +56,15 @@ Rect _stanza(WidgetTester tester) => tester.getRect(find
           (w.decoration as BoxDecoration).border != null),
     )
     .first);
+
+
+/// Una vista abbastanza alta da contenere la stanza finta intera (fino a 1060 dp):
+/// i tocchi sul velo e sulle azioni dei fogli non cadono fuori dallo schermo.
+void _vistaAlta(WidgetTester tester) {
+  tester.view.physicalSize = const Size(900, 1800);
+  tester.view.devicePixelRatio = 1;
+  addTearDown(tester.view.reset);
+}
 
 void main() {
   testWidgets('la galleria di BaTouchable si costruisce a 360 e a 744, con le aree e senza movimento',
@@ -346,6 +358,136 @@ void main() {
       await _tocca(tester, c);
       await tester.pump(const Duration(milliseconds: 100));
     }
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('«Altro» apre il foglio con le azioni dalla quarta, dentro la stanza', (tester) async {
+    _vistaAlta(tester);
+    await tester.pumpWidget(const GalleriaApp());
+    await tester.pump();
+    await _tocca(tester, 'BaPalco');
+    expect(find.text('Azione 4'), findsNothing, reason: 'in «Altro», non nella barra');
+
+    final altro = find.byKey(BaBarraAzioni.chiaveAltro);
+    await tester.ensureVisible(altro);
+    await tester.tap(altro);
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+
+    expect(find.byType(BaFoglio), findsOneWidget);
+    expect(find.text('Azione 4'), findsOneWidget);
+    expect(find.text('Azione 5'), findsOneWidget);
+    // Il foglio sta dentro la stanza finta e sale dal fondo.
+    final foglio = tester.getRect(find.byWidgetPredicate((w) =>
+        w is DecoratedBox && w.decoration is BoxDecoration && (w.decoration as BoxDecoration).color == BaColorTokens.superficieFoglio));
+    final stanza = _stanza(tester);
+    expect(stanza.contains(foglio.topLeft), isTrue);
+    expect(foglio.bottom, closeTo(stanza.bottom, 1.01));
+
+    // Il velo chiude.
+    await tester.tapAt(Offset(foglio.center.dx, foglio.top / 2 + stanza.top / 2));
+    await tester.pumpAndSettle();
+    expect(find.byType(BaFoglio), findsNothing);
+  });
+
+  testWidgets('toccare una presenza apre la scheda: tre fisse, azioni nuove, e «Muta» inattiva se non parla',
+      (tester) async {
+    _vistaAlta(tester);
+    await tester.pumpWidget(const GalleriaApp());
+    await tester.pump();
+    await _tocca(tester, 'BaPalco');
+    final presenza = find.byType(BaPresenza).first;
+    await tester.ensureVisible(presenza);
+    await tester.tap(presenza);
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+
+    expect(find.byType(BaFoglio), findsOneWidget);
+    expect(find.byType(BaSchedaPersona), findsOneWidget);
+    for (final t in ['Muta questa voce', 'Blocca', 'Segnala', 'Azione nuova 1', 'Azione nuova 2']) {
+      expect(find.text(t), findsOneWidget, reason: t);
+    }
+    // Nessuno parla: «Muta questa voce» è inattiva e lo dice.
+    expect(find.text('Si può mutare solo mentre parla'), findsOneWidget);
+    await tester.tap(find.text('Chiudi'));
+    await tester.pumpAndSettle();
+    expect(find.byType(BaFoglio), findsNothing);
+
+    // Se parla, «Muta questa voce» è attiva e la spiegazione non c'è.
+    await _tocca(tester, 'Parlano: 0');
+    await tester.tap(find.byType(BaPresenza).first);
+    await tester.pumpAndSettle();
+    expect(find.text('Si può mutare solo mentre parla'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('a testo 2,0 il foglio di «Altro» e la scheda non tagliano niente', (tester) async {
+    _vistaAlta(tester);
+    await tester.pumpWidget(const GalleriaApp());
+    await tester.pump();
+    await _tocca(tester, 'BaPalco');
+    await _tocca(tester, 'Testo 1,0'); // 2,0
+    final altro = find.byKey(BaBarraAzioni.chiaveAltro);
+    await tester.ensureVisible(altro);
+    await tester.tap(altro);
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    expect(find.byType(BaFoglio), findsOneWidget);
+    await tester.tap(find.text('Chiudi'));
+    await tester.pumpAndSettle();
+
+    final presenza = find.byType(BaPresenza).first;
+    await tester.ensureVisible(presenza);
+    await tester.tap(presenza);
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    expect(find.byType(BaSchedaPersona), findsOneWidget);
+  });
+
+  testWidgets('la pagina «Fogli e messaggi»: ogni foglio si apre e si chiude, 2,0, 744 e il messaggio',
+      (tester) async {
+    _vistaAlta(tester);
+    await tester.pumpWidget(const GalleriaApp());
+    await tester.pump();
+    await _tocca(tester, 'Fogli e messaggi');
+
+    Future<void> provaFoglio(String pulsante, {String? chiudi}) async {
+      await _tocca(tester, pulsante);
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull, reason: pulsante);
+      expect(find.byType(BaFoglio), findsOneWidget, reason: pulsante);
+      await tester.tap(find.text(chiudi ?? 'Chiudi').last);
+      await tester.pumpAndSettle();
+      expect(find.byType(BaFoglio), findsNothing, reason: pulsante);
+    }
+
+    for (final (testo, chiudi) in [
+      ('Corta', 'Non ora'),
+      ('Lunga', 'Non ora'),
+      ('Corto', 'No, grazie'),
+      ('Lungo', 'No, grazie'),
+      ('Senza azioni nuove', null),
+      ('Con azioni nuove', null),
+      ('Con molte azioni', null),
+      ('Non parla', null),
+    ]) {
+      await provaFoglio(testo, chiudi: chiudi);
+    }
+
+    // Testo 2,0 e 744: il foglio lungo scorre e non fa overflow.
+    await _tocca(tester, 'Testo 1,0');
+    await _tocca(tester, 'Larghezza 360');
+    await provaFoglio('Lunga', chiudi: 'Non ora');
+    await provaFoglio('Con molte azioni');
+
+    // Il messaggio: uno solo, nessuno → neutro → errore.
+    expect(find.byType(BaMessaggio), findsNothing);
+    await _tocca(tester, 'Messaggio: nessuno');
+    expect(find.byType(BaMessaggio), findsOneWidget);
+    expect(find.text('!'), findsNothing);
+    await _tocca(tester, 'Messaggio: neutro');
+    expect(find.byType(BaMessaggio), findsOneWidget);
+    expect(find.text('!'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 }
