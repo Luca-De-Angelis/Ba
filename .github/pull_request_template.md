@@ -20,3 +20,7 @@ Prima e dopo, per ogni schermata o stato toccato.
 
 - Decisioni in `docs/DECISIONS.md` toccate: nessuna / quali
 - Righe cambiate in `tokens.dart`: nessuna / quali
+
+## Impatto sull'handoff
+
+- Cambia qualcosa in `docs/handoff/` (componenti, schermate, regole, ipotesi, produzione): nessuno / che cosa

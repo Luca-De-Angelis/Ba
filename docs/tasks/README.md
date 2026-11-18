@@ -41,7 +41,11 @@ Un file per task, `NNN-nome.md`, al massimo una pagina, nel formato di `_templat
 | 020 | `020-controlli.md` — Controlli e barra delle azioni: BaPillola, BaAzioniInCoppia, BaBarraAzioni, BaPubblico | Claude Code | Concluso |
 | 020b | Correzioni alla barra delle azioni: pillole della riga alte uguali e ripiego in colonna a testo grande (unito con la PR del 020) | Claude Code | Concluso |
 | 021 | `021-fogli.md` — BaFoglio, scheda della persona e BaMessaggio | Claude Code | Concluso |
-| 021b | `021b-ritocchi.md` — ritocchi: «Altro» con i token giusti, glifi senza macchie, etichette di «bloccata» senza genere, presenze dietro il foglio | Claude Code | In corso |
-| 022 | Contenuti dei fogli: Gestisci, Crea un DEN, percorso diventa partecipante | Claude Code | Brief da scrivere |
+| 021b | `021b-ritocchi.md` — ritocchi: «Altro» con i token giusti, glifi senza macchie, etichette di «bloccata» senza genere, presenze dietro il foglio | Claude Code | Concluso |
+| 022 | Componenti dei task 013–015 | Claude Code | Brief da scrivere |
+| 023 | Contenuti dei fogli | Claude Code | Brief da scrivere |
+| 024 | Prototipo navigabile in locale | — | Brief da scrivere |
+| 025 | `025-handoff.md` — Documentazione di handoff per il team di sviluppo | Claude Code | In corso |
+| 026 | Aggiornamento finale dell'handoff (da fare prima della consegna, dopo le risposte degli stakeholder e dopo i task 022–024) | Claude Code | Brief da scrivere |
 
 Da qui in avanti fanno fede questi file Markdown, non le versioni in Claude Docs.

@@ -69,4 +69,5 @@ Il team di sviluppo ha il suo server e il suo audio: **non stanno in questa repo
 
 - **Quando si aggiunge un componente**, si aggiunge una riga in [componenti](componenti.md): il test [`app/test/documentazione_test.dart`](../../app/test/documentazione_test.dart) fallisce se manca, se un link relativo di questa cartella è rotto o se questo indice non elenca un file. Lo dice anche `CLAUDE.md`.
 - **Quando cambia una decisione o una regola**, si aggiornano [regole](regole.md) e, se serve, [aperte](aperte.md). Una decisione non si cambia in silenzio: se ne aggiunge una nuova in `DECISIONS.md`.
+- **Ogni report di task** ha una riga «Impatto sull'handoff» (che cosa cambia qui; «nessuno» se niente) e il template della pull request ha la stessa voce. L'aggiornamento completo di questa cartella è il task 026, prima della consegna, dopo le risposte degli stakeholder e dopo i task 022–024.
 - **Le affermazioni «da verificare»** sono elencate nel report del task 025 ([`docs/reports/025.md`](../reports/025.md)): chi può verificarle le chiude qui.
