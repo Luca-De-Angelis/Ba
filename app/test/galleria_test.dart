@@ -490,4 +490,49 @@ void main() {
     expect(find.text('!'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('con un foglio aperto le presenze della stanza vanno dietro (0,22, sfocate), alla chiusura tornano',
+      (tester) async {
+    _vistaAlta(tester);
+    await tester.pumpWidget(const GalleriaApp());
+    await tester.pump();
+    await _tocca(tester, 'BaPalco');
+    await tester.pumpAndSettle(); // la riga dell'indicatore compare al secondo frame
+    bool dietro() => tester.widget<BaPalco>(find.byType(BaPalco)).dietro;
+    double opacita() => tester
+        .widget<Opacity>(find.descendant(
+          of: find.byType(BaPalco),
+          matching: find.byWidgetPredicate((w) => w is Opacity && w.child is ImageFiltered),
+        ))
+        .opacity;
+    expect(dietro(), isFalse);
+    expect(opacita(), 1);
+    Rect relativa() => tester.getRect(find.byType(BaPresenza).first).shift(-_stanza(tester).topLeft);
+    final prima = relativa();
+
+    // La scheda.
+    final presenza = find.byType(BaPresenza).first;
+    await tester.ensureVisible(presenza);
+    await tester.tap(presenza);
+    await tester.pumpAndSettle();
+    expect(find.byType(BaSchedaPersona), findsOneWidget);
+    expect(dietro(), isTrue);
+    expect(opacita(), BaPresenzaTokens.dietroOpacita);
+    expect(relativa(), prima, reason: 'la disposizione non cambia');
+    await tester.tap(find.text('Chiudi'));
+    await tester.pumpAndSettle();
+    expect(dietro(), isFalse);
+    expect(opacita(), 1);
+
+    // «Altro».
+    final altro = find.byKey(BaBarraAzioni.chiaveAltro);
+    await tester.ensureVisible(altro);
+    await tester.tap(altro);
+    await tester.pumpAndSettle();
+    expect(dietro(), isTrue);
+    await tester.tap(find.text('Chiudi'));
+    await tester.pumpAndSettle();
+    expect(dietro(), isFalse);
+    expect(tester.takeException(), isNull);
+  });
 }

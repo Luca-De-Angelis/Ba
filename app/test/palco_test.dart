@@ -1,3 +1,5 @@
+import 'dart:ui' show ImageFilter;
+
 import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -561,6 +563,109 @@ void main() {
       ]) {
         expect(palco.contains(r.topLeft) && palco.contains(r.bottomRight), isTrue, reason: '$r fuori da $palco');
       }
+    });
+  });
+
+  group('dietro un foglio (021b)', () {
+    Widget palco(List<BaPersonaPalco> persone, {required bool dietro, bool riduci = false}) => Directionality(
+          textDirection: TextDirection.ltr,
+          child: MediaQuery(
+            data: MediaQueryData(size: _telefono, disableAnimations: riduci),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: SizedBox.fromSize(
+                size: _scatola,
+                child: BaPalco(
+                  persone: persone,
+                  larghezzaSchermo: _telefono.width,
+                  semanticsLabel: 'Palco di prova',
+                  dietro: dietro,
+                ),
+              ),
+            ),
+          ),
+        );
+
+    Finder gruppoOpacita() => find.descendant(
+          of: find.byType(BaPalco),
+          matching: find.byWidgetPredicate((w) => w is Opacity && w.opacity != 0.0 && w.child is ImageFiltered),
+        );
+    Finder gruppoSfocatura() => find.descendant(of: find.byType(BaPalco), matching: find.byType(ImageFiltered));
+
+    testWidgets('con dietro: tutte le presenze insieme a 0,22 e sfocate di 1,5, in un solo gruppo', (tester) async {
+      await tester.pumpWidget(palco(_persone(5, parlano: {0}), dietro: true));
+      expect(gruppoOpacita(), findsOneWidget);
+      expect(tester.widget<Opacity>(gruppoOpacita()).opacity, BaPresenzaTokens.dietroOpacita);
+      expect(BaPresenzaTokens.dietroOpacita, 0.22);
+      final filtro = tester.widget<ImageFiltered>(gruppoSfocatura());
+      expect(filtro.enabled, isTrue);
+      expect(
+        filtro.imageFilter,
+        ImageFilter.blur(sigmaX: BaPresenzaTokens.dietroSfocatura, sigmaY: BaPresenzaTokens.dietroSfocatura),
+      );
+      expect(BaPresenzaTokens.dietroSfocatura, 1.5);
+      // Tutte e cinque dentro lo stesso gruppo, non una per una.
+      expect(find.descendant(of: gruppoSfocatura(), matching: _presenze()), findsNWidgets(5));
+      expect(find.descendant(of: gruppoOpacita(), matching: gruppoSfocatura()), findsOneWidget,
+          reason: 'sfocatura dentro, opacità fuori: prima il filtro, poi l\'opacità');
+    });
+
+    testWidgets('senza dietro: opacità 1 e filtro spento (nessun livello)', (tester) async {
+      await tester.pumpWidget(palco(_persone(5), dietro: false));
+      expect(tester.widget<Opacity>(gruppoOpacita()).opacity, 1);
+      expect(tester.widget<ImageFiltered>(gruppoSfocatura()).enabled, isFalse);
+    });
+
+    testWidgets('la disposizione non cambia: stesse posizioni e stesso diametro', (tester) async {
+      await tester.pumpWidget(palco(_persone(8, parlano: {1}), dietro: false));
+      final prima = [for (var i = 0; i < 8; i++) tester.getRect(_presenze().at(i))];
+      await tester.pumpWidget(palco(_persone(8, parlano: {1}), dietro: true));
+      final dopo = [for (var i = 0; i < 8; i++) tester.getRect(_presenze().at(i))];
+      expect(dopo, prima);
+    });
+
+    testWidgets('l\'albero resta lo stesso: lo stato delle presenze sopravvive al cambio', (tester) async {
+      await tester.pumpWidget(palco(_persone(3, parlano: {0}), dietro: false));
+      await tester.pump(const Duration(milliseconds: 300)); // l'anello è a metà
+      final anello = tester.state(find.byType(BaAnello).first);
+      final palcoState = tester.state(find.byType(BaPalco));
+      final scala = tester.widget<Transform>(
+        find.descendant(of: find.byType(BaAnello).first, matching: find.byType(Transform)).first,
+      ).transform.storage.toList();
+
+      await tester.pumpWidget(palco(_persone(3, parlano: {0}), dietro: true));
+      expect(identical(tester.state(find.byType(BaAnello).first), anello), isTrue, reason: 'stesso State');
+      expect(identical(tester.state(find.byType(BaPalco)), palcoState), isTrue);
+      final dopo = tester.widget<Transform>(
+        find.descendant(of: find.byType(BaAnello).first, matching: find.byType(Transform)).first,
+      ).transform.storage.toList();
+      expect(dopo, scala, reason: 'l\'anello non riparte: è dov\'era');
+
+      await tester.pumpWidget(palco(_persone(3, parlano: {0}), dietro: false));
+      expect(identical(tester.state(find.byType(BaAnello).first), anello), isTrue);
+    });
+
+    for (final riduci in [false, true]) {
+      testWidgets('è immediato, anche senza «riduci movimento» (riduci: $riduci)', (tester) async {
+        await tester.pumpWidget(palco(_persone(4), dietro: false, riduci: riduci));
+        await tester.pumpWidget(palco(_persone(4), dietro: true, riduci: riduci));
+        // Un solo frame, nessuna durata passata: già a 0,22, e niente anima.
+        expect(tester.widget<Opacity>(gruppoOpacita()).opacity, 0.22);
+        expect(tester.hasRunningAnimations, isFalse);
+        await tester.pumpWidget(palco(_persone(4), dietro: false, riduci: riduci));
+        expect(tester.widget<Opacity>(gruppoOpacita()).opacity, 1);
+        expect(tester.hasRunningAnimations, isFalse);
+      });
+    }
+
+    testWidgets('anche il palco vuoto (l\'invito) va dietro, e le etichette restano', (tester) async {
+      final semantica = tester.ensureSemantics();
+      await tester.pumpWidget(palco(_persone(2), dietro: true));
+      expect(find.bySemanticsLabel('Persona 0'), findsOneWidget);
+      expect(find.bySemanticsLabel('Persona 1'), findsOneWidget);
+      await tester.pumpWidget(palco(const [], dietro: true));
+      expect(tester.takeException(), isNull);
+      semantica.dispose();
     });
   });
 }

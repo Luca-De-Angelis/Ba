@@ -69,7 +69,7 @@ void main() {
   test('italiano e tedesco: i testi dei quattro stati', () async {
     final it = await _carica('it');
     expect(it.presenzaMutata('Marta B.'), 'Marta B., voce mutata da te');
-    expect(it.presenzaBloccata('Marta B.'), 'Marta B., bloccata');
+    expect(it.presenzaBloccata('Marta B.'), 'Marta B., persona bloccata');
     expect(it.presenzaMicSpento('Marta B.'), 'Marta B., microfono spento');
     expect(it.presenzaHaLaParola('Marta B.'), 'Marta B., ha la parola');
 
@@ -77,5 +77,26 @@ void main() {
     final de = await _carica('de');
     expect(de.presenzaMicSpento('Marta B.'), 'Marta B., Mikrofon aus');
     expect(de.presenzaHaLaParola('Marta B.'), 'Marta B., hat das Wort');
+  });
+
+  test('«bloccata» senza genere: un sostantivo davanti all\'aggettivo, in italiano, francese e spagnolo (021b)',
+      () async {
+    final attese = {
+      'it': 'Marta B., persona bloccata',
+      'fr': 'Marta B., personne bloquée',
+      'es': 'Marta B., persona bloqueada',
+      // Già neutre: non cambiano.
+      'en': 'Marta B., blocked',
+      'de': 'Marta B., blockiert',
+    };
+    for (final MapEntry(key: lingua, value: testo) in attese.entries) {
+      final l = await _carica(lingua);
+      expect(l.presenzaBloccata('Marta B.'), testo, reason: lingua);
+    }
+    // Il solo aggettivo femminile dopo il nome non c'è più.
+    for (final (lingua, solo) in [('it', 'bloccata'), ('fr', 'bloquée'), ('es', 'bloqueada')]) {
+      final l = await _carica(lingua);
+      expect(l.presenzaBloccata('Marta B.'), isNot('Marta B., $solo'), reason: lingua);
+    }
   });
 }
