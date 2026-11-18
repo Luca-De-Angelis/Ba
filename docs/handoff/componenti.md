@@ -60,6 +60,7 @@ I test della galleria ([`galleria_test.dart`](../../app/test/galleria_test.dart)
 | `BaVarianteFoglio`, `BaAzioneFoglio`, `showBaFoglio` | `foglio.dart` | Le tre facce, un'azione ancorata e la funzione che apre il foglio |
 | `BaRigaAzione`, `BaAzioneScheda` | `scheda_persona.dart` | Una riga di azione (usata anche dal foglio di «Altro» nella galleria) e un'azione nuova della scheda. `BaRigaAzione` non è nell'Inventario |
 | `BaVarianteMessaggio` | `messaggio.dart` | Neutro o errore |
+| `BaTratteggio` | `tratteggio.dart` | Il bordo tratteggiato (Flutter non ne ha uno): tratti da `BaSpazioTokens.xs` e vuoti da `xxs`, spezzando il contorno con `Path.computeMetrics()`. Lo condividono `BaPuntoAggancio` e `BaBandaPosto`; non è toccabile e non entra nella semantica |
 
 ## I file che non sono componenti
 
