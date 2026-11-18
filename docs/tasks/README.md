@@ -40,7 +40,8 @@ Un file per task, `NNN-nome.md`, al massimo una pagina, nel formato di `_templat
 | 019 | Abbonamento e pubblicità | Claude Design | Brief da scrivere (numero provvisorio) |
 | 020 | `020-controlli.md` — Controlli e barra delle azioni: BaPillola, BaAzioniInCoppia, BaBarraAzioni, BaPubblico | Claude Code | Concluso |
 | 020b | Correzioni alla barra delle azioni: pillole della riga alte uguali e ripiego in colonna a testo grande (unito con la PR del 020) | Claude Code | Concluso |
-| 021 | `021-fogli.md` — BaFoglio, scheda della persona e BaMessaggio | Claude Code | In corso |
+| 021 | `021-fogli.md` — BaFoglio, scheda della persona e BaMessaggio | Claude Code | Concluso |
+| 021b | `021b-ritocchi.md` — ritocchi: «Altro» con i token giusti, glifi senza macchie, etichette di «bloccata» senza genere, presenze dietro il foglio | Claude Code | In corso |
 | 022 | Contenuti dei fogli: Gestisci, Crea un DEN, percorso diventa partecipante | Claude Code | Brief da scrivere |
 
 Da qui in avanti fanno fede questi file Markdown, non le versioni in Claude Docs.
