@@ -47,6 +47,7 @@ Sta in [`app/lib/galleria/`](../../app/lib/galleria/): una pagina per componente
 | **BaPalco** | una **stanza finta**: intestazione, palco, pubblico e barra delle azioni veri; toccando una presenza si apre la scheda, «Altro» apre le azioni oltre la terza | «Persone −/+», «Parlano», «Persa», «Scheletro», «Congelato», «Larghezza», «Altezza», «Testo 1,0/2,0», «Riduci movimento», «Prima persona» (cicla gli stati con glifo), «Lingua» (IT, EN, FR, ES, DE) |
 | **Controlli** | le quattro varianti di pillola, la coppia, la barra con 1–6 azioni, il pubblico con 0, 1, 2, 3 e 14 | «Larghezza», «Testo», «Riduci movimento», «Azioni −/+» |
 | **Fogli e messaggi** | una schermata finta con un pulsante per ogni foglio (richiesta, invito, scheda), e i due messaggi | «Larghezza», «Testo», «Riduci movimento», «Messaggio» (nessuno, neutro, errore) |
+| **Accesso, creazione e coda** | i nove componenti dei task 013–015 nei loro stati: campi di testo, codice (si scrive davvero), scelta del tipo, chip, punti di aggancio, interruttori, righe di coda, fascia d'attesa e banda del posto | «Larghezza», «Testo», «Riduci movimento», «Codice» (cambia stato: scrittura, sbagliato, scaduto, nuovo invio con attesa), «Svuota il codice» |
 
 Che cosa fanno i controlli di sempre:
 

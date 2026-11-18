@@ -78,6 +78,9 @@ I test della galleria ([`galleria_test.dart`](../../app/test/galleria_test.dart)
 | `BaVarianteFoglio`, `BaAzioneFoglio`, `showBaFoglio` | `foglio.dart` | Le tre facce, un'azione ancorata e la funzione che apre il foglio |
 | `BaRigaAzione`, `BaAzioneScheda` | `scheda_persona.dart` | Una riga di azione (usata anche dal foglio di «Altro» nella galleria) e un'azione nuova della scheda. `BaRigaAzione` non è nell'Inventario |
 | `BaVarianteMessaggio` | `messaggio.dart` | Neutro o errore |
+| `BaStatoCodice` | `campo_codice.dart` | Gli stati del codice: scrittura, sbagliato, scaduto, nuovo invio con attesa |
+| `BaOpzioneScelta` | `scelta_den.dart` | Un'opzione della scelta: titolo e descrizione |
+| `BaVarianteBanda` | `banda_posto.dart` | Le due bande: il posto conservato (a filo) e la permanenza massima (tratteggiata) |
 | `BaTratteggio` | `tratteggio.dart` | Il bordo tratteggiato (Flutter non ne ha uno): tratti da `BaSpazioTokens.xs` e vuoti da `xxs`, spezzando il contorno con `Path.computeMetrics()`. Lo condividono `BaPuntoAggancio` e `BaBandaPosto`; non è toccabile e non entra nella semantica |
 | `BaFraseErrore` | `campo_testo.dart` | Il segno «!» e una frase, annunciati (regione viva): l'errore di un campo o del codice. Non è un riquadro (a quello serve `BaMessaggio`) |
 
@@ -93,14 +96,13 @@ Questi tre file di `app/lib/design_system/` non definiscono widget e per questo 
 
 ## Non ancora costruiti
 
-Nomi che l'Inventario elenca nelle tabelle C2, C4 e C5 e che **non hanno ancora una classe** in `app/lib/` (verificato con una ricerca di `class <nome>` nel codice). L'Inventario dice anche che esiste uno scaffold `BaSchermata` (C8) che porta il posto unico della richiesta: nel codice non c'è. **L'Inventario introduce «venti widget (C1–C4)», ma le sue tabelle ne nominano 28: da verificare con chi lo mantiene.**
+Nomi che l'Inventario elenca nelle tabelle C2, C4 e C5 e che **non hanno ancora una classe** in `app/lib/` (i nove del task 022 sono stati costruiti) (verificato con una ricerca di `class <nome>` nel codice). L'Inventario dice anche che esiste uno scaffold `BaSchermata` (C8) che porta il posto unico della richiesta: nel codice non c'è. **L'Inventario introduce «venti widget (C1–C4)», ma le sue tabelle ne nominano 28: da verificare con chi lo mantiene.**
 
 | Sezione | Nomi | Per che cosa servono |
 | --- | --- | --- |
 | C2, struttura della stanza | `BaIntestazione`, `BaMarcatore`, `BaRigaStato`, `BaFasciaTesto`, `BaAlone` | Intestazione, marcatori, riga di stato, fascia di testo (non in v1) e alone dietro il palco |
 | C4, elenco e impostazioni | `BaRigaDen`, `BaRigaImpostazione`, `BaRigaBloccata` | Le righe degli elenchi dei DEN, delle impostazioni e delle persone bloccate |
-| C4, accesso e creazione | `BaCampoCodice`, `BaSceltaDen`, `BaChipScelta`, `BaPuntoAggancio` | Il codice a sei caselle, la scelta del tipo di DEN, i chip di tema e lingua, il punto di aggancio |
-| C4, gestione, coda e attesa | `BaFoglioGestisci`, `BaInterruttoreRiga`, `BaRigaCoda`, `BaFasciaAttesa`, `BaBandaPosto` | Il foglio «Gestisci», l'interruttore di riga, «Le tue code», il sotto-DEN d'attesa e la banda del posto conservato |
+| C4, gestione | `BaFoglioGestisci` | Il foglio «Gestisci» e il foglio del sotto-DEN (task 023) |
 | C5, superfici di sistema | `BaCardLive`, `BaIsola`, `BaNotificaAndroid` | Live Activity, Dynamic Island e notifica Android: **non sono widget Flutter** (l'Inventario le descrive come superfici che Flutter non disegna) |
 
-Che cosa serve a ogni schermata, e che cosa manca in totale, è in [schermate](schermate.md). I componenti dei task 022–024 (vedi `docs/tasks/README.md`) non esistono ancora.
+Che cosa serve a ogni schermata, e che cosa manca in totale, è in [schermate](schermate.md). Con il task 022 sono stati costruiti i nove componenti dei task 013–015; i contenuti dei fogli (task 023) e il prototipo navigabile (task 024) non esistono ancora (vedi `docs/tasks/README.md`).

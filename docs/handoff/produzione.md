@@ -4,7 +4,7 @@ Che cosa è finto nel prototipo e dove si sostituisce, dove il codice si innesta
 
 Torna all'[indice](README.md). Per le regole che il codice deve rispettare vedi [regole](regole.md); per le ipotesi ancora aperte [aperte](aperte.md).
 
-**Che cosa è il prototipo.** Un design system in Flutter (token e 13 componenti, ciascuno con i suoi test) e una **galleria** per vederli in Chrome. Non c'è un'app: `main.dart` è uno schermo vuoto, non ci sono schermate, navigazione, rete, audio né server. Il team di sviluppo ha il suo server e il suo audio in tempo reale, e **non sono in questa repo** (lo dice `CLAUDE.md`, «Cosa non è in questa repo»; l'`README.md` della radice lascia aperta la scelta di dove vivranno server, LiveKit e trascrizione).
+**Che cosa è il prototipo.** Un design system in Flutter (token e 22 componenti, ciascuno con i suoi test) e una **galleria** per vederli in Chrome. Non c'è un'app: `main.dart` è uno schermo vuoto, non ci sono schermate, navigazione, rete, audio né server. Il team di sviluppo ha il suo server e il suo audio in tempo reale, e **non sono in questa repo** (lo dice `CLAUDE.md`, «Cosa non è in questa repo»; l'`README.md` della radice lascia aperta la scelta di dove vivranno server, LiveKit e trascrizione).
 
 ## Che cosa è finto, e dove si sostituisce
 
@@ -40,16 +40,19 @@ Quello che i componenti si aspettano **in ingresso**. Sono i punti d'innesto; la
 | **Ciò che va alle superfici di sistema** | `BaPayloadStanza` | `stanza`, `sulPalco`, `inizio`, `tinte` (al massimo 4), `iniziali`. **Niente «chi parla»**: lì il dato non si aggiorna abbastanza spesso | Le superfici (Live Activity, notifica) **non esistono** |
 | **Il tempo del posto conservato** | `BaCodaTokens.oraDelPosto(persa, durata)` | L'istante in cui è caduta la linea e la durata; restituisce l'ora fino a cui il posto è tuo (troncata al minuto) o `null` sotto i due minuti | Si mostra come ora, mai come conto alla rovescia |
 | **Il tempo dell'invio del codice** | `BaAccessoTokens.nuovoInvioAttesa` (30 s) | Solo il valore: il conto non esiste | |
+| **Il codice di accesso** | `BaCampoCodice` (`onCompleto`, `stato`, `frase`) | Il codice scritto (sei cifre) esce da `onCompleto`; **chi lo verifica e decide** se è `sbagliato`, `scaduto` o se c'è un'`attesa` per un nuovo invio **non c'è**: lo decide il server, il componente mostra lo stato e la frase. L'SMS si legge con `AutofillHints.oneTimeCode` | **Da verificare** su un telefono vero: l'autocompilazione dell'SMS |
+| **La coda e l'attesa** | `BaRigaCoda` (`onEsci`), `BaInterruttoreRiga` (`onCambia`), `BaFasciaAttesa` (`onLascia`, presente solo per chi ha la capacità), `BaBandaPosto` (testo già composto) | I componenti ricevono testi e callback: **nessuna logica di coda** (posizione, posto libero, ingresso automatico, permanenza) esiste. La banda del posto la compone il chiamante con `BaCodaTokens.oraDelPosto` | La banda non calcola mai un tempo |
 
 ## Che cosa non esiste
 
 Per non promettere: nel codice **non c'è** niente di tutto questo, solo i valori di design in `tokens.dart`.
 
 - **Il server (Servizio)**, l'audio (LiveKit, coturn), la trascrizione, la rete e la persistenza.
-- **L'accesso, la registrazione, il consenso, «Torna ascoltatore»**: ci sono i token (`BaAccessoTokens`) e il prototipo 013.
+- **L'accesso, la registrazione, il consenso, «Torna ascoltatore»**: ci sono i token (`BaAccessoTokens`), il prototipo 013 e, dal task 022, i controlli (`BaCampoTesto`, `BaCampoCodice`); la logica e le schermate no.
 - **La navigazione e le schermate**. `app/lib/core/` e `app/lib/features/` sono vuote.
 - **Le notifiche**, la Live Activity su iPhone, la Dynamic Island, la notifica Android: l'Inventario le descrive (C5), il codice no. Il meccanismo per spegnere il microfono a schermo bloccato è un'ipotesi in attesa dello sviluppo (domanda 18 della mail).
 - **Gli annunci dello screen reader dei propri cambi di stato** (D-034): l'unico annuncio nel codice è la regione viva di `BaMessaggio` per un errore.
+- **Menù di selezione e maniglie nei campi di testo.** `BaCampoTesto` e `BaCampoCodice` si costruiscono con `EditableText` e **non hanno** il menù di selezione né le maniglie — incolla da pressione lunga, taglia, copia, seleziona tutto — né il posizionamento del cursore col dito: richiederebbero la barra degli strumenti di Material o di Cupertino, che qui non si importano. Si scrive, si incolla dalla tastiera del telefono (e dal suggerimento dell'SMS) e da una tastiera fisica, e si cancella. **In produzione vanno aggiunti.** Non è verificabile da qui come si comportano la tastiera vera, l'incolla e l'autocompilazione su un telefono: **da verificare**.
 - **Suono e vibrazione**, vedi sotto.
 - **La sintesi tecnica sull'audio** e gli ADR esistenti lato sviluppo non sono nella repo: `docs/research/README.md` e `docs/adr/README.md` dicono che vanno portati, e `DECISIONS.md` ha una nota «Da unire» sul registro delle decisioni dello sviluppo (`BA_Decisioni_Consolidate.md`). Nessun ADR è presente oggi.
 
@@ -70,6 +73,7 @@ Che cosa il codice fa già e che cosa va costruito:
 - **Ordine di lettura del palco:** `BaPalco` lo fissa con `OrdinalSortKey`, uguale all'ordine dei centri (l'ordine geometrico di Flutter con le righe sfalsate può leggere le presenze nell'ordine sbagliato). Per questo `palco.dart` importa `package:flutter/semantics.dart` ([architettura](architettura.md)).
 - **Annunci:** vedi la regola D-034 in [regole](regole.md). Oggi esiste solo la regione viva dell'errore (`BaMessaggio`). I fogli si annunciano come finestre (`namesRoute` e `scopesRoute`) con il titolo come nome, e **non annunciano l'arrivo di nessuno**.
 - **Fogli:** il focus entra nel foglio, Tab non ne esce, alla chiusura il focus torna dov'era; ciò che sta dietro è escluso dalla semantica finché il foglio è aperto.
+- **Il codice è un campo solo:** `BaCampoCodice` ha sei caselle disegnate ma **un solo elemento focalizzabile**, con l'etichetta del chiamante e il valore letto cifra per cifra; l'errore di un campo o del codice (`BaFraseErrore`) è una regione viva e si annuncia; gli interruttori sono `toggled`, le scelte esclusive sono `inMutuallyExclusiveGroup`, i chip `selected`. Provato sull'albero semantico, **non con uno screen reader vero**.
 - **Aree toccabili** di almeno 44, **contrasto AA** (nessun test lo misura: **da verificare** in revisione), **testo di sistema fino a 2,0** senza tagli (ogni componente ha un test a 2,0), **«riduci movimento»**.
 - **Stati critici** mai affidati al solo colore.
 
