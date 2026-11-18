@@ -26,6 +26,13 @@
 // per `OrdinalSortKey`, che widgets.dart non esporta. Serve a fissare l'ordine di
 // lettura (= ordine dei centri): quello geometrico di Flutter, con le righe
 // sfalsate, può leggere le presenze nell'ordine sbagliato.
+//
+// ECCEZIONE ALLA REGOLA "in design_system/ solo widgets.dart" (approvata nel
+// task 021b): questo file importa anche `dart:ui` e solo `ImageFilter`, che
+// widgets.dart non esporta. Serve alla sfocatura delle presenze quando un foglio
+// è aperto (`dietro`): senza `ImageFilter` non c'è modo di sfocare un sottoalbero.
+import 'dart:ui' show ImageFilter;
+
 import 'package:flutter/semantics.dart' show OrdinalSortKey;
 import 'package:flutter/widgets.dart';
 
@@ -136,6 +143,7 @@ class BaPalco extends StatefulWidget {
     this.stato = const BaStatoPalco.vivo(),
     this.invitoTitolo,
     this.invitoTesto,
+    this.dietro = false,
   });
 
   /// Da 0 a 8; oltre è un errore (`ArgumentError`). In ordine: vedi sopra.
@@ -155,6 +163,15 @@ class BaPalco extends StatefulWidget {
   /// mettono pressione: nessun conto alla rovescia, nessun «tocca a te».
   final String? invitoTitolo;
   final String? invitoTesto;
+
+  /// Un foglio è aperto sopra la stanza (task 021b): le presenze, **tutte
+  /// insieme**, si riducono a `dietroOpacita` (0,22) con una sfocatura di
+  /// `dietroSfocatura` (1,5). Il velo da solo non basta. **Subito, senza
+  /// dissolvenza**: T8 vieta due movimenti sopra i 140 ms nello stesso momento
+  /// e il foglio sale già in 240; il palco non ha movimento di comparsa. Non
+  /// cambia la disposizione, l'anello né gli stati: il palco non sa chi apre il
+  /// foglio, lo accende chi lo usa.
+  final bool dietro;
 
   @override
   State<BaPalco> createState() => _BaPalcoState();
@@ -235,27 +252,43 @@ class _BaPalcoState extends State<BaPalco> {
           child: Semantics(
             container: true,
             label: widget.semanticsLabel,
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                if (n == 0) _invito(),
-                for (var i = 0; i < n; i++)
-                  Positioned(
-                    key: _chiave(i),
-                    left: disposizione.centri[i].dx - lato / 2,
-                    top: disposizione.centri[i].dy - lato / 2,
-                    width: lato,
-                    height: lato,
-                    child: BaDiametro(
-                      diametro: d,
-                      child: Semantics(
-                        container: true,
-                        sortKey: OrdinalSortKey(i.toDouble()),
-                        child: _presenza(i),
+            // Dietro un foglio (`dietro`): un solo gruppo per tutte le presenze,
+            // sfocatura prima e opacità dopo (come `filter` e `opacity` in CSS).
+            // I due widget ci sono SEMPRE, con opacità 1 e filtro spento quando
+            // `dietro` è falso: l'albero non cambia, quindi lo stato delle
+            // presenze (anello, ampiezza, scheletro) non si perde, e a riposo
+            // non si apre nessun livello.
+            child: Opacity(
+              opacity: widget.dietro ? BaPresenzaTokens.dietroOpacita : 1,
+              child: ImageFiltered(
+                enabled: widget.dietro,
+                imageFilter: ImageFilter.blur(
+                  sigmaX: BaPresenzaTokens.dietroSfocatura,
+                  sigmaY: BaPresenzaTokens.dietroSfocatura,
+                ),
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    if (n == 0) _invito(),
+                    for (var i = 0; i < n; i++)
+                      Positioned(
+                        key: _chiave(i),
+                        left: disposizione.centri[i].dx - lato / 2,
+                        top: disposizione.centri[i].dy - lato / 2,
+                        width: lato,
+                        height: lato,
+                        child: BaDiametro(
+                          diametro: d,
+                          child: Semantics(
+                            container: true,
+                            sortKey: OrdinalSortKey(i.toDouble()),
+                            child: _presenza(i),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-              ],
+                  ],
+                ),
+              ),
             ),
           ),
         );

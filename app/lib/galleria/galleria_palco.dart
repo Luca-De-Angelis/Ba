@@ -85,6 +85,7 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
   int _altezza = 0; // indice in _altezze
   double _testo = _testoNormale;
   bool _riduciMovimento = false;
+  bool _dietro = false; // un foglio è aperto: le presenze vanno dietro
   int _lingua = 0;
   int _primo = 0; // indice in _statiPrimo
   final ValueNotifier<_Misura?> _misura = ValueNotifier(null);
@@ -351,12 +352,21 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
     };
   }
 
+  /// Un foglio è aperto sopra la stanza: le presenze dietro si attenuano e si
+  /// sfocano (`dietro` di BaPalco) finché non si chiude. Lo accende chi apre il
+  /// foglio: il palco non sa niente dei fogli.
+  Future<void> _conFoglio(Future<void> Function() apri) async {
+    setState(() => _dietro = true);
+    await apri();
+    if (mounted) setState(() => _dietro = false);
+  }
+
   /// Il tocco su una presenza: la scheda della persona, con le tre fisse e,
   /// sotto, due azioni nuove di prova (testi neutri: il punto di aggancio).
   void _apriScheda(BuildContext contesto, int i) {
     final primo = i == 0 ? _primo : 0;
     final parla = i < _parlano || primo == 2;
-    showBaFoglio<void>(
+    _conFoglio(() => showBaFoglio<void>(
       contesto,
       etichettaVelo: 'Chiudi',
       builder: (foglio) => BaFoglio.scheda(
@@ -387,12 +397,12 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
           onTap: () => Navigator.of(foglio).pop(),
         ),
       ),
-    );
+    ));
   }
 
   /// «Altro»: le azioni oltre la terza, come righe.
   void _apriAltro(BuildContext contesto) {
-    showBaFoglio<void>(
+    _conFoglio(() => showBaFoglio<void>(
       contesto,
       etichettaVelo: 'Chiudi',
       builder: (foglio) => BaFoglio(
@@ -417,7 +427,7 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
           ),
         ],
       ),
-    );
+    ));
   }
 
   /// Le azioni della stanza finta: il microfono (attiva: «Spegni il microfono»
@@ -499,6 +509,7 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
           larghezzaSchermo: _larghezza,
           stato: _stato,
           semanticsLabel: l.palcoEtichetta(n),
+          dietro: _dietro,
           invitoTitolo: l.palcoLibero,
           invitoTesto: l.palcoInvito,
         );
