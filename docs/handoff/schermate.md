@@ -39,14 +39,14 @@ L'accesso dell'ascoltatore con email (D-031), il percorso «diventa partecipante
 
 | Schermata | Che cosa mostra | Esistono | Mancano |
 | --- | --- | --- | --- |
-| A1 · email | Email | `BaPillola`, `BaMessaggio` | il **campo di testo** (email): nessun nome nell'Inventario, ci sono i token `BaAccessoTokens.campo*` |
-| A2 · codice | Codice via email: sei caselle, sbagliato, scaduto, nuovo invio con attesa | `BaMessaggio` (errore), `BaPillola` | `BaCampoCodice`; il conto del nuovo invio (`BaAccessoTokens.nuovoInvioAttesa`, 30 s, solo il valore) |
+| A1 · email | Email | `BaCampoTesto`, `BaPillola`, `BaMessaggio`, `BaPuntoAggancio` (il posto per «Continua con…») | — |
+| A2 · codice | Codice via email: sei caselle, sbagliato, scaduto, nuovo invio con attesa | `BaCampoCodice` (tutti e quattro gli stati), `BaPillola` | il conto del nuovo invio non c'è e non ci sarà a schermo: è una frase ferma; l'attesa (`BaAccessoTokens.nuovoInvioAttesa`, 30 s) è solo un valore del server; l'azione «Mandalo di nuovo» è del chiamante |
 | A3 · onboarding · A4 · termini | Primo accesso, termini e privacy | `BaPillola` | i testi; nessun componente specifico (**da verificare**) |
-| A5 · nome | Nome, decisione aperta | `BaPillola` | il campo di testo |
+| A5 · nome | Nome, decisione aperta | `BaCampoTesto`, `BaPillola` | — |
 | A6 · elenco | Elenco per l'ascoltatore | `BaPillola` | `BaRigaDen`, `BaIntestazione` |
 | P1 · sali-avviso | Sali sul palco: avviso su voce e testo | `BaFoglio` (richiesta), `BaPillola` | — |
-| P2 · sali-numero | Il numero | `BaFoglio`, `BaPillola` | il campo di testo |
-| P3 · sali-codice | Codice SMS (**rimovibile**) | `BaFoglio` | `BaCampoCodice` |
+| P2 · sali-numero | Il numero | `BaFoglio`, `BaCampoTesto` (con il prefisso), `BaPillola` | — |
+| P3 · sali-codice | Codice SMS (**rimovibile**) | `BaFoglio`, `BaCampoCodice` | — |
 | P4 · sali-consenso | Consenso a parlare | `BaFoglio`, `BaPillola` | — |
 | P5 · sali-sale · P6 · con numero | Sale a microfono spento; avviso e consenso se il numero c'è già | `BaFoglio`, la stanza (vedi 002 · 1 bis) | — |
 | T1 · torna-prima · T2 · torna-dopo | Impostazioni: «Torna ascoltatore» | `BaPillola` | `BaRigaImpostazione` |
@@ -60,16 +60,16 @@ Creare un DEN in cinque passi, le due varianti del percorso da ascoltatore, gli 
 | Schermata | Che cosa mostra | Esistono | Mancano |
 | --- | --- | --- | --- |
 | E1 · elenco | Elenco con «Crea un DEN» | `BaPillola` | `BaRigaDen` |
-| C1 · tipo | Privato o pubblico | `BaPillola` | `BaSceltaDen` |
-| C2 · nome | Nome, con il campo «Quando» spento | `BaPillola` | il campo di testo; `BaPuntoAggancio`; il campo «Quando» spento (token `BaCreazioneTokens.quando*`) |
-| C3 · descrizione, tema e lingua | Un passo solo | `BaPillola` | `BaChipScelta`; il campo della descrizione |
-| C4 · invita | Solo il privato | `BaPillola` | `BaPuntoAggancio` |
+| C1 · tipo | Privato o pubblico | `BaSceltaDen`, `BaPillola` | — |
+| C2 · nome | Nome, con il campo «Quando» spento | `BaCampoTesto`, `BaPuntoAggancio.quando`, `BaPillola` | — |
+| C3 · descrizione, tema e lingua | Un passo solo | `BaCampoTesto` (a più righe), `BaChipScelta`, `BaPillola` | — |
+| C4 · invita | Solo il privato | `BaPuntoAggancio`, `BaPillola` | — |
 | C5 · riepilogo | «Crea il DEN» | `BaPillola` (la chiara) | — |
 | C6 · creato | Nella stanza; chi ha creato è sul palco a microfono spento (dal 014b: presenza normale con il disco chiaro, variante «io» del 002) | `BaPalco`, `BaPresenza` (`io`, `microfonoSpento`) | — |
 | R1, R2 · percorso da ascoltatore | Varianti di P1 e P4 del 013 | `BaFoglio` | — |
 | S1 · limite · S2 · non riuscita | Limite di DEN attivi; creazione non riuscita | `BaMessaggio` (errore) | — |
 | G1–G5 · gestisci | «Gestisci» dall'«Altro» della barra: co-amministratori, persone, rimozione, termine, descrizione | `BaFoglio`, `BaRigaAzione`, `BaMessaggio`, `BaBarraAzioni` («Altro») | `BaFoglioGestisci` |
-| D1 · nuovo sotto-DEN | Un foglio: nome e regola | `BaFoglio` | `BaFoglioGestisci` (D1 vi è nominato), il campo di testo |
+| D1 · nuovo sotto-DEN | Un foglio: nome e regola | `BaFoglio`, `BaCampoTesto` | `BaFoglioGestisci` (D1 vi è nominato) |
 
 ## 4. Coda e attesa: [Coda e attesa 015](../../design/handoff/015/Coda%20e%20attesa%20015.dc.html)
 
@@ -77,15 +77,15 @@ Mettersi in coda con l'ingresso automatico, «Le tue code», la notifica del pos
 
 | Schermata | Che cosa mostra | Esistono | Mancano |
 | --- | --- | --- | --- |
-| K2 · metti-in-coda | Mettiti in coda, con l'ingresso automatico | `BaPillola`, `BaFoglio` | `BaInterruttoreRiga` (token `BaCodaTokens.interruttore*`) |
-| K1 · code | «Le tue code» | `BaPillola` | `BaRigaCoda`, `BaIntestazione` |
+| K2 · metti-in-coda | Mettiti in coda, con l'ingresso automatico | `BaInterruttoreRiga`, `BaPillola`, `BaFoglio` | — |
+| K1 · code | «Le tue code» | `BaRigaCoda`, `BaPillola` | `BaIntestazione` |
 | K3 · posto-libero-notifica | Notifica di sistema, ingresso automatico spento | — | la **notifica**: `BaNotificaAndroid` e la Live Activity non esistono (C5) |
 | K4 · posto-libero-stanza | Nella stanza | `BaPalco`, `BaPillola`, `BaBarraAzioni` | il nuovo stato «Si è liberato un posto» è un'**ipotesi** (vedi [aperte](aperte.md)) |
 | K5 · ingresso-auto-stanza | Ingresso automatico: sul palco | `BaPalco` | — |
-| W1 · attesa-entra · W2 · attesa-dentro | «Aspetta con altri»; nel gruppo d'attesa | `BaPresenza` | `BaFasciaAttesa`, `BaInterruttoreRiga` |
-| W3 · attesa-passaggio | Il posto si libera: dal gruppo al palco | `BaPalco` | `BaFasciaAttesa` |
-| P1 · linea-persa · P2 · posto-tornato · P3 · posto-passato | Il posto resta tuo; la linea è tornata, il posto c'è o è passato | `BaStatoPalco.congelato`, `BaPresenza` (persa), `BaCodaTokens.oraDelPosto` | `BaBandaPosto` |
-| M1 · permanenza-massima | Permanenza massima, punto di aggancio | — | `BaBandaPosto`, `BaPuntoAggancio` |
+| W1 · attesa-entra · W2 · attesa-dentro | «Aspetta con altri»; nel gruppo d'attesa | `BaInterruttoreRiga`, `BaFasciaAttesa`, `BaPresenza` | — |
+| W3 · attesa-passaggio | Il posto si libera: dal gruppo al palco | `BaPalco`, `BaFasciaAttesa` | — |
+| P1 · linea-persa · P2 · posto-tornato · P3 · posto-passato | Il posto resta tuo; la linea è tornata, il posto c'è o è passato | `BaBandaPosto`, `BaStatoPalco.congelato`, `BaPresenza` (persa), `BaCodaTokens.oraDelPosto` | — |
+| M1 · permanenza-massima | Permanenza massima, punto di aggancio | `BaBandaPosto` (variante tratteggiata), `BaPuntoAggancio` | — |
 | S1 · coda-non-disponibile · S2 · coda-piena · S3 · uscita-coda | Stati della coda | `BaMessaggio` | — |
 
 ## 5. Prototipi precedenti
@@ -94,18 +94,14 @@ Due prototipi più vecchi restano nella repo come storia: [Schermate 001](../../
 
 ## Che cosa resta da costruire
 
-Mettendo insieme le tabelle, i componenti dell'Inventario che servono alle schermate e **non esistono**:
+Mettendo insieme le tabelle, i componenti che servono alle schermate e **non esistono**. Con il task 022 sono stati costruiti i nove componenti dei task 013–015 (campo di testo, codice, scelta del tipo, chip, punto di aggancio, interruttore di riga, riga di coda, fascia d'attesa, banda del posto); restano:
 
 | Componente | Serve a | Sezione dell'Inventario |
 | --- | --- | --- |
 | `BaIntestazione`, `BaMarcatore`, `BaRigaStato`, `BaAlone` | la stanza (002), gli elenchi | C2 |
 | `BaRigaDen`, `BaRigaImpostazione`, `BaRigaBloccata` | gli elenchi e le impostazioni (013, 014) | C4 |
-| `BaCampoCodice` | accesso (A2) e codice SMS (P3) | C4 |
-| `BaSceltaDen`, `BaChipScelta`, `BaPuntoAggancio` | creare un DEN (014) e la permanenza massima (015) | C4 |
 | `BaFoglioGestisci` | «Gestisci» e il sotto-DEN (014) | C4 |
-| `BaInterruttoreRiga`, `BaRigaCoda`, `BaFasciaAttesa`, `BaBandaPosto` | coda e attesa (015) | C4 |
-| il **campo di testo** (email, numero, nome, descrizione) | 013 e 014 | nessun nome nell'Inventario; token `BaAccessoTokens.campo*` e `BaCreazioneTokens.descrizioneAltezza` |
 | la **fascia «chi mi sente»** | il sotto-DEN (002) | nessun nome nell'Inventario; token `BaAscoltoTokens` |
 | `BaCardLive`, `BaIsola`, `BaNotificaAndroid` | superfici di sistema | C5 (non sono widget Flutter) |
 
-Oltre ai componenti, **mancano le schermate**, la navigazione, l'accesso, l'audio, la connessione, il server: vedi [produzione](produzione.md). Nell'elenco dei task (`docs/tasks/README.md`) i componenti dei task 013–015 sono il task 022 e i contenuti dei fogli il 023, entrambi «brief da scrivere»; il prototipo navigabile in locale è il 024.
+Oltre ai componenti, **mancano le schermate**, la navigazione, l'accesso, l'audio, la connessione, il server: vedi [produzione](produzione.md). Nell'elenco dei task (`docs/tasks/README.md`) il task 022 (i nove componenti dei task 013–015) è in corso o concluso, i contenuti dei fogli sono il 023 e il prototipo navigabile in locale il 024, entrambi «brief da scrivere».

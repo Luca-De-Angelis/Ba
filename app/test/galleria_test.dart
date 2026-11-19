@@ -2,6 +2,15 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:ba/design_system/azioni_in_coppia.dart';
+import 'package:ba/design_system/banda_posto.dart';
+import 'package:ba/design_system/campo_codice.dart';
+import 'package:ba/design_system/campo_testo.dart';
+import 'package:ba/design_system/chip_scelta.dart';
+import 'package:ba/design_system/fascia_attesa.dart';
+import 'package:ba/design_system/interruttore_riga.dart';
+import 'package:ba/design_system/punto_aggancio.dart';
+import 'package:ba/design_system/riga_coda.dart';
+import 'package:ba/design_system/scelta_den.dart';
 import 'package:ba/design_system/foglio.dart';
 import 'package:ba/design_system/messaggio.dart';
 import 'package:ba/design_system/scheda_persona.dart';
@@ -533,6 +542,75 @@ void main() {
     await tester.tap(find.text('Chiudi'));
     await tester.pumpAndSettle();
     expect(dietro(), isFalse);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('la pagina «Accesso, creazione e coda»: i nove componenti, il codice si scrive, le scelte cambiano',
+      (tester) async {
+    _vistaAlta(tester);
+    await tester.pumpWidget(const GalleriaApp());
+    await tester.pump();
+    await _tocca(tester, 'Accesso, creazione e coda');
+
+    // Tutti i componenti, nei loro stati.
+    expect(find.byType(BaCampoTesto), findsNWidgets(5));
+    expect(find.byType(BaCampoCodice), findsOneWidget);
+    expect(find.byType(BaSceltaDen), findsOneWidget);
+    expect(find.byType(BaChipScelta), findsNWidgets(7));
+    expect(find.byType(BaPuntoAggancio), findsNWidgets(2));
+    expect(find.byType(BaInterruttoreRiga), findsNWidgets(2));
+    expect(find.byType(BaRigaCoda), findsNWidgets(2));
+    expect(find.byType(BaFasciaAttesa), findsNWidgets(2));
+    expect(find.byType(BaBandaPosto), findsNWidgets(3));
+    expect(find.text('Lascia il gruppo'), findsOneWidget, reason: 'solo la prima fascia ha la capacità');
+
+    // La banda: la stessa banda, 30 secondi e 5 minuti.
+    expect(find.textContaining('ancora per un momento'), findsOneWidget);
+    expect(find.textContaining('fino alle 21:45'), findsOneWidget);
+
+    // Il codice si scrive davvero e chiama onCompleto.
+    final campoCodice = find.descendant(of: find.byType(BaCampoCodice), matching: find.byType(EditableText));
+    await tester.ensureVisible(campoCodice);
+    await tester.enterText(campoCodice, '48a1-9');
+    await tester.pump();
+    expect(find.text('Completo: —'), findsOneWidget, reason: 'quattro cifre: non è completo');
+    await tester.enterText(campoCodice, '481902');
+    await tester.pump();
+    expect(find.text('Completo: 481902'), findsOneWidget);
+
+    // Gli stati del codice: sbagliato, scaduto, attesa.
+    await _tocca(tester, 'Codice: scrittura');
+    expect(find.text('Il codice non è giusto. Controlla l\'email e riprova.'), findsOneWidget);
+    await _tocca(tester, 'Codice: sbagliato');
+    expect(find.text('Il codice è scaduto. Te ne mandiamo uno nuovo.'), findsOneWidget);
+    await _tocca(tester, 'Codice: scaduto');
+    expect(find.text('Ne puoi chiedere un altro fra poco.'), findsOneWidget);
+    await _tocca(tester, 'Codice: attesa');
+
+    // La scelta cambia la frase sotto.
+    expect(find.text('Inviti tu chi vuoi: gli altri non lo vedono.'), findsOneWidget);
+    await _tocca(tester, 'Pubblico');
+    expect(find.text('Chiunque può entrare nel pubblico e ascoltare.'), findsOneWidget);
+
+    // Un interruttore cambia la parola.
+    final accesi = find.text('ACCESO').evaluate().length;
+    await _tocca(tester, 'Aspetta con altri');
+    expect(find.text('ACCESO').evaluate().length, accesi + 1);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('la pagina «Accesso, creazione e coda» regge 744, il testo 2,0 e «riduci movimento»', (tester) async {
+    _vistaAlta(tester);
+    await tester.pumpWidget(const GalleriaApp());
+    await tester.pump();
+    await _tocca(tester, 'Accesso, creazione e coda');
+    for (final c in ['Larghezza 360', 'Testo 1,0', 'Riduci movimento']) {
+      await _tocca(tester, c);
+      expect(tester.takeException(), isNull, reason: c);
+    }
+    // Con il testo grande anche gli stati del codice non fanno overflow.
+    await _tocca(tester, 'Codice: scrittura');
+    await _tocca(tester, 'Codice: sbagliato');
     expect(tester.takeException(), isNull);
   });
 }
