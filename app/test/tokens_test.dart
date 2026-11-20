@@ -411,4 +411,23 @@ void main() {
       });
     });
   });
+
+  group('posto offerto (task 027, D-042)', () {
+    test('la finestra è di 30 secondi e la permanenza massima resta 60 minuti', () {
+      expect(BaCodaTokens.postoOffertoFinestra, const Duration(seconds: 30));
+      expect(BaCodaTokens.permanenzaMassima, const Duration(minutes: 60));
+    });
+  });
+
+  group('schermo bloccato (task 027, D-050)', () {
+    test('il controllo non scende sotto areaMinima e cresce solo col testo', () {
+      expect(BaSchermoBloccatoTokens.controlloAltezza, greaterThanOrEqualTo(BaControlloTokens.areaMinima));
+    });
+
+    test('distanza 8, pillola, bordo 1', () {
+      expect(BaSchermoBloccatoTokens.controlloGap, 8);
+      expect(BaSchermoBloccatoTokens.controlloRaggio, BaRaggioTokens.pillola);
+      expect(BaSchermoBloccatoTokens.controlloBordo, 1);
+    });
+  });
 }

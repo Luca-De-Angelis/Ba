@@ -985,7 +985,8 @@ class BaCodaTokens {
   // durate: regole di prodotto, non stile. Si mostrano come ora («fino alle 21:41»), mai come conto alla rovescia
   static const Duration postoConservatoFree = Duration(seconds: 30); // eccezione: C06
   static const Duration postoConservatoPro = Duration(minutes: 3); // eccezione: C06, ipotesi (3 o 5 minuti: si usa 3)
-  static const Duration permanenzaMassima = Duration(minutes: 60); // eccezione: B05, in revisione
+  static const Duration permanenzaMassima = Duration(minutes: 60); // eccezione: B05, tempi da definire (D-044)
+  static const Duration postoOffertoFinestra = Duration(seconds: 30); // eccezione: D-042, valore variabile. Si mostra «pochi secondi», mai un conto alla rovescia
 
   /// Il tempo non promette mai più del reale. Sotto i due minuti non si mostra
   /// un'ora: la frase dice «ancora per un momento». Da due minuti in su l'ora è
@@ -997,4 +998,19 @@ class BaCodaTokens {
     final DateTime fine = persa.add(durata);
     return DateTime(fine.year, fine.month, fine.day, fine.hour, fine.minute);
   }
+}
+
+// ------------------------------------------------------------------ schermo bloccato
+
+/// Controlli a schermo bloccato (task 027, D-050): notifica fissa, Live Activity o
+/// widget con mute o pausa, stop e next. Nessun colore nuovo. Sul palco il controllo
+/// del microfono lo spegne e basta (D-025): lo stato spento è testo, senza l'aspetto
+/// di un'azione. Lo stato si dice a parole, mai solo con il colore.
+class BaSchermoBloccatoTokens {
+  BaSchermoBloccatoTokens._();
+
+  static const double controlloAltezza = _S.sp11; // minimo di tocco: il testo grande lo fa crescere
+  static const double controlloGap = _S.sp2;
+  static const double controlloRaggio = _S.roundedFull;
+  static const double controlloBordo = _S.border1;
 }
