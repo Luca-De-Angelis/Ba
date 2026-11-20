@@ -1,8 +1,11 @@
-<!-- Copia di lettura generata da "BA - Token.dc.html". Fa fede l'HTML esportato da Claude Design; i valori fanno fede in app/lib/design_system/tokens.dart. -->
 BA · brief di design · token
+
 # I valori, estratti dalle schermate
+
 La fonte di verità è **tokens.dart**. Questo documento dice **perché** quei valori sono quelli, e porta le regole d’uso che nessun valore può contenere.
+
 Niente qui è stato inventato per completezza: ogni token ha almeno un impiego nella stanza (§7) o nelle altre superfici (fase 2), e la colonna *dove* lo dice. Un valore senza impiego non è un token, è un'ipotesi.
+
 ## T0  Gerarchia dei documenti — quale vince
 
 Le stesse misure oggi compaiono in più file, e questo produce codice incoerente. Da qui in avanti:
@@ -25,36 +28,36 @@ I nomi sono famiglia/ruolo, in italiano, e descrivono **il mestiere del valore, 
 
 ## T2  Colore — fondali e superfici
 
-| token               | valore                                                  | dove                                                 |
-|---------------------|---------------------------------------------------------|------------------------------------------------------|
-| fondo/app           | \#0A0A09                                                | elenco, impostazioni, accesso                        |
-| fondo/stanza        | \#171413 → \#100F0E 52% → \#0B0A09                      | DEN, verticale: il palco sta nella parte più chiara  |
-| fondo/alone         | radial closest-side 50% 42%, rgba(230,220,190,.055) → 0 | dietro il palco; unica sorgente di luce della stanza |
-| superficie/foglio   | \#161412                                                | foglio del permesso negato, schede                   |
-| superficie/sistema  | rgba(28,25,23,.86)                                      | card Live Activity, sopra lo sfondo del lock screen  |
-| superficie/notifica | \#1A1917                                                | notifica Android (opaca per obbligo di sistema)      |
-| superficie/isola    | \#000000                                                | Dynamic Island: nero vero, non il nostro fondo       |
+| token               | valore                                                                                                                                                                         | dove                                                 |
+|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------|
+| fondo/app           | \#0A0A09 | elenco, impostazioni, accesso                        |
+| fondo/stanza        | \#171413 → \#100F0E 52% → \#0B0A09                                                                                                                                             | DEN, verticale: il palco sta nella parte più chiara  |
+| fondo/alone         | radial closest-side 50% 42%, rgba(230,220,190,.055) → 0                                                                                                                        | dietro il palco; unica sorgente di luce della stanza |
+| superficie/foglio   | \#161412 | foglio del permesso negato, schede                   |
+| superficie/sistema  | rgba(28,25,23,.86)                                                                                                                                                             | card Live Activity, sopra lo sfondo del lock screen  |
+| superficie/notifica | \#1A1917 | notifica Android (opaca per obbligo di sistema)      |
+| superficie/isola    | \#000000                                                                                                                                                                       | Dynamic Island: nero vero, non il nostro fondo       |
 
 ## T3  Colore — testo, filetti, azione, errore
 
-|                     |                                   |                                                                  |
-|---------------------|-----------------------------------|------------------------------------------------------------------|
-| testo/primo         | \#F2EEE9                          | nomi di stanza, frasi di BA, stato attivo                        |
-| testo/secondo       | \#A09890                          | spiegazioni, azioni hairline, riga sotto il titolo               |
-| testo/terzo         | \#8A837B                          | marcatori mono, contatori, orario                                |
-| testo/spento        | \#6E6862                          | note di formato, "tocca per rientrare"                           |
-| testo/inattivo      | \#5E5952                          | azione non disponibile (palco pieno, ingresso in corso)          |
-| testo/su-tinta      | \#FFFFFF                          | iniziali sulle presenze; bianco pieno, non testo/primo           |
-| testo/su-chiara     | \#100F0E                          | sopra azione/chiara                                              |
-| filetto/appena      | rgba(242,238,233,.06)             | contorno di un'azione spenta                                     |
-| filetto/base        | rgba(242,238,233,.10)             | azioni hairline, bordo dei telefoni, righe di elenco             |
-| filetto/marcato     | rgba(242,238,233,.14)             | pillola dello stato del mio microfono                            |
-| filetto/divisorio   | rgba(242,238,233,.12)             | separazioni fra blocchi, non fra controlli                       |
+|                     |                                                                                                                                                                                                         |                                                                  |
+|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------|
+| testo/primo         | \#F2EEE9                                                                                                                                                                                                | nomi di stanza, frasi di BA, stato attivo                        |
+| testo/secondo       | \#A09890                                                                                                                                                                                                | spiegazioni, azioni hairline, riga sotto il titolo               |
+| testo/terzo         | \#8A837B                                                                                                                                                                                                | marcatori mono, contatori, orario                                |
+| testo/spento        | \#6E6862                                                                                                                                                                                                | note di formato, "tocca per rientrare"                           |
+| testo/inattivo      | \#5E5952                                                                                                                                                                                                | azione non disponibile (palco pieno, ingresso in corso)          |
+| testo/su-tinta      | \#FFFFFF                                                                                                                                                                                                | iniziali sulle presenze; bianco pieno, non testo/primo           |
+| testo/su-chiara     | \#100F0E                                                                                                                                                                                                | sopra azione/chiara                                              |
+| filetto/appena      | rgba(242,238,233,.06)                                                                                                                                                                                   | contorno di un'azione spenta                                     |
+| filetto/base        | rgba(242,238,233,.10)                                                                                                                                                                                   | azioni hairline, bordo dei telefoni, righe di elenco             |
+| filetto/marcato     | rgba(242,238,233,.14)                                                                                                                                                                                   | pillola dello stato del mio microfono                            |
+| filetto/divisorio   | rgba(242,238,233,.12)                                                                                                                                                                                   | separazioni fra blocchi, non fra controlli                       |
 | azione/chiara       | \#D9CFA8 · pieno \#EDE7DC→#D2C9B6 | accesso, "Apri le impostazioni"; vedi T9                         |
-| azione/attiva-bordo | rgba(217,207,168,.42)             | controllo acceso ma non urgente: avviso attivo, "Riprova adesso" |
-| azione/attiva-fondo | \#302A25 → \#1F1A15               | riempimento della stessa pillola                                 |
+| azione/attiva-bordo | rgba(217,207,168,.42)                                                                                                                                                                                   | controllo acceso ma non urgente: avviso attivo, "Riprova adesso" |
+| azione/attiva-fondo | \#302A25 → \#1F1A15                                                                                                                                                                                     | riempimento della stessa pillola                                 |
 | errore/testo        | \#E4705B                          | "La linea è caduta", "microfono negato"                          |
-| errore/filetto      | rgba(228,112,91,.32)              | riquadro del messaggio; mai riempito                             |
+| errore/filetto      | rgba(228,112,91,.32)                                                                                                                                                                                    | riquadro del messaggio; mai riempito                             |
 
 **Due divieti che sono parte dei token.** errore esiste come testo e filetto e **non ha una variante riempita**: la palette contiene già due tinte rosse per le presenze, e una bolla rossa piena sarebbe una persona. Non esiste un token successo: quando una cosa riesce, la prova è che è successa.
 
@@ -108,15 +111,9 @@ Sotto i 14 pt si scrive solo in mono e solo per fatti, e niente scende sotto il 
 |----------------|--------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | app, d ≥ 32    | **iniziali = round(d × 0,295)**            | tutto il palco, **a qualunque scala**: da 208 fino al fondo della catena di cessione                                                                                        |
 | sistema, 32–36 | **iniziali = round(d × 0,35)**             | superfici di sistema: a quella scala il testo deve reggere lo schermo bloccato e l'always-on, quindi cresce più della sagoma                                                |
-| d \< 32        | **nessuna iniziale: resta la sola sagoma** | pubblico a 22 pt, marchio, sagome campione, e il fondo della scala a testo grande. Sotto i 32 pt due lettere non si leggono: disegnarle piccole è peggio che non disegnarle |
+| d \360 − 2×20 = 320. Una fila di *k* sagome chiede:
 
-Il rapporto lo decide il **contesto, non il diametro**: a testo di sistema grande una presenza sul palco può stare a 34 pt, cioè esattamente alla misura del lock screen, e dedurre il rapporto dalla taglia farebbe *crescere* le iniziali mentre la sagoma si rimpicciolisce. Un solo rapporto per tutto il palco, quindi: le iniziali scendono con la bolla fino a sparire, e sono l'ultima cosa che cede prima delle sagome — che non cedono (Inventario, C6). Fuori dal dominio la funzione non restituisce una taglia minima: restituisce niente, e chi disegna non scrive. La distanza minima fra i centri resta quella del §7.6 (diametro + 17). L'anello aggiunge sempre 3 pt di keyline e 2 di tratto, a ogni scala: **non si assottiglia con la bolla**, o sparisce al fondo della scala.
-
-## T6 bis  La baseline stretta è 360 dp
-
-Il telefono più stretto che supportiamo è **Android a 360 dp**, non iPhone a 375 pt: la scala va verificata là, ed è dove è stata ricontrollata. Larghezza utile del palco 360 − 2×20 = 320. Una fila di *k* sagome chiede:
-
-larghezza = (k − 1) × (d + 17) + d + 18  
+larghezza = (k − 1) × (d + 17) + d + 18
 i 18 sono anello (5) e crescita al picco (4) sui due bordi esterni
 
 |                 |        |                                                                                                  |
@@ -176,7 +173,7 @@ Valori già citati nel §7 e nelle schermate ma assenti da tokens.dart. Ora ci s
 | glifo/proporzioni           | BaGlifoTokens: tratto 2 (border2); barra −45°, 0,84; cerchio 0,72   | microfono (capsula, culla, stelo), altoparlante (corpo, cono, onde ±40°) e cerchio barrato, in frazione del lato del disco; stesso tratto a ogni misura (§7.17)                                                                                                         |
 | accesso/codice              | 6 caselle · sp14 · gap sp2 · rounded2xl · border1 / border2         | BaCampoCodice, email e SMS (A2, P3): 56 dp di altezza; la casella in scrittura e quelle in errore a border2                                                                                                                                                             |
 | accesso/campo               | sp14 · border2                                                      | campo email (A1), nome (A5) e numero (P2): riga con la linea sotto                                                                                                                                                                                                      |
-| accesso/segno-ipotesi       | border1 tratteggiato · rounded2xl · sabbia300 a42                   | «ipotesi · da confermare» su elenco, nome, P6 e T1; si toglie con la proprietà segniIpotesi. Nessun colore nuovo. rounded2xl e non roundedFull: con il testo a capo la pillola cresce con il testo                                                                      |
+| accesso/segno-ipotesi       | border1 tratteggiato · rounded2xl · sabbia300 a42                   | «ipotesi» su termini (età minima), P4 e T3 (nuovo accesso), K4 bis, K7, K8 e M1; si toglie con la proprietà segniIpotesi. Nessun colore nuovo. rounded2xl e non roundedFull: con il testo a capo la pillola cresce con il testo                                         |
 | accesso/errore-segno        | 22 · border2 · erroreTesto                                          | segno «!» del codice sbagliato o scaduto (A2 bis, A2 ter); mai solo colore. Eccezione: 22                                                                                                                                                                               |
 | accesso/errore-bordo        | erroreFiletto · border2                                             | bordo delle sei caselle nel codice sbagliato; la frase e il «!» dicono lo stesso                                                                                                                                                                                        |
 | accesso/nuovo-invio-attesa  | 30 s · eccezione                                                    | dopo un nuovo invio (A2 quater): frase e azione inattiva, nessun conto alla rovescia a schermo; il valore è del server                                                                                                                                                  |
@@ -193,8 +190,10 @@ Valori già citati nel §7 e nelle schermate ma assenti da tokens.dart. Ora ci s
 | coda/gruppo                 | 8 (eccezione) · presenza sp8 · gap sp1_5                            | sotto-DEN d'attesa (W2): fino a 8, presenze piccole senza numeri né segni; non è il palco                                                                                                                                                                               |
 | coda/banda                  | rounded2xl · border1 (tratteggiato per B05)                         | banda del posto conservato (P1) e della permanenza massima (M1): una frase con un'ora ferma                                                                                                                                                                             |
 | coda/posto-conservato       | 30 s (Free) · 3 min (Pro, ipotesi) · eccezione                      | C06: regola di prodotto. Il tempo non promette mai più del reale: sotto i due minuti «ancora per un momento» (sogliaMomento), da due minuti in su «fino alle HH:mm» arrotondato per difetto (BaCodaTokens.oraDelPosto); la stessa schermata regge 30 secondi e 5 minuti |
-| coda/permanenza             | 60 min · eccezione                                                  | B05, in revisione: solo il punto di aggancio (M1), con un'ora e senza conteggio                                                                                                                                                                                         |
+| coda/permanenza             | 60 min · eccezione                                                  | B05, tempi da definire (D-044): vale per ascoltatori e parlatori (M1, M1 bis), con un'ora e senza conteggio                                                                                                                                                             |
 | coda/persa                  | persaOpacita 0,34 + grigio                                          | la mia presenza nel posto conservato (P1) è quella «persa» del 011: nessun valore nuovo                                                                                                                                                                                 |
+| coda/posto-offerto          | 30 s · eccezione                                                    | D-042, valore variabile (BaCodaTokens.postoOffertoFinestra): chi ha un posto offerto ha 30 secondi. La frase dice «pochi secondi», mai un conto alla rovescia (K3, K4, K6)                                                                                              |
+| blocco/controlli            | sp11 · gap sp2 · roundedFull · border1                              | controlli a schermo bloccato (L1–L4, D-050): mute o pausa, esci, prossimo DEN. BaSchermoBloccatoTokens; nessun colore nuovo; lo stato spento è testo senza contorno                                                                                                     |
 | barra/altro-punti           | 3 punti da sp1 · gap 3 (eccezione) · filetto a32                    | «Altro» (48): i tre punti e il filetto, nella barra delle azioni e nel foglio (BaBarraAzioniTokens.altroPunto\*, altroBordo). Il filetto era 0,30 nel 002: ora a32, la primitiva che c'è già                                                                            |
 | coda/momento                | 2 min · eccezione                                                   | sotto i due minuti il posto conservato non mostra un'ora (BaCodaTokens.sogliaMomento)                                                                                                                                                                                   |
 
@@ -219,14 +218,14 @@ Valori già citati nel §7 e nelle schermate ma assenti da tokens.dart. Ora ci s
 
 Questi non emergono da una schermata: emergono dal fatto che gli elementi sono toccabili. Valgono per **ogni** elemento interattivo, comprese le presenze — che sono il bersaglio più grande dell'app e anche il più facile da dimenticare, perché non somigliano a pulsanti.
 
-|                        |                                             |                                                                                                                                                                                                                                                                       |
-|------------------------|---------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| tocco/area-minima      | 44 × 44                                     | sotto questa misura nessun bersaglio, mai. I controlli a 56 e 48 sono già oltre; il bersaglio di una presenza è la sua sagoma, quindi il fondo della scala (88) la copre con 44 dp d'avanzo                                                                           |
-| tocco/area-estesa      | +8 oltre il bordo visibile                  | le pillole in coppia: il dito arriva prima dell'occhio                                                                                                                                                                                                                |
+|                        |                                             |                                                                                                                                                                                                                                                                                                                                                 |
+|------------------------|---------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| tocco/area-minima      | 44 × 44                                     | sotto questa misura nessun bersaglio, mai. I controlli a 56 e 48 sono già oltre; il bersaglio di una presenza è la sua sagoma, quindi il fondo della scala (88) la copre con 44 dp d'avanzo                                                                                                                                                     |
+| tocco/area-estesa      | +8 oltre il bordo visibile                  | le pillole in coppia: il dito arriva prima dell'occhio                                                                                                                                                                                                                                                                                          |
 | tocco/premuto          | fondo rgba(242,238,233,.06) · scala .98     | vale per pillole e righe di elenco. 90 ms all'andata, 140 al ritorno. **Valore unico** (premutoScala), lo stesso in T8: una riga larga quanto lo schermo, a una scala più profonda, staccherebbe il bordo dal margine; a 0,98 il cedimento si vede e niente si sposta |
-| tocco/premuto-presenza | keyline a rgba(8,7,6,1) · **nessuna scala** | sulle presenze la scala è occupata dall'assestamento e il contorno dall'anello: il premuto scurisce la keyline e basta                                                                                                                                                |
-| focus/anello           | 2 pt azione/chiara · offset 3 pt · statico  | tastiera esterna e controllo interruttori                                                                                                                                                                                                                             |
-| focus/anello-su-chiara | 2 pt \#100F0E · offset 3 pt                 | sopra un controllo già chiaro                                                                                                                                                                                                                                         |
+| tocco/premuto-presenza | keyline a rgba(8,7,6,1) · **nessuna scala** | sulle presenze la scala è occupata dall'assestamento e il contorno dall'anello: il premuto scurisce la keyline e basta                                                                                                                                                                                                                          |
+| focus/anello           | 2 pt azione/chiara · offset 3 pt · statico  | tastiera esterna e controllo interruttori                                                                                                                                                                                                                                                                                                       |
+| focus/anello-su-chiara | 2 pt \#100F0E · offset 3 pt                 | sopra un controllo già chiaro                                                                                                                                                                                                                                                                                                                   |
 
 **Il focus non può somigliare alla voce.** L'anello di chi parla è bianco, doppio, aderente alla sagoma e in movimento; quello di focus è **color azione, singolo, staccato di 3 pt e immobile**. Sono le tre differenze che restano leggibili anche quando cadono sulla stessa bolla — e ci cadono, perché si può mettere a fuoco chi sta parlando.
 
@@ -236,107 +235,79 @@ Questi non emergono da una schermata: emergono dal fatto che gli elementi sono t
 
 **Questo è il punto solo**: cosa si muove, per quanti millisecondi, con quale curva, cosa deve restare fermo, e cosa non può muoversi insieme a cos'altro. Le tabelle del §7.15 e del 7.15 bis sono state fuse qui e là restano le ragioni — un valore scritto in due posti divergerà, e la copia sbagliata è sempre quella che qualcuno legge. **L'anello sta su due canali, e i token seguono la divisione.** Il canale veloce è ActiveSpeakersChanged: l'anello compare (70 ms) e scompare (140 ms), ed è un fatto booleano che regge da solo tutto il significato — con il ripiego statico resta solo questo. Il canale lento è l'ampiezza campionata dall'SDK, **LiveKit, 500 ms di default**: è il respiro, cioè decorazione informata, non informazione. **Il rilascio del respiro non può essere più corto del campionamento** — con un rilascio più corto, su campioni a 500 l'anello si sgonfia fra un campione e l'altro e si rigonfia al successivo: un dente di sega alla frequenza di campionamento, visibile e scollegato dalla voce. Da qui i 600 ms, che lasciano margine al jitter. L'attacco a 70 ms resta, ma **vale solo per la comparsa**: sull'ampiezza non significa niente. Le curve sono due, più la lineare: curva/assestamento cubic-bezier(.22,.9,.25,1) per tutto ciò che si sposta o cambia scala, curva/scheda cubic-bezier(.34,1.2,.64,1) per ciò che appare sopra il resto. Se serve una terza curva, prima serve una ragione.
 
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<tbody>
-<tr class="odd">
-<td>voce/comparsa<br />
-voce/scomparsa</td>
-<td>70 ms · 140 ms</td>
-<td><strong>canale veloce</strong>: l'anello c'è o non c'è, su <span>ActiveSpeakersChanged</span>. Regge da solo il significato</td>
-</tr>
-<tr class="even">
-<td>voce/rilascio<br />
-campionamento</td>
-<td>600 ms · 500 ms</td>
-<td><strong>canale lento</strong>: il respiro sull'ampiezza campionata dall'SDK. <strong>Il rilascio non può scendere sotto il campionamento</strong></td>
-</tr>
-<tr class="odd">
-<td>stato/glifo</td>
-<td>140 ms lineare</td>
-<td>glifo della voce mutata che si accende, da 0,45 a 1</td>
-</tr>
-<tr class="even">
-<td>premuto</td>
-<td>90 ms andata · 140 ritorno</td>
-<td>ogni elemento toccabile (T7 bis): cede a scala 0,98 (tocco/premuto, T7 bis) e torna, i vicini non si muovono</td>
-</tr>
-<tr class="odd">
-<td>scheda</td>
-<td>180 ms · curva/scheda</td>
-<td>scheda breve di una presenza</td>
-</tr>
-<tr class="even">
-<td>foglio</td>
-<td>240 ms · curva/scheda</td>
-<td>fogli che salgono dal basso: permesso negato, invito</td>
-</tr>
-<tr class="odd">
-<td>assestamento</td>
-<td>320 ms · curva/assestamento</td>
-<td>tutte le presenze alla nuova scala, insieme — chi parla compreso; solo a ingresso/uscita, mai perpetuo</td>
-</tr>
-<tr class="even">
-<td>ricompattamento</td>
-<td>200 ms · curva/assestamento</td>
-<td>il posto di chi esce si chiude subito, alla stessa scala</td>
-</tr>
-<tr class="odd">
-<td>comparsa · sparizione</td>
-<td>0 ms</td>
-<td>le presenze non entrano e non escono: ci sono o non ci sono — e l'arrivato compare al suo posto <strong>alla scala corrente</strong>, mai più piccolo degli altri</td>
-</tr>
-<tr class="even">
-<td>attesa/ingresso</td>
-<td>4 s</td>
-<td>conteggio fermo prima di assestare</td>
-</tr>
-<tr class="odd">
-<td>attesa/uscita</td>
-<td>6 s</td>
-<td>ma il posto vuoto si chiude subito (200 ms). <strong>Eccezione: se resta una persona sola, 208 subito</strong> — non si aspetta a guardare un DEN vuoto</td>
-</tr>
-<tr class="even">
-<td>attesa/skeleton</td>
-<td>1,8 s · .30→.62 opacità</td>
-<td>sagome vuote mentre entro</td>
-</tr>
-<tr class="odd">
-<td>soglia/instabile</td>
-<td>4 s</td>
-<td>apertura che non si aggancia: si passa a "audio a scatti"</td>
-</tr>
-<tr class="even">
-<td>soglia/persa</td>
-<td>12 s</td>
-<td>e poi a "la linea è caduta". Il caricamento non ha uno stato infinito</td>
-</tr>
-<tr class="odd">
-<td>riprova/automatica</td>
-<td>8 s</td>
-<td>intervallo fra i tentativi di BA, dichiarato a schermo</td>
-</tr>
-<tr class="even">
-<td>fascia/testo</td>
-<td>0 ms · permanenza 17–20 car/s</td>
-<td><strong>non in v1</strong> (§7.12 bis): il blocco compare e si sostituisce, non scivola; la permanenza minima si ricava dalla lettura, non dalla voce</td>
-</tr>
-<tr class="odd">
-<td>tutto il resto</td>
-<td>&lt; 200 ms, discreto</td>
-<td>e senza effetti: nessun glow, nessuna ombra ampia, nessun blur, nessuno scorrimento animato</td>
-</tr>
-<tr class="even">
-<td>ripiego/statico</td>
-<td>0 ms, stesse regole</td>
-<td>movimento ridotto, screen reader, degrado termico (§7.16)</td>
-</tr>
-</tbody>
-</table>
+voce/comparsa
+voce/scomparsa
+70 ms · 140 ms
+canale veloce: l'anello c'è o non c'è, su ActiveSpeakersChanged. Regge da solo il significato
+
+voce/rilascio
+campionamento
+600 ms · 500 ms
+canale lento: il respiro sull'ampiezza campionata dall'SDK. Il rilascio non può scendere sotto il campionamento
+
+stato/glifo
+140 ms lineare
+glifo della voce mutata che si accende, da 0,45 a 1
+
+premuto
+90 ms andata · 140 ritorno
+ogni elemento toccabile (T7 bis): cede a scala 0,98 (tocco/premuto, T7 bis) e torna, i vicini non si muovono
+
+scheda
+180 ms · curva/scheda
+scheda breve di una presenza
+
+foglio
+240 ms · curva/scheda
+fogli che salgono dal basso: permesso negato, invito
+
+assestamento
+320 ms · curva/assestamento
+tutte le presenze alla nuova scala, insieme — chi parla compreso; solo a ingresso/uscita, mai perpetuo
+
+ricompattamento
+200 ms · curva/assestamento
+il posto di chi esce si chiude subito, alla stessa scala
+
+comparsa · sparizione
+0 ms
+le presenze non entrano e non escono: ci sono o non ci sono — e l'arrivato compare al suo posto alla scala corrente, mai più piccolo degli altri
+
+attesa/ingresso
+4 s
+conteggio fermo prima di assestare
+
+attesa/uscita
+6 s
+ma il posto vuoto si chiude subito (200 ms). Eccezione: se resta una persona sola, 208 subito — non si aspetta a guardare un DEN vuoto
+
+attesa/skeleton
+1,8 s · .30→.62 opacità
+sagome vuote mentre entro
+
+soglia/instabile
+4 s
+apertura che non si aggancia: si passa a "audio a scatti"
+
+soglia/persa
+12 s
+e poi a "la linea è caduta". Il caricamento non ha uno stato infinito
+
+riprova/automatica
+8 s
+intervallo fra i tentativi di BA, dichiarato a schermo
+
+fascia/testo
+0 ms · permanenza 17–20 car/s
+non in v1 (§7.12 bis): il blocco compare e si sostituisce, non scivola; la permanenza minima si ricava dalla lettura, non dalla voce
+
+tutto il resto
+&lt; 200 ms, discreto
+e senza effetti: nessun glow, nessuna ombra ampia, nessun blur, nessuno scorrimento animato
+
+ripiego/statico
+0 ms, stesse regole
+movimento ridotto, screen reader, degrado termico (§7.16)
 
 Nessuna transizione di entrata o di uscita per le presenze: **compaiono e spariscono**. L'unico movimento che riguarda una persona è l'anello, e l'unico che riguarda la stanza è l'assestamento.
 
@@ -366,16 +337,16 @@ Nessuna transizione di entrata o di uscita per le presenze: **compaiono e sparis
 
 Non sono stime: sono i punti dove una scelta di design costa codice, e vanno visti prima di aprire l'editor. La colonna *costo* dice se si può rimandare.
 
-| punto                         | costo                    | perché                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-|-------------------------------|--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| punto                         | costo                    | perché                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+|-------------------------------|--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | livello audio per persona     | **vincolo di scelta**    | **risolto: LiveKit.** Dà ActiveSpeakersChanged (canale veloce) più l'ampiezza per partecipante a 500 ms (canale lento) — 2 Hz, non 10, e per questo il respiro ha un rilascio di 600 ms (T8). Un SDK che desse solo "chi parla" sì/no basterebbe comunque: sarebbe il solo canale veloce, che porta tutto il significato. **Quello che va verificato è il contrario**: che l'ampiezza sia per partecipante e non del mix, o il respiro non è attribuibile a nessuno |
-| autorità su tinta e sagoma    | **basso ora, alto dopo** | se le assegna il client, due telefoni mostrano la stessa stanza con bolle diverse. Le assegna la stanza, cioè il server, e viaggiano con l'evento di ingresso                                                                                                                                                                                                                                                                                                       |
-| niente da salvare             | **basso, ma vincola**    | l'unico dato durevole del client è l'elenco dei bloccati. Nessuna cache di presenze, nomi, stanze: l'effimero è un'architettura, non una schermata                                                                                                                                                                                                                                                                                                                  |
-| impostazioni di accessibilità | **dovuto**               | movimento ridotto e screen reader si leggono dal sistema e spengono ogni animazione (T8). Il ripiego statico non è una modalità nostra: è quella del telefono                                                                                                                                                                                                                                                                                                       |
-| focus e ordine di lettura     | **basso ora, alto dopo** | nodi di focus ed etichette vanno messi mentre si costruiscono i controlli. Aggiungerli a interfaccia finita costa più che scriverla                                                                                                                                                                                                                                                                                                                                 |
-| Live Activity iOS             | **alto · rinviabile**    | estensione WidgetKit in Swift dentro Flutter, interfaccia duplicata, stato via App Group, azioni come App Intent. L'alpha vive anche senza                                                                                                                                                                                                                                                                                                                          |
-| notifica Android              | **dovuto**               | un foreground service che tiene il microfono deve mostrarla, o il sistema lo chiude                                                                                                                                                                                                                                                                                                                                                                                 |
-| degrado termico               | **medio · rinviabile**   | nessuna API affidabile: si osserva il frame rate e si scende al ripiego statico. Serve solo quando l'alpha durerà sessioni lunghe                                                                                                                                                                                                                                                                                                                                   |
+| autorità su tinta e sagoma    | **basso ora, alto dopo** | se le assegna il client, due telefoni mostrano la stessa stanza con bolle diverse. Le assegna la stanza, cioè il server, e viaggiano con l'evento di ingresso                                                                                                                                                                                                                                                                                                                                                                  |
+| niente da salvare             | **basso, ma vincola**    | l'unico dato durevole del client è l'elenco dei bloccati. Nessuna cache di presenze, nomi, stanze: l'effimero è un'architettura, non una schermata                                                                                                                                                                                                                                                                                                                                                                             |
+| impostazioni di accessibilità | **dovuto**               | movimento ridotto e screen reader si leggono dal sistema e spengono ogni animazione (T8). Il ripiego statico non è una modalità nostra: è quella del telefono                                                                                                                                                                                                                                                                                                                                                                  |
+| focus e ordine di lettura     | **basso ora, alto dopo** | nodi di focus ed etichette vanno messi mentre si costruiscono i controlli. Aggiungerli a interfaccia finita costa più che scriverla                                                                                                                                                                                                                                                                                                                                                                                            |
+| Live Activity iOS             | **alto · rinviabile**    | estensione WidgetKit in Swift dentro Flutter, interfaccia duplicata, stato via App Group, azioni come App Intent. L'alpha vive anche senza                                                                                                                                                                                                                                                                                                                                                                                     |
+| notifica Android              | **dovuto**               | un foreground service che tiene il microfono deve mostrarla, o il sistema lo chiude                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| degrado termico               | **medio · rinviabile**   | nessuna API affidabile: si osserva il frame rate e si scende al ripiego statico. Serve solo quando l'alpha durerà sessioni lunghe                                                                                                                                                                                                                                                                                                                                                                                              |
 
 ## T11  Due livelli, e il tablet
 
@@ -391,7 +362,7 @@ Da D-019 i token hanno **due livelli**. Le primitive (BaPaletteTokens, BaPrimiti
 | pietra50 … 975          | 16 neutri caldi        | passi intermedi sotto il 900: il tema scuro vive lì                              |
 | sabbia100 … 950         | 6 valori               | l'azione chiara e i suoi fondi                                                   |
 | corallo400              | \#E4705B               | solo l'errore                                                                    |
-| \<tinta\>700 · 900      | 12 famiglie            | il mazzo: stop chiaro e scuro                                                    |
+| \700 · 900      | 12 famiglie            | il mazzo: stop chiaro e scuro                                                    |
 | a5_5 … a92              | alfa                   | modificatore /n; a5_5 è l'alone e non si arrotonda                               |
 | sm                      | 600                    | estensione: Tailwind sm = 640                                                    |
 

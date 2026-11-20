@@ -1,7 +1,9 @@
-<!-- Copia di lettura generata da "BA - Inventario componenti.dc.html". Fa fede l'HTML esportato da Claude Design; i valori fanno fede in app/lib/design_system/tokens.dart. -->
 BA · brief di design · inventario
+
 # I componenti da costruire, con i loro stati
+
 La fonte di verità per i valori è **tokens.dart**. Qui non compaiono numeri se non come conseguenza: ogni cella cita il token per nome.
+
 ## C0  Come si legge
 
 Venti widget Flutter (C1–C4), lo scaffold BaSchermata che porta il posto unico della richiesta (C8), più tre superfici che Flutter non disegna (C5). La regola per aggiungerne uno: **deve comparire in due schermate diverse con lo stesso comportamento**, altrimenti è una composizione locale e resta dov'è. La colonna *stati* è vincolante: uno stato che non è in tabella non esiste, e uno che c'è va disegnato prima di dire che il componente è finito.
@@ -49,20 +51,22 @@ Le altezze dei controlli in tokens.dart sono **minimi, non misure**: il contenut
 
 ## C4  Elenco e impostazioni
 
-|                    |                                                                                                                     |                                                                                                                                                                                                                                                                |                                                          |
-|--------------------|---------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-| BaRigaDen          | viva · spenta · su invito · rimossobeta                                                                             | con campione di presenze · con sagoma vuota (spenta) · con anello su chi parla · premuta · a fuoco · **inerte** (rimosso: né premuta né a fuoco)beta                                                                                                           | BaTestoTokens.riga · marcatore · filettoBase             |
-| BaRigaImpostazione | interruttore · valore · azione con conseguenza scritta ("Torna ascoltatore") · conseguenza (permesso negato)        | acceso · spento · negato dal sistema (con via d'uscita) · + i tre comuni. **Nessuno stato "deciso dalla stanza"**: un DEN non impone nessuna impostazione. **Nessun interruttore della trascrizione**: il consenso a parlare si ritira con "Torna ascoltatore" | BaTestoTokens.minore · filettoDivisorio                  |
-| BaRigaBloccata     | **dato da te** · **ricevuto**beta (un DEN, non una persona). Schermata in alpha: "Persone bloccate", un gruppo solo | bloccata · sblocco in corso · sbloccata (esce dall'elenco) · ricevuto (beta): **nessuna azione**, sagoma vuota al posto della presenza                                                                                                                         | BaPresenza (neutra) · BaGlifo                            |
-| BaCampoCodice      | accesso (email) · verifica del numero (sali sul palco)                                                              | vuoto · in scrittura · sbagliato · scaduto · nuovo invio con attesa                                                                                                                                                                                            | azioneChiara · erroreTesto                               |
-| BaSceltaDen        | tipo di DEN, privato o pubblico (C1)                                                                                | scelta · non scelta · una frase sotto che cambia con la scelta. La scelta ha bordo spesso e cerchio pieno, non solo il colore                                                                                                                                  | BaCreazioneTokens.scelta\*                               |
-| BaChipScelta       | tema e lingua del DEN (C3)                                                                                          | scelto (con segno di spunta) · non scelto. Vanno a capo; con testo grande la riga cresce                                                                                                                                                                       | BaCreazioneTokens.chip\*                                 |
-| BaPuntoAggancio    | riga tratteggiata: invitati (C4), persone fra cui scegliere (G2), campo «Quando» spento (C2)                        | solo un posto, mai un'azione. Quando la fonte o la funzione sarà decisa, entra qui senza ridisegnare il passo                                                                                                                                                  | BaCreazioneTokens.aggancio\* · quando\*                  |
-| BaFoglioGestisci   | dall'«Altro» della barra azioni (G1–G5); foglio del sotto-DEN (D1)                                                  | elenco · co-amministratori (posto libero, limite raggiunto) · persone · conferma di rimozione · conferma di termine. Ciò che sta sopra le azioni scorre, le azioni restano in basso (T11). Solo per chi ha creato un DEN privato                               | BaAccessoTokens.foglio\* · BaBarraAzioniTokens.altroLato |
-| BaInterruttoreRiga | «Fammi entrare automaticamente» e «Aspetta con altri» (K2)                                                          | acceso (bordo spesso e la parola «Acceso») · spento. Con testo grande il testo va a capo e l'interruttore resta a destra                                                                                                                                       | BaCodaTokens.interruttore\*                              |
-| BaRigaCoda         | le tue code (K1): DEN, stato, «Esci dalla coda»                                                                     | una riga per coda. Nessuna posizione, nessun conteggio, nessun numero massimo. Con testo grande l'uscita va a capo sotto il nome                                                                                                                               | BaCodaTokens.riga\* · uscita\*                           |
-| BaFasciaAttesa     | sotto-DEN d'attesa (W2): presenze piccole, frase, «Lascia il gruppo»                                                | solo per chi ha la capacità: la riga non c'è per gli altri, senza etichetta. Presenze senza numeri né segni                                                                                                                                                    | BaCodaTokens.gruppo\*                                    |
-| BaBandaPosto       | posto conservato (P1) e permanenza massima (M1)                                                                     | un'ora ferma, mai un conto alla rovescia; a filo per il posto conservato, tratteggiata per B05 (in revisione). Regge 30 secondi e 5 minuti senza cambiare schermata                                                                                            | BaCodaTokens.banda\* · oraDelPosto                       |
+|                      |                                                                                                                                                                                                                                                                                                                                                    |                                                                                                                                                                                                                                                                                                                                                                                     |                                                          |
+|----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
+| BaRigaDen            | viva · spenta · su invito · rimossobeta                                                                             | con campione di presenze · con sagoma vuota (spenta) · con anello su chi parla · premuta · a fuoco · **inerte** (rimosso: né premuta né a fuoco)beta | BaTestoTokens.riga · marcatore · filettoBase             |
+| BaRigaImpostazione   | interruttore · valore · azione con conseguenza scritta ("Torna ascoltatore") · conseguenza (permesso negato)                                                                                                                                                                                                                                       | acceso · spento · negato dal sistema (con via d'uscita) · + i tre comuni. **Nessuno stato "deciso dalla stanza"**: un DEN non impone nessuna impostazione. **Nessun interruttore della trascrizione**: il consenso a parlare si ritira con "Torna ascoltatore"                                                                                                                      | BaTestoTokens.minore · filettoDivisorio                  |
+| BaRigaBloccata       | **dato da te** · **ricevuto**beta (un DEN, non una persona). Schermata in alpha: "Persone bloccate", un gruppo solo | bloccata · sblocco in corso · sbloccata (esce dall'elenco) · ricevuto (beta): **nessuna azione**, sagoma vuota al posto della presenza                                                                                                                                                                                                                                              | BaPresenza (neutra) · BaGlifo                            |
+| BaCampoCodice        | accesso (email) · verifica del numero (sali sul palco)                                                                                                                                                                                                                                                                                             | vuoto · in scrittura · sbagliato · scaduto · nuovo invio con attesa                                                                                                                                                                                                                                                                                                                 | azioneChiara · erroreTesto                               |
+| BaSceltaDen          | tipo di DEN, privato o pubblico (C1)                                                                                                                                                                                                                                                                                                               | scelta · non scelta · una frase sotto che cambia con la scelta. La scelta ha bordo spesso e cerchio pieno, non solo il colore                                                                                                                                                                                                                                                       | BaCreazioneTokens.scelta\*                               |
+| BaChipScelta         | tema e lingua del DEN (C3)                                                                                                                                                                                                                                                                                                                         | scelto (con segno di spunta) · non scelto. Vanno a capo; con testo grande la riga cresce                                                                                                                                                                                                                                                                                            | BaCreazioneTokens.chip\*                                 |
+| BaPuntoAggancio      | riga tratteggiata: invitati (C4), persone fra cui scegliere (G2), campo «Quando» spento (C2)                                                                                                                                                                                                                                                       | solo un posto, mai un'azione. Quando la fonte o la funzione sarà decisa, entra qui senza ridisegnare il passo                                                                                                                                                                                                                                                                       | BaCreazioneTokens.aggancio\* · quando\*                  |
+| BaFoglioGestisci     | dall'«Altro» della barra azioni (G1–G5); foglio del sotto-DEN (D1)                                                                                                                                                                                                                                                                                 | elenco · co-amministratori (posto libero, limite raggiunto) · persone · conferma di rimozione · conferma di termine. Ciò che sta sopra le azioni scorre, le azioni restano in basso (T11). Per chi ha creato un DEN, privato o pubblico (D-043)                                                                                                                                     | BaAccessoTokens.foglio\* · BaBarraAzioniTokens.altroLato |
+| BaInterruttoreRiga   | «Fammi entrare automaticamente» e «Aspetta con altri» (K2)                                                                                                                                                                                                                                                                                         | acceso (bordo spesso e la parola «Acceso») · spento. Con testo grande il testo va a capo e l'interruttore resta a destra                                                                                                                                                                                                                                                            | BaCodaTokens.interruttore\*                              |
+| BaRigaCoda           | le tue code (K1): DEN, stato, «Esci dalla coda»                                                                                                                                                                                                                                                                                                    | una riga per coda. Nessuna posizione, nessun conteggio, nessun numero massimo. Con testo grande l'uscita va a capo sotto il nome                                                                                                                                                                                                                                                    | BaCodaTokens.riga\* · uscita\*                           |
+| BaFasciaAttesa       | sotto-DEN d'attesa (W2): presenze piccole, frase, «Lascia il gruppo»                                                                                                                                                                                                                                                                               | solo per chi ha la capacità: la riga non c'è per gli altri, senza etichetta. Presenze senza numeri né segni                                                                                                                                                                                                                                                                         | BaCodaTokens.gruppo\*                                    |
+| BaBandaPosto         | posto conservato (P1) e permanenza massima (M1)                                                                                                                                                                                                                                                                                                    | un'ora ferma, mai un conto alla rovescia; a filo per il posto conservato, tratteggiata per B05 (in revisione). Regge 30 secondi e 5 minuti senza cambiare schermata                                                                                                                                                                                                                 | BaCodaTokens.banda\* · oraDelPosto                       |
+| BaControlliBloccato  | notifica fissa, Live Activity o widget a schermo bloccato (L1–L4)                                                                                                                                                                                                                                                                                  | sul palco: «Spegni il microfono» o, a microfono spento, solo il testo «Microfono spento» senza contorno; fra il pubblico: «Pausa» o «Riprendi dal vivo»; sempre «Esci» e «Prossimo DEN» (fonte da definire). I controlli vanno a capo e non spezzano le parole                                                                                                                      | BaSchermoBloccatoTokens.controllo\*                      |
+| BaSchermataCopertura | account chiuso (B1–B2)                                                                                                                                                                                                                                                                                                                             | copre tutto, una sola azione: «Richiedi revisione»; dopo il tocco, «Richiesta inviata» inattiva. Con testo grande il contenuto scorre e l'azione resta in basso (T11)                                                                                                                                                                                                               | BaRegole 1 · T11                                         |
 
 ## C5  Superfici di sistema
 
@@ -110,174 +114,123 @@ La domanda giusta non è se il layout regge il testo grande, ma **chi cede quand
 
 Le note generali stanno in *BA · Token*, T10; le durate e tutto il movimento in T8, che è l'unica specifica. Qui solo quello che appartiene a un widget preciso — come si costruisce (C7) e cosa si può spedire non fatto (C7 bis).
 
-<table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<tbody>
-<tr class="odd">
-<td>BaPalco</td>
-<td>l'impacchettamento va scritto come funzione pura <em>(conteggio, scatola) → posizioni + diametro</em>, senza stato: è l'unico modo per verificarlo con dei test invece che a occhio. Non esiste una seconda implementazione da tenere allineata (C5)</td>
-</tr>
-<tr class="even">
-<td>BaAnello</td>
-<td><strong>due sorgenti, due controller</strong>: <span>ActiveSpeakersChanged</span> accende e spegne (canale veloce), l'ampiezza campionata dall'SDK a 500 ms fa respirare (canale lento). Un solo controller per presenza per canale, mai ricostruito a ogni evento — e il rilascio del respiro ≥ 500 ms, o si vede il dente di sega. Il livello locale si ricampiona a 500 ms come gli altri: la stessa forma non può avere due comportamenti</td>
-</tr>
-<tr class="odd">
-<td>BaPresenza</td>
-<td>tinta e sagoma arrivano dall'evento di ingresso, non si calcolano dall'id: due telefoni devono vedere la stessa stanza</td>
-</tr>
-<tr class="even">
-<td>BaTouchable</td>
-<td>nodi di focus e ordine di lettura si mettono qui una volta sola. L'ordine è: intestazione → presenze in ordine di impacchettamento → stato → controlli</td>
-</tr>
-<tr class="odd">
-<td>BaPresenza<br />
-<span>accessibilità</span></td>
-<td>l'etichetta per lo screen reader è "<em>nome</em>, sta parlando / microfono spento", più le mie preferenze quando ci sono ("Lucia C., voce mutata da te, sta parlando"): le iniziali non sono la rappresentazione accessibile, sono un ripiego visivo</td>
-</tr>
-<tr class="even">
-<td>BaFoglio</td>
-<td>a testo grande diventa più alto dello schermo: deve scorrere fin dal primo giorno, non quando qualcuno se ne accorge</td>
-</tr>
-<tr class="odd">
-<td>BaFasciaTesto</td>
-<td><strong>non si costruisce in v1</strong>: della fascia esiste solo la posizione nell'ordine di cessione, a quota zero, perché inserirla dopo in un impacchettamento che non la prevede vuol dire rifare la stanza. Quando si farà, il riconoscimento sta <strong>sul telefono</strong>, per flusso separato di ogni partecipante — attribuire un blocco alla sagoma giusta richiede lo stesso audio per persona che serve all'anello (T10) — e un blocco alla volta, mai due</td>
-</tr>
-<tr class="even">
-<td>BaCardLive</td>
-<td>gli stati qui sono tre, ma il codice è SwiftUI: ogni stato aggiunto costa il doppio. È il motivo per cui sono tre</td>
-</tr>
-</tbody>
-</table>
+BaPalco
+l'impacchettamento va scritto come funzione pura (conteggio, scatola) → posizioni + diametro, senza stato: è l'unico modo per verificarlo con dei test invece che a occhio. Non esiste una seconda implementazione da tenere allineata (C5)
+
+BaAnello
+due sorgenti, due controller: ActiveSpeakersChanged accende e spegne (canale veloce), l'ampiezza campionata dall'SDK a 500 ms fa respirare (canale lento). Un solo controller per presenza per canale, mai ricostruito a ogni evento — e il rilascio del respiro ≥ 500 ms, o si vede il dente di sega. Il livello locale si ricampiona a 500 ms come gli altri: la stessa forma non può avere due comportamenti
+
+BaPresenza
+tinta e sagoma arrivano dall'evento di ingresso, non si calcolano dall'id: due telefoni devono vedere la stessa stanza
+
+BaTouchable
+nodi di focus e ordine di lettura si mettono qui una volta sola. L'ordine è: intestazione → presenze in ordine di impacchettamento → stato → controlli
+
+BaPresenza
+accessibilità
+l'etichetta per lo screen reader è "nome, sta parlando / microfono spento", più le mie preferenze quando ci sono ("Lucia C., voce mutata da te, sta parlando"): le iniziali non sono la rappresentazione accessibile, sono un ripiego visivo
+
+BaFoglio
+a testo grande diventa più alto dello schermo: deve scorrere fin dal primo giorno, non quando qualcuno se ne accorge
+
+BaFasciaTesto
+non si costruisce in v1: della fascia esiste solo la posizione nell'ordine di cessione, a quota zero, perché inserirla dopo in un impacchettamento che non la prevede vuol dire rifare la stanza. Quando si farà, il riconoscimento sta sul telefono, per flusso separato di ogni partecipante — attribuire un blocco alla sagoma giusta richiede lo stesso audio per persona che serve all'anello (T10) — e un blocco alla volta, mai due
+
+BaCardLive
+gli stati qui sono tre, ma il codice è SwiftUI: ogni stato aggiunto costa il doppio. È il motivo per cui sono tre
 
 ## C7 bis  Essenziale e rifinitura, per componente
 
 La colonna di destra non è un elenco di cose brutte: è quello che si può **spedire non fatto** senza che la prima versione dica una cosa falsa. Serve perché il modo tipico in cui una v1 si blocca non è un componente difficile, è una rifinitura trattata come requisito. **Se il tempo finisce, si taglia da destra**, in qualunque ordine, senza chiedere.
 
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>widget</th>
-<th>essenziale — senza questo non si spedisce</th>
-<th>rifinitura sacrificabile</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>BaPresenza</td>
-<td>sagoma con ritratto o iniziali, tetto di luminanza, e lo stato leggibile in entrambe le varianti</td>
-<td>le cinque sagome del repertorio — in alpha ne basta una — e il ritaglio ottimizzato sui volti</td>
-</tr>
-<tr class="even">
-<td>BaRitratto</td>
-<td>iniziali su tinta al rapporto 0,295: in alpha è il caso dominante</td>
-<td>l'immagine scelta e il velo calcolato sulla luminanza media (basta il velo piatto)</td>
-</tr>
-<tr class="odd">
-<td>BaAnello</td>
-<td>c'è o non c'è: chi parla è l'unica presenza cerchiata, a doppio tratto</td>
-<td>il canale lento, cioè il respiro sull'ampiezza. Il canale veloce (compare/scompare) porta tutto il significato: un anello fermo dice già chi parla — è esattamente il ripiego statico</td>
-</tr>
-<tr class="even">
-<td>BaPalco</td>
-<td>la funzione pura <em>(conteggio, scatola) → posizioni + diametro</em> con i suoi test, e tutte le presenze a schermo</td>
-<td>l'irregolarità dell'impacchettamento: una disposizione fissa per conteggio regge l'alpha. E l'assestamento animato</td>
-</tr>
-<tr class="odd">
-<td>BaPubblico</td>
-<td>il numero</td>
-<td>il campione di tre bolle</td>
-</tr>
-<tr class="even">
-<td>BaIntestazione</td>
-<td>il nome del DEN</td>
-<td>il marcatore in intestazione e l'ora d'inizio: sono già in elenco</td>
-</tr>
-<tr class="odd">
-<td>BaMarcatore</td>
-<td><span>entra chiunque</span> e <span>su invito</span> in elenco</td>
-<td>la variante conteggio e la variante orario</td>
-</tr>
-<tr class="even">
-<td>BaRigaStato</td>
-<td>il fatto della stanza ("3 sul palco")</td>
-<td>la seconda riga con le mie preferenze: la stessa cosa si legge nella scheda al tocco</td>
-</tr>
-<tr class="odd">
-<td>BaFasciaTesto</td>
-<td><strong>niente</strong>: in v1 esiste solo la sua posizione nell'ordine di cessione</td>
-<td>tutto — sorgenti, permanenza, accavallamento (§7.12 bis). È il componente interamente rinviato</td>
-</tr>
-<tr class="even">
-<td>BaAlone</td>
-<td>acceso e spento, perché porta la linea persa</td>
-<td>la sfumatura: un fondo piatto dice la stessa cosa</td>
-</tr>
-<tr class="odd">
-<td>BaTouchable</td>
-<td>area minima 44, nodo di focus, ordine di lettura. <strong>Va per primo</strong>: tutto il resto lo eredita</td>
-<td>il premuto a scala 0,98 con la sua curva</td>
-</tr>
-<tr class="even">
-<td>BaPillola</td>
-<td>informativa e chiara, con la regola dell'una sola per schermata</td>
-<td>gli stati attiva e spenta come varianti disegnate: l'opacità basta</td>
-</tr>
-<tr class="odd">
-<td>BaAzioniInCoppia</td>
-<td>due hairline affiancate, con l'area estesa</td>
-<td>la variante a una sola azione centrata</td>
-</tr>
-<tr class="even">
-<td>BaMessaggio</td>
-<td>neutro ed errore, uno per schermata</td>
-<td>la distinzione tipografica fra i due: il testo d'errore in colore basta</td>
-</tr>
-<tr class="odd">
-<td>BaFoglio</td>
-<td>si apre e <strong>scorre a testo grande</strong>, dal primo giorno</td>
-<td>la curva d'apertura: 240 ms o 0 ms cambiano poco</td>
-</tr>
-<tr class="even">
-<td>BaGlifo</td>
-<td>microfono barrato e bloccata, a due tratti come l'anello</td>
-<td>lo stato in errore e l'accensione a 140 ms</td>
-</tr>
-<tr class="odd">
-<td>BaRigaDen</td>
-<td>viva e spenta. <strong>Rimosso inerte</strong> è beta: quando arriverà, una porta chiusa non si preme</td>
-<td>il campione di presenze nella riga, e l'anello su chi parla dentro l'elenco</td>
-</tr>
-<tr class="even">
-<td>BaRigaImpostazione</td>
-<td>interruttore, valore, e azione con la conseguenza scritta per i permessi negati</td>
-<td>l'animazione dell'interruttore</td>
-</tr>
-<tr class="odd">
-<td>BaRigaBloccata</td>
-<td>in alpha un gruppo solo, dati da te con <em>Sblocca</em>, nella schermata "Persone bloccate". Il gruppo ricevuti, senza azioni, è beta e si aggiunge sotto senza rifarla</td>
-<td>la data sfocata ("in aprile"): utile, non necessaria al primo giro</td>
-</tr>
-<tr class="even">
-<td>BaCampoCodice</td>
-<td>vuoto, in scrittura, sbagliato, scaduto, nuovo invio con attesa</td>
-<td>task 013: sbagliato e scaduto sono stati a sé, ciascuno con il segno «!» e una frase; nuovo invio con attesa è inattivo, senza conto alla rovescia. Valori in <span>BaAccessoTokens</span></td>
-</tr>
-<tr class="odd">
-<td>BaCardLive · BaIsola<br />
-BaNotificaAndroid</td>
-<td>solo <span>BaNotificaAndroid</span>, perché il sistema la impone a un'app che tiene il microfono aperto</td>
-<td>tutto il resto delle superfici di sistema: si costruiscono per ultime e solo se l'alpha regge senza (vedi <em>Ordine in cui costruirli</em>)</td>
-</tr>
-</tbody>
-</table>
+widget
+essenziale — senza questo non si spedisce
+rifinitura sacrificabile
+
+BaPresenza
+sagoma con ritratto o iniziali, tetto di luminanza, e lo stato leggibile in entrambe le varianti
+le cinque sagome del repertorio — in alpha ne basta una — e il ritaglio ottimizzato sui volti
+
+BaRitratto
+iniziali su tinta al rapporto 0,295: in alpha è il caso dominante
+l'immagine scelta e il velo calcolato sulla luminanza media (basta il velo piatto)
+
+BaAnello
+c'è o non c'è: chi parla è l'unica presenza cerchiata, a doppio tratto
+il canale lento, cioè il respiro sull'ampiezza. Il canale veloce (compare/scompare) porta tutto il significato: un anello fermo dice già chi parla — è esattamente il ripiego statico
+
+BaPalco
+la funzione pura (conteggio, scatola) → posizioni + diametro con i suoi test, e tutte le presenze a schermo
+l'irregolarità dell'impacchettamento: una disposizione fissa per conteggio regge l'alpha. E l'assestamento animato
+
+BaPubblico
+il numero
+il campione di tre bolle
+
+BaIntestazione
+il nome del DEN
+il marcatore in intestazione e l'ora d'inizio: sono già in elenco
+
+BaMarcatore
+entra chiunque e su invito in elenco
+la variante conteggio e la variante orario
+
+BaRigaStato
+il fatto della stanza ("3 sul palco")
+la seconda riga con le mie preferenze: la stessa cosa si legge nella scheda al tocco
+
+BaFasciaTesto
+niente: in v1 esiste solo la sua posizione nell'ordine di cessione
+tutto — sorgenti, permanenza, accavallamento (§7.12 bis). È il componente interamente rinviato
+
+BaAlone
+acceso e spento, perché porta la linea persa
+la sfumatura: un fondo piatto dice la stessa cosa
+
+BaTouchable
+area minima 44, nodo di focus, ordine di lettura. Va per primo: tutto il resto lo eredita
+il premuto a scala 0,98 con la sua curva
+
+BaPillola
+informativa e chiara, con la regola dell'una sola per schermata
+gli stati attiva e spenta come varianti disegnate: l'opacità basta
+
+BaAzioniInCoppia
+due hairline affiancate, con l'area estesa
+la variante a una sola azione centrata
+
+BaMessaggio
+neutro ed errore, uno per schermata
+la distinzione tipografica fra i due: il testo d'errore in colore basta
+
+BaFoglio
+si apre e scorre a testo grande, dal primo giorno
+la curva d'apertura: 240 ms o 0 ms cambiano poco
+
+BaGlifo
+microfono barrato e bloccata, a due tratti come l'anello
+lo stato in errore e l'accensione a 140 ms
+
+BaRigaDen
+viva e spenta. Rimosso inerte è beta: quando arriverà, una porta chiusa non si preme
+il campione di presenze nella riga, e l'anello su chi parla dentro l'elenco
+
+BaRigaImpostazione
+interruttore, valore, e azione con la conseguenza scritta per i permessi negati
+l'animazione dell'interruttore
+
+BaRigaBloccata
+in alpha un gruppo solo, dati da te con Sblocca, nella schermata "Persone bloccate". Il gruppo ricevuti, senza azioni, è beta e si aggiunge sotto senza rifarla
+la data sfocata ("in aprile"): utile, non necessaria al primo giro
+
+BaCampoCodice
+vuoto, in scrittura, sbagliato, scaduto, nuovo invio con attesa
+task 013: sbagliato e scaduto sono stati a sé, ciascuno con il segno «!» e una frase; nuovo invio con attesa è inattivo, senza conto alla rovescia. Valori in BaAccessoTokens
+
+BaCardLive · BaIsola
+BaNotificaAndroid
+solo BaNotificaAndroid, perché il sistema la impone a un'app che tiene il microfono aperto
+tutto il resto delle superfici di sistema: si costruiscono per ultime e solo se l'alpha regge senza (vedi Ordine in cui costruirli)
 
 Due avvertenze sul taglio. **Non si taglia mai uno stato, solo la sua resa**: un anello fermo va bene, un anello assente no — e questo vale già come ripiego statico (T8), quindi non è codice in più. E **non si taglia niente in BaTouchable**: area minima, focus e ordine di lettura non sono rifinitura, e recuperarli dopo costa più che farli.
 
@@ -285,15 +238,15 @@ Due avvertenze sul taglio. **Non si taglia mai uno stato, solo la sua resa**: un
 
 Una regola documentata si viola per distrazione; una regola senza strumento per violarla, no. Sette delle otto BaRegole si possono togliere dal terreno delle buone intenzioni — cinque nel file dei token, due nella forma dei widget. La colonna *come* è la specifica: chi costruisce il widget deve renderla vera.
 
-| regola                                                 | come si rende impossibile                                                                                                                                                                                                                                                                         |
-|--------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 1 · una sola azione chiara, e solo dove serve un gesto | BaSchermata ha **un solo posto** per la richiesta, e lo accetta soltanto con il motivo che la giustifica. Due richieste non stanno in un posto solo, e una richiesta senza motivo non si costruisce                                                                                               |
-| 2 · niente informazione dalla sola tinta               | **Resta convenzione.** Si può obbligare BaPresenza a disegnare il glifo per voce mutata e bloccata — quello sì — ma nessun tipo impedisce a una funzione futura di appoggiarsi al colore. Va guardata in revisione                                                                                |
-| 3 · nessun contatore che accumula                      | BaOra.hhmm è l'unico formattatore di tempo dell'app. Non esiste una funzione che trasformi una durata in testo, e il modello della stanza porta l'ora d'inizio, non i minuti                                                                                                                      |
-| 4 · l'anello sulla stanza fuori dall'app               | BaPayloadStanza **non ha un campo "chi parla"**. La superficie di sistema non può disegnare un anello su una persona perché non sa chi sia                                                                                                                                                        |
-| 5 · una dimensione sola per volta                      | BaPresenza **non prende un diametro**: lo eredita dal palco che la contiene. Due misure diverse nello stesso palco non sono esprimibili; una presenza fuori dal palco non si costruisce                                                                                                           |
-| 6 · errore senza riempimento, nessun successo          | i token che servirebbero non esistono: nessun erroreFondo, nessun colore "successo". Il riempimento rosso va inventato a mano, e in revisione si vede                                                                                                                                             |
-| 7 · nessuna ombra, nessuna elevazione                  | l'app **non importa material.dart**. Senza Material non ci sono Card, elevation, InkWell: l'ombra non è vietata, è assente                                                                                                                                                                        |
+| regola                                                 | come si rende impossibile                                                                                                                                                                                                                                                                                                                                                                                               |
+|--------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1 · una sola azione chiara, e solo dove serve un gesto | BaSchermata ha **un solo posto** per la richiesta, e lo accetta soltanto con il motivo che la giustifica. Due richieste non stanno in un posto solo, e una richiesta senza motivo non si costruisce                                                                                                                                                          |
+| 2 · niente informazione dalla sola tinta               | **Resta convenzione.** Si può obbligare BaPresenza a disegnare il glifo per voce mutata e bloccata — quello sì — ma nessun tipo impedisce a una funzione futura di appoggiarsi al colore. Va guardata in revisione                                                                                                                                           |
+| 3 · nessun contatore che accumula                      | BaOra.hhmm è l'unico formattatore di tempo dell'app. Non esiste una funzione che trasformi una durata in testo, e il modello della stanza porta l'ora d'inizio, non i minuti                                                                                                                                                                                 |
+| 4 · l'anello sulla stanza fuori dall'app               | BaPayloadStanza **non ha un campo "chi parla"**. La superficie di sistema non può disegnare un anello su una persona perché non sa chi sia                                                                                                                                                                                                                   |
+| 5 · una dimensione sola per volta                      | BaPresenza **non prende un diametro**: lo eredita dal palco che la contiene. Due misure diverse nello stesso palco non sono esprimibili; una presenza fuori dal palco non si costruisce                                                                                                                                                                      |
+| 6 · errore senza riempimento, nessun successo          | i token che servirebbero non esistono: nessun erroreFondo, nessun colore "successo". Il riempimento rosso va inventato a mano, e in revisione si vede                                                                                                                                                                                                        |
+| 7 · nessuna ombra, nessuna elevazione                  | l'app **non importa material.dart**. Senza Material non ci sono Card, elevation, InkWell: l'ombra non è vietata, è assente                                                                                                                                                                                                                                                                                              |
 | 8 · le sagome non cedono mai                           | il palco **non ha un parametro “quante disegnarne”**: prende le persone sul palco e le disegna tutte. Le iniziali le dà il dominio di BaPresenzaTokens.iniziali — fuori da quello la funzione restituisce null e non esiste uno stile di ripiego, quindi nessuno può forzarle a una taglia minima |
 
 Il costo di tutto questo è qualche costruttore più rigido del necessario, ed è il punto: **le regole che restano scritte solo in un documento sono quelle che si rompono al terzo mese**, quando chi le ha scritte non è più nella stanza.
