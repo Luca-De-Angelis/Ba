@@ -27,6 +27,8 @@ Questi termini valgono nell'interfaccia, nei documenti e nei nomi del codice (D-
 | Connessione | Legame fra due persone; fra le connessioni si scelgono gli invitati (D-014) |
 | Ascolto condiviso | Contenuto riprodotto nel DEN che tutti sentono insieme; si abbassa da solo quando qualcuno parla (D-017) |
 | Modalità radio | Quando il DEN finisce o si svuota, si passa da soli a uno simile per tema e lingua (B10, solo annotata, D-032) |
+| Richiamo | La notifica che dice che una persona è entrata in un DEN, con l'invito a passare («Ciccio è entrato nel DEN Famiglia: vuoi passare?», D-042). Si prevede |
+| Account bannato | Account chiuso dalla moderazione, in modo definitivo nei fatti (D-049). All'apertura o al login compare una schermata che copre tutto, con un messaggio e «Richiedi revisione» come unica azione |
 
 **Da non usare:** "Loggia" (si dice sotto-DEN), "abbassa / abbassata" (si dice muta / mutata), "Mutami" o "Muta" per il proprio microfono (si dice spegni il microfono).
 

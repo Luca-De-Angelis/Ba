@@ -10,6 +10,8 @@ Torna all'[indice](README.md). I componenti esistenti sono descritti in [compone
 
 Le sigle dei prototipi (A1, P3, K1, C4…) sono quelle dei prototipi stessi.
 
+**Attenzione: tre prototipi non rispecchiano più le decisioni del 20 novembre 2026.** Le risposte degli stakeholder (D-035…D-054 in [`DECISIONS.md`](../DECISIONS.md)) cambiano punti dei prototipi 013, 014 e 015: l'ascoltatore entra nei DEN privati se invitato (D-041), il consenso a parlare cambia il tipo di account e il passo «numero già verificato» cade (D-040), il nickname e «ho almeno 18 anni» alla registrazione (D-052), i DEN pubblici creati da un utente hanno un amministratore (D-043), un solo DEN attivo, 30 secondi per il posto e il richiamo (D-042), permanenza massima per ascoltatori e parlatori (D-044). Il task 027 (Claude Design) aggiorna i prototipi: **fino ad allora le schermate descritte qui sono quelle consegnate**, e [aperte](aperte.md) dice per ognuna «da aggiornare nel design (task 027)».
+
 ## 1. Stanza e stati critici: [Stati critici 002](../../design/handoff/002/Stati%20critici%20002.dc.html)
 
 La stanza di un DEN dal punto di vista dell'ascoltatore e di chi sta sul palco: salire, la coda, il microfono spento, il consenso, la scheda di una persona, il sotto-DEN. Il resto della consegna è in [`changelog.md`](../../design/handoff/002/changelog.md) e [`suono-e-vibrazione.md`](../../design/handoff/002/suono-e-vibrazione.md).
