@@ -42,7 +42,7 @@ Gli altri **67 servizi** (Nuovo 49, Step successivo 11, Analisi ricavi 5, Propos
 | B02 | Ascolto in background e a schermo bloccato | Confermato | Sì | Già nel design | Nel design | Superfici di sistema (001b), D-025 |
 | B03 | Ascolto dei DEN creator | Aperto | Sì | Creator | Da pianificare, con punto aperto | Punto aperto: quanti DEN creator inclusi e a che prezzo (domande aperte dei soci) |
 | B04 | Ascolto in alta qualità dei DEN creator | Aperto | Sì | Creator | Da pianificare, con punto aperto | Punto aperto: richiede la doppia traccia dal creator (E07) |
-| B05 | Permanenza massima di 60 minuti per DEN, con rientro | In revisione | Sì | Coda e attesa | Da pianificare, con punto aperto | In revisione: solo con stanze piene e coda. Se attivato, un fatto fermo («fino alle 22:40»), mai un conto alla rovescia |
+| B05 | Permanenza massima di 60 minuti per DEN, con rientro | In revisione | Sì | Coda e attesa | Da pianificare, con punto aperto | Vale per ascoltatori e parlatori; leva per il Pro da valutare; tempi da definire (D-044). Se attivato, un fatto fermo («fino alle 22:40»), mai un conto alla rovescia; con il posto libero si rientra |
 | B06 | Ascolti di creator inclusi nell'abbonamento | Ipotesi IP-2 | Sì | Abbonamento e pubblicità | Da disegnare come ipotesi | Ipotesi IP-2: da definire l'unità (evento o ora) e la sorte degli ascolti non usati |
 | B07 | Acquisto di un evento a biglietto | Analisi ricavi | No | — | Presa nota |  |
 | B08 | Abbonamento dell'ascoltatore, senza verificare il numero | Confermato | Sì | Abbonamento e pubblicità | Da pianificare | Abbonamento Pro da ascoltatore: niente pubblicità, nessuna voce |
@@ -104,7 +104,7 @@ Gli altri **67 servizi** (Nuovo 49, Step successivo 11, Analisi ricavi 5, Propos
 | E10 | Commissione della piattaforma sugli eventi | Nuovo | No | — | Presa nota |  |
 | E11 | Annunci letti dal creator e DEN sponsorizzati | Ipotesi IP-2 | Sì | Abbonamento e pubblicità | Da disegnare come ipotesi | Ipotesi IP-2 |
 | E12 | Identità del creator verificata | Nuovo | No | — | Presa nota | Fuori perimetro. Senza segni di status (regola 5) |
-| E13 | Registrazione volontaria del proprio palco | Previsto v2 | Sì | Predisposizione | Predisporre | Previsto v2. Renderebbe falso l'avviso dell'onboarding «nessuna conversazione si può riascoltare» (D-004): testo da far valutare al legale ora |
+| E13 | Registrazione volontaria del proprio palco | Previsto v2 | Sì | Predisposizione | Predisporre | Post-produzione legata ai creator: un podcast che il creator lascia a chi non ha partecipato alla live (D-047). L'avviso «nessuna conversazione si può riascoltare» (D-004) resta vero per gli utenti |
 | E14 | Co-conduzione tra creator | Nuovo | No | — | Presa nota |  |
 | E15 | Messaggio ai follower prima della diretta | Nuovo | No | — | Presa nota |  |
 | E16 | Pagina web pubblica del creator | Nuovo | No | — | Presa nota |  |
@@ -114,8 +114,8 @@ Gli altri **67 servizi** (Nuovo 49, Step successivo 11, Analisi ricavi 5, Propos
 
 | Codice | Servizio | Stato nel catalogo | In lavorazione | Pacchetto | Nel nostro piano | Nota |
 | --- | --- | --- | --- | --- | --- | --- |
-| F01 | Ascolto condiviso di podcast via RSS | Confermato per la beta | Sì | Podcast condivisi | Da pianificare | Beta. D-017. Da chiarire con lo sviluppo: sincronizzazione e microfono di chi parla |
-| F02 | Ascolto condiviso con Spotify o Apple Music | Previsto v2 | Sì | Predisposizione | Predisporre | Previsto v2. D-017. Termini di Spotify e Apple Music da verificare con il legale |
+| F01 | Ascolto condiviso di podcast via RSS | Confermato solo per i creator, non da subito | Sì | Podcast condivisi | Da pianificare | Solo creator e non da subito (D-051; D-017 sulle licenze). La traccia è un partecipante unico del DEN (non è l'ottavo): play, pausa e timeline, la pausa vale per tutti, nessuna sincronizzazione fra telefoni |
+| F02 | Ascolto condiviso con Spotify o Apple Music | Idea lontana anni (D-048) | Sì | Predisposizione | Predisporre | Serve prima un accordo; non è nei task post-produzione (D-048). Idea: la traccia come un invitato al DEN, comandato dall'amministratore. Le colonne «In lavorazione» e «Nel nostro piano» e il conteggio dei 48 servizi non cambiano finché non si decide il perimetro |
 | F03 | Contenuti multimediali trasmessi dal creator | Vincolato dalle licenze | Sì | Predisposizione | Da pianificare, con punto aperto | Vincolato dalle licenze |
 | F04 | Audio propri del creator: sigla, stacchi | Nuovo | No | — | Presa nota |  |
 | F05 | Reazioni rapide: applauso, risata | Nuovo | No | — | Presa nota | Fuori perimetro. Entrerebbe nella barra della stanza |
@@ -147,7 +147,7 @@ Gli altri **67 servizi** (Nuovo 49, Step successivo 11, Analisi ricavi 5, Propos
 | --- | --- | --- | --- | --- | --- | --- |
 | H01 | Spot all'uscita dal DEN | Ipotesi IP-2 | Sì | Abbonamento e pubblicità | Da disegnare come ipotesi | Ipotesi IP-2: ipotesi di fase 2, da disegnare come schema |
 | H02 | Spot prima di entrare | Ipotesi IP-2 | Sì | Abbonamento e pubblicità | Da disegnare come ipotesi | Ipotesi IP-2 |
-| H03 | Spot durante l'ascolto | Ipotesi IP-2 | Sì | Abbonamento e pubblicità | Da disegnare come ipotesi | Ipotesi IP-2. In tensione con «mai un ascolto peggiorato per chi non paga» |
+| H03 | Spot durante l'ascolto | Escluso (D-036) | Sì | Abbonamento e pubblicità | Da disegnare come ipotesi | Escluso il 20/11: rovinerebbe l'esperienza in una live. Confermato «mai un ascolto peggiorato per chi non paga» (D-036). Le colonne «In lavorazione» e «Nel nostro piano» e il conteggio dei 48 servizi non cambiano finché non si decide il perimetro |
 | H04 | Pubblicità personalizzata sul comportamento | Ipotesi IP-2 · base giuridica dal legale | Sì | Abbonamento e pubblicità | Da disegnare come ipotesi | Ipotesi IP-2. Base giuridica dal legale |
 | H05 | Nessuna pubblicità | Confermato | Sì | Abbonamento e pubblicità | Da pianificare | Pro, anche da ascoltatore |
 
