@@ -44,10 +44,12 @@ Un file per task, `NNN-nome.md`, al massimo una pagina, nel formato di `_templat
 | 021b | `021b-ritocchi.md` — ritocchi: «Altro» con i token giusti, glifi senza macchie, etichette di «bloccata» senza genere, presenze dietro il foglio | Claude Code | Concluso |
 | 022 | `022-componenti-013-015.md` — Componenti dei task 013–015: BaCampoTesto, BaCampoCodice, BaSceltaDen, BaChipScelta, BaPuntoAggancio, BaInterruttoreRiga, BaRigaCoda, BaFasciaAttesa, BaBandaPosto | Claude Code | Concluso |
 | 023 | Contenuti dei fogli | Claude Code | Brief da scrivere |
+| 023b | Fogli di creare e gestire i DEN | Claude Code | Brief da scrivere |
 | 024 | Prototipo navigabile in locale | — | Brief da scrivere |
 | 025 | `025-handoff.md` — Documentazione di handoff per il team di sviluppo | Claude Code | Concluso |
 | 026 | Aggiornamento finale dell'handoff (da fare prima della consegna, dopo le risposte degli stakeholder e dopo i task 022–024) | Claude Code | Brief da scrivere |
-| 027 | `027-aggiornamento-design.md` — Aggiornamento dei design 013–015 | Claude Design | Brief scritto |
-| 028 | `028-registro-decisioni.md` — Registro delle decisioni degli stakeholder (D-035…D-054) nella documentazione | Claude Code | In corso |
+| 027 | `027-aggiornamento-design.md` — Aggiornamento dei design 013–015 | Claude Design | Concluso |
+| 027c | `027c-applicare-027.md` — Applicare l'esito del 027: token, documenti di design, glossario e «aperte» | Claude Code | In corso |
+| 028 | `028-registro-decisioni.md` — Registro delle decisioni degli stakeholder (D-035…D-054) nella documentazione | Claude Code | Concluso |
 
 Da qui in avanti fanno fede questi file Markdown, non le versioni in Claude Docs.
