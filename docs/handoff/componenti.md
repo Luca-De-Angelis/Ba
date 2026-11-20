@@ -96,7 +96,7 @@ Questi tre file di `app/lib/design_system/` non definiscono widget e per questo 
 
 ## Non ancora costruiti
 
-Nomi che l'Inventario elenca nelle tabelle C2, C4 e C5 e che **non hanno ancora una classe** in `app/lib/` (i nove del task 022 sono stati costruiti) (verificato con una ricerca di `class <nome>` nel codice). L'Inventario dice anche che esiste uno scaffold `BaSchermata` (C8) che porta il posto unico della richiesta: nel codice non c'è. **L'Inventario introduce «venti widget (C1–C4)», ma le sue tabelle ne nominano 28: da verificare con chi lo mantiene.**
+Nomi che l'Inventario elenca nelle tabelle C2, C4 e C5 (compresi i due nuovi del task 027) e che **non hanno ancora una classe** in `app/lib/` (i nove del task 022 sono stati costruiti) (verificato con una ricerca di `class <nome>` nel codice). L'Inventario dice anche che esiste uno scaffold `BaSchermata` (C8) che porta il posto unico della richiesta: nel codice non c'è. **L'Inventario introduce «venti widget (C1–C4)», ma le sue tabelle ne nominano 28: da verificare con chi lo mantiene.**
 
 | Sezione | Nomi | Per che cosa servono |
 | --- | --- | --- |
@@ -104,5 +104,7 @@ Nomi che l'Inventario elenca nelle tabelle C2, C4 e C5 e che **non hanno ancora 
 | C4, elenco e impostazioni | `BaRigaDen`, `BaRigaImpostazione`, `BaRigaBloccata` | Le righe degli elenchi dei DEN, delle impostazioni e delle persone bloccate |
 | C4, gestione | `BaFoglioGestisci` | Il foglio «Gestisci» e il foglio del sotto-DEN (task 023) |
 | C5, superfici di sistema | `BaCardLive`, `BaIsola`, `BaNotificaAndroid` | Live Activity, Dynamic Island e notifica Android: **non sono widget Flutter** (l'Inventario le descrive come superfici che Flutter non disegna) |
+| C4, account chiuso (027) | `BaSchermataCopertura` | La schermata che copre tutto quando l'account è chiuso dalla moderazione: un messaggio e «Richiedi revisione» come unica azione (B1, B1 bis, B2) |
+| C4, schermo bloccato (027) | `BaControlliBloccato` | I controlli a schermo bloccato (L1–L4): sul palco «Spegni il microfono», per il pubblico pausa e «Prossimo DEN». L'Inventario lo elenca in C4, ma sono superfici di sistema: **non è un widget Flutter** |
 
 Che cosa serve a ogni schermata, e che cosa manca in totale, è in [schermate](schermate.md). Con il task 022 sono stati costruiti i nove componenti dei task 013–015; i contenuti dei fogli (task 023) e il prototipo navigabile (task 024) non esistono ancora (vedi `docs/tasks/README.md`).
