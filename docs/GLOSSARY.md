@@ -13,22 +13,26 @@ Questi termini valgono nell'interfaccia, nei documenti e nei nomi del codice (D-
 | Muta una voce / voce mutata | Preferenza personale: non sentire più una persona. Non è un atto pubblico |
 | Blocca / persona bloccata | La persona resta visibile ma mutata d'ufficio |
 | Ascoltatore | Account di base, con email, senza numero: ascolta, non parla e non viene mai trascritto |
-| Partecipante | Account con numero verificato e consenso a parlare |
-| Torna ascoltatore | Ritiro del consenso a parlare (D-003) |
+| Partecipante | Account con numero verificato e consenso a parlare. Il consenso a parlare **cambia il tipo di account** (D-040): non è un'azione al volo e può richiedere di rifare l'accesso |
+| Torna ascoltatore | Ritiro del consenso a parlare (D-003). È un **cambio di tipo di account**, non un tap: si fa dalle impostazioni, con una doppia conferma, e chi lo fa durante una conversazione esce dalla stanza (D-040) |
 | Coda | Lista d'attesa per il palco, anche su più DEN insieme |
 | Ingresso automatico | "Fammi entrare automaticamente" quando si libera un posto |
 | Sotto-DEN d'attesa | Nell'interfaccia «Aspetta con altri». Un gruppo di chi aspetta nella stessa coda, fino a 8: sente il gruppo e parla al gruppo, il palco non lo sente; si lascia quando si libera un posto (C05) |
 | Gruppo d'attesa | Il gruppo di chi, nella stessa coda, ha scelto di aspettare insieme |
 | DEN programmato | DEN con data e ora, creato da qualunque utente (D-016) |
 | DEN privato | Si entra solo su invito; ha un amministratore, chi lo ha creato |
-| DEN pubblico | Entra chiunque; non ha amministratore, lo modera l'app (D-011) |
+| DEN pubblico | Entra chiunque; si trova nell'elenco. **Creato dal sistema**: nessun amministratore, solo automoderazione. **Creato da un utente**: l'amministratore è chi lo crea, come nei privati (D-043; D-011 vale per quelli del sistema) |
 | Co-amministratore | Persona a cui l'amministratore di un DEN privato affida la gestione (uno nel Free, tre nel Pro) |
-| Gestisci | Il foglio con cui chi ha creato un DEN privato lo amministra |
+| Gestisci | Il foglio con cui chi ha creato un DEN lo amministra: vale per i DEN privati e per i pubblici creati da un utente (D-043) |
 | Connessione | Legame fra due persone; fra le connessioni si scelgono gli invitati (D-014) |
 | Ascolto condiviso | Contenuto riprodotto nel DEN che tutti sentono insieme; si abbassa da solo quando qualcuno parla (D-017) |
 | Modalità radio | Quando il DEN finisce o si svuota, si passa da soli a uno simile per tema e lingua (B10, solo annotata, D-032) |
 | Richiamo | La notifica che dice che una persona è entrata in un DEN, con l'invito a passare («Ciccio è entrato nel DEN Famiglia: vuoi passare?», D-042). Si prevede |
 | Account bannato | Account chiuso dalla moderazione, in modo definitivo nei fatti (D-049). All'apertura o al login compare una schermata che copre tutto, con un messaggio e «Richiedi revisione» come unica azione |
+| Nickname | Nome che si sceglie alla registrazione: obbligatorio, anche ripetibile (l'unicità si deciderà con il following, D-052) |
+| Tipo di account | Ascoltatore o partecipante. Cambia con il consenso a parlare e con «Torna ascoltatore»; essere ascoltatore in un DEN è invece un ruolo, non un tipo di account (D-040) |
+| DEN creato dal sistema | DEN pubblico nato da un trend o da altri motivi: nessun amministratore, solo automoderazione; si elimina da solo dopo un tempo di inattività (D-043) |
+| Prossimo DEN | Etichetta provvisoria del controllo «next» a schermo bloccato, che passa a un altro DEN (zapping). Da dove viene il DEN successivo è da definire (D-050) |
 
 **Da non usare:** "Loggia" (si dice sotto-DEN), "abbassa / abbassata" (si dice muta / mutata), "Mutami" o "Muta" per il proprio microfono (si dice spegni il microfono).
 

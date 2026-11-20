@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#0A0A09; color:#F2EEE9; font-family:'Instrument Sans',system-ui,sans-serif; }
+  a { color:#D9CFA8; text-decoration:none; }
+  a:hover { color:#EDE7DC; }
+</style>
+</helmet>
+
+<div style="--ts: {{ ts }};background:#0A0A09;color:#F2EEE9;display:flex;flex-direction:column">
+
+<div style="padding:40px 56px 32px;border-bottom:1px solid rgba(242,238,233,0.10);display:flex;flex-direction:column;gap:12px">
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#8A837B">BA · task 027 · due schermate nuove · 360 dp e 744 dp</div>
+  <div style="font-size:34px;font-weight:600;letter-spacing:-0.02em;line-height:1.15">Account chiuso e controlli a schermo bloccato</div>
+  <div style="display:flex;flex-direction:column;gap:8px;max-width:900px;font-size:16px;line-height:1.5;color:#A09890;text-wrap:pretty">
+    <div><strong style="font-weight:600;color:#F2EEE9">Account chiuso (D-049).</strong> Una schermata che copre tutto, all'apertura o al login, con un messaggio e «Richiedi revisione» come unica azione. Niente ban lievi: sono coperti dal mutare e dal buttare fuori. Il blocco temporaneo è una variante con una riga che dice fino a quando, come un'ora ferma e senza conto alla rovescia: ipotesi.</div>
+    <div><strong style="font-weight:600;color:#F2EEE9">Controlli a schermo bloccato (D-050).</strong> Notifica fissa, Live Activity o widget con tre controlli. Sul palco, «Spegni il microfono» lo spegne e non può accenderlo (D-025): con il microfono spento resta solo un fatto scritto, senza l'aspetto di un'azione. «Esci» è lo stop. Fra il pubblico, «Pausa» mette in silenzio l'audio e al ritorno si riprende dal vivo. «Prossimo DEN» passa al DEN successivo: la fonte è da definire, ipotesi. Il segno tratteggiato si toglie dalla proprietà <span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#F2EEE9">segniIpotesi</span>. Altre proprietà: <span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#F2EEE9">lingua</span>, <span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#F2EEE9">testo</span> (fino a 2,0), <span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#F2EEE9">scorri</span>.</div>
+    <div style="color:#D9CFA8">{{ scorriNota }}</div>
+  </div>
+</div>
+
+<sc-for list="{{ groups }}" as="g" hint-placeholder-count="3">
+<section data-screen-label="{{ g.label }}" style="padding:44px 56px 56px;display:flex;flex-direction:column;gap:40px;border-bottom:1px solid rgba(242,238,233,0.10)">
+  <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:26px;font-weight:600;letter-spacing:-0.01em">{{ g.titolo }}</div><div style="font-size:15px;line-height:1.5;color:#A09890;max-width:820px;text-wrap:pretty">{{ g.nota }}</div></div>
+  <sc-for list="{{ g.screens }}" as="s" hint-placeholder-count="4">
+  <div style="display:flex;flex-direction:column;gap:20px">
+    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#100F0E;background:#D9CFA8;padding:3px 8px;border-radius:999px">{{ s.num }}</div><div style="font-size:22px;font-weight:600;letter-spacing:-0.01em">{{ s.name }}</div></div>
+    <div style="font-size:14px;line-height:1.5;color:#A09890;max-width:760px;text-wrap:pretty">{{ s.note }}</div>
+    <div style="display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start">
+      <sc-for list="{{ s.frames }}" as="f" hint-placeholder-count="2">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#A09890">{{ f.label }}</div>
+        <div id="f-{{ f.id }}" style="position:relative;width:{{ f.w }}px;height:{{ f.h }}px;background:#0A0A09;border-radius:28px;border:{{ f.frameBorder }};overflow:hidden;display:flex;flex-direction:column">
+          <div style="height:{{ f.statusH }}px;flex:none;display:flex;align-items:flex-end;padding:0 {{ f.m }}px 8px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8A837B">21:40</div>
+          <sc-if value="{{ f.backdrop }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;left:0;right:0;top:{{ f.statusH }}px;bottom:0;background:linear-gradient(180deg,#171413 0%,#100F0E 52%,#0B0A09 100%);display:flex;flex-direction:column">
+              <div style="padding:4px {{ f.m }}px 0;display:flex;flex-direction:column;gap:5px">
+                <div style="font-size:22px;line-height:1.2;font-weight:600;letter-spacing:-0.26px">{{ f.bdTitle }}</div>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#A09890">{{ f.bdS1 }}</div>
+                <sc-if value="{{ f.bdNote }}" hint-placeholder-val="{{ false }}"><div style="font-size:16px;line-height:1.4;color:#F2EEE9;text-wrap:pretty;margin-top:4px">{{ f.bdNote }}</div></sc-if>
+                <sc-if value="{{ f.bdTag }}" hint-placeholder-val="{{ false }}"><div style="display:block;width:fit-content;max-width:100%;box-sizing:border-box;margin-top:6px;padding:8px 14px;border-radius:16px;border:1px dashed rgba(217,207,168,0.42);font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#D9CFA8;line-height:1.3">{{ f.bdTag }}</div></sc-if>
+              </div>
+              <sc-if value="{{ f.bandOn }}" hint-placeholder-val="{{ false }}"><div style="margin:12px {{ f.m }}px 0;box-sizing:border-box;padding:12px 14px;border-radius:16px;border:{{ f.bandBd }};display:flex;flex-direction:column;gap:4px"><div style="font-size:16px;line-height:1.4;color:#F2EEE9;text-wrap:pretty">{{ f.bandT }}</div><div style="font-size:14px;line-height:1.43;color:#A09890;text-wrap:pretty">{{ f.bandSub }}</div></div></sc-if>
+              <div style="flex:1;display:flex;align-items:center;justify-content:center;gap:17px"><sc-for list="{{ f.bdBlobs }}" as="o" hint-placeholder-count="2"><div style="position:relative;width:{{ f.bdD }}px;height:{{ f.bdD }}px"><div style="box-sizing:border-box;width:100%;height:100%;border-radius:{{ o.br }};background:{{ o.bg }};opacity:{{ o.op }};filter:{{ o.gr }}"></div><sc-if value="{{ o.mine }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;right:-2px;bottom:-2px;width:30px;height:30px;box-sizing:border-box;border-radius:999px;background:#D9CFA8;border:1.5px solid #100F0E;display:flex;align-items:center;justify-content:center"><div style="position:relative;width:14px;height:20px;display:flex;align-items:center;justify-content:center"><div style="width:8px;height:13px;box-sizing:border-box;border:2px solid #1B1917;border-radius:5px"></div><div style="position:absolute;width:2px;height:22px;background:#1B1917;transform:rotate(-45deg)"></div></div></div></sc-if></div></sc-for></div>
+              <sc-if value="{{ f.stripOn }}" hint-placeholder-val="{{ false }}"><div style="margin:0 {{ f.m }}px 12px;box-sizing:border-box;padding:12px 14px;border-radius:16px;border:1px solid rgba(242,238,233,0.32);display:flex;flex-direction:column;gap:8px"><div style="display:flex;gap:6px"><sc-for list="{{ f.stripBlobs }}" as="o" hint-placeholder-count="3"><div style="width:32px;height:32px;border-radius:{{ o.br }};background:{{ o.bg }}"></div></sc-for></div><div style="font-size:14px;line-height:1.43;color:#F2EEE9;text-wrap:pretty">{{ f.stripT }}</div><div style="min-height:44px;display:flex;align-items:center;font-size:14px;color:#A09890">{{ f.stripAct }}</div></div></sc-if>
+              <div style="padding:0 {{ f.m }}px 24px"><div style="width:100%;max-width:{{ f.col }}px;margin:0 auto;display:flex;flex-direction:column;gap:10px">
+                <div style="box-sizing:border-box;width:100%;min-height:56px;padding:8px 20px;border-radius:999px;background:{{ f.bdPBg }};border:1px solid {{ f.bdPBd }};display:flex;align-items:center;justify-content:center;text-align:center;font-size:calc(16px * var(--ts, 1));line-height:1.2;font-weight:500;color:{{ f.bdPC }};word-break:keep-all;overflow-wrap:normal;hyphens:none">{{ f.bdP }}</div>
+                <sc-if value="{{ f.barRow }}" hint-placeholder-val="{{ false }}"><div style="display:flex;align-items:stretch;gap:10px"><sc-for list="{{ f.secs }}" as="s" hint-placeholder-count="2"><div style="flex:1 1 0;min-width:0;min-height:48px;box-sizing:border-box;padding:6px 12px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;text-align:center;font-size:calc(14px * var(--ts, 1));line-height:1.2;color:#A09890;word-break:keep-all;overflow-wrap:normal;hyphens:none">{{ s.t }}</div></sc-for><div style="flex:none;align-self:center;width:48px;height:48px;box-sizing:border-box;border-radius:999px;border:1px solid rgba(242,238,233,0.32);display:flex;align-items:center;justify-content:center;gap:3px"><div style="width:4px;height:4px;border-radius:999px;background:#F2EEE9"></div><div style="width:4px;height:4px;border-radius:999px;background:#F2EEE9"></div><div style="width:4px;height:4px;border-radius:999px;background:#F2EEE9"></div></div></div></sc-if>
+                <sc-if value="{{ f.barStack }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;gap:10px"><sc-for list="{{ f.secsInit }}" as="s" hint-placeholder-count="1"><div style="min-width:0;min-height:48px;box-sizing:border-box;padding:6px 12px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;text-align:center;font-size:calc(14px * var(--ts, 1));line-height:1.2;color:#A09890;word-break:keep-all;overflow-wrap:normal;hyphens:none">{{ s.t }}</div></sc-for><div style="display:flex;align-items:stretch;gap:10px"><div style="flex:1 1 0;min-width:0;min-height:48px;box-sizing:border-box;padding:6px 12px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;text-align:center;font-size:calc(14px * var(--ts, 1));line-height:1.2;color:#A09890;word-break:keep-all;overflow-wrap:normal;hyphens:none">{{ f.secLast }}</div><div style="flex:none;align-self:center;width:48px;height:48px;box-sizing:border-box;border-radius:999px;border:1px solid rgba(242,238,233,0.32);display:flex;align-items:center;justify-content:center;gap:3px"><div style="width:4px;height:4px;border-radius:999px;background:#F2EEE9"></div><div style="width:4px;height:4px;border-radius:999px;background:#F2EEE9"></div><div style="width:4px;height:4px;border-radius:999px;background:#F2EEE9"></div></div></div></div></sc-if>
+              </div></div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ f.lock }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:linear-gradient(180deg,#1E1B19 0%,#0F0E0D 70%);display:flex;flex-direction:column;align-items:center;padding:{{ f.lockTop }}px {{ f.m }}px 24px;box-sizing:border-box;gap:28px">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px"><div style="font-size:64px;line-height:1;font-weight:500;letter-spacing:-1px;color:#F2EEE9">21:40</div><div style="font-size:16px;color:#A09890">{{ f.lockDate }}</div></div>
+            <div style="width:100%;max-width:{{ f.col }}px;box-sizing:border-box;padding:14px 16px;border-radius:{{ f.lockRad }}px;background:rgba(58,54,51,0.82);border:1px solid rgba(242,238,233,0.12);display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#A09890"><span>BA</span><span>{{ f.lockWhen }}</span></div>
+              <div style="font-size:16px;line-height:1.3;font-weight:600;color:#F2EEE9;text-wrap:pretty">{{ f.lockTitle }}</div>
+              <div style="font-size:14px;line-height:1.43;color:#C9C2BA;text-wrap:pretty">{{ f.lockBody }}</div>
+              <sc-if value="{{ f.lockAct }}" hint-placeholder-val="{{ false }}"><div style="margin-top:6px;border-top:1px solid rgba(242,238,233,0.12);min-height:44px;display:flex;align-items:center;font-size:14px;font-weight:500;color:#F2EEE9">{{ f.lockAct }}</div></sc-if>
+              <sc-if value="{{ f.lockCtl }}" hint-placeholder-val="{{ false }}"><div style="margin-top:6px;border-top:1px solid rgba(242,238,233,0.12);padding-top:10px;display:flex;flex-wrap:wrap;align-items:stretch;gap:8px"><sc-for list="{{ f.lockBtns }}" as="c" hint-placeholder-count="3"><div style="flex:{{ c.flex }};min-height:44px;box-sizing:border-box;padding:8px 14px;border-radius:999px;border:1px solid {{ c.bd }};display:flex;align-items:center;justify-content:center;text-align:center;font-size:14px;line-height:1.2;color:{{ c.c }};word-break:keep-all;overflow-wrap:normal;hyphens:none">{{ c.t }}</div></sc-for></div></sc-if>
+            </div>
+            <div style="font-size:14px;line-height:1.43;color:#8A837B;text-align:center;max-width:{{ f.col }}px;text-wrap:pretty">{{ f.lockNote }}</div>
+          </div></sc-if>
+          <sc-if value="{{ f.sheet }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:rgba(8,7,6,0.62)"></div></sc-if>
+          <div style="{{ f.panelStyle }}">
+            <div style="flex:1;min-height:0;overflow-y:auto;scrollbar-width:none;display:flex;flex-direction:column;justify-content:{{ f.justify }};padding:{{ f.padTop }}px {{ f.m }}px 12px">
+              <div style="width:100%;max-width:{{ f.col }}px;margin:0 auto;display:flex;flex-direction:column;gap:18px">
+                <sc-for list="{{ f.blocks }}" as="b" hint-placeholder-count="4">
+                  <div>
+                    <sc-if value="{{ b.isH }}" hint-placeholder-val="{{ false }}"><div style="font-size:calc({{ b.size }}px * var(--ts, 1));line-height:1.25;font-weight:600;letter-spacing:-0.26px;text-wrap:pretty;overflow-wrap:anywhere">{{ b.t }}</div></sc-if>
+                    <sc-if value="{{ b.isP }}" hint-placeholder-val="{{ false }}"><div style="font-size:calc({{ b.size }}px * var(--ts, 1));line-height:1.5;color:{{ b.c }};text-wrap:pretty">{{ b.t }}</div></sc-if>
+                    <sc-if value="{{ b.isMark }}" hint-placeholder-val="{{ false }}"><div style="font-family:'IBM Plex Mono',monospace;font-size:calc(12px * min(var(--ts, 1), 1.6));letter-spacing:0.06em;text-transform:uppercase;color:#8A837B;line-height:1.3">{{ b.t }}</div></sc-if>
+                    <sc-if value="{{ b.isField }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;flex-direction:column;gap:8px">
+                        <div style="font-family:'IBM Plex Mono',monospace;font-size:calc(12px * min(var(--ts, 1), 1.6));letter-spacing:0.06em;text-transform:uppercase;color:#8A837B">{{ b.label }}</div>
+                        <div style="min-height:{{ b.minH }}px;box-sizing:border-box;padding:{{ b.padV }}px 0;display:flex;align-items:{{ b.alignI }};gap:12px;border-bottom:2px {{ b.lineS }} {{ b.lineC }};font-size:calc(20px * var(--ts, 1));letter-spacing:0.01em;flex-wrap:wrap;overflow-wrap:anywhere"><span style="color:#A09890">{{ b.pre }}</span><span style="color:{{ b.vc }}">{{ b.value }}</span></div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ b.isCode }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;gap:8px">
+                        <sc-for list="{{ b.cells }}" as="c" hint-placeholder-count="6"><div style="flex:1 1 0;min-width:0;height:56px;box-sizing:border-box;border-radius:16px;border:{{ c.bd }};display:flex;align-items:center;justify-content:center;font-size:22px;color:#F2EEE9">{{ c.t }}</div></sc-for>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ b.isErr }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;align-items:flex-start;gap:10px">
+                        <div style="flex:none;width:22px;height:22px;box-sizing:border-box;border-radius:999px;border:2px solid #E4705B;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#E4705B;line-height:1;margin-top:1px">!</div>
+                        <div style="font-size:calc(16px * var(--ts, 1));line-height:1.4;color:#E4705B;text-wrap:pretty">{{ b.t }}</div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ b.isLink }}" hint-placeholder-val="{{ false }}"><div style="min-height:48px;box-sizing:border-box;padding:8px 0;border-top:1px solid rgba(242,238,233,0.12);display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:calc(16px * var(--ts, 1));line-height:1.3"><span>{{ b.t }}</span><span style="color:#A09890">›</span></div></sc-if>
+                    <sc-if value="{{ b.isTxtAct }}" hint-placeholder-val="{{ false }}"><div style="min-height:44px;display:flex;align-items:center;font-size:calc(14px * var(--ts, 1));line-height:1.3;color:{{ b.c }}">{{ b.t }}</div></sc-if>
+                    <sc-if value="{{ b.isTag }}" hint-placeholder-val="{{ false }}"><div style="display:block;width:fit-content;max-width:min(100%,26em);box-sizing:border-box;padding:8px 14px;border-radius:16px;border:1px dashed rgba(217,207,168,0.42);text-wrap:pretty;font-family:'IBM Plex Mono',monospace;font-size:calc(12px * min(var(--ts, 1), 1.6));letter-spacing:0.06em;text-transform:uppercase;color:#D9CFA8;line-height:1.3">{{ b.t }}</div></sc-if>
+                    <sc-if value="{{ b.isHead }}" hint-placeholder-val="{{ false }}"><div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap"><div style="font-size:calc(22px * var(--ts, 1));line-height:1.2;font-weight:600;letter-spacing:-0.26px">{{ b.t }}</div><div style="font-family:'IBM Plex Mono',monospace;font-size:calc(12px * min(var(--ts, 1), 1.6));letter-spacing:0.06em;text-transform:uppercase;color:#8A837B">{{ b.mark }}</div></div></sc-if>
+                    <sc-if value="{{ b.isDen }}" hint-placeholder-val="{{ false }}">
+                      <div style="padding:14px 0;border-top:1px solid rgba(242,238,233,0.10);display:flex;flex-direction:column;gap:8px">
+                        <div style="font-size:calc(18px * var(--ts, 1));line-height:1.3;font-weight:600;letter-spacing:-0.18px;text-wrap:pretty">{{ b.t }}</div>
+                        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                          <div style="display:flex;gap:4px"><sc-for list="{{ b.blobs }}" as="o" hint-placeholder-count="2"><div style="width:22px;height:22px;border-radius:{{ o.br }};background:{{ o.bg }}"></div></sc-for></div>
+                          <div style="font-family:'IBM Plex Mono',monospace;font-size:calc(12px * min(var(--ts, 1), 1.6));letter-spacing:0.06em;text-transform:uppercase;color:#8A837B;line-height:1.4">{{ b.info }}</div>
+                        </div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ b.isCh }}" hint-placeholder-val="{{ false }}">
+                      <div style="min-height:56px;box-sizing:border-box;padding:14px 16px;border-radius:16px;border:{{ b.bd }};display:flex;align-items:flex-start;gap:14px">
+                        <div style="flex:none;width:22px;height:22px;box-sizing:border-box;border-radius:999px;border:2px solid {{ b.rc }};display:flex;align-items:center;justify-content:center;margin-top:1px"><div style="width:10px;height:10px;border-radius:999px;background:{{ b.dot }}"></div></div>
+                        <div style="display:flex;flex-direction:column;gap:4px;min-width:0"><div style="font-size:calc(16px * var(--ts, 1));line-height:1.3;font-weight:600">{{ b.t }}</div><div style="font-size:calc(14px * var(--ts, 1));line-height:1.43;color:#A09890;text-wrap:pretty">{{ b.sub }}</div></div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ b.isChips }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ b.chips }}" as="c" hint-placeholder-count="4"><div style="min-height:48px;box-sizing:border-box;padding:6px 18px;border-radius:999px;border:{{ c.bd }};display:flex;align-items:center;gap:8px;font-size:calc(16px * var(--ts, 1));line-height:1.2;color:#F2EEE9"><span style="display:{{ c.ck }}">✓</span><span>{{ c.t }}</span></div></sc-for></div>
+                    </sc-if>
+                    <sc-if value="{{ b.isAgg }}" hint-placeholder-val="{{ false }}">
+                      <div style="min-height:48px;box-sizing:border-box;padding:10px 14px;border:1px dashed rgba(242,238,233,0.28);border-radius:16px;display:flex;flex-direction:column;gap:4px;justify-content:center"><div style="font-size:calc(16px * var(--ts, 1));line-height:1.3">{{ b.t }}</div><div style="font-family:'IBM Plex Mono',monospace;font-size:calc(12px * min(var(--ts, 1), 1.6));letter-spacing:0.06em;text-transform:uppercase;color:#8A837B;line-height:1.3">{{ b.sub }}</div></div>
+                    </sc-if>
+                    <sc-if value="{{ b.isPer }}" hint-placeholder-val="{{ false }}">
+                      <div style="min-height:56px;box-sizing:border-box;padding:10px 0;border-top:1px solid rgba(242,238,233,0.12);display:flex;align-items:center;gap:12px"><div style="flex:none;width:32px;height:32px;border-radius:{{ b.br }};background:{{ b.bg }}"></div><div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><div style="font-size:calc(16px * var(--ts, 1));line-height:1.3;overflow-wrap:anywhere">{{ b.t }}</div><div style="font-size:calc(14px * var(--ts, 1));line-height:1.43;color:#A09890;overflow-wrap:anywhere">{{ b.sub }}</div></div><div style="flex:none;font-size:calc(14px * var(--ts, 1));line-height:1.3;color:#F2EEE9">{{ b.v }}</div></div>
+                    </sc-if>
+                    <sc-if value="{{ b.isSw }}" hint-placeholder-val="{{ false }}">
+                      <div style="min-height:56px;box-sizing:border-box;padding:10px 0;border-top:1px dashed rgba(242,238,233,0.22);display:flex;align-items:center;justify-content:space-between;gap:12px"><div style="display:flex;flex-direction:column;gap:2px;min-width:0"><div style="font-family:'IBM Plex Mono',monospace;font-size:calc(12px * min(var(--ts, 1), 1.6));letter-spacing:0.06em;text-transform:uppercase;color:#8A837B">{{ b.label }}</div><div style="font-size:calc(16px * var(--ts, 1));line-height:1.3;color:#8A837B">{{ b.t }}</div><div style="font-size:calc(14px * var(--ts, 1));line-height:1.43;color:#8A837B;text-wrap:pretty">{{ b.sub }}</div></div><div style="flex:none;width:44px;height:26px;box-sizing:border-box;border-radius:999px;border:1px dashed rgba(242,238,233,0.32);display:flex;align-items:center;padding:0 4px"><div style="width:16px;height:16px;box-sizing:border-box;border-radius:999px;border:1px solid rgba(242,238,233,0.32)"></div></div></div>
+                    </sc-if>
+                    <sc-if value="{{ b.isTog }}" hint-placeholder-val="{{ false }}">
+                      <div style="min-height:56px;box-sizing:border-box;padding:12px 0;border-top:1px solid rgba(242,238,233,0.12);display:flex;align-items:flex-start;justify-content:space-between;gap:14px"><div style="display:flex;flex-direction:column;gap:4px;min-width:0"><div style="font-size:calc(16px * var(--ts, 1));line-height:1.3;font-weight:600;overflow-wrap:anywhere">{{ b.t }}</div><div style="font-size:calc(14px * var(--ts, 1));line-height:1.43;color:#A09890;text-wrap:pretty">{{ b.sub }}</div></div><div style="flex:none;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:44px;height:26px;box-sizing:border-box;border-radius:999px;border:{{ b.tbd }};background:{{ b.tbg }};display:flex;align-items:center;justify-content:{{ b.tjc }};padding:0 4px"><div style="width:16px;height:16px;box-sizing:border-box;border-radius:999px;background:{{ b.tdot }}"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:{{ b.tc }}">{{ b.tw }}</div></div></div>
+                    </sc-if>
+                    <sc-if value="{{ b.isAct }}" hint-placeholder-val="{{ false }}">
+                      <div style="min-height:56px;box-sizing:border-box;padding:10px 0;border-top:1px solid rgba(242,238,233,0.12);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap"><div style="display:flex;flex-direction:column;gap:2px;min-width:0"><div style="font-size:calc(16px * var(--ts, 1));line-height:1.3;overflow-wrap:anywhere">{{ b.t }}</div><div style="font-size:calc(14px * var(--ts, 1));line-height:1.43;color:#A09890;text-wrap:pretty">{{ b.sub }}</div></div><div style="flex:0 1 auto;max-width:100%;min-height:44px;box-sizing:border-box;padding:8px 16px;border-radius:24px;border:1px solid rgba(242,238,233,0.14);display:flex;align-items:center;font-size:calc(14px * var(--ts, 1));line-height:1.2;color:#F2EEE9;overflow-wrap:anywhere;text-align:center">{{ b.v }}</div></div>
+                    </sc-if>
+                    <sc-if value="{{ b.isRow }}" hint-placeholder-val="{{ false }}">
+                      <div style="min-height:48px;box-sizing:border-box;padding:10px 0;border-top:1px solid rgba(242,238,233,0.12);display:flex;flex-direction:column;justify-content:center;gap:4px"><div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:calc(16px * var(--ts, 1));line-height:1.3;color:{{ b.c }}"><span style="overflow-wrap:anywhere">{{ b.t }}</span><span style="color:#A09890">{{ b.v }}</span></div><div style="font-size:calc(14px * var(--ts, 1));line-height:1.43;color:#A09890;text-wrap:pretty">{{ b.sub }}</div></div>
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="flex:none;padding:12px {{ f.m }}px 24px">
+              <div style="width:100%;max-width:{{ f.col }}px;margin:0 auto;display:flex;flex-direction:column;gap:10px">
+                <sc-if value="{{ f.act1 }}" hint-placeholder-val="{{ true }}"><div style="min-height:56px;padding:8px 20px;box-sizing:border-box;border-radius:999px;background:{{ f.pBg }};border:1px solid {{ f.pBd }};display:flex;align-items:center;justify-content:center;text-align:center;font-size:calc(16px * var(--ts, 1));line-height:1.3;font-weight:500;color:{{ f.pC }};text-wrap:pretty">{{ f.act1T }}</div></sc-if>
+                <sc-if value="{{ f.act2 }}" hint-placeholder-val="{{ false }}"><div style="min-height:48px;padding:6px 14px;box-sizing:border-box;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;text-align:center;font-size:calc(14px * var(--ts, 1));line-height:1.3;color:#A09890">{{ f.act2T }}</div></sc-if>
+                <sc-if value="{{ f.slot }}" hint-placeholder-val="{{ false }}"><div style="min-height:48px;box-sizing:border-box;padding:8px 14px;border:1px dashed rgba(242,238,233,0.22);border-radius:999px;display:flex;align-items:center;justify-content:center;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:calc(12px * min(var(--ts, 1), 1.6));letter-spacing:0.06em;text-transform:uppercase;color:#8A837B;line-height:1.3">{{ f.slotT }}</div></sc-if>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-for>
+</section>
+</sc-for>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;lingua&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;it&quot;,&quot;de&quot;],&quot;default&quot;:&quot;it&quot;,&quot;tsType&quot;:&quot;'it'|'de'&quot;},&quot;testo&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:1,&quot;max&quot;:2,&quot;step&quot;:0.1,&quot;default&quot;:1,&quot;tsType&quot;:&quot;number&quot;},&quot;scorri&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;inizio&quot;,&quot;fine&quot;],&quot;default&quot;:&quot;inizio&quot;,&quot;tsType&quot;:&quot;'inizio'|'fine'&quot;},&quot;segniIpotesi&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const de = this.props.lingua === 'de';
+    const ts = Math.min(2, Math.max(1, Number(this.props.testo ?? 1)));
+    const ip = this.props.segniIpotesi !== false;
+    const fine = this.props.scorri === 'fine';
+    const t = (a, b) => (de ? b : a);
+    const C1 = '#A09890', C0 = '#F2EEE9';
+    const H = (s, size = 28) => ({ isH: true, t: s, size });
+    const P = (s, c = C1, size = 16) => ({ isP: true, t: s, c, size });
+    const TAG = s => ({ isTag: true, t: s });
+    const TAGIP = s => (ip ? [TAG(s)] : []);
+    const tIp = {
+      temp: t("ipotesi · blocco temporaneo, con la durata", "Annahme · befristete Sperre, mit Dauer"),
+      next: t("ipotesi · la fonte del DEN successivo è da definire", "Annahme · die Quelle des nächsten DEN ist noch zu klären")
+    };
+    const reg = t("Un contenuto non rispetta le regole di BA.", "Ein Inhalt verstößt gegen die Regeln von BA.");
+    const err = t("Se pensi che sia un errore, puoi chiedere una revisione.", "Wenn du glaubst, dass es ein Fehler ist, kannst du eine Überprüfung beantragen.");
+    const revis = t("Richiedi revisione", "Überprüfung beantragen");
+    const den = "Cucina di notte";
+    const S = [];
+    const add = (g, id, num, name, note, o) => S.push({ g, id, num, name, note, ...o });
+
+    add('ban', 'bannato', 'B1', t("Account chiuso", "Konto gesperrt"), "Copre tutto, all'apertura o al login. Un messaggio che dice il fatto, senza il dettaglio del contenuto, e una sola azione: «Richiedi revisione». Non c'è «Esci» né altro (D-049): chiedere la revisione è facoltativo per BA, ma è l'unica cosa che si può fare qui. L'azione è chiara perché l'app non può proseguire senza un gesto.",
+      { center: true, blocks: [H(t("Questo account non può più usare BA", "Dieses Konto kann BA nicht mehr nutzen")), P(reg), P(err, C0)], a1: revis });
+    add('ban', 'bannato-temporaneo', 'B1 bis', t("Blocco temporaneo · ipotesi", "Befristete Sperre · Annahme"), "Solo se esisterà un blocco a tempo: una riga in più dice fino a quando, come un giorno e un'ora ferma, senza conto alla rovescia. Il resto è identico a B1.",
+      { center: true, blocks: [H(t("L'accesso a BA è sospeso", "Der Zugang zu BA ist gesperrt")), P(reg), P(t("Potrai rientrare il 21 novembre alle 21:40.", "Du kannst am 21. November um 21:40 wieder eintreten."), C0), P(err), ...TAGIP(tIp.temp)], a1: revis });
+    add('ban', 'bannato-inviata', 'B2', t("Revisione richiesta", "Überprüfung beantragt"), "Dopo il tocco: l'azione diventa un fatto inattivo, «Richiesta inviata», e una frase dice cosa succede. Nessun tempo di risposta promesso.",
+      { center: true, blocks: [H(t("Questo account non può più usare BA", "Dieses Konto kann BA nicht mehr nutzen")), P(t("Abbiamo ricevuto la richiesta di revisione. Ti scriviamo all'email dell'account.", "Wir haben deinen Antrag erhalten. Wir schreiben dir an die E-Mail-Adresse des Kontos."), C0)], a1: t("Richiesta inviata", "Antrag gesendet"), inatt: true });
+
+    const nxt = t("Prossimo DEN", "Nächster DEN"), esci = t("Esci", "Verlassen");
+    const btn = (tt, o = {}) => ({ t: tt, flex: o.info ? '0 0 auto' : '1 1 auto', bd: o.info ? 'transparent' : 'rgba(242,238,233,0.32)', c: o.info ? '#A09890' : '#F2EEE9' });
+    const lk = (id, num, name, note, body, btns, extra) => add('ctl', id, num, name, note, { lock: true, lockRad: 24, lockWhen: t('in corso', 'läuft'), lockTitle: den, lockBody: body, lockAct: '', lockCtl: true, lockBtns: btns, lockNote: (ip ? tIp.next + ' · ' : '') + extra, blocks: [], panelOff: true });
+    lk('palco-acceso', 'L1', t("Sul palco · microfono acceso", "Auf der Bühne · Mikrofon an"), "Il controllo «Spegni il microfono» lo spegne e basta (D-025): la schermata non ha alcun modo di accenderlo. «Esci» è lo stop. Il testo dice lo stato, non il colore.", t("Sei sul palco · il microfono è acceso", "Du bist auf der Bühne · das Mikrofon ist an"), [btn(t("Spegni il microfono", "Mikrofon ausschalten")), btn(esci), btn(nxt)], t("Dal telefono bloccato il microfono si spegne, non si accende.", "Bei gesperrtem Telefon wird das Mikrofon ausgeschaltet, nie eingeschaltet."));
+    lk('palco-spento', 'L2', t("Sul palco · microfono spento", "Auf der Bühne · Mikrofon aus"), "Lo stato spento è solo informativo: testo senza contorno, senza l'aspetto di un'azione (D-025, come nelle superfici del 001b). Restano «Esci» e «Prossimo DEN».", t("Sei sul palco · il microfono è spento", "Du bist auf der Bühne · das Mikrofon ist aus"), [btn(t("Microfono spento", "Mikrofon aus"), { info: true }), btn(esci), btn(nxt)], t("Per accenderlo si torna nell'app.", "Zum Einschalten kehrst du in die App zurück."));
+    lk('pubblico', 'L3', t("Fra il pubblico · in diretta", "Im Publikum · live"), "Fra il pubblico il primo controllo è «Pausa»: mette in silenzio l'audio. «Esci» è lo stop.", t("Sei nel pubblico · in diretta", "Du bist im Publikum · live"), [btn(t("Pausa", "Pause")), btn(esci), btn(nxt)], t("Nessun microfono: non si parla da qui.", "Kein Mikrofon: von hier aus wird nicht gesprochen."));
+    lk('pubblico-pausa', 'L4', t("Fra il pubblico · in pausa", "Im Publikum · Pause"), "Il primo controllo diventa «Riprendi dal vivo»: al ritorno si riprende dal vivo, non da dove si era rimasti. Lo stato è scritto, non solo mostrato.", t("Sei nel pubblico · in pausa", "Du bist im Publikum · Pause"), [btn(t("Riprendi dal vivo", "Live fortsetzen")), btn(esci), btn(nxt)], t("Al ritorno si riprende dal vivo.", "Beim Zurückkehren geht es live weiter."));
+
+    const GR = [
+      { id: 'ban', label: 'Account chiuso', titolo: "Account chiuso", nota: "Una schermata che copre tutto, con «Richiedi revisione» come unica azione. Senza ban lievi (D-049)." },
+      { id: 'ctl', label: 'Schermo bloccato', titolo: "Controlli a schermo bloccato", nota: "Notifica fissa, Live Activity o widget: mute o pausa, stop e next. Il significato cambia con lo stato (D-050); sul palco il microfono si può solo spegnere (D-025)." }
+    ];
+    const make = (d, w) => {
+      const tablet = w >= 600;
+      const h = tablet ? 1133 : 740, m = tablet ? 32 : 20, col = tablet ? 512 : 320;
+      const inatt = !!d.inatt;
+      const blocks = (d.blocks || []).map(b => ({ size: 16, c: '#A09890', label: '', pre: '', vc: '#F2EEE9', value: '', mark: '', cells: [], blobs: [], chips: [], info: '', sub: '', v: '', t: '', minH: 56, padV: 0, alignI: 'center', lineS: 'solid', lineC: '#D9CFA8', ...b }));
+      return {
+        id: d.id + '-' + w, w, h, m, col, statusH: tablet ? 32 : 46, label: tablet ? '744 dp · tablet, verticale' : '360 dp · telefono',
+        frameBorder: '1px solid rgba(242,238,233,0.12)',
+        backdrop: false, sheet: false, bdS1: '', bdTitle: den, bdD: 88, bdBlobs: [], bdBar: false, bdEsci: '', bdNote: '', bdTag: '', bdP: '', barRow: false, barStack: false, secs: [], secsInit: [], secLast: '',
+        bdPBg: 'transparent', bdPBd: 'transparent', bdPC: '#F2EEE9',
+        bandOn: false, bandT: '', bandSub: '', bandBd: 'none', stripOn: false, stripT: '', stripAct: '', stripBlobs: [],
+        lock: !!d.lock, lockTop: tablet ? 120 : 72, lockRad: d.lockRad || 24, lockDate: t('venerdì 20 novembre', 'Freitag, 20. November'), lockWhen: d.lockWhen || '', lockTitle: d.lockTitle || '', lockBody: d.lockBody || '', lockAct: '', lockNote: d.lockNote || '', lockCtl: !!d.lockCtl, lockBtns: d.lockBtns || [],
+        panelStyle: d.panelOff ? 'display:none' : 'flex:1;min-height:0;display:flex;flex-direction:column',
+        justify: fine ? 'flex-end' : (d.center ? 'center' : 'flex-start'), padTop: tablet ? 56 : 40,
+        blocks,
+        act1: !!d.a1, act1T: d.a1 || '', pBg: inatt ? 'transparent' : 'linear-gradient(180deg,#EDE7DC 0%,#D2C9B6 100%)', pBd: inatt ? 'rgba(242,238,233,0.10)' : 'transparent', pC: inatt ? '#8A837B' : '#100F0E',
+        act2: false, act2T: '', slot: false, slotT: ''
+      };
+    };
+    const groups = GR.map(g => ({ ...g, screens: S.filter(s => s.g === g.id).map(s => ({ num: s.num, name: s.name, note: s.note, frames: [make(s, 360), make(s, 744)] })) }));
+    return {
+      ts: String(ts), groups,
+      scorriNota: fine ? 'Il prototipo non scorre: questo è lo stato scrollato in fondo. Con scorri = inizio si vede lo stato iniziale.' : 'Il prototipo non scorre: con testo grande, scorri = fine mostra lo stato scrollato in fondo; le azioni restano ancorate.'
+    };
+  }
+}
+</script>
+</body>
+</html>
