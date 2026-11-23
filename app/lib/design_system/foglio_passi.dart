@@ -168,6 +168,11 @@ class BaPassoFoglio {
         azione: azione,
       );
 
+  /// Lo stesso passo con altre azioni, spente, sopra «Non ora» (per esempio un
+  /// «Indietro» di prova nella galleria): non cambia l'[id].
+  BaPassoFoglio conAltreAzioni(List<BaAzioneFoglio> altre) =>
+      BaPassoFoglio(id: id, titolo: titolo, corpo: corpo, azione: azione, altreAzioni: altre);
+
   /// Identifica il passo: se cambia, è un passo nuovo (focus e annuncio).
   final Object id;
 
