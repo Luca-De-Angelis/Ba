@@ -184,7 +184,8 @@ void main() {
       expect(find.text('Ne puoi chiedere un altro fra poco.'), findsOneWidget);
       expect(_coloreTesto(tester, 'Mandalo di nuovo'), BaColorTokens.testoTerzo);
       final s = tester.getSemantics(find.bySemanticsLabel('Mandalo di nuovo'));
-      expect(s.getSemanticsData().flagsCollection.isFocusable, isFalse, reason: 'inattivo: non si focalizza');
+      expect(s, matchesSemantics(label: 'Mandalo di nuovo', isButton: true, hasEnabledState: true, isEnabled: false),
+          reason: 'inattivo: non si tocca e non si focalizza');
       expect(s.getSemanticsData().hasAction(SemanticsAction.tap), isFalse);
       // Nessun conto alla rovescia: nessuna animazione in corso.
       expect(tester.binding.transientCallbackCount, 0);
