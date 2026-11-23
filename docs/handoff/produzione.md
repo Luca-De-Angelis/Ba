@@ -4,7 +4,7 @@ Che cosa è finto nel prototipo e dove si sostituisce, dove il codice si innesta
 
 Torna all'[indice](README.md). Per le regole che il codice deve rispettare vedi [regole](regole.md); per le ipotesi ancora aperte [aperte](aperte.md).
 
-**Che cosa è il prototipo.** Un design system in Flutter (token e 22 componenti, ciascuno con i suoi test) e una **galleria** per vederli in Chrome. Non c'è un'app: `main.dart` è uno schermo vuoto, non ci sono schermate, navigazione, rete, audio né server. Il team di sviluppo ha il suo server e il suo audio in tempo reale, e **non sono in questa repo** (lo dice `CLAUDE.md`, «Cosa non è in questa repo»; l'`README.md` della radice lascia aperta la scelta di dove vivranno server, LiveKit e trascrizione).
+**Che cosa è il prototipo.** Un design system in Flutter (token e 28 componenti, ciascuno con i suoi test) e una **galleria** per vederli in Chrome. Non c'è un'app: `main.dart` è uno schermo vuoto, non ci sono schermate, navigazione, rete, audio né server. Il team di sviluppo ha il suo server e il suo audio in tempo reale, e **non sono in questa repo** (lo dice `CLAUDE.md`, «Cosa non è in questa repo»; l'`README.md` della radice lascia aperta la scelta di dove vivranno server, LiveKit e trascrizione).
 
 ## Che cosa è finto, e dove si sostituisce
 
@@ -48,10 +48,10 @@ Quello che i componenti si aspettano **in ingresso**. Sono i punti d'innesto; la
 Per non promettere: nel codice **non c'è** niente di tutto questo, solo i valori di design in `tokens.dart`.
 
 - **Il server (Servizio)**, l'audio (LiveKit, coturn), la trascrizione, la rete e la persistenza.
-- **L'accesso, la registrazione, il consenso, «Torna ascoltatore»**: ci sono i token (`BaAccessoTokens`), il prototipo 013 e, dal task 022, i controlli (`BaCampoTesto`, `BaCampoCodice`); la logica e le schermate no.
+- **L'accesso, la registrazione, il consenso, «Torna ascoltatore»**: ci sono i token (`BaAccessoTokens`), il prototipo 013 (aggiornato dal 027) e, dai task 022 e 023a, i controlli (`BaCampoTesto`, `BaCampoCodice`) e il foglio a più passi (`BaFoglioPassi`); la logica e le schermate no.
 - **La navigazione e le schermate**. `app/lib/core/` e `app/lib/features/` sono vuote.
 - **Le notifiche**, la Live Activity su iPhone, la Dynamic Island, la notifica Android: l'Inventario le descrive (C5), il codice no. Il meccanismo per spegnere il microfono a schermo bloccato è un'ipotesi in attesa dello sviluppo (domanda 18 della mail).
-- **Gli annunci dello screen reader dei propri cambi di stato** (D-034): l'unico annuncio nel codice è la regione viva di `BaMessaggio` per un errore.
+- **Gli annunci dello screen reader dei propri cambi di stato** (D-034): nel codice ci sono la regione viva di `BaMessaggio` e di `BaFraseErrore` per un errore e, dal task 023a, il titolo di `BaFoglioPassi` dal secondo passo (da provare con TalkBack e VoiceOver, vedi sotto).
 - **Menù di selezione e maniglie nei campi di testo.** `BaCampoTesto` e `BaCampoCodice` si costruiscono con `EditableText` e **non hanno** il menù di selezione né le maniglie — incolla da pressione lunga, taglia, copia, seleziona tutto — né il posizionamento del cursore col dito: richiederebbero la barra degli strumenti di Material o di Cupertino, che qui non si importano. Si scrive, si incolla dalla tastiera del telefono (e dal suggerimento dell'SMS) e da una tastiera fisica, e si cancella. **In produzione vanno aggiunti.** Non è verificabile da qui come si comportano la tastiera vera, l'incolla e l'autocompilazione su un telefono: **da verificare**.
 - **Suono e vibrazione**, vedi sotto.
 - **La sintesi tecnica sull'audio** e gli ADR esistenti lato sviluppo non sono nella repo: `docs/research/README.md` e `docs/adr/README.md` dicono che vanno portati, e `DECISIONS.md` ha una nota «Da unire» sul registro delle decisioni dello sviluppo (`BA_Decisioni_Consolidate.md`). Nessun ADR è presente oggi.
@@ -74,6 +74,7 @@ Che cosa il codice fa già e che cosa va costruito:
 - **Annunci:** vedi la regola D-034 in [regole](regole.md). Oggi esiste solo la regione viva dell'errore (`BaMessaggio`). I fogli si annunciano come finestre (`namesRoute` e `scopesRoute`) con il titolo come nome, e **non annunciano l'arrivo di nessuno**.
 - **Fogli:** il focus entra nel foglio, Tab non ne esce, alla chiusura il focus torna dov'era; ciò che sta dietro è escluso dalla semantica finché il foglio è aperto.
 - **Il codice è un campo solo:** `BaCampoCodice` ha sei caselle disegnate ma **un solo elemento focalizzabile**, con l'etichetta del chiamante e il valore letto cifra per cifra; l'errore di un campo o del codice (`BaFraseErrore`) è una regione viva e si annuncia; gli interruttori sono `toggled`, le scelte esclusive sono `inMutuallyExclusiveGroup`, i chip `selected`. Provato sull'albero semantico, **non con uno screen reader vero**.
+- **Il cambio di passo del foglio a più passi, con TalkBack e VoiceOver.** `BaFoglioPassi` porta il focus sul titolo del nuovo passo (un `Focus` dentro un `Semantics` di intestazione) e dal secondo passo ne fa una **regione viva**, perché il foglio resta lo stesso e un nuovo `namesRoute` non basta. **Non è stato provato con uno screen reader vero:** con TalkBack e VoiceOver il titolo potrebbe essere **letto due volte** (una per il focus, una per la regione viva). Va provato su un iPhone e su un Android veri; se succede, si toglie una delle due. Il campo del passo nuovo non prende il focus da solo, per non coprire il titolo con la tastiera.
 - **Aree toccabili** di almeno 44, **contrasto AA** (nessun test lo misura: **da verificare** in revisione), **testo di sistema fino a 2,0** senza tagli (ogni componente ha un test a 2,0), **«riduci movimento»**.
 - **Stati critici** mai affidati al solo colore.
 
