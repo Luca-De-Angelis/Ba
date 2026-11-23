@@ -192,6 +192,25 @@ void main() {
       handle.dispose();
     });
 
+    testWidgets('scaduto: «Mandalo di nuovo» non c\'è, l\'azione che serve è la primaria', (tester) async {
+      _vista(tester);
+      await _mostra(
+        tester,
+        BaPassoFoglio.codice(
+          id: 'codice',
+          titolo: 'Il codice',
+          frase: 'Mandato al +39 ••• ••• 0000.',
+          codiceSemanticsLabel: 'Codice di sei cifre',
+          stato: BaStatoCodice.scaduto,
+          fraseStato: 'Il codice è scaduto. Te ne mandiamo uno nuovo.',
+          azione: _azione('Manda un nuovo codice'),
+        ),
+      );
+      expect(find.text('Mandalo di nuovo'), findsNothing);
+      expect(find.text('Manda un nuovo codice'), findsOneWidget);
+      expect(find.text('Il codice è scaduto. Te ne mandiamo uno nuovo.'), findsOneWidget);
+    });
+
     testWidgets('sbagliato e scaduto mostrano la loro frase', (tester) async {
       _vista(tester);
       await _mostra(tester, _codice(stato: BaStatoCodice.sbagliato, fraseStato: 'Il codice non è giusto.'));

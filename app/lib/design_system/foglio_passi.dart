@@ -111,7 +111,7 @@ class BaPassoFoglio {
   /// [BaCampoCodice] nello [stato] che il chiamante gli dà (con la sua
   /// [fraseStato], obbligatoria per sbagliato, scaduto e attesa: durante
   /// l'attesa è una frase ferma, mai un conto alla rovescia) e l'azione testuale
-  /// [mandaDiNuovo]. **Se [onMandaDiNuovo] è nullo l'azione è inattiva**
+  /// [mandaDiNuovo] (se è nullo la riga non c'è: nel codice scaduto l'azione che serve è quella primaria, «Manda un nuovo codice»). **Se [onMandaDiNuovo] è nullo l'azione è inattiva**
   /// (durante l'attesa del nuovo invio).
   factory BaPassoFoglio.codice({
     required Object id,
@@ -124,7 +124,7 @@ class BaPassoFoglio {
     String? fraseStato,
     ValueChanged<String>? onCompleto,
     ValueChanged<String>? onChanged,
-    required String mandaDiNuovo,
+    String? mandaDiNuovo,
     VoidCallback? onMandaDiNuovo,
     required BaAzioneFoglio azione,
   }) =>
@@ -142,7 +142,7 @@ class BaPassoFoglio {
             onCompleto: onCompleto,
             onChanged: onChanged,
           ),
-          _AzioneTestuale(testo: mandaDiNuovo, onTap: onMandaDiNuovo),
+          if (mandaDiNuovo != null) _AzioneTestuale(testo: mandaDiNuovo, onTap: onMandaDiNuovo),
         ],
         azione: azione,
       );
