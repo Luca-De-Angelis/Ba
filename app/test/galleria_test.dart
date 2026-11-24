@@ -11,6 +11,9 @@ import 'package:ba/design_system/fascia_attesa.dart';
 import 'package:ba/design_system/interruttore_riga.dart';
 import 'package:ba/design_system/punto_aggancio.dart';
 import 'package:ba/design_system/riga_coda.dart';
+import 'package:ba/design_system/ricerca_persone.dart';
+import 'package:ba/design_system/riga_consenso.dart';
+import 'package:ba/design_system/selettore_persone.dart';
 import 'package:ba/design_system/intestazione.dart';
 import 'package:ba/design_system/riga_bloccata.dart';
 import 'package:ba/design_system/riga_den.dart';
@@ -1097,6 +1100,146 @@ void main() {
       for (final c in ['Account chiuso: nessuno', 'Account chiuso: B1', 'Account chiuso: B1 bis', 'Account chiuso: B2']) {
         await _tocca(tester, c);
         expect(tester.takeException(), isNull, reason: c);
+      }
+    });
+  });
+
+  group('la pagina «Persone e inviti»', () {
+    Future<void> apri(WidgetTester tester) async {
+      _vistaAlta(tester);
+      await tester.pumpWidget(const GalleriaApp());
+      await tester.pump();
+      await _tocca(tester, 'Persone e inviti');
+    }
+
+    Future<void> sale(WidgetTester tester) => tester.pump(const Duration(milliseconds: 300));
+
+    testWidgets('la ricerca nei suoi stati: vuota, due Sara con l\'alias, nessun risultato, errore di rete', (tester) async {
+      await apri(tester);
+      expect(find.byType(BaRicercaPersone), findsNWidgets(7), reason: 'quattro campi e tre selettori');
+      expect(find.text('@sara.m'), findsWidgets);
+      expect(find.text('@sara.rossi'), findsWidgets);
+      expect(find.text('Due persone si chiamano Sara: l\'alias le distingue.'), findsOneWidget);
+      expect(find.text('Nessuna persona trovata per «xyzq».'), findsOneWidget);
+      expect(find.text('Invita con un link'), findsOneWidget);
+      expect(find.text('Non riusciamo a cercare adesso. Controlla la connessione e riprova.'), findsOneWidget);
+      expect(find.text('Riprova'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('le righe nei loro stati: «Aggiungi» passa ad «Aggiunta» e non si ritocca', (tester) async {
+      await apri(tester);
+      final prima = find.text('Aggiungi').evaluate().length;
+      await tester.ensureVisible(find.text('Aggiungi').first);
+      await tester.pump();
+      await tester.tap(find.text('Aggiungi').first);
+      await tester.pump();
+      expect(find.text('Aggiungi').evaluate().length, prima - 1);
+      expect(find.text('Aggiunta'), findsWidgets);
+      expect(find.text('Nell\'invito'), findsWidgets);
+      expect(find.text('Scegli'), findsWidgets);
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('il richiamo parte spento e si accende solo dopo la conferma', (tester) async {
+      await apri(tester);
+      expect(find.byType(BaRigaConsenso), findsNWidgets(3));
+      final spenti = find.text('SPENTO').evaluate().length;
+      expect(spenti, greaterThanOrEqualTo(2));
+      await tester.ensureVisible(find.text('Marta').last);
+      await tester.pump();
+      await tester.tap(find.byType(BaRigaConsenso).first);
+      await tester.pump();
+      await sale(tester);
+      expect(find.text('Avvisare Marta?'), findsOneWidget);
+      expect(find.text('SPENTO').evaluate().length, spenti, reason: 'non è ancora acceso: c\'è la conferma');
+      await _tocca(tester, 'Non ora');
+      await sale(tester);
+      expect(find.text('SPENTO').evaluate().length, spenti, reason: '«Non ora» lascia spento');
+
+      await tester.tap(find.byType(BaRigaConsenso).first);
+      await tester.pump();
+      await sale(tester);
+      await _tocca(tester, 'Avvisa Marta');
+      await sale(tester);
+      expect(find.text('SPENTO').evaluate().length, spenti - 1, reason: 'confermato: acceso');
+    });
+
+    testWidgets('il posto riempito: «Invita» ha il selettore e l\'azione sempre attiva', (tester) async {
+      await apri(tester);
+      await _tocca(tester, 'Invita: il posto riempito');
+      await sale(tester);
+      expect(find.text('Chi inviti?'), findsOneWidget);
+      expect(find.byType(BaSelettorePersone), findsWidgets);
+      expect(find.byType(BaPuntoAggancio), findsNothing, reason: 'il posto è riempito dal selettore');
+      await _tocca(tester, 'Continua');
+      await sale(tester);
+      expect(find.byType(BaFoglio), findsNothing);
+    });
+
+    testWidgets('il posto riempito: il co-amministratore ha l\'azione inattiva finché non si sceglie', (tester) async {
+      await apri(tester);
+      await _tocca(tester, 'Co-amministratore: il posto riempito');
+      await sale(tester);
+      BaPillola aggiungi() => tester.widget<BaPillola>(find.widgetWithText(BaPillola, 'Aggiungi un co-amministratore'));
+      expect(aggiungi().onTap, isNull);
+      final scegli = find.descendant(of: find.byType(BaFoglio), matching: find.text('Scegli')).first;
+      await tester.ensureVisible(scegli);
+      await tester.pump();
+      await tester.tap(scegli);
+      await tester.pump();
+      expect(aggiungi().onTap, isNotNull);
+      expect(find.descendant(of: find.byType(BaFoglio), matching: find.textContaining('Hai raggiunto il limite')), findsOneWidget);
+      await _tocca(tester, 'Aggiungi un co-amministratore');
+      await sale(tester);
+      expect(find.byType(BaFoglio), findsNothing);
+    });
+
+    testWidgets('«Sei stato invitato», scaduto e annullato', (tester) async {
+      await apri(tester);
+      await _tocca(tester, 'Sei stato invitato');
+      await sale(tester);
+      expect(find.text('Marta ti ha invitato a Cena senza fretta'), findsOneWidget);
+      expect(find.text('Entra'), findsOneWidget);
+      await _tocca(tester, 'Non ora');
+      await sale(tester);
+
+      await _tocca(tester, 'Invito scaduto');
+      await sale(tester);
+      expect(find.text('Questo invito è scaduto'), findsOneWidget);
+      expect(find.descendant(of: find.byType(BaFoglio), matching: find.byType(BaPillola)), findsOneWidget);
+      await _tocca(tester, 'Ho capito');
+      await sale(tester);
+
+      await _tocca(tester, 'Invito annullato');
+      await sale(tester);
+      expect(find.text('Questo invito non è più valido'), findsOneWidget);
+      await _tocca(tester, 'Ho capito');
+      await sale(tester);
+      expect(find.byType(BaFoglio), findsNothing);
+    });
+
+    testWidgets('regge 744, il testo 2,0 e «riduci movimento» in ogni foglio', (tester) async {
+      await apri(tester);
+      for (final c in ['Larghezza 360', 'Testo 1,0', 'Riduci movimento']) {
+        await _tocca(tester, c);
+        expect(tester.takeException(), isNull, reason: c);
+      }
+      final aperture = <String, String>{
+        'Invita: il posto riempito': 'Non ora',
+        'Co-amministratore: il posto riempito': 'Chiudi',
+        'Sei stato invitato': 'Non ora',
+        'Invito scaduto': 'Ho capito',
+        'Invito annullato': 'Ho capito',
+      };
+      for (final MapEntry(key: apertura, value: chiusura) in aperture.entries) {
+        await _tocca(tester, apertura);
+        await tester.pump();
+        expect(find.byType(BaFoglio), findsOneWidget, reason: apertura);
+        expect(tester.takeException(), isNull, reason: apertura);
+        await _tocca(tester, chiusura);
+        await tester.pump();
+        expect(find.byType(BaFoglio), findsNothing, reason: 'dopo «$chiusura»');
       }
     });
   });

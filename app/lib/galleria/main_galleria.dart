@@ -18,6 +18,7 @@ import 'galleria_fogli_contenuto.dart';
 import 'galleria_fogli_creazione.dart';
 import 'galleria_stanza_elenco.dart';
 import 'galleria_palco.dart';
+import 'galleria_persone_inviti.dart';
 import 'galleria_presenza.dart';
 import 'galleria_touchable.dart';
 
@@ -47,7 +48,7 @@ class GalleriaApp extends StatelessWidget {
 }
 
 /// Le pagine della galleria, una per componente (o gruppo di componenti).
-enum _Pagina { touchable, presenza, palco, controlli, fogli, accesso, fogliContenuto, fogliCreazione, stanzaElenco }
+enum _Pagina { touchable, presenza, palco, controlli, fogli, accesso, fogliContenuto, fogliCreazione, stanzaElenco, personeInviti }
 
 class _Galleria extends StatefulWidget {
   const _Galleria();
@@ -119,6 +120,11 @@ class _GalleriaState extends State<_Galleria> {
                     _pagina == _Pagina.stanzaElenco,
                     () => setState(() => _pagina = _Pagina.stanzaElenco),
                   ),
+                  galleriaInterruttore(
+                    'Persone e inviti',
+                    _pagina == _Pagina.personeInviti,
+                    () => setState(() => _pagina = _Pagina.personeInviti),
+                  ),
                 ],
               ),
             ),
@@ -134,6 +140,7 @@ class _GalleriaState extends State<_Galleria> {
               _Pagina.fogliContenuto => const GalleriaFogliContenuto(),
               _Pagina.fogliCreazione => const GalleriaFogliCreazione(),
               _Pagina.stanzaElenco => const GalleriaStanzaElenco(),
+              _Pagina.personeInviti => const GalleriaPersoneInviti(),
             },
           ),
         ],
