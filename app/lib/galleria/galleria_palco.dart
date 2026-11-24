@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 
 import '../design_system/barra_azioni.dart';
 import '../design_system/foglio.dart';
+import '../design_system/intestazione.dart';
 import '../design_system/palco.dart';
 import '../design_system/palco/disposizione.dart';
 import '../design_system/pillola.dart';
@@ -280,17 +281,12 @@ class _GalleriaPalcoState extends State<GalleriaPalco> {
           children: [
             Padding(
               padding: EdgeInsets.fromLTRB(margine, BaSpazioTokens.l, margine, 0),
-              // Titolo sopra e marcatore sotto: a testo grande stanno in colonna e
+              // Titolo sopra e marcatore sotto (task 029: BaIntestazione e
+              // BaMarcatore al posto del testo provvisorio): a testo grande
               // crescono in altezza, e il palco cede.
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Serata sul balcone', style: BaTestoTokens.stanza),
-                  Text(
-                    '$_persone SUL PALCO',
-                    style: BaTestoTokens.marcatore.copyWith(color: BaColorTokens.testoTerzo),
-                  ),
-                ],
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: BaIntestazione(nome: 'Serata sul balcone', marcatore: '$_persone sul palco'),
               ),
             ),
             // L'indicatore sta nel flusso, sopra il palco, a altezza naturale e senza
