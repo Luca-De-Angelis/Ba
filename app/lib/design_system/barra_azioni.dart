@@ -1,7 +1,11 @@
 // BaBarraAzioni: la barra in fondo allo schermo (task 002, punto 12). Tre posti,
 // sempre: uno primario e due secondari. Dalla quarta azione compare «Altro»
 // (48 × 48), che chiama `onAltro`: il foglio con le azioni rimanenti non è
-// qui (arriva con BaFoglio).
+// qui (arriva con BaFoglio). **Task 034:** un'azione segnata `inAltro` va in
+// «Altro» qualunque sia la sua posizione, e «Altro» compare se ce n'è almeno una
+// (015 e 027: un ascoltatore ha la primaria, «Esci» e «Altro»). Chi non usa
+// `inAltro` non vede nessun cambiamento; `BaBarraAzioni.eccedenti` dà le azioni
+// da mettere nel foglio.
 //
 // Disposizione, come nel prototipo del 002: la primaria sopra, a tutta
 // larghezza; sotto, in una riga, le due secondarie e, se c'è, «Altro» a destra.
@@ -34,7 +38,11 @@ class BaAzioneBarra {
     this.onTap,
     this.fissa = false,
     this.variante,
-  });
+    this.inAltro = false,
+  }) : assert(
+         !inAltro || (ruolo != BaRuoloAzione.primaria && !fissa),
+         'la primaria e le azioni fisse non possono stare in «Altro»',
+       );
 
   final BaRuoloAzione ruolo;
   final String testo;
@@ -50,6 +58,13 @@ class BaAzioneBarra {
   /// («Sali sul palco», «Accendi il microfono»; `BaRegole` 1). «Spegni il
   /// microfono» è `attiva`.
   final BaVariantePillola? variante;
+
+  /// Va in «Altro» **qualunque sia la sua posizione** (task 034, 015 e 027: un
+  /// ascoltatore ha la primaria, «Esci» e «Altro» con «Impostazioni» dentro). «Altro»
+  /// compare se ce n'è almeno una, oltre alla regola della quarta azione. Non può
+  /// esserlo né la primaria né un'azione fissa (assert in debug, come per i posti).
+  /// Default falso: chi non lo usa non vede nessun cambiamento.
+  final bool inAltro;
 
   BaVariantePillola get varianteEffettiva =>
       variante ??
@@ -69,7 +84,8 @@ class BaBarraAzioni extends StatelessWidget {
 
   final List<BaAzioneBarra> azioni;
 
-  /// Quello che «Altro» fa: apre il foglio con `azioni.skip(3)`.
+  /// Quello che «Altro» fa: apre il foglio con [eccedenti] (le azioni oltre le tre e
+  /// quelle segnate `inAltro`, nell'ordine in cui sono date).
   final VoidCallback? onAltro;
 
   /// Etichetta di «Altro» per lo screen reader, dal chiamante.
@@ -80,17 +96,41 @@ class BaBarraAzioni extends StatelessWidget {
 
   static const double _mezzoGap = BaControlloTokens.gapCoppia / 2;
 
+  /// Le azioni che finiscono in «Altro»: quelle segnate `inAltro` e quelle che, fra le
+  /// altre, stanno oltre i tre posti, nell'ordine in cui sono date. Chi apre il foglio
+  /// di «Altro» lo riempie con queste.
+  static List<BaAzioneBarra> eccedenti(List<BaAzioneBarra> azioni) {
+    final fuori = <BaAzioneBarra>[];
+    var posto = 0;
+    for (final a in azioni) {
+      if (a.inAltro || posto >= BaBarraAzioniTokens.posti) {
+        fuori.add(a);
+      } else {
+        posto++;
+      }
+    }
+    return fuori;
+  }
+
+  /// «Altro» compare dalla quarta azione, o se ce n'è almeno una `inAltro`.
+  static bool _conAltro(List<BaAzioneBarra> azioni) =>
+      BaBarraAzioniTokens.conAltro(azioni.length) || azioni.any((a) => a.inAltro);
+
   static String? _problema(List<BaAzioneBarra> azioni) {
     final primarie = [
       for (var i = 0; i < azioni.length; i++)
         if (azioni[i].ruolo == BaRuoloAzione.primaria) i,
     ];
     if (primarie.length != 1) return 'la barra vuole una sola primaria, ne ha ${primarie.length}';
-    if (primarie.single >= BaBarraAzioniTokens.posti) {
-      return 'la primaria è in posizione ${primarie.single + 1}: finirebbe in «Altro»';
+    // I posti li hanno le azioni che non sono `inAltro`.
+    final conPosto = [for (final a in azioni) if (!a.inAltro) a];
+    final iPrimaria = conPosto.indexWhere((a) => a.ruolo == BaRuoloAzione.primaria);
+    if (iPrimaria < 0) return 'la primaria non può stare in «Altro»';
+    if (iPrimaria >= BaBarraAzioniTokens.posti) {
+      return 'la primaria è in posizione ${iPrimaria + 1}: finirebbe in «Altro»';
     }
-    for (var i = BaBarraAzioniTokens.posti; i < azioni.length; i++) {
-      if (azioni[i].fissa) return 'l\'azione fissa «${azioni[i].testo}» finirebbe in «Altro»';
+    for (var i = BaBarraAzioniTokens.posti; i < conPosto.length; i++) {
+      if (conPosto[i].fissa) return 'l\'azione fissa «${conPosto[i].testo}» finirebbe in «Altro»';
     }
     final chiare = azioni.where((a) => a.variante == BaVariantePillola.chiara).length;
     if (chiare > 1) return 'la barra ha $chiare pillole chiare: BaRegole 1 ne ammette una';
@@ -116,7 +156,7 @@ class BaBarraAzioni extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final visibili = azioni.take(BaBarraAzioniTokens.posti).toList();
+    final visibili = [for (final a in azioni) if (!a.inAltro) a].take(BaBarraAzioniTokens.posti).toList();
     final primaria = visibili.firstWhere((a) => a.ruolo == BaRuoloAzione.primaria);
     final secondarie = [
       for (final a in visibili)
@@ -128,7 +168,7 @@ class BaBarraAzioni extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _pillola(primaria, estensione: BaTouchable.estesa, primaria: true),
-        if (secondarie.isNotEmpty) ...[
+        if (secondarie.isNotEmpty || _conAltro(azioni)) ...[
           const SizedBox(height: BaControlloTokens.gapCoppia),
           LayoutBuilder(
             builder: (context, vincoli) => _secondarie(context, vincoli.maxWidth, secondarie),
@@ -149,8 +189,16 @@ class BaBarraAzioni extends StatelessWidget {
   ///   misurando (BaPillola.parolaEntra) con la larghezza che la pillola
   ///   avrebbe affiancata; la riga di «Altro» in colonna non si ricontrolla.
   Widget _secondarie(BuildContext context, double larghezza, List<BaAzioneBarra> secondarie) {
-    final conAltro = BaBarraAzioniTokens.conAltro(azioni.length);
+    final conAltro = _conAltro(azioni);
     const gap = BaControlloTokens.gapCoppia;
+
+    // Solo la primaria e «Altro» (un'azione `inAltro` e nient'altro): «Altro» da solo, a destra.
+    if (secondarie.isEmpty) {
+      return Align(
+        alignment: Alignment.centerRight,
+        child: _Altro(semanticsLabel: semanticsLabelAltro, onTap: onAltro, estensione: EdgeInsets.zero),
+      );
+    }
 
     bool entra(BaAzioneBarra a, double l) => BaPillola.parolaEntra(
           context,
