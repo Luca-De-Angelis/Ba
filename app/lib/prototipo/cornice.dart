@@ -23,7 +23,9 @@ import 'testi.dart';
 
 const double _telefono = 360;
 const double _tablet = 744;
-const double _altezzaTelefono = 780;
+// 896: l'altezza di un telefono alto (414 × 896); con le quattro azioni della barra e il testo a 2,0
+// la stanza non entra in meno.
+const double _altezzaTelefono = 896;
 const double _altezzaTablet = 1133;
 const double _larghezzaPannello = 320;
 

@@ -93,8 +93,8 @@ class _PaginaStanzaState extends State<PaginaStanza> {
         ));
   }
 
-  void _apriAltro(BuildContext context) {
-    final stato = ProtoScope.leggi(context);
+  /// «Altro» raccoglie le azioni oltre le tre che la barra mostra (002).
+  void _apriAltro(BuildContext context, List<BaAzioneBarra> eccedenti) {
     _conFoglio(() => showBaFoglio<void>(
           context,
           etichettaVelo: T.chiudi,
@@ -107,13 +107,14 @@ class _PaginaStanzaState extends State<PaginaStanza> {
                   padding: const EdgeInsets.only(bottom: BaSpazioTokens.m),
                   child: Text(T.altro, style: BaTestoTokens.foglio.copyWith(color: BaColorTokens.testoPrimo)),
                 ),
-                BaRigaAzione(
-                  titolo: T.impostazioniRiga,
-                  onTap: () {
-                    Navigator.of(foglio).pop();
-                    stato.vai(const Rotta(Pagina.impostazioni));
-                  },
-                ),
+                for (final a in eccedenti)
+                  BaRigaAzione(
+                    titolo: a.testo,
+                    onTap: () {
+                      Navigator.of(foglio).pop();
+                      a.onTap?.call();
+                    },
+                  ),
               ],
             ),
             azioni: [pillola(T.chiudi, () => Navigator.of(foglio).pop(), variante: BaVariantePillola.spenta)],
@@ -131,6 +132,21 @@ class _PaginaStanzaState extends State<PaginaStanza> {
       fissa: true,
       onTap: stato.esciDallaStanza,
     );
+    // Oltre le tre che la barra mostra: «Altro» le raccoglie (002), per ogni ruolo.
+    final oltre = [
+      BaAzioneBarra(
+        ruolo: BaRuoloAzione.secondaria,
+        testo: T.impostazioniRiga,
+        semanticsLabel: T.impostazioniRiga,
+        onTap: () => stato.vai(const Rotta(Pagina.impostazioni)),
+      ),
+      BaAzioneBarra(
+        ruolo: BaRuoloAzione.secondaria,
+        testo: T.personeBloccate,
+        semanticsLabel: T.personeBloccate,
+        onTap: () => stato.vai(const Rotta(Pagina.bloccate)),
+      ),
+    ];
     if (stato.ruolo == Ruolo.pubblico) {
       return [
         BaAzioneBarra(
@@ -141,6 +157,7 @@ class _PaginaStanzaState extends State<PaginaStanza> {
           onTap: () => _sali(context),
         ),
         esci,
+        ...oltre,
       ];
     }
     return [
@@ -161,13 +178,7 @@ class _PaginaStanzaState extends State<PaginaStanza> {
         onTap: stato.scendiDalPalco,
       ),
       esci,
-      // Oltre le tre: finiscono in «Altro».
-      BaAzioneBarra(
-        ruolo: BaRuoloAzione.secondaria,
-        testo: T.impostazioniRiga,
-        semanticsLabel: T.impostazioniRiga,
-        onTap: () => stato.vai(const Rotta(Pagina.impostazioni)),
-      ),
+      ...oltre,
     ];
   }
 
@@ -183,6 +194,7 @@ class _PaginaStanzaState extends State<PaginaStanza> {
     final n = stato.palco.length;
     final sulPalco = stato.ruolo == Ruolo.sulPalco;
 
+    final azioni = _azioni(context, stato);
     final persone = [
       for (final p in stato.palco)
         BaPersonaPalco(
@@ -193,6 +205,8 @@ class _PaginaStanzaState extends State<PaginaStanza> {
           semanticsLabel: p.nome,
           semanticsLabelParla: '${p.nome}, sta parlando',
           parla: stato.parla == p.id,
+          // Bloccata dalla scheda: il glifo «bloccata» del design system, oltre alle persone bloccate.
+          bloccata: stato.bloccate.any((b) => b.id == p.id),
           ampiezza: 1,
           microfonoSpento: p.id == 'io' ? !stato.micAcceso : false,
           io: p.id == 'io',
@@ -262,8 +276,8 @@ class _PaginaStanzaState extends State<PaginaStanza> {
           Padding(
             padding: EdgeInsets.fromLTRB(margine, BaSpazioTokens.s, margine, BaSpazioTokens.l),
             child: BaBarraAzioni(
-              azioni: _azioni(context, stato),
-              onAltro: () => _apriAltro(context),
+              azioni: azioni,
+              onAltro: () => _apriAltro(context, azioni.skip(3).toList()),
               semanticsLabelAltro: T.altro,
             ),
           ),

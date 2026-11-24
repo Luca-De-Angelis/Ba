@@ -15,7 +15,7 @@ Servono Flutter e Chrome ([avvio](avvio.md)). Niente backend, audio, autenticazi
 
 ## Come si naviga
 
-- **La cornice** al centro è un telefono da **360 dp** (il dispositivo di riferimento); dal pannello si passa a **744** (il tablet). **Quello che sta nella cornice è il prodotto.**
+- **La cornice** al centro è un telefono da **360 dp** (il dispositivo di riferimento) e alto 896; dal pannello si passa a **744** (il tablet). **Quello che sta nella cornice è il prodotto.**
 - **Il pannello dello strumento**, fuori dalla cornice, **non è il prodotto**: testo 1,0 e 2,0, riduci movimento, larghezza 360 e 744, **«Torna all'inizio»** (riparte dal login), una riga con i **codici di prova** e, in piccolo, lo stato finto (account e pagina).
 - **Codici di prova:** `123456` è giusto, `000000` è scaduto, ogni altro è sbagliato. Il numero di telefono dei passi di «diventa partecipante» è `320 000 0000` (qualunque numero non vuoto va bene); la email, una qualunque che sembri una email.
 - **Con la tastiera:** Tab porta il focus da un elemento al successivo, Invio e spazio toccano; al cambio di pagina il titolo della pagina nuova prende il focus. **Ogni vicolo ha un'uscita:** «Indietro» nelle pagine, «Non ora» o «Chiudi» nei fogli.
@@ -27,8 +27,8 @@ Servono Flutter e Chrome ([avvio](avvio.md)). Niente backend, audio, autenticazi
 3. **Dall'elenco alla stanza.** Tocca «Cucina di notte» (cinque sul palco, Marta B. parla), «Fra due turni» (due) o «Radio insonni» (vuoto: «Il palco è libero»). Si entra **come pubblico** (D-006). **«Esci»** torna all'elenco.
 4. **Sali sul palco da ascoltatore → partecipante.** Nella stanza, «Sali sul palco» → il foglio «diventa partecipante» (avviso → numero → codice → consenso: «Acconsento e salgo»; «Indietro» in ogni passo dopo il primo): l'account passa a **partecipante** e **si sale a microfono spento** (D-007). «Accendi il microfono» / «Spegni il microfono» / «Scendi dal palco».
 5. **Da partecipante si sale subito.** Torna all'elenco (ora «sei partecipante» e compare «Corridoio lungo», su invito, D-041), entra in un'altra stanza e «Sali sul palco»: nessun foglio, sempre a microfono spento.
-6. **La scheda di una persona.** Tocca una presenza: la scheda con «Muta questa voce» (attiva solo se parla), «Blocca» e «Segnala». «Blocca» aggiunge la persona alle bloccate.
-7. **«Altro».** Sul palco, la barra ha più di tre azioni: «Altro» apre il foglio con «Impostazioni» (e «Indietro» riporta alla stanza).
+6. **La scheda di una persona.** Tocca una presenza: la scheda con «Muta questa voce» (attiva solo se parla), «Blocca» e «Segnala». **«Blocca»** chiude la scheda e la persona sul palco compare **con il glifo «bloccata»**; sta anche nelle persone bloccate (impostazioni) e **«Sblocca» la ripristina**.
+7. **«Altro».** La barra ha **sempre almeno quattro azioni**, per ogni ruolo (ascoltatore o partecipante, in ascolto o sul palco): mostra le prime tre e **«Altro» raccoglie le eccedenti** («Persone bloccate» in ascolto; «Impostazioni» e «Persone bloccate» sul palco). «Indietro» riporta alla stanza.
 8. **Le impostazioni** (dall'elenco, riga «Impostazioni ›»): lingua e microfono (di sola lettura), **«Persone bloccate»** (con «Sblocca») e, da partecipante, **«Torna ascoltatore» con le due conferme** («Tornare ascoltatore?» → «Ne sei sicuro?»); dopo, la riga diventa un fatto («Sei ascoltatore»). **«Esci da BA»** riporta al login.
 9. **«Crea un DEN» da ascoltatore.** «Per creare un DEN bisogna diventare partecipante» → i quattro passi («Acconsento e continuo») → l'account è partecipante e si torna all'elenco. I passi della creazione veri arrivano con il 024b.
 

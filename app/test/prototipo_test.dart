@@ -7,6 +7,7 @@ import 'package:ba/design_system/barra_azioni.dart';
 import 'package:ba/design_system/campo_codice.dart';
 import 'package:ba/design_system/foglio.dart';
 import 'package:ba/design_system/pillola.dart';
+import 'package:ba/design_system/presenza.dart';
 import 'package:ba/design_system/riga_den.dart';
 import 'package:ba/prototipo/cornice.dart';
 
@@ -249,25 +250,70 @@ void main() {
       expect(find.text('Accendi il microfono'), findsOneWidget, reason: '«Indietro» riporta alla stanza');
     });
 
-    testWidgets('la scheda di una persona: «Blocca» la aggiunge alle persone bloccate', (tester) async {
+    Finder presenza(String iniziali) => find.byWidgetPredicate((w) => w is BaPresenza && w.iniziali == iniziali);
+
+    testWidgets('«Blocca» dalla scheda: la scheda si chiude, la persona sul palco ha il glifo «bloccata» e sta fra le bloccate; «Sblocca» la ripristina', (tester) async {
       await _avvia(tester);
       await _accedi(tester);
       await _tocca(tester, 'Cucina di notte');
-      await tester.tap(find.bySemanticsLabel('Marta B., sta parlando'), warnIfMissed: false);
+      expect(tester.widget<BaPresenza>(presenza('MB')).bloccata, isFalse);
+
+      await tester.tap(presenza('MB'));
       await tester.pump();
-      // La presenza si tocca col suo nome: l'etichetta non sempre è nel finder dei testi.
-      final presenze = find.byType(BaFoglio);
-      if (presenze.evaluate().isEmpty) {
-        await tester.tapAt(tester.getCenter(find.text('MB').first));
-        await tester.pump();
-      }
       await _sale(tester);
-      expect(find.text('Marta B.'), findsWidgets);
-      await _tocca(tester, 'Blocca');
+      expect(find.byType(BaFoglio), findsOneWidget, reason: 'la scheda di Marta B.');
+      await _toccaNelFoglio(tester, 'Blocca');
       await _sale(tester);
+      expect(find.byType(BaFoglio), findsNothing, reason: 'la scheda si chiude');
+      expect(tester.widget<BaPresenza>(presenza('MB')).bloccata, isTrue, reason: 'il glifo «bloccata» sul palco');
+      expect(tester.widget<BaPresenza>(presenza('SL')).bloccata, isFalse, reason: 'solo lei');
+
       await _tocca(tester, 'Esci');
       await _tocca(tester, 'Impostazioni');
       expect(find.text('4 persone'), findsOneWidget);
+      await _tocca(tester, 'Persone bloccate');
+      expect(find.text('Marta B.'), findsOneWidget);
+
+      await tester.tap(find.widgetWithText(BaPillola, 'Sblocca').last);
+      await tester.pump();
+      await _tocca(tester, 'Indietro');
+      await _tocca(tester, 'Indietro');
+      await _tocca(tester, 'Cucina di notte');
+      expect(tester.widget<BaPresenza>(presenza('MB')).bloccata, isFalse, reason: '«Sblocca» la ripristina');
+    });
+
+    testWidgets('«Altro» c\'è sempre: per l\'ascoltatore e per il partecipante, in ascolto e sul palco', (tester) async {
+      final semantica = tester.ensureSemantics();
+      await _avvia(tester);
+      await _accedi(tester);
+      await _tocca(tester, 'Cucina di notte');
+      // Ascoltatore, in ascolto: la barra ha quattro azioni, «Altro» raccoglie la quarta.
+      expect(find.bySemanticsLabel('Altro'), findsOneWidget);
+      await tester.tap(find.bySemanticsLabel('Altro'));
+      await tester.pump();
+      await _sale(tester);
+      expect(find.byType(BaFoglio), findsOneWidget);
+      await _toccaNelFoglio(tester, 'Persone bloccate');
+      expect(find.text('Dario V.'), findsOneWidget);
+      await _tocca(tester, 'Indietro');
+      await _tocca(tester, 'Sali sul palco');
+      await _diventaPartecipante(tester, 'Acconsento e salgo');
+
+      // Partecipante, sul palco: «Altro» raccoglie «Impostazioni» e «Persone bloccate».
+      expect(find.bySemanticsLabel('Altro'), findsOneWidget);
+      await tester.tap(find.bySemanticsLabel('Altro'));
+      await tester.pump();
+      await _sale(tester);
+      expect(find.descendant(of: find.byType(BaFoglio), matching: find.text('Impostazioni')), findsOneWidget);
+      expect(find.descendant(of: find.byType(BaFoglio), matching: find.text('Persone bloccate')), findsOneWidget);
+      await _toccaNelFoglio(tester, 'Chiudi');
+      await _sale(tester);
+
+      // Partecipante, in ascolto in un'altra stanza: «Altro» c'è ancora.
+      await _tocca(tester, 'Esci');
+      await _tocca(tester, 'Fra due turni');
+      expect(find.bySemanticsLabel('Altro'), findsOneWidget);
+      semantica.dispose();
     });
   });
 
