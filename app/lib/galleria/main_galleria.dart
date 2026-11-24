@@ -15,6 +15,7 @@ import 'galleria_accesso.dart';
 import 'galleria_controlli.dart';
 import 'galleria_fogli.dart';
 import 'galleria_fogli_contenuto.dart';
+import 'galleria_fogli_creazione.dart';
 import 'galleria_palco.dart';
 import 'galleria_presenza.dart';
 import 'galleria_touchable.dart';
@@ -45,7 +46,7 @@ class GalleriaApp extends StatelessWidget {
 }
 
 /// Le pagine della galleria, una per componente (o gruppo di componenti).
-enum _Pagina { touchable, presenza, palco, controlli, fogli, accesso, fogliContenuto }
+enum _Pagina { touchable, presenza, palco, controlli, fogli, accesso, fogliContenuto, fogliCreazione }
 
 class _Galleria extends StatefulWidget {
   const _Galleria();
@@ -107,6 +108,11 @@ class _GalleriaState extends State<_Galleria> {
                     _pagina == _Pagina.fogliContenuto,
                     () => setState(() => _pagina = _Pagina.fogliContenuto),
                   ),
+                  galleriaInterruttore(
+                    'Fogli di creazione e gestione',
+                    _pagina == _Pagina.fogliCreazione,
+                    () => setState(() => _pagina = _Pagina.fogliCreazione),
+                  ),
                 ],
               ),
             ),
@@ -120,6 +126,7 @@ class _GalleriaState extends State<_Galleria> {
               _Pagina.fogli => const GalleriaFogli(),
               _Pagina.accesso => const GalleriaAccesso(),
               _Pagina.fogliContenuto => const GalleriaFogliContenuto(),
+              _Pagina.fogliCreazione => const GalleriaFogliCreazione(),
             },
           ),
         ],
