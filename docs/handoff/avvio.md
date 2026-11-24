@@ -64,3 +64,13 @@ Che cosa fanno i controlli di sempre:
 Sui due fogli e sulla scheda: aprendoli nella stanza finta le presenze dietro si attenuano (`dietro` di `BaPalco`) finché il foglio è aperto.
 
 Il dettaglio di ogni pagina è anche in [`app/README.md`](../../app/README.md). Per la mappa dei componenti vedi [componenti](componenti.md).
+
+## Il prototipo navigabile
+
+Una pagina web in Chrome che parte dal login e si naviga come un'app, con dati finti (task 024, D-030: strumento di sviluppo e di dimostrazione). Da `app/`:
+
+```
+flutter run -d chrome -t lib/prototipo/main_prototipo.dart
+```
+
+Una cornice da telefono al centro e, fuori, un pannello dello strumento (testo, riduci movimento, larghezza, «Torna all'inizio», i codici di prova). Come si naviga, i percorsi da provare e che cosa è finto sono in [prototipo](prototipo.md).

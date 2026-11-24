@@ -21,6 +21,7 @@ final Directory _designSystem = Directory('lib/design_system');
 const List<String> _attesi = [
   'README.md',
   'avvio.md',
+  'prototipo.md',
   'architettura.md',
   'componenti.md',
   'schermate.md',
