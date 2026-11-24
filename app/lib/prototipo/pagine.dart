@@ -1,0 +1,21 @@
+// Dalla rotta alla pagina (task 024): l'elenco di tutte le pagine intere del
+// prototipo. Una pagina nuova si aggiunge qui e nell'enum `Pagina`.
+import 'package:flutter/widgets.dart';
+
+import 'pagina_elenco.dart';
+import 'pagina_stanza.dart';
+import 'pagine_accesso.dart';
+import 'pagine_impostazioni.dart';
+import 'stato.dart';
+
+Widget costruisciPagina(Rotta r) => switch (r.pagina) {
+      Pagina.email => const PaginaEmail(),
+      Pagina.codice => const PaginaCodice(),
+      Pagina.onboarding => const PaginaOnboarding(),
+      Pagina.termini => const PaginaTermini(),
+      Pagina.nickname => const PaginaNickname(),
+      Pagina.elenco => const PaginaElenco(),
+      Pagina.stanza => PaginaStanza(den: r.den!),
+      Pagina.impostazioni => const PaginaImpostazioni(),
+      Pagina.bloccate => const PaginaBloccate(),
+    };
