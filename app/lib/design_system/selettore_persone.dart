@@ -20,8 +20,8 @@
 // co-amministratore»), e attiva sempre dove si può procedere senza (gli invitati: si
 // può invitare anche dopo, ipotesi del 030).
 //
-// Nessuno stato «online», nessun luogo, nessun contatore che accumula: la frase è
-// scritta dal chiamante. Una frase che cambia con le scelte è una regione viva
+// Nessuno stato di presenza, nessun luogo, nessun contatore che accumula: la frase
+// è scritta dal chiamante. Una frase che cambia con le scelte è una regione viva
 // cortese. Le righe sono quelle di `BaRigaPersona` (aree ≥ 44, parola e segno).
 //
 // Importa solo widgets.dart: nessuna eccezione.
