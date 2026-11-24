@@ -282,29 +282,49 @@ void main() {
       expect(tester.widget<BaPresenza>(presenza('MB')).bloccata, isFalse, reason: '«Sblocca» la ripristina');
     });
 
-    testWidgets('«Altro» c\'è sempre: per l\'ascoltatore e per il partecipante, in ascolto e sul palco', (tester) async {
+    testWidgets('«Impostazioni» sta dentro «Altro» per tutti i ruoli: ascoltatore, partecipante, in ascolto e sul palco', (tester) async {
       final semantica = tester.ensureSemantics();
+      Finder nellaBarra(String testo) => find.descendant(of: find.byType(BaBarraAzioni), matching: find.text(testo));
+
+      Future<void> controllaAltro() async {
+        // «Impostazioni» non è una pillola della barra: sta in «Altro».
+        expect(nellaBarra('Impostazioni'), findsNothing);
+        expect(find.bySemanticsLabel('Altro'), findsOneWidget);
+        await tester.tap(find.bySemanticsLabel('Altro'));
+        await tester.pump();
+        await _sale(tester);
+        expect(find.descendant(of: find.byType(BaFoglio), matching: find.text('Impostazioni')), findsOneWidget);
+        await _toccaNelFoglio(tester, 'Chiudi');
+        await _sale(tester);
+      }
+
       await _avvia(tester);
       await _accedi(tester);
       await _tocca(tester, 'Cucina di notte');
-      // Ascoltatore, in ascolto: la barra ha quattro azioni, «Altro» raccoglie la quarta.
-      expect(find.bySemanticsLabel('Altro'), findsOneWidget);
+
+      // Ascoltatore, in ascolto: «Sali sul palco», «Esci», «Persone bloccate» e «Altro».
+      expect(nellaBarra('Sali sul palco'), findsOneWidget);
+      expect(nellaBarra('Esci'), findsOneWidget);
+      expect(nellaBarra('Persone bloccate'), findsOneWidget);
+      await controllaAltro();
+
+      // «Altro» porta alle impostazioni, e «Indietro» riporta alla stanza.
       await tester.tap(find.bySemanticsLabel('Altro'));
       await tester.pump();
       await _sale(tester);
-      expect(find.byType(BaFoglio), findsOneWidget);
-      await _toccaNelFoglio(tester, 'Persone bloccate');
-      expect(find.text('Dario V.'), findsOneWidget);
+      await _toccaNelFoglio(tester, 'Impostazioni');
+      expect(find.text('Lingua'), findsOneWidget);
       await _tocca(tester, 'Indietro');
+      expect(find.text('Sali sul palco'), findsOneWidget);
+
+      // Partecipante, sul palco: «Impostazioni» e «Persone bloccate» sono dentro «Altro».
       await _tocca(tester, 'Sali sul palco');
       await _diventaPartecipante(tester, 'Acconsento e salgo');
-
-      // Partecipante, sul palco: «Altro» raccoglie «Impostazioni» e «Persone bloccate».
-      expect(find.bySemanticsLabel('Altro'), findsOneWidget);
+      expect(nellaBarra('Persone bloccate'), findsNothing);
+      await controllaAltro();
       await tester.tap(find.bySemanticsLabel('Altro'));
       await tester.pump();
       await _sale(tester);
-      expect(find.descendant(of: find.byType(BaFoglio), matching: find.text('Impostazioni')), findsOneWidget);
       expect(find.descendant(of: find.byType(BaFoglio), matching: find.text('Persone bloccate')), findsOneWidget);
       await _toccaNelFoglio(tester, 'Chiudi');
       await _sale(tester);
@@ -312,7 +332,7 @@ void main() {
       // Partecipante, in ascolto in un'altra stanza: «Altro» c'è ancora.
       await _tocca(tester, 'Esci');
       await _tocca(tester, 'Fra due turni');
-      expect(find.bySemanticsLabel('Altro'), findsOneWidget);
+      await controllaAltro();
       semantica.dispose();
     });
   });

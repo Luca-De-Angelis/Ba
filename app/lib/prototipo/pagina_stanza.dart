@@ -132,21 +132,22 @@ class _PaginaStanzaState extends State<PaginaStanza> {
       fissa: true,
       onTap: stato.esciDallaStanza,
     );
-    // Oltre le tre che la barra mostra: «Altro» le raccoglie (002), per ogni ruolo.
-    final oltre = [
-      BaAzioneBarra(
-        ruolo: BaRuoloAzione.secondaria,
-        testo: T.impostazioniRiga,
-        semanticsLabel: T.impostazioniRiga,
-        onTap: () => stato.vai(const Rotta(Pagina.impostazioni)),
-      ),
-      BaAzioneBarra(
-        ruolo: BaRuoloAzione.secondaria,
-        testo: T.personeBloccate,
-        semanticsLabel: T.personeBloccate,
-        onTap: () => stato.vai(const Rotta(Pagina.bloccate)),
-      ),
-    ];
+    // «Impostazioni» sta in «Altro» per ogni ruolo (015, 027). La barra ha tre posti e
+    // mostra «Altro» solo dalla quarta azione: per l'ascoltatore il terzo posto è
+    // quindi «Persone bloccate» (il 015 e il 027 mostrano solo «Sali sul palco», «Esci»
+    // e «Altro»: il componente non lo permette, e non si tocca).
+    final impostazioni = BaAzioneBarra(
+      ruolo: BaRuoloAzione.secondaria,
+      testo: T.impostazioniRiga,
+      semanticsLabel: T.impostazioniRiga,
+      onTap: () => stato.vai(const Rotta(Pagina.impostazioni)),
+    );
+    final bloccate = BaAzioneBarra(
+      ruolo: BaRuoloAzione.secondaria,
+      testo: T.personeBloccate,
+      semanticsLabel: T.personeBloccate,
+      onTap: () => stato.vai(const Rotta(Pagina.bloccate)),
+    );
     if (stato.ruolo == Ruolo.pubblico) {
       return [
         BaAzioneBarra(
@@ -157,7 +158,8 @@ class _PaginaStanzaState extends State<PaginaStanza> {
           onTap: () => _sali(context),
         ),
         esci,
-        ...oltre,
+        bloccate,
+        impostazioni,
       ];
     }
     return [
@@ -178,7 +180,8 @@ class _PaginaStanzaState extends State<PaginaStanza> {
         onTap: stato.scendiDalPalco,
       ),
       esci,
-      ...oltre,
+      impostazioni,
+      bloccate,
     ];
   }
 
