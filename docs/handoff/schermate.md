@@ -62,16 +62,18 @@ Creare un DEN in cinque passi, le due varianti del percorso da ascoltatore, gli 
 | Schermata | Che cosa mostra | Esistono | Mancano |
 | --- | --- | --- | --- |
 | E1 · elenco | Elenco con «Crea un DEN» | `BaPillola` | `BaRigaDen` |
-| C1 · tipo | Privato o pubblico: «Entra chiunque. Si trova nell'elenco.» e «Lo gestisci tu, con i co-amministratori che scegli.» per entrambi (D-043) | `BaSceltaDen`, `BaPillola` | — |
-| C2 · nome | Nome, con il campo «Quando» spento | `BaCampoTesto`, `BaPuntoAggancio.quando`, `BaPillola` | — |
-| C3 · descrizione, tema e lingua | Un passo solo | `BaCampoTesto` (a più righe), `BaChipScelta`, `BaPillola` | — |
-| C4 · invita | Solo il privato | `BaPuntoAggancio`, `BaPillola` | — |
-| C5 · riepilogo | «Crea il DEN» | `BaPillola` (la chiara) | — |
+| C1 · tipo | Privato o pubblico: «Entra chiunque. Si trova nell'elenco.» e «Lo gestisci tu, con i co-amministratori che scegli.» per entrambi (D-043) | `BaPassiCreazione.tipo` (`BaSceltaDen`) | — |
+| C2 · nome | Nome, con il campo «Quando» spento | `BaPassiCreazione.nome` (`BaCampoTesto`, `BaPuntoAggancio.quando`) | — |
+| C3 · descrizione, tema e lingua | Un passo solo | `BaPassiCreazione.dettagli` (`BaCampoTesto` a più righe, `BaChipScelta`) | — |
+| C4 · invita | Solo il privato | `BaPassiCreazione.invitati` (il posto è un `Widget` del chiamante: oggi `BaPuntoAggancio`) | — |
+| C5 · riepilogo | «Crea il DEN» | `BaPassiCreazione.riepilogo` (`BaRigaValore`) | — |
 | C6 · creato | Nella stanza; chi ha creato è sul palco a microfono spento (dal 014b: presenza normale con il disco chiaro, variante «io» del 002) | `BaPalco`, `BaPresenza` (`io`, `microfonoSpento`) | — |
 | R1, R2 · percorso da ascoltatore | Varianti di P1 e P4 del 013 (R2 con la frase del cambio di account) | `BaFoglioPassi` (passi `avviso` e `consenso`, R2 senza la riga «Salirai a microfono spento») | — |
-| S1 · limite · S2 · non riuscita | Limite di DEN attivi: segnato «non è deciso», **stato futuro del Pro, non attivo in alpha e beta (D-042): non va costruito**; creazione non riuscita | `BaMessaggio` (errore) | — |
-| G1–G5 · gestisci | «Gestisci», per i DEN privati e per i pubblici creati da un utente (D-043), dall'«Altro» della barra: co-amministratori, persone, rimozione, termine, descrizione | `BaFoglio`, `BaRigaAzione`, `BaMessaggio`, `BaBarraAzioni` («Altro») | `BaFoglioGestisci` |
-| D1 · nuovo sotto-DEN | Un foglio: nome e regola | `BaFoglio`, `BaCampoTesto` | `BaFoglioGestisci` (D1 vi è nominato) |
+| S1 · limite · S2 · non riuscita | Limite di DEN attivi: segnato «non è deciso», **stato futuro del Pro, non attivo in alpha e beta (D-042): non va costruito**; creazione non riuscita | `BaPassiCreazione.nonCreato` (`BaMessaggio` errore) per S2; S1 non si costruisce | — |
+| G1–G5 · gestisci | «Gestisci», per i DEN privati e per i pubblici creati da un utente (D-043), dall'«Altro» della barra: co-amministratori, persone, rimozione, termine, descrizione | `BaFoglioGestisci` (menu, descrizione, co-amministratori con un posto libero e al limite, persone, conferma; `BaRigaValore`, `BaRigaPersona`) | `BaBarraAzioni` («Altro») apre il foglio: è del task 024 |
+| D1 · nuovo sotto-DEN | Un foglio: nome e regola | `BaFoglioSottoDen` | — |
+
+Il percorso «Crea un DEN» è **un foglio solo** (`BaFoglioPassi`, task 023b): i passi C1–C5 e S2 sono valori `BaPassoFoglio` di `BaPassiCreazione` che il chiamante dà allo stesso foglio dell'accesso (R1 → P2 → P3 → R2 → C1 → …), così il passaggio da R2 a C1 non perde il focus né l'annuncio. «Gestisci» è `BaFoglioGestisci`: un `BaFoglioPassi` con un costruttore con nome per vista; il chiamante ricostruisce la vista nuova nello stesso punto. Il sotto-DEN è `BaFoglioSottoDen`, un foglio a parte (si apre dalla stanza). **Differenza dal prototipo 014:** «Rimuovi» (G3 bis) e «Termina il DEN» (G4) sono azioni attive (a filetto), non chiare, perché sono distruttive (`BaRegole` 1): da correggere nel design.
 
 ## 4. Coda e attesa: [Coda e attesa 015](../../design/handoff/015/Coda%20e%20attesa%20015.dc.html)
 
@@ -110,16 +112,15 @@ Due prototipi più vecchi restano nella repo come storia: [Schermate 001](../../
 
 ## Che cosa resta da costruire
 
-Mettendo insieme le tabelle, i componenti che servono alle schermate e **non esistono**. Con il task 022 sono stati costruiti i nove componenti dei task 013–015 (campo di testo, codice, scelta del tipo, chip, punto di aggancio, interruttore di riga, riga di coda, fascia d'attesa, banda del posto) e con il 023a i contenuti dei fogli dell'accesso a parlare e della coda (`BaFoglioPassi` e i cinque fogli della coda); restano:
+Mettendo insieme le tabelle, i componenti che servono alle schermate e **non esistono**. Con il task 022 sono stati costruiti i nove componenti dei task 013–015 (campo di testo, codice, scelta del tipo, chip, punto di aggancio, interruttore di riga, riga di coda, fascia d'attesa, banda del posto) , con il 023a i contenuti dei fogli dell'accesso a parlare e della coda (`BaFoglioPassi` e i cinque fogli della coda) e con il 023b quelli di creare e gestire i DEN (`BaPassiCreazione`, `BaFoglioGestisci`, `BaFoglioSottoDen`, `BaRigaValore`, `BaRigaPersona`); restano:
 
 | Componente | Serve a | Sezione dell'Inventario |
 | --- | --- | --- |
 | `BaIntestazione`, `BaMarcatore`, `BaRigaStato`, `BaAlone` | la stanza (002), gli elenchi | C2 |
 | `BaRigaDen`, `BaRigaImpostazione`, `BaRigaBloccata` | gli elenchi e le impostazioni (013, 014) | C4 |
-| `BaFoglioGestisci` | «Gestisci» e il sotto-DEN (014): task 023b | C4 |
 | la **fascia «chi mi sente»** | il sotto-DEN (002) | nessun nome nell'Inventario; token `BaAscoltoTokens` |
 | `BaCardLive`, `BaIsola`, `BaNotificaAndroid` | superfici di sistema | C5 (non sono widget Flutter) |
 | `BaSchermataCopertura` | l'account chiuso (027: B1, B1 bis, B2) | C4 |
 | `BaControlliBloccato` | i controlli a schermo bloccato (027: L1–L4): l'Inventario lo mette in C4, ma sono superfici di sistema (come C5), non un widget Flutter | C4 |
 
-Oltre ai componenti, **mancano le schermate**, la navigazione, l'accesso, l'audio, la connessione, il server: vedi [produzione](produzione.md). Nell'elenco dei task (`docs/tasks/README.md`) i task 022 (i nove componenti) e 023a (i contenuti dei fogli dell'accesso e della coda) sono costruiti o in corso; i fogli di «Crea un DEN» e «Gestisci» sono il 023b e il prototipo navigabile in locale il 024, entrambi «brief da scrivere».
+Oltre ai componenti, **mancano le schermate**, la navigazione, l'accesso, l'audio, la connessione, il server: vedi [produzione](produzione.md). Nell'elenco dei task (`docs/tasks/README.md`) i task 022 (i nove componenti), 023a (i fogli dell'accesso e della coda) e 023b (i fogli di creare e gestire i DEN) sono costruiti o in corso; il prototipo navigabile in locale è il 024, «brief da scrivere».

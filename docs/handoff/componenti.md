@@ -103,13 +103,14 @@ I test della galleria ([`galleria_test.dart`](../../app/test/galleria_test.dart)
 
 ## I file che non sono componenti
 
-Questi tre file di `app/lib/design_system/` non definiscono widget e per questo non hanno una riga nella tabella; il test li elenca come esenti, ognuno con il motivo.
+Questi quattro file di `app/lib/design_system/` non definiscono widget e per questo non hanno una riga nella tabella; il test li elenca come esenti, ognuno con il motivo.
 
 | File | Che cos'è |
 | --- | --- |
 | [`tokens.dart`](../../app/lib/design_system/tokens.dart) | I valori di design (e `BaOra`, `BaPayloadStanza`, `BaRegole`): non è un widget |
 | [`forma.dart`](../../app/lib/design_system/forma.dart) | Una funzione di geometria (`ingrandisci`), usata da `anello.dart`, `presenza.dart` e `touchable.dart` |
 | [`palco/disposizione.dart`](../../app/lib/design_system/palco/disposizione.dart) | La funzione pura `disponiPalco`: diametro e centri, senza widget |
+| [`passi_creazione.dart`](../../app/lib/design_system/passi_creazione.dart) | `BaPassiCreazione`: funzioni statiche che restituiscono i passi di «Crea un DEN» (valori `BaPassoFoglio` per `BaFoglioPassi`): nessun widget pubblico |
 
 ## Non ancora costruiti
 
@@ -123,4 +124,4 @@ Nomi che l'Inventario elenca nelle tabelle C2, C4 e C5 (compresi i due nuovi del
 | C4, account chiuso (027) | `BaSchermataCopertura` | La schermata che copre tutto quando l'account è chiuso dalla moderazione: un messaggio e «Richiedi revisione» come unica azione (B1, B1 bis, B2) |
 | C4, schermo bloccato (027) | `BaControlliBloccato` | I controlli a schermo bloccato (L1–L4): sul palco «Spegni il microfono», per il pubblico pausa e «Prossimo DEN». L'Inventario lo elenca in C4, ma sono superfici di sistema: **non è un widget Flutter** |
 
-Che cosa serve a ogni schermata, e che cosa manca in totale, è in [schermate](schermate.md). Con il task 022 sono stati costruiti i nove componenti dei task 013–015; i contenuti dei fogli (task 023) e il prototipo navigabile (task 024) non esistono ancora (vedi `docs/tasks/README.md`).
+Che cosa serve a ogni schermata, e che cosa manca in totale, è in [schermate](schermate.md). Con il task 022 sono stati costruiti i nove componenti dei task 013–015, con il 023a i contenuti dei fogli dell'accesso e della coda e con il 023b quelli di creare e gestire i DEN; il prototipo navigabile (task 024) non esiste ancora (vedi `docs/tasks/README.md`).
