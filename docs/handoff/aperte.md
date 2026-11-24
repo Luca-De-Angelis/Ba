@@ -94,6 +94,8 @@ Voci di «Aperte» in `DECISIONS.md`, del catalogo dei soci ([`FEATURES.md`](../
 | Schermata dell'account bannato (copre tutto, «Richiedi revisione» come unica azione) e soglie della moderazione | D-049 | **17** | D-049: schermata disegnata nel design 027 (B1, B2); soglie da definire |
 | Blocco temporaneo dell'account (B1 bis): la durata | design 027: B1 bis; D-049 | **17** | D-049 prevede blocchi di 1 e 7 giorni; la schermata è segnata come **ipotesi nel design 027**, **ancora aperta** (la durata e il testo) |
 | 014 · S1 «Limite di DEN attivi» | design 027: 014 S1 | **9** | D-042: nessun limite in alpha e beta; il design lo ha tenuto con il segno «non è deciso». È uno stato futuro del Pro: **non attivo in alpha e beta, non va costruito** |
+| Il foglio a più passi: focus sul titolo più regione viva possono far leggere il titolo due volte con TalkBack e VoiceOver | `BaFoglioPassi`; [produzione](produzione.md) | nessuna domanda corrispondente | Task 023a: da provare su dispositivo; se succede, si toglie una delle due |
+| La primaria chiara di «Entra nel gruppo» (W1) e «Ho capito» (S1): il prototipo la vuole chiara, la regola 1 solo dove l'app non prosegue senza il gesto | `BaFoglioAspettaConAltri`, `BaFoglioCodaPiena`; [regole](regole.md) | nessuna domanda corrispondente | Task 023a: seguito il prototipo (chiara); «Ho capito» è un dubbio da confermare |
 | Fasi: alpha con creazione dei DEN per chiunque, beta a uso interno con coda, sotto-DEN e alzata di mano | D-054 | nessuna domanda corrispondente | D-054: decisa |
 
 ## Le ipotesi senza una domanda

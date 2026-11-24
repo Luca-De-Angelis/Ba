@@ -613,4 +613,156 @@ void main() {
     await _tocca(tester, 'Codice: sbagliato');
     expect(tester.takeException(), isNull);
   });
+
+  group('la pagina «Fogli di contenuto»', () {
+    Future<void> apri(WidgetTester tester) async {
+      _vistaAlta(tester);
+      await tester.pumpWidget(const GalleriaApp());
+      await tester.pump();
+      await _tocca(tester, 'Fogli di contenuto');
+    }
+
+    // Un foglio sale in 240 ms (con «riduci movimento» subito).
+    Future<void> sale(WidgetTester tester) => tester.pump(const Duration(milliseconds: 300));
+
+    testWidgets('il percorso a quattro passi: il foglio resta uno, il numero e il codice si scrivono', (tester) async {
+      await apri(tester);
+      await _tocca(tester, 'Sali sul palco');
+      await sale(tester);
+      expect(find.text('Vuoi salire sul palco?'), findsOneWidget);
+      expect(find.byType(BaFoglio), findsOneWidget);
+
+      await _tocca(tester, 'Continua');
+      expect(find.text('Il tuo numero'), findsOneWidget);
+      expect(find.byType(BaFoglio), findsOneWidget, reason: 'sempre lo stesso foglio');
+
+      // Senza numero non si va avanti: l'unica prova della galleria.
+      await _tocca(tester, 'Ricevi il codice');
+      expect(find.text('Scrivi il tuo numero di telefono.'), findsOneWidget);
+      await tester.enterText(find.byType(EditableText), '320 000 0000');
+      await tester.pump();
+      await _tocca(tester, 'Ricevi il codice');
+      expect(find.text('Il codice'), findsOneWidget);
+
+      await tester.enterText(find.descendant(of: find.byType(BaCampoCodice), matching: find.byType(EditableText)), '481902');
+      await tester.pump();
+      await _tocca(tester, 'Conferma');
+      expect(find.text('Vuoi parlare?'), findsOneWidget);
+      expect(find.text('Con il consenso il tuo account passa da ascoltatore a partecipante.'), findsOneWidget);
+      expect(find.text('Salirai a microfono spento.'), findsOneWidget);
+
+      // «Indietro (di prova)» torna al codice; «Non ora» chiude il foglio.
+      await _tocca(tester, 'Indietro (di prova)');
+      expect(find.text('Il codice'), findsOneWidget);
+      await _tocca(tester, 'Non ora');
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(find.byType(BaFoglio), findsNothing);
+    });
+
+    testWidgets('«Crea un DEN»: R1 al posto di P1 e R2 senza «Salirai a microfono spento»', (tester) async {
+      await apri(tester);
+      await _tocca(tester, 'Crea un DEN');
+      await sale(tester);
+      expect(find.text('Per creare un DEN bisogna diventare partecipante'), findsOneWidget);
+      await _tocca(tester, 'Continua');
+      await tester.enterText(find.byType(EditableText), '320 000 0000');
+      await tester.pump();
+      await _tocca(tester, 'Ricevi il codice');
+      await _tocca(tester, 'Conferma');
+      expect(find.text('Acconsento e continuo'), findsOneWidget);
+      expect(find.text('Salirai a microfono spento.'), findsNothing);
+    });
+
+    testWidgets('il codice nei suoi stati: scaduto senza «Mandalo di nuovo», attesa con la frase ferma', (tester) async {
+      await apri(tester);
+      Future<void> alCodice() async {
+        await _tocca(tester, 'Sali sul palco');
+        await sale(tester);
+        await _tocca(tester, 'Continua');
+        await tester.enterText(find.byType(EditableText), '320 000 0000');
+        await tester.pump();
+        await _tocca(tester, 'Ricevi il codice');
+      }
+
+      await _tocca(tester, 'Codice: scrittura');
+      await _tocca(tester, 'Codice: sbagliato');
+      await alCodice();
+      expect(find.text('Il codice è scaduto. Te ne mandiamo uno nuovo.'), findsOneWidget);
+      expect(find.text('Mandalo di nuovo'), findsNothing);
+      expect(find.text('Manda un nuovo codice'), findsOneWidget);
+      await _tocca(tester, 'Non ora');
+      await tester.pump(const Duration(milliseconds: 300));
+
+      await _tocca(tester, 'Codice: scaduto');
+      await alCodice();
+      expect(find.text('Ne puoi chiedere un altro fra poco.'), findsOneWidget);
+      expect(find.text('Mandalo di nuovo'), findsOneWidget);
+      expect(find.text('Conferma'), findsOneWidget);
+    });
+
+    testWidgets('la coda con e senza «Aspetta con altri»: la riga non lascia traccia', (tester) async {
+      await apri(tester);
+      await _tocca(tester, 'Mettiti in coda');
+      await sale(tester);
+      expect(find.byType(BaInterruttoreRiga), findsOneWidget);
+      await _tocca(tester, 'Non ora');
+      await tester.pump(const Duration(milliseconds: 300));
+
+      await _tocca(tester, 'Mettiti in coda, con «Aspetta con altri»');
+      await sale(tester);
+      expect(find.byType(BaInterruttoreRiga), findsNWidgets(2));
+      await _tocca(tester, 'Fammi entrare automaticamente');
+      expect(find.text('ACCESO'), findsOneWidget);
+      await _tocca(tester, 'Non ora');
+      await tester.pump(const Duration(milliseconds: 300));
+    });
+
+    testWidgets('«Le tue code», «Coda piena» e «Vuoi passare di qua?»', (tester) async {
+      await apri(tester);
+      await _tocca(tester, 'Le tue code');
+      await sale(tester);
+      expect(find.byType(BaRigaCoda), findsNWidgets(2));
+      await _tocca(tester, 'Chiudi');
+      await tester.pump(const Duration(milliseconds: 300));
+
+      await _tocca(tester, 'Coda piena');
+      await sale(tester);
+      expect(find.text('La coda è piena adesso'), findsOneWidget);
+      await _tocca(tester, 'Ho capito');
+      await tester.pump(const Duration(milliseconds: 300));
+
+      await _tocca(tester, 'Vuoi passare di qua?');
+      await sale(tester);
+      expect(find.text('Hai pochi secondi per decidere.'), findsOneWidget);
+      await _tocca(tester, 'Resta qui');
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(find.byType(BaFoglio), findsNothing);
+    });
+
+    testWidgets('regge 744, il testo 2,0 e «riduci movimento» in ogni contenuto', (tester) async {
+      await apri(tester);
+      for (final c in ['Larghezza 360', 'Testo 1,0', 'Riduci movimento']) {
+        await _tocca(tester, c);
+      }
+      final aperture = <String, String>{
+        'Sali sul palco': 'Non ora',
+        'Crea un DEN': 'Non ora',
+        'Mettiti in coda': 'Non ora',
+        'Mettiti in coda, con «Aspetta con altri»': 'Non ora',
+        'Aspetta con altri': 'Non ora',
+        'Le tue code': 'Chiudi',
+        'Coda piena': 'Ho capito',
+        'Vuoi passare di qua?': 'Resta qui',
+      };
+      for (final MapEntry(key: apertura, value: chiusura) in aperture.entries) {
+        await _tocca(tester, apertura);
+        await tester.pump();
+        expect(find.byType(BaFoglio), findsOneWidget, reason: apertura);
+        expect(tester.takeException(), isNull, reason: apertura);
+        await _tocca(tester, chiusura);
+        await tester.pump();
+        expect(find.byType(BaFoglio), findsNothing, reason: 'dopo «$chiusura»');
+      }
+    });
+  });
 }

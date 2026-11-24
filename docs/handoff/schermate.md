@@ -46,14 +46,14 @@ L'accesso dell'ascoltatore con email (D-031), il percorso «diventa partecipante
 | A3 · onboarding · A4 · termini | Primo accesso; termini e privacy, con la frase «dichiari di avere almeno 18 anni» sopra l'azione (**ipotesi**: età minima 18, obiettivo 16, D-052) | `BaPillola` | i testi; nessun componente specifico (**da verificare**) |
 | A5 · nickname · A5 bis | «Scegli un nickname»: obbligatorio, può ripetersi (D-052); A5 bis a campo vuoto con l'azione inattiva | `BaCampoTesto`, `BaPillola` | — |
 | A6 · elenco | Elenco per l'ascoltatore, di soli DEN pubblici: un privato si apre solo su invito, da un percorso a parte (D-041) | `BaPillola` | `BaRigaDen`, `BaIntestazione`; il flusso «Sei stato invitato» non è disegnato |
-| P1 · sali-avviso | Sali sul palco: avviso su voce e testo | `BaFoglio` (richiesta), `BaPillola` | — |
-| P2 · sali-numero | Il numero | `BaFoglio`, `BaCampoTesto` (con il prefisso), `BaPillola` | — |
-| P3 · sali-codice | Codice SMS (**rimovibile**) | `BaFoglio`, `BaCampoCodice` | — |
-| P4 · sali-consenso | Consenso a parlare: «il tuo account passa da ascoltatore a partecipante» (**ipotesi**: può servire un nuovo accesso, D-040) | `BaFoglio`, `BaPillola` | — |
-| P5 · sali-sale | Sale a microfono spento (P6, «numero già verificato», è stata tolta, D-040) | `BaFoglio`, la stanza (vedi 002 · 1 bis) | — |
+| P1 · sali-avviso | Sali sul palco: avviso su voce e testo | `BaFoglioPassi` (passo `avviso`), `BaPillola` | — |
+| P2 · sali-numero | Il numero | `BaFoglioPassi` (passo `numero`), `BaCampoTesto` (con il prefisso del chiamante), `BaPillola` | — |
+| P3 · sali-codice | Codice SMS (**rimovibile**) | `BaFoglioPassi` (passo `codice`), `BaCampoCodice` | — |
+| P4 · sali-consenso | Consenso a parlare: «il tuo account passa da ascoltatore a partecipante» (**ipotesi**: può servire un nuovo accesso, D-040) | `BaFoglioPassi` (passo `consenso`), `BaPillola` | — |
+| P5 · sali-sale | Sale a microfono spento (P6, «numero già verificato», è stata tolta, D-040) | la stanza (vedi 002 · 1 bis) | — |
 | T1–T4 · torna ascoltatore | Cambio di tipo di account dalle impostazioni: T1 la riga, T2 la prima conferma, T3 la seconda (**ipotesi**: nuovo accesso), T4 il risultato (D-040) | `BaPillola` | `BaRigaImpostazione` |
 
-Il foglio «Vuoi salire sul palco?» è **uno solo** che cresce passo per passo; ciò che sta sopra le azioni scorre, le azioni restano ancorate: è `BaFoglio`, con le altezze 0,80 e 0,62 (`BaAccessoTokens.foglioAltezza*`).
+Il foglio «Vuoi salire sul palco?» è **uno solo** che cresce passo per passo; ciò che sta sopra le azioni scorre, le azioni restano ancorate: è `BaFoglioPassi` (task 023a) sopra `BaFoglio`, con le altezze 0,80 e 0,62 (`BaAccessoTokens.foglioAltezza*`). Il passo lo dà il chiamante e «Non ora» c'è in ogni passo; al cambio di passo il focus va al titolo.
 
 ## 3. Creare e gestire i DEN: [Creare DEN 014](../../design/handoff/014/Creare%20DEN%20014.dc.html)
 
@@ -68,7 +68,7 @@ Creare un DEN in cinque passi, le due varianti del percorso da ascoltatore, gli 
 | C4 · invita | Solo il privato | `BaPuntoAggancio`, `BaPillola` | — |
 | C5 · riepilogo | «Crea il DEN» | `BaPillola` (la chiara) | — |
 | C6 · creato | Nella stanza; chi ha creato è sul palco a microfono spento (dal 014b: presenza normale con il disco chiaro, variante «io» del 002) | `BaPalco`, `BaPresenza` (`io`, `microfonoSpento`) | — |
-| R1, R2 · percorso da ascoltatore | Varianti di P1 e P4 del 013 (R2 con la frase del cambio di account) | `BaFoglio` | — |
+| R1, R2 · percorso da ascoltatore | Varianti di P1 e P4 del 013 (R2 con la frase del cambio di account) | `BaFoglioPassi` (passi `avviso` e `consenso`, R2 senza la riga «Salirai a microfono spento») | — |
 | S1 · limite · S2 · non riuscita | Limite di DEN attivi: segnato «non è deciso», **stato futuro del Pro, non attivo in alpha e beta (D-042): non va costruito**; creazione non riuscita | `BaMessaggio` (errore) | — |
 | G1–G5 · gestisci | «Gestisci», per i DEN privati e per i pubblici creati da un utente (D-043), dall'«Altro» della barra: co-amministratori, persone, rimozione, termine, descrizione | `BaFoglio`, `BaRigaAzione`, `BaMessaggio`, `BaBarraAzioni` («Altro») | `BaFoglioGestisci` |
 | D1 · nuovo sotto-DEN | Un foglio: nome e regola | `BaFoglio`, `BaCampoTesto` | `BaFoglioGestisci` (D1 vi è nominato) |
@@ -79,19 +79,19 @@ Mettersi in coda con l'ingresso automatico, «Le tue code», la notifica del pos
 
 | Schermata | Che cosa mostra | Esistono | Mancano |
 | --- | --- | --- | --- |
-| K2 · metti-in-coda | Mettiti in coda, con l'ingresso automatico | `BaInterruttoreRiga`, `BaPillola`, `BaFoglio` | — |
-| K1 · code | «Le tue code» | `BaRigaCoda`, `BaPillola` | `BaIntestazione` |
+| K2 · metti-in-coda | Mettiti in coda, con l'ingresso automatico | `BaFoglioMettitiInCoda` (K2, K2 bis, K2 ter: la seconda riga solo con la capacità), `BaInterruttoreRiga` | — |
+| K1 · code | «Le tue code» | `BaFoglioLeTueCode`, `BaRigaCoda` | `BaIntestazione` |
 | K3 · posto-libero-notifica | Notifica di sistema del posto offerto: «Hai pochi secondi per salire» (30 secondi, frase ferma, mai un conto alla rovescia, D-042); ingresso automatico spento | — | la **notifica**: `BaNotificaAndroid` e la Live Activity non esistono (C5) |
 | K4 · posto-libero-stanza | Nella stanza: «Si è liberato un posto. Hai pochi secondi per salire» | `BaPalco`, `BaPillola`, `BaBarraAzioni` | — |
 | K4 bis · posto-scaduto | «Il posto è passato alla persona dopo di te. Resti in coda» (**ipotesi**) | `BaMessaggio` o `BaBandaPosto` (**da verificare**) | — |
-| K6 · vuoi-passare-di-qua | Già in un DEN: «Si è liberato un posto in X. Vuoi passare di qua?», con «Passa» e «Resta qui» | `BaFoglio`, `BaPillola` | — |
+| K6 · vuoi-passare-di-qua | Già in un DEN: «Si è liberato un posto in X. Vuoi passare di qua?», con «Passa» e «Resta qui» | `BaFoglioPassaDiQua` | — |
 | K7 · K8 · richiamo | Il richiamo come notifica a schermo bloccato (non un annuncio in stanza, D-034); la riga «Richiamo» spenta nelle impostazioni (**ipotesi**) | — | la **notifica** (C5); `BaRigaImpostazione` |
 | K5 · ingresso-auto-stanza | Ingresso automatico: sul palco | `BaPalco` | — |
-| W1 · attesa-entra · W2 · attesa-dentro | «Aspetta con altri»; nel gruppo d'attesa | `BaInterruttoreRiga`, `BaFasciaAttesa`, `BaPresenza` | — |
+| W1 · attesa-entra · W2 · attesa-dentro | «Aspetta con altri»; nel gruppo d'attesa | `BaFoglioAspettaConAltri` (W1), `BaInterruttoreRiga`, `BaFasciaAttesa`, `BaPresenza` | — |
 | W3 · attesa-passaggio | Il posto si libera: dal gruppo al palco | `BaPalco`, `BaFasciaAttesa` | — |
 | P1 · linea-persa · P2 · posto-tornato · P3 · posto-passato | Il posto resta tuo; la linea è tornata, il posto c'è o è passato | `BaBandaPosto`, `BaStatoPalco.congelato`, `BaPresenza` (persa), `BaCodaTokens.oraDelPosto` | — |
 | M1 · M1 bis · permanenza-massima | Permanenza massima per ascoltatori e parlatori, tempi da definire (D-044); M1 bis sul palco; punto di aggancio | `BaBandaPosto` (variante tratteggiata), `BaPuntoAggancio` | — |
-| S1 · coda-piena · S2 · uscita-coda | Stati della coda (la vecchia «non puoi metterti in coda» è stata tolta: nessun limite in alpha e beta, D-042) | `BaMessaggio` | — |
+| S1 · coda-piena · S2 · uscita-coda | Stati della coda (la vecchia «non puoi metterti in coda» è stata tolta: nessun limite in alpha e beta, D-042) | `BaFoglioCodaPiena` (S1); S2 è la stanza con una frase | — |
 
 ## 4 bis. Account chiuso e controlli a schermo bloccato: [Account e controlli 027](../../design/handoff/027/Account%20e%20controlli%20027.dc.html)
 
@@ -110,16 +110,16 @@ Due prototipi più vecchi restano nella repo come storia: [Schermate 001](../../
 
 ## Che cosa resta da costruire
 
-Mettendo insieme le tabelle, i componenti che servono alle schermate e **non esistono**. Con il task 022 sono stati costruiti i nove componenti dei task 013–015 (campo di testo, codice, scelta del tipo, chip, punto di aggancio, interruttore di riga, riga di coda, fascia d'attesa, banda del posto); restano:
+Mettendo insieme le tabelle, i componenti che servono alle schermate e **non esistono**. Con il task 022 sono stati costruiti i nove componenti dei task 013–015 (campo di testo, codice, scelta del tipo, chip, punto di aggancio, interruttore di riga, riga di coda, fascia d'attesa, banda del posto) e con il 023a i contenuti dei fogli dell'accesso a parlare e della coda (`BaFoglioPassi` e i cinque fogli della coda); restano:
 
 | Componente | Serve a | Sezione dell'Inventario |
 | --- | --- | --- |
 | `BaIntestazione`, `BaMarcatore`, `BaRigaStato`, `BaAlone` | la stanza (002), gli elenchi | C2 |
 | `BaRigaDen`, `BaRigaImpostazione`, `BaRigaBloccata` | gli elenchi e le impostazioni (013, 014) | C4 |
-| `BaFoglioGestisci` | «Gestisci» e il sotto-DEN (014) | C4 |
+| `BaFoglioGestisci` | «Gestisci» e il sotto-DEN (014): task 023b | C4 |
 | la **fascia «chi mi sente»** | il sotto-DEN (002) | nessun nome nell'Inventario; token `BaAscoltoTokens` |
 | `BaCardLive`, `BaIsola`, `BaNotificaAndroid` | superfici di sistema | C5 (non sono widget Flutter) |
 | `BaSchermataCopertura` | l'account chiuso (027: B1, B1 bis, B2) | C4 |
 | `BaControlliBloccato` | i controlli a schermo bloccato (027: L1–L4): l'Inventario lo mette in C4, ma sono superfici di sistema (come C5), non un widget Flutter | C4 |
 
-Oltre ai componenti, **mancano le schermate**, la navigazione, l'accesso, l'audio, la connessione, il server: vedi [produzione](produzione.md). Nell'elenco dei task (`docs/tasks/README.md`) il task 022 (i nove componenti dei task 013–015) è in corso o concluso, i contenuti dei fogli sono il 023 e il prototipo navigabile in locale il 024, entrambi «brief da scrivere».
+Oltre ai componenti, **mancano le schermate**, la navigazione, l'accesso, l'audio, la connessione, il server: vedi [produzione](produzione.md). Nell'elenco dei task (`docs/tasks/README.md`) i task 022 (i nove componenti) e 023a (i contenuti dei fogli dell'accesso e della coda) sono costruiti o in corso; i fogli di «Crea un DEN» e «Gestisci» sono il 023b e il prototipo navigabile in locale il 024, entrambi «brief da scrivere».
