@@ -132,18 +132,19 @@ class _PaginaStanzaState extends State<PaginaStanza> {
       fissa: true,
       onTap: stato.esciDallaStanza,
     );
-    // «Impostazioni» sta in «Altro» per ogni ruolo (015, 027). La barra ha tre posti e
-    // mostra «Altro» solo dalla quarta azione: per l'ascoltatore il terzo posto è
-    // quindi «Persone bloccate» (il 015 e il 027 mostrano solo «Sali sul palco», «Esci»
-    // e «Altro»: il componente non lo permette, e non si tocca).
+    // «Impostazioni» e «Persone bloccate» stanno in «Altro» per ogni ruolo (015, 027):
+    // `inAltro` le manda lì qualunque sia la posizione (task 034), così l'ascoltatore ha
+    // la primaria, «Esci» e «Altro».
     final impostazioni = BaAzioneBarra(
       ruolo: BaRuoloAzione.secondaria,
+      inAltro: true,
       testo: T.impostazioniRiga,
       semanticsLabel: T.impostazioniRiga,
       onTap: () => stato.vai(const Rotta(Pagina.impostazioni)),
     );
     final bloccate = BaAzioneBarra(
       ruolo: BaRuoloAzione.secondaria,
+      inAltro: true,
       testo: T.personeBloccate,
       semanticsLabel: T.personeBloccate,
       onTap: () => stato.vai(const Rotta(Pagina.bloccate)),
@@ -158,8 +159,8 @@ class _PaginaStanzaState extends State<PaginaStanza> {
           onTap: () => _sali(context),
         ),
         esci,
-        bloccate,
         impostazioni,
+        bloccate,
       ];
     }
     return [
@@ -280,7 +281,7 @@ class _PaginaStanzaState extends State<PaginaStanza> {
             padding: EdgeInsets.fromLTRB(margine, BaSpazioTokens.s, margine, BaSpazioTokens.l),
             child: BaBarraAzioni(
               azioni: azioni,
-              onAltro: () => _apriAltro(context, azioni.skip(3).toList()),
+              onAltro: () => _apriAltro(context, BaBarraAzioni.eccedenti(azioni)),
               semanticsLabelAltro: T.altro,
             ),
           ),

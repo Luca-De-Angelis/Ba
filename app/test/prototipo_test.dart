@@ -282,18 +282,20 @@ void main() {
       expect(tester.widget<BaPresenza>(presenza('MB')).bloccata, isFalse, reason: '«Sblocca» la ripristina');
     });
 
-    testWidgets('«Impostazioni» sta dentro «Altro» per tutti i ruoli: ascoltatore, partecipante, in ascolto e sul palco', (tester) async {
+    testWidgets('«Impostazioni» e «Persone bloccate» stanno dentro «Altro» per tutti i ruoli: ascoltatore e partecipante, in ascolto e sul palco', (tester) async {
       final semantica = tester.ensureSemantics();
       Finder nellaBarra(String testo) => find.descendant(of: find.byType(BaBarraAzioni), matching: find.text(testo));
 
       Future<void> controllaAltro() async {
-        // «Impostazioni» non è una pillola della barra: sta in «Altro».
+        // Nessuna delle due è una pillola della barra: stanno in «Altro» (`inAltro`, task 034).
         expect(nellaBarra('Impostazioni'), findsNothing);
+        expect(nellaBarra('Persone bloccate'), findsNothing);
         expect(find.bySemanticsLabel('Altro'), findsOneWidget);
         await tester.tap(find.bySemanticsLabel('Altro'));
         await tester.pump();
         await _sale(tester);
         expect(find.descendant(of: find.byType(BaFoglio), matching: find.text('Impostazioni')), findsOneWidget);
+        expect(find.descendant(of: find.byType(BaFoglio), matching: find.text('Persone bloccate')), findsOneWidget);
         await _toccaNelFoglio(tester, 'Chiudi');
         await _sale(tester);
       }
@@ -302,10 +304,10 @@ void main() {
       await _accedi(tester);
       await _tocca(tester, 'Cucina di notte');
 
-      // Ascoltatore, in ascolto: «Sali sul palco», «Esci», «Persone bloccate» e «Altro».
+      // Ascoltatore, in ascolto: «Sali sul palco», «Esci» e «Altro» (015 e 027).
       expect(nellaBarra('Sali sul palco'), findsOneWidget);
       expect(nellaBarra('Esci'), findsOneWidget);
-      expect(nellaBarra('Persone bloccate'), findsOneWidget);
+      expect(find.byType(BaPillola).evaluate().where((e) => find.descendant(of: find.byType(BaBarraAzioni), matching: find.byWidget(e.widget)).evaluate().isNotEmpty).length, 2, reason: 'due pillole e «Altro»');
       await controllaAltro();
 
       // «Altro» porta alle impostazioni, e «Indietro» riporta alla stanza.
@@ -317,17 +319,12 @@ void main() {
       await _tocca(tester, 'Indietro');
       expect(find.text('Sali sul palco'), findsOneWidget);
 
-      // Partecipante, sul palco: «Impostazioni» e «Persone bloccate» sono dentro «Altro».
+      // Partecipante, sul palco: «Microfono», «Scendi dal palco», «Esci» e «Altro».
       await _tocca(tester, 'Sali sul palco');
       await _diventaPartecipante(tester, 'Acconsento e salgo');
-      expect(nellaBarra('Persone bloccate'), findsNothing);
+      expect(nellaBarra('Accendi il microfono'), findsOneWidget);
+      expect(nellaBarra('Scendi dal palco'), findsOneWidget);
       await controllaAltro();
-      await tester.tap(find.bySemanticsLabel('Altro'));
-      await tester.pump();
-      await _sale(tester);
-      expect(find.descendant(of: find.byType(BaFoglio), matching: find.text('Persone bloccate')), findsOneWidget);
-      await _toccaNelFoglio(tester, 'Chiudi');
-      await _sale(tester);
 
       // Partecipante, in ascolto in un'altra stanza: «Altro» c'è ancora.
       await _tocca(tester, 'Esci');
@@ -469,6 +466,18 @@ void main() {
   });
 
   group('a testo 2,0 e a 744 nulla si taglia', () {
+    testWidgets('sul palco a testo 2,0 la stanza con la barra a tre posti e «Altro» non sborda', (tester) async {
+      await _avvia(tester);
+      await _accedi(tester);
+      await _tocca(tester, 'Cucina di notte');
+      await _tocca(tester, 'Sali sul palco');
+      await _diventaPartecipante(tester, 'Acconsento e salgo');
+      await _tocca(tester, 'Testo 1,0');
+      expect(find.text('Testo 2,0'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+      expect(find.text('Scendi dal palco'), findsOneWidget);
+    });
+
     for (final (nome, larghezza, altezza) in [('360 a 2,0', 1500.0, 1000.0), ('744', 1500.0, 1400.0)]) {
       testWidgets('le pagine a $nome', (tester) async {
         await _avvia(tester, larghezza: larghezza, altezza: altezza);
