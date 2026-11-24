@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:ba/design_system/alone.dart';
 import 'package:ba/design_system/azioni_in_coppia.dart';
 import 'package:ba/design_system/banda_posto.dart';
 import 'package:ba/design_system/campo_codice.dart';
@@ -10,6 +11,11 @@ import 'package:ba/design_system/fascia_attesa.dart';
 import 'package:ba/design_system/interruttore_riga.dart';
 import 'package:ba/design_system/punto_aggancio.dart';
 import 'package:ba/design_system/riga_coda.dart';
+import 'package:ba/design_system/intestazione.dart';
+import 'package:ba/design_system/riga_bloccata.dart';
+import 'package:ba/design_system/riga_den.dart';
+import 'package:ba/design_system/riga_stato.dart';
+import 'package:ba/design_system/schermata_copertura.dart';
 import 'package:ba/design_system/riga_persona.dart';
 import 'package:ba/design_system/scelta_den.dart';
 import 'package:ba/design_system/foglio.dart';
@@ -124,6 +130,9 @@ void main() {
   });
 
   testWidgets('toccare una presenza aggiorna il conteggio', (tester) async {
+    // Il menu della galleria va a capo su più righe: con una vista bassa la presenza
+    // finirebbe sotto il bordo.
+    _vistaAlta(tester);
     await tester.pumpWidget(const GalleriaApp());
     await tester.pump();
     await _tocca(tester, 'BaPresenza');
@@ -1007,6 +1016,88 @@ void main() {
         expect(tester.takeException(), isNull);
       }
       expect(find.text('Il DEN non è stato creato'), findsOneWidget);
+    });
+  });
+
+  group('la pagina «Stanza ed elenco»', () {
+    Future<void> apri(WidgetTester tester) async {
+      _vistaAlta(tester);
+      await tester.pumpWidget(const GalleriaApp());
+      await tester.pump();
+      await _tocca(tester, 'Stanza ed elenco');
+    }
+
+    testWidgets('l\'intestazione nei cinque stati, la riga di stato, l\'alone e le righe dell\'elenco', (tester) async {
+      await apri(tester);
+      expect(find.byType(BaIntestazione), findsNWidgets(5));
+      expect(find.text('LINEA PERSA'), findsOneWidget);
+      expect(find.byType(BaRigaStato), findsNWidgets(4));
+      expect(find.byType(BaAlone), findsNWidgets(2));
+      expect(find.byType(BaRigaDen), findsNWidgets(4));
+      expect(find.text('Vuoto. Puoi restare e ti avviso.'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('le impostazioni: la conseguenza scritta, lo stato negato con la via d\'uscita, l\'interruttore che cambia', (tester) async {
+      await apri(tester);
+      expect(find.text('Non potrai più parlare. Se stai parlando, esci dalla stanza.'), findsOneWidget);
+      expect(find.text('Negate — senza queste non posso avvisarti'), findsOneWidget);
+      expect(find.text('Apri'), findsNWidgets(2));
+      final spenti = find.text('SPENTO').evaluate().length;
+      await _tocca(tester, 'Avvisami se si libera');
+      expect(find.text('ACCESO'), findsOneWidget);
+      expect(find.text('SPENTO').evaluate().length, spenti - 1);
+    });
+
+    testWidgets('le persone bloccate: «Sblocca» passa a «Sblocco…», inattivo, e la riga sbloccata sparisce', (tester) async {
+      await apri(tester);
+      expect(find.byType(BaRigaBloccata), findsNWidgets(2));
+      await tester.ensureVisible(find.text('Sblocca').first);
+      await tester.pump();
+      await tester.tap(find.text('Sblocca').first);
+      await tester.pump();
+      expect(find.text('Sblocco…'), findsOneWidget);
+      expect(tester.widget<BaPillola>(find.widgetWithText(BaPillola, 'Sblocco…')).onTap, isNull);
+      await _tocca(tester, 'Dario V.: sbloccoInCorso');
+      expect(find.text('Dario V.'), findsNothing, reason: 'sbloccata: esce dall\'elenco');
+      expect(find.byType(BaRigaBloccata), findsNWidgets(2), reason: 'il widget resta, non disegna niente');
+      expect(find.byType(BaPillola).evaluate().where((e) => (e.widget as BaPillola).testo == 'Sblocca').length, 1);
+    });
+
+    testWidgets('l\'account chiuso copre tutta la schermata: B1, B1 bis e B2, con una sola azione', (tester) async {
+      await apri(tester);
+      expect(find.byType(BaSchermataCopertura), findsNothing);
+      await _tocca(tester, 'Account chiuso: nessuno');
+      expect(find.byType(BaSchermataCopertura), findsOneWidget);
+      expect(find.text('Questo account non può più usare BA'), findsOneWidget);
+      expect(find.text('Richiedi revisione'), findsOneWidget);
+      await _tocca(tester, 'Richiedi revisione');
+      expect(find.text('Richiesta inviata'), findsOneWidget);
+      expect(tester.widget<BaPillola>(find.widgetWithText(BaPillola, 'Richiesta inviata')).onTap, isNull);
+
+      await _tocca(tester, 'Account chiuso: B1');
+      expect(find.text("L'accesso a BA è sospeso"), findsOneWidget);
+      expect(find.text('Potrai rientrare il 21 novembre alle 21:40.'), findsOneWidget);
+      expect(find.text('Richiedi revisione'), findsOneWidget, reason: 'B1 bis riparte da «Richiedi revisione»');
+
+      await _tocca(tester, 'Account chiuso: B1 bis');
+      expect(find.text('Richiesta inviata'), findsOneWidget, reason: 'B2 è lo stato dopo il tocco');
+      expect(find.text('Questo account non può più usare BA'), findsOneWidget);
+
+      await _tocca(tester, 'Account chiuso: B2');
+      expect(find.byType(BaSchermataCopertura), findsNothing);
+    });
+
+    testWidgets('regge 744, il testo 2,0 e «riduci movimento», anche con l\'account chiuso', (tester) async {
+      await apri(tester);
+      for (final c in ['Larghezza 360', 'Testo 1,0', 'Riduci movimento']) {
+        await _tocca(tester, c);
+        expect(tester.takeException(), isNull, reason: c);
+      }
+      for (final c in ['Account chiuso: nessuno', 'Account chiuso: B1', 'Account chiuso: B1 bis', 'Account chiuso: B2']) {
+        await _tocca(tester, c);
+        expect(tester.takeException(), isNull, reason: c);
+      }
     });
   });
 }
