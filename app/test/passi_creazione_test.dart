@@ -8,6 +8,7 @@ import 'package:ba/design_system/foglio_passi.dart';
 import 'package:ba/design_system/passi_creazione.dart';
 import 'package:ba/design_system/pillola.dart';
 import 'package:ba/design_system/punto_aggancio.dart';
+import 'package:ba/design_system/riga_valore.dart';
 import 'package:ba/design_system/scelta_den.dart';
 import 'package:ba/design_system/tokens.dart';
 import 'package:ba/design_system/touchable.dart';
@@ -239,6 +240,183 @@ void main() {
       expect(continua.bottom, lessThanOrEqualTo(nonOra.top));
       expect(nonOra.bottom, lessThanOrEqualTo(800));
       expect(foglio.height, lessThanOrEqualTo(800 * BaAccessoTokens.foglioAltezzaTelefono + 1));
+    });
+  });
+
+  group('invitati (C4)', () {
+    BaPassoFoglio invitati(Widget posto) => BaPassiCreazione.invitati(
+          titolo: 'Chi inviti?',
+          frase: 'Un DEN privato si apre solo a chi inviti.',
+          posto: posto,
+          azione: _azione('Continua'),
+        );
+
+    testWidgets('oggi il posto è un punto di aggancio: la frase, il posto, l\'azione', (tester) async {
+      _vista(tester);
+      await _mostra(tester, invitati(const BaPuntoAggancio(titolo: 'Qui: la fonte degli invitati', sottotitolo: 'punto di aggancio')));
+      expect(find.text('Un DEN privato si apre solo a chi inviti.'), findsOneWidget);
+      expect(find.byType(BaPuntoAggancio), findsOneWidget);
+      expect(_pillola(tester, 'Continua').variante, BaVariantePillola.chiara);
+    });
+
+    testWidgets('il posto si sostituisce senza toccare il passo: titolo, frase e azioni restano quelli', (tester) async {
+      _vista(tester);
+      await _mostra(tester, invitati(const BaPuntoAggancio(titolo: 'Qui: la fonte degli invitati')));
+      final prima = [for (final p in tester.widgetList<BaPillola>(find.byType(BaPillola))) p.testo];
+
+      // Domani: un elenco con la ricerca (qui un campo e due nomi qualunque).
+      final c = TextEditingController();
+      addTearDown(c.dispose);
+      await _mostra(
+        tester,
+        invitati(Column(children: [
+          BaCampoTesto(controller: c, etichetta: 'Cerca'),
+          const Text('Marta'),
+          const Text('Davide'),
+        ])),
+      );
+      expect(find.byType(BaPuntoAggancio), findsNothing);
+      expect(find.text('Marta'), findsOneWidget);
+      expect(find.text('Chi inviti?'), findsOneWidget);
+      expect(find.text('Un DEN privato si apre solo a chi inviti.'), findsOneWidget);
+      expect([for (final p in tester.widgetList<BaPillola>(find.byType(BaPillola))) p.testo], prima);
+      // La frase sta sopra il posto.
+      expect(tester.getTopLeft(find.text('Un DEN privato si apre solo a chi inviti.')).dy,
+          lessThan(tester.getTopLeft(find.text('Marta')).dy));
+    });
+  });
+
+  group('riepilogo (C5)', () {
+    BaPassoFoglio riepilogo({List<BaRigaValore>? righe, String? frase = 'Salirai a microfono spento.'}) => BaPassiCreazione.riepilogo(
+          titolo: 'Tutto pronto?',
+          righe: righe ??
+              const [
+                BaRigaValore(etichetta: 'Tipo', valore: 'Privato'),
+                BaRigaValore(etichetta: 'Nome', valore: 'Cena senza fretta'),
+                BaRigaValore(etichetta: 'Tema', valore: 'Chiacchiere'),
+                BaRigaValore(etichetta: 'Lingua', valore: 'Italiano'),
+                BaRigaValore(etichetta: 'Invitati', valore: '—'),
+              ],
+          frase: frase,
+          azione: _azione('Crea il DEN'),
+        );
+
+    testWidgets('le righe etichetta e valore, la frase in primo piano e «Crea il DEN» chiara', (tester) async {
+      _vista(tester);
+      await _mostra(tester, riepilogo());
+      expect(find.byType(BaRigaValore), findsNWidgets(5));
+      expect(find.text('Cena senza fretta'), findsOneWidget);
+      expect(tester.widget<Text>(find.text('Salirai a microfono spento.')).style?.color, BaColorTokens.testoPrimo);
+      expect(_pillola(tester, 'Crea il DEN').variante, BaVariantePillola.chiara);
+      expect(find.descendant(of: find.byType(BaRigaValore), matching: find.byType(BaTouchable)), findsNothing,
+          reason: 'il riepilogo è testo: nessuna riga è toccabile');
+    });
+
+    testWidgets('per il pubblico la riga «Invitati» non c\'è e non lascia spazio', (tester) async {
+      _vista(tester);
+      await _mostra(tester, riepilogo(righe: const [
+        BaRigaValore(etichetta: 'Tipo', valore: 'Pubblico'),
+        BaRigaValore(etichetta: 'Nome', valore: 'Cena senza fretta'),
+      ]));
+      expect(find.text('Invitati'), findsNothing);
+      expect(find.byType(BaRigaValore), findsNWidgets(2));
+    });
+
+    testWidgets('senza la frase finale non c\'è né testo né spazio', (tester) async {
+      _vista(tester);
+      await _mostra(tester, riepilogo(frase: null));
+      expect(find.text('Salirai a microfono spento.'), findsNothing);
+    });
+
+    testWidgets('a 2,0 le righe vanno a capo e le azioni restano ancorate', (tester) async {
+      _vista(tester, testo: BaScalaTokens.maxTesto);
+      await _mostra(tester, riepilogo());
+      expect(tester.takeException(), isNull);
+      expect(tester.getRect(find.widgetWithText(BaPillola, 'Non ora')).bottom, lessThanOrEqualTo(800));
+      expect(tester.getSize(_foglio()).height, lessThanOrEqualTo(800 * BaAccessoTokens.foglioAltezzaTelefono + 0.01));
+    });
+  });
+
+  group('creazione non riuscita (S2)', () {
+    BaPassoFoglio nonCreato() => BaPassiCreazione.nonCreato(
+          titolo: 'Il DEN non è stato creato',
+          errore: 'Non siamo riusciti ad aprirlo. Controlla la connessione e riprova.',
+          nota: 'Quello che hai scritto è ancora qui.',
+          azione: _azione('Riprova'),
+        );
+
+    testWidgets('l\'errore è annunciato, ha il segno «!» e non è il solo colore; «Riprova» e «Non ora»', (tester) async {
+      _vista(tester);
+      final semantica = tester.ensureSemantics();
+      await _mostra(tester, nonCreato());
+      expect(find.text('Non siamo riusciti ad aprirlo. Controlla la connessione e riprova.'), findsOneWidget);
+      expect(find.text('!'), findsOneWidget);
+      expect(
+        tester.getSemantics(find.bySemanticsLabel('Non siamo riusciti ad aprirlo. Controlla la connessione e riprova.')).flagsCollection.isLiveRegion,
+        isTrue,
+      );
+      expect(find.text('Quello che hai scritto è ancora qui.'), findsOneWidget);
+      expect(_pillola(tester, 'Riprova').variante, BaVariantePillola.chiara);
+      expect(find.widgetWithText(BaPillola, 'Non ora'), findsOneWidget);
+      semantica.dispose();
+    });
+
+    testWidgets('a 2,0 nulla si taglia e le azioni restano ancorate', (tester) async {
+      _vista(tester, testo: BaScalaTokens.maxTesto);
+      await _mostra(tester, nonCreato());
+      expect(tester.takeException(), isNull);
+      expect(tester.getRect(find.widgetWithText(BaPillola, 'Riprova')).bottom,
+          lessThanOrEqualTo(tester.getRect(find.widgetWithText(BaPillola, 'Non ora')).top));
+    });
+  });
+
+  group('«Non ora» in ogni passo', () {
+    final passi = <String, BaPassoFoglio Function()>{
+      'tipo': () => _tipo(),
+      'nome': () => _nome(),
+      'dettagli': () => _dettagli(),
+      'invitati': () => BaPassiCreazione.invitati(
+            titolo: 'Chi inviti?',
+            frase: 'Un DEN privato si apre solo a chi inviti.',
+            posto: const BaPuntoAggancio(titolo: 'Qui: la fonte degli invitati'),
+            azione: _azione('Continua'),
+          ),
+      'riepilogo': () => BaPassiCreazione.riepilogo(
+            titolo: 'Tutto pronto?',
+            righe: const [BaRigaValore(etichetta: 'Tipo', valore: 'Privato')],
+            azione: _azione('Crea il DEN'),
+          ),
+      'non creato': () => BaPassiCreazione.nonCreato(
+            titolo: 'Il DEN non è stato creato',
+            errore: 'Non siamo riusciti ad aprirlo.',
+            azione: _azione('Riprova'),
+          ),
+    };
+
+    for (final MapEntry(key: nome, value: passo) in passi.entries) {
+      testWidgets('$nome: «Non ora» c\'è, è l\'ultima azione, è spenta e chiama il suo callback', (tester) async {
+        _vista(tester);
+        var chiusure = 0;
+        await _mostra(tester, passo(), nonOra: _azione('Non ora', onTap: () => chiusure++));
+        final pillole = tester.widgetList<BaPillola>(find.byType(BaPillola)).toList();
+        expect(pillole.last.testo, 'Non ora');
+        expect(pillole.last.variante, BaVariantePillola.spenta);
+        await tester.tap(find.widgetWithText(BaPillola, 'Non ora'));
+        expect(chiusure, 1);
+      });
+    }
+
+    test('ogni passo ha un id suo (il foglio li distingue)', () {
+      final id = [
+        BaPassiCreazione.idTipo,
+        BaPassiCreazione.idNome,
+        BaPassiCreazione.idDettagli,
+        BaPassiCreazione.idInvitati,
+        BaPassiCreazione.idRiepilogo,
+        BaPassiCreazione.idNonCreato,
+      ];
+      expect(id.toSet(), hasLength(id.length));
+      expect({for (final p in passi.values) p().id}, hasLength(id.length));
     });
   });
 }

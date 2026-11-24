@@ -25,7 +25,9 @@ import 'campo_testo.dart';
 import 'chip_scelta.dart';
 import 'foglio.dart';
 import 'foglio_passi.dart';
+import 'messaggio.dart';
 import 'punto_aggancio.dart';
+import 'riga_valore.dart';
 import 'scelta_den.dart';
 import 'tokens.dart';
 
@@ -35,6 +37,9 @@ abstract final class BaPassiCreazione {
   static const Object idTipo = 'crea-tipo';
   static const Object idNome = 'crea-nome';
   static const Object idDettagli = 'crea-dettagli';
+  static const Object idInvitati = 'crea-invitati';
+  static const Object idRiepilogo = 'crea-riepilogo';
+  static const Object idNonCreato = 'crea-non-creato';
 
   /// Tipo (C1, C1 bis): le opzioni, la [scelta] (nulla = nessuna ancora) e la
   /// [fraseSotto], che cambia con la scelta. Il componente non sa che cosa si
@@ -130,6 +135,84 @@ abstract final class BaPassiCreazione {
           _GruppoChip(etichetta: linguaEtichetta, voci: lingue, scelta: linguaScelta, onScelta: onLingua),
         ],
         azione: azione,
+      );
+
+  /// Invitati (C4, solo il privato): la [frase] e il [posto] degli invitati.
+  ///
+  /// **Il posto è uno spazio che il chiamante riempie**: oggi un
+  /// [BaPuntoAggancio] («Qui: la fonte degli invitati»), domani l'elenco con la
+  /// ricerca. Il passo non sa che cosa c'è dentro e non cambia quando lo si
+  /// sostituisce: titolo, frase e azioni restano quelli. La fonte degli invitati
+  /// non è decisa (domanda 8 in `aperte.md`).
+  static BaPassoFoglio invitati({
+    required String titolo,
+    required String frase,
+    required Widget posto,
+    required BaAzioneFoglio azione,
+  }) =>
+      BaPassoFoglio(
+        id: idInvitati,
+        titolo: titolo,
+        corpo: [_Frase(frase), posto],
+        azione: azione,
+      );
+
+  /// Riepilogo (C5): una [BaRigaValore] per voce (per il pubblico la riga
+  /// «Invitati» non c'è: lo decide il chiamante) e, se c'è, la [frase] finale
+  /// («Salirai a microfono spento.»: in primo piano). L'azione è quella che
+  /// crea, «Crea il DEN».
+  static BaPassoFoglio riepilogo({
+    required String titolo,
+    required List<BaRigaValore> righe,
+    String? frase,
+    required BaAzioneFoglio azione,
+  }) =>
+      BaPassoFoglio(
+        id: idRiepilogo,
+        titolo: titolo,
+        corpo: [
+          Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: righe),
+          if (frase != null) _Frase(frase, evidenza: true),
+        ],
+        azione: azione,
+      );
+
+  /// «Il DEN non è stato creato» (S2): l'[errore] (una frase, annunciata: è un
+  /// [BaMessaggio] di errore, con il segno «!», mai il solo colore), la [nota]
+  /// («Quello che hai scritto è ancora qui.»: i controller sono del chiamante,
+  /// quindi è vero) e «Riprova».
+  static BaPassoFoglio nonCreato({
+    required String titolo,
+    required String errore,
+    String? nota,
+    required BaAzioneFoglio azione,
+  }) =>
+      BaPassoFoglio(
+        id: idNonCreato,
+        titolo: titolo,
+        corpo: [
+          BaMessaggio(testo: errore, variante: BaVarianteMessaggio.errore),
+          if (nota != null) _Frase(nota, piccola: true),
+        ],
+        azione: azione,
+      );
+}
+
+/// Una frase del passo: in secondo piano, o in primo piano ([evidenza]); [piccola]
+/// è il corpo minore.
+class _Frase extends StatelessWidget {
+  const _Frase(this.testo, {this.evidenza = false, this.piccola = false});
+
+  final String testo;
+  final bool evidenza;
+  final bool piccola;
+
+  @override
+  Widget build(BuildContext context) => Text(
+        testo,
+        style: (piccola ? BaTestoTokens.minore : BaTestoTokens.corpo).copyWith(
+          color: evidenza ? BaColorTokens.testoPrimo : BaColorTokens.testoSecondo,
+        ),
       );
 }
 
