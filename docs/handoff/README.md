@@ -34,7 +34,7 @@ Le **fonti di verità, in ordine** (`CLAUDE.md`): [`docs/DECISIONS.md`](../DECIS
 
 ## Che cos'è il prototipo, e che cosa non è
 
-**È:** un **design system in Flutter** (i token e 32 componenti, ciascuno con i suoi test) e una **galleria** per vederli in Chrome, più la documentazione di progetto. Il lavoro è stato fatto con Claude Code, un task alla volta ([`docs/tasks/`](../tasks/README.md), con un report per ciascuno in [`docs/reports/`](../reports/)).
+**È:** un **design system in Flutter** (i token e 40 componenti, ciascuno con i suoi test) e una **galleria** per vederli in Chrome, più la documentazione di progetto. Il lavoro è stato fatto con Claude Code, un task alla volta ([`docs/tasks/`](../tasks/README.md), con un report per ciascuno in [`docs/reports/`](../reports/)).
 
 **Non è:**
 

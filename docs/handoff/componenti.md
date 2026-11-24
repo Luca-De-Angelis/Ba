@@ -130,14 +130,12 @@ Questi quattro file di `app/lib/design_system/` non definiscono widget e per que
 
 ## Non ancora costruiti
 
-Nomi che l'Inventario elenca nelle tabelle C2, C4 e C5 (compresi i due nuovi del task 027) e che **non hanno ancora una classe** in `app/lib/` (i nove del task 022 sono stati costruiti) (verificato con una ricerca di `class <nome>` nel codice). L'Inventario dice anche che esiste uno scaffold `BaSchermata` (C8) che porta il posto unico della richiesta: nel codice non c'è. **L'Inventario introduce «venti widget (C1–C4)», ma le sue tabelle ne nominano 28: da verificare con chi lo mantiene.**
+Nomi che l'Inventario elenca nelle tabelle C2, C4 e C5 (compresi i due nuovi del task 027) e che **non hanno ancora una classe** in `app/lib/` (i nove del task 022 e gli otto del task 029 sono stati costruiti) (verificato con una ricerca di `class <nome>` nel codice). L'Inventario dice anche che esiste uno scaffold `BaSchermata` (C8) che porta il posto unico della richiesta: nel codice non c'è. **L'Inventario introduce «venti widget (C1–C4)», ma le sue tabelle ne nominano 28: da verificare con chi lo mantiene.**
 
 | Sezione | Nomi | Per che cosa servono |
 | --- | --- | --- |
-| C2, struttura della stanza | `BaIntestazione`, `BaMarcatore`, `BaRigaStato`, `BaFasciaTesto`, `BaAlone` | Intestazione, marcatori, riga di stato, fascia di testo (non in v1) e alone dietro il palco |
-| C4, elenco e impostazioni | `BaRigaDen`, `BaRigaImpostazione`, `BaRigaBloccata` | Le righe degli elenchi dei DEN, delle impostazioni e delle persone bloccate |
+| C2, struttura della stanza | `BaFasciaTesto` | La fascia di testo (**non in v1**: l'Inventario la rinvia). Gli altri quattro nomi di C2 sono costruiti (task 029) |
 | C5, superfici di sistema | `BaCardLive`, `BaIsola`, `BaNotificaAndroid` | Live Activity, Dynamic Island e notifica Android: **non sono widget Flutter** (l'Inventario le descrive come superfici che Flutter non disegna) |
-| C4, account chiuso (027) | `BaSchermataCopertura` | La schermata che copre tutto quando l'account è chiuso dalla moderazione: un messaggio e «Richiedi revisione» come unica azione (B1, B1 bis, B2) |
 | C4, schermo bloccato (027) | `BaControlliBloccato` | I controlli a schermo bloccato (L1–L4): sul palco «Spegni il microfono», per il pubblico pausa e «Prossimo DEN». L'Inventario lo elenca in C4, ma sono superfici di sistema: **non è un widget Flutter** |
 
-Che cosa serve a ogni schermata, e che cosa manca in totale, è in [schermate](schermate.md). Con il task 022 sono stati costruiti i nove componenti dei task 013–015, con il 023a i contenuti dei fogli dell'accesso e della coda e con il 023b quelli di creare e gestire i DEN; il prototipo navigabile (task 024) non esiste ancora (vedi `docs/tasks/README.md`).
+Che cosa serve a ogni schermata, e che cosa manca in totale, è in [schermate](schermate.md). Con il task 022 sono stati costruiti i nove componenti dei task 013–015, con il 023a i contenuti dei fogli dell'accesso e della coda, con il 023b quelli di creare e gestire i DEN e con il 029 quelli della stanza, dell'elenco e dell'account chiuso; il prototipo navigabile (task 024) non esiste ancora (vedi `docs/tasks/README.md`).
