@@ -10,6 +10,7 @@ import 'package:ba/design_system/fascia_attesa.dart';
 import 'package:ba/design_system/interruttore_riga.dart';
 import 'package:ba/design_system/punto_aggancio.dart';
 import 'package:ba/design_system/riga_coda.dart';
+import 'package:ba/design_system/riga_persona.dart';
 import 'package:ba/design_system/scelta_den.dart';
 import 'package:ba/design_system/foglio.dart';
 import 'package:ba/design_system/messaggio.dart';
@@ -763,6 +764,249 @@ void main() {
         await tester.pump();
         expect(find.byType(BaFoglio), findsNothing, reason: 'dopo «$chiusura»');
       }
+    });
+  });
+
+  group('la pagina «Fogli di creazione e gestione»', () {
+    Future<void> apri(WidgetTester tester) async {
+      _vistaAlta(tester);
+      await tester.pumpWidget(const GalleriaApp());
+      await tester.pump();
+      await _tocca(tester, 'Fogli di creazione e gestione');
+    }
+
+    Future<void> sale(WidgetTester tester) => tester.pump(const Duration(milliseconds: 300));
+
+    Future<void> chiudiFoglio(WidgetTester tester, String azione) async {
+      await _tocca(tester, azione);
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(find.byType(BaFoglio), findsNothing, reason: 'dopo «$azione»');
+    }
+
+    /// Dal tipo al riepilogo, scrivendo davvero i campi.
+    Future<void> alRiepilogo(WidgetTester tester, {required bool privato}) async {
+      await _tocca(tester, 'Crea un DEN');
+      await sale(tester);
+      expect(find.text('Che DEN vuoi creare?'), findsOneWidget);
+      if (!privato) await _tocca(tester, 'Pubblico');
+      await _tocca(tester, 'Continua');
+      expect(find.text('Come si chiama?'), findsOneWidget);
+      await tester.enterText(find.byType(EditableText), 'Cena senza fretta');
+      await tester.pump();
+      await _tocca(tester, 'Continua');
+      expect(find.text('Descrizione, tema e lingua'), findsOneWidget);
+      await _tocca(tester, 'Cucina');
+      await _tocca(tester, 'Continua');
+      if (privato) {
+        expect(find.text('Chi inviti?'), findsOneWidget);
+        await _tocca(tester, 'Continua');
+      }
+      expect(find.text('Tutto pronto?'), findsOneWidget);
+    }
+
+    testWidgets('«Crea un DEN» privato: cinque passi in un foglio solo, i campi si scrivono, il riepilogo li ripete', (tester) async {
+      await apri(tester);
+      await alRiepilogo(tester, privato: true);
+      expect(find.byType(BaFoglio), findsOneWidget, reason: 'sempre lo stesso foglio');
+      expect(find.text('Cena senza fretta'), findsOneWidget);
+      expect(find.text('Cucina'), findsOneWidget);
+      expect(find.text('Privato'), findsOneWidget);
+      expect(find.text('Invitati'), findsOneWidget);
+      expect(find.text('Salirai a microfono spento.'), findsOneWidget);
+      await chiudiFoglio(tester, 'Crea il DEN');
+    });
+
+    testWidgets('«Crea un DEN» pubblico: niente passo «Invitati» e niente riga nel riepilogo; il tipo non dice «senza amministratore»', (tester) async {
+      await apri(tester);
+      await _tocca(tester, 'Crea un DEN');
+      await sale(tester);
+      await _tocca(tester, 'Pubblico');
+      expect(find.text('Lo gestisci tu, con i co-amministratori che scegli.'), findsOneWidget);
+      expect(find.textContaining('senza amministratore', findRichText: true), findsNothing);
+      await _tocca(tester, 'Non ora');
+      await tester.pump(const Duration(milliseconds: 300));
+
+      await alRiepilogo(tester, privato: false);
+      expect(find.text('Pubblico'), findsOneWidget);
+      expect(find.text('Invitati'), findsNothing);
+      expect(find.text('Chi inviti?'), findsNothing);
+    });
+
+    testWidgets('il nome: vuoto mostra l\'errore e non va avanti; «Quando» è spento e non si tocca', (tester) async {
+      await apri(tester);
+      await _tocca(tester, 'Crea un DEN');
+      await sale(tester);
+      await _tocca(tester, 'Continua');
+      expect(find.byType(BaPuntoAggancio), findsOneWidget);
+      await _tocca(tester, 'Continua');
+      expect(find.text('Scrivi un nome per il DEN.'), findsOneWidget);
+      expect(find.text('Come si chiama?'), findsOneWidget);
+      // «Quando» non è un controllo: toccarlo non fa niente.
+      await tester.tap(find.text('Adesso'), warnIfMissed: false);
+      await tester.pump();
+      expect(find.byType(EditableText), findsOneWidget);
+      // Scrivere toglie l'errore.
+      await tester.enterText(find.byType(EditableText), 'Cena');
+      await tester.pump();
+      expect(find.text('Scrivi un nome per il DEN.'), findsNothing);
+    });
+
+    testWidgets('con «Nome: già usato» l\'errore c\'è una volta, poi si va avanti', (tester) async {
+      await apri(tester);
+      await _tocca(tester, 'Nome: libero');
+      await _tocca(tester, 'Crea un DEN');
+      await sale(tester);
+      await _tocca(tester, 'Continua');
+      await tester.enterText(find.byType(EditableText), 'Cena senza fretta');
+      await tester.pump();
+      await _tocca(tester, 'Continua');
+      expect(find.text("C'è già un DEN con questo nome. Cambialo o aggiungi una parola."), findsOneWidget);
+      await _tocca(tester, 'Continua');
+      expect(find.text('Descrizione, tema e lingua'), findsOneWidget);
+    });
+
+    testWidgets('«Indietro (di prova)» torna al passo prima e quello che era scritto resta', (tester) async {
+      await apri(tester);
+      await alRiepilogo(tester, privato: true);
+      await _tocca(tester, 'Indietro (di prova)');
+      expect(find.text('Chi inviti?'), findsOneWidget);
+      await _tocca(tester, 'Indietro (di prova)');
+      expect(find.text('Descrizione, tema e lingua'), findsOneWidget);
+      await _tocca(tester, 'Indietro (di prova)');
+      expect(tester.widget<EditableText>(find.byType(EditableText)).controller.text, 'Cena senza fretta');
+    });
+
+    testWidgets('con «Creazione: non riesce» l\'errore è annunciato e «Riprova» riporta al riepilogo con i dati', (tester) async {
+      await apri(tester);
+      await _tocca(tester, 'Creazione: riesce');
+      await alRiepilogo(tester, privato: true);
+      await _tocca(tester, 'Crea il DEN');
+      expect(find.text('Il DEN non è stato creato'), findsOneWidget);
+      expect(find.text('Non siamo riusciti ad aprirlo. Controlla la connessione e riprova.'), findsOneWidget);
+      expect(find.text('Quello che hai scritto è ancora qui.'), findsOneWidget);
+      expect(find.byType(BaFoglio), findsOneWidget);
+      await _tocca(tester, 'Riprova');
+      expect(find.text('Tutto pronto?'), findsOneWidget);
+      expect(find.text('Cena senza fretta'), findsOneWidget);
+    });
+
+    testWidgets('il sotto-DEN: il nome non è vuoto, la regola e la nota, e «Crea il sotto-DEN» chiude', (tester) async {
+      await apri(tester);
+      await _tocca(tester, 'Nuovo sotto-DEN');
+      await sale(tester);
+      expect(find.text('Fino a 8 persone. Sente il DEN e parla al proprio gruppo.'), findsOneWidget);
+      expect(find.text('Chi ne fa parte lo scegli dopo, dalla stanza.'), findsOneWidget);
+      await _tocca(tester, 'Crea il sotto-DEN');
+      expect(find.text('Scrivi un nome per il sotto-DEN.'), findsOneWidget);
+      await tester.enterText(find.byType(EditableText), 'Tavolo 2');
+      await tester.pump();
+      await chiudiFoglio(tester, 'Crea il sotto-DEN');
+    });
+
+    testWidgets('«Gestisci» con un posto libero: il menu mostra «0 di 1», le viste si aprono e si chiudono', (tester) async {
+      await apri(tester);
+      await _tocca(tester, 'Gestisci, con un posto libero');
+      await sale(tester);
+      expect(find.text('0 di 1'), findsOneWidget);
+      expect(find.byType(BaFoglio), findsOneWidget);
+
+      await _tocca(tester, 'Descrizione');
+      expect(find.byType(BaCampoTesto), findsOneWidget);
+      await tester.enterText(find.byType(EditableText), 'Una nuova descrizione');
+      await tester.pump();
+      await _tocca(tester, 'Salva');
+      expect(find.text('Una nuova descrizione'), findsOneWidget, reason: 'il menu mostra la descrizione salvata');
+
+      await _tocca(tester, 'Co-amministratori');
+      expect(find.byType(BaPuntoAggancio), findsOneWidget);
+      await _tocca(tester, 'Aggiungi un co-amministratore');
+      expect(find.text('Hai raggiunto il limite di co-amministratori. Per aggiungerne un altro, togli Marta.'), findsOneWidget);
+      expect(find.byType(BaFoglio), findsOneWidget, reason: 'le viste sono lo stesso foglio');
+      await _tocca(tester, 'Chiudi');
+      expect(find.text('1 di 1'), findsOneWidget);
+      await chiudiFoglio(tester, 'Chiudi');
+    });
+
+    testWidgets('«Gestisci» al limite: «Togli» libera il posto; chi è co-amministratore non ha «Rimuovi»', (tester) async {
+      await apri(tester);
+      await _tocca(tester, 'Gestisci, al limite');
+      await sale(tester);
+      expect(find.text('1 di 1'), findsOneWidget);
+
+      await _tocca(tester, 'Persone nel DEN');
+      expect(find.byType(BaRigaPersona), findsNWidgets(4));
+      expect(find.text('Rimuovi'), findsNWidgets(3));
+      expect(find.text('co-amministratore'), findsOneWidget);
+      await _tocca(tester, 'Chiudi');
+
+      await _tocca(tester, 'Co-amministratori');
+      expect(find.text('Togli'), findsOneWidget);
+      await _tocca(tester, 'Togli');
+      expect(find.byType(BaPuntoAggancio), findsOneWidget, reason: 'tolto il co-amministratore il posto è libero');
+      await _tocca(tester, 'Chiudi');
+      expect(find.text('0 di 1'), findsOneWidget);
+      await chiudiFoglio(tester, 'Chiudi');
+    });
+
+    testWidgets('rimozione e termine hanno una conferma; la rimozione toglie la persona', (tester) async {
+      await apri(tester);
+      await _tocca(tester, 'Gestisci, con un posto libero');
+      await sale(tester);
+      await _tocca(tester, 'Persone nel DEN');
+      await tester.tap(find.text('Rimuovi').first);
+      await tester.pump();
+      expect(find.text('Rimuovere Marta?'), findsOneWidget, reason: 'il primo «Rimuovi» è quello di Marta');
+      await _tocca(tester, 'Non ora');
+      expect(find.byType(BaRigaPersona), findsNWidgets(4), reason: '«Non ora» non toglie nessuno');
+      await tester.tap(find.text('Rimuovi').first);
+      await tester.pump();
+      await _tocca(tester, 'Rimuovi');
+      expect(find.byType(BaRigaPersona), findsNWidgets(3));
+      expect(find.text('Marta'), findsNothing);
+      await _tocca(tester, 'Chiudi');
+
+      await _tocca(tester, 'Termina il DEN');
+      expect(find.text('Terminare il DEN?'), findsOneWidget);
+      expect(find.text('Tutte le persone escono dalla stanza.'), findsWidgets);
+      await _tocca(tester, 'Non ora');
+      expect(find.text('Gestisci il DEN'), findsWidgets);
+      await _tocca(tester, 'Termina il DEN');
+      await chiudiFoglio(tester, 'Termina il DEN');
+    });
+
+    testWidgets('regge 744, il testo 2,0 e «riduci movimento» in ogni contenuto', (tester) async {
+      await apri(tester);
+      for (final c in ['Larghezza 360', 'Testo 1,0', 'Riduci movimento']) {
+        await _tocca(tester, c);
+      }
+      final aperture = <String, String>{
+        'Crea un DEN': 'Non ora',
+        'Nuovo sotto-DEN': 'Non ora',
+        'Gestisci, con un posto libero': 'Chiudi',
+        'Gestisci, al limite': 'Chiudi',
+      };
+      for (final MapEntry(key: apertura, value: chiusura) in aperture.entries) {
+        await _tocca(tester, apertura);
+        await tester.pump();
+        expect(find.byType(BaFoglio), findsOneWidget, reason: apertura);
+        expect(tester.takeException(), isNull, reason: apertura);
+        await _tocca(tester, chiusura);
+        await tester.pump();
+        expect(find.byType(BaFoglio), findsNothing, reason: 'dopo «$chiusura»');
+      }
+      // Anche i passi più alti (dettagli con i chip, riepilogo, errore) a 2,0 e a 744.
+      await _tocca(tester, 'Creazione: riesce');
+      await _tocca(tester, 'Crea un DEN');
+      await tester.pump();
+      for (final azione in ['Continua', 'Continua', 'Continua', 'Continua', 'Crea il DEN']) {
+        if (azione == 'Continua' && find.text('Come si chiama?').evaluate().isNotEmpty) {
+          await tester.enterText(find.byType(EditableText), 'Cena senza fretta');
+          await tester.pump();
+        }
+        await _tocca(tester, azione);
+        expect(tester.takeException(), isNull);
+      }
+      expect(find.text('Il DEN non è stato creato'), findsOneWidget);
     });
   });
 }
