@@ -56,7 +56,7 @@ L 0,153 · nuova
 
 **Corollario, e vale come divieto.** Dodici tinte tenute dentro L 0,09–0,16 sono poco distinguibili fra loro a 22 pt e al buio: vanno bene per accompagnare le iniziali, non per portare informazione. **Nessuna distinzione dell'app può dipendere dal solo colore** — chi parla è luminanza e movimento, voce mutata e bloccata sono desaturazione più glifo, il palco si distingue dal pubblico per dimensione e posizione. Se una futura funzione ha bisogno di essere letta a colpo d'occhio, il canale non è la tinta.
 
-Aggiornamento dei prototipi 013–015 e due schermate nuove (task 027): account chiuso, controlli a schermo bloccato, in design/handoff/027/. Creare e gestire i DEN (task 014): le schermate sono in design/handoff/014/Creare DEN 014.dc.html. Qui non esiste una schermata equivalente: la home non c'è ancora e 5b resta l'elenco dell'ascoltatore.
+Persone, inviti e richiamo (task 030, proposta): design/handoff/030/Persone e inviti 030.dc.html. Aggiornamento dei prototipi 013–015 e due schermate nuove (task 027): account chiuso, controlli a schermo bloccato, in design/handoff/027/. Creare e gestire i DEN (task 014): le schermate sono in design/handoff/014/Creare DEN 014.dc.html. Qui non esiste una schermata equivalente: la home non c'è ancora e 5b resta l'elenco dell'ascoltatore.
 
 Coda e attesa (task 015): le schermate, comprese le due superfici di sistema (notifica del posto libero a schermo bloccato e notifica Android dell'ingresso automatico), sono in design/handoff/015/Coda e attesa 015.dc.html. In entrambe nessuna azione sul microfono (D-025).
 

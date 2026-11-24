@@ -36,6 +36,18 @@ L'account di base è da **ascoltatore**: email, codice via email, onboarding con
 
 **Due schermate nuove.** Account chiuso (D-049): copre tutto, «Richiedi revisione» come unica azione, nessun ban lieve; il blocco temporaneo è un'ipotesi. Controlli a schermo bloccato (D-050): sul palco «Spegni il microfono» spegne e non può accendere (D-025), fra il pubblico «Pausa» e al ritorno si riprende dal vivo, «Esci» è lo stop, «Prossimo DEN» ha una fonte da definire (ipotesi). Schermate: design/handoff/027/. Token: BaSchermoBloccatoTokens, BaCodaTokens.postoOffertoFinestra.
 
+## 5.E  Persone, inviti e richiamo (proposta) · task 030 · D-038, D-039, D-041, D-042
+
+**Principio che non si rompe.** Nessuna schermata mostra o lascia dedurre che una persona è online o in un DEN senza il suo consenso esplicito. Niente contatori, niente stato «online», niente «visto da». Il richiamo parte spento.
+
+**Aggiungere persone (D-039).** Il «+» apre una superficie con un campo che filtra (nickname, alias, email, numero) e chi si è frequentato di più. Una riga: sagoma, nickname, alias e l'azione. Proposte (ipotesi): l'azione si chiama «Aggiungi» e l'aggiunta è privata (l'altra persona non riceve un avviso); i nickname uguali si distinguono con un alias unico. Stati: nessun suggerito, nessun risultato (con «Invita con un link»), persona aggiunta, errore di rete. **Rubrica:** un foglio di permesso con due azioni alla pari, il rifiuto senza colpa, e «Dalla rubrica» con chi è già su BA, solo se ha scelto di essere trovato per numero.
+
+**Chi può trovarmi.** Una riga nelle impostazioni con tre scelte (Nessuno, Chi conosco, Tutti), ciascuna con la sua conseguenza scritta. Valore di partenza proposto: «Chi conosco». Il profilo «pubblico» di «disponibile a chiacchierare» (D-038) è di un altro task. **Selettore.** Lo stesso selettore di persone serve per gli invitati (passo «Invita») e per il co-amministratore: ricerca, persone aggiunte, stato «nell'invito». Si può creare un DEN privato senza invitati e invitare dopo (ipotesi).
+
+**Sei stato invitato (D-041).** Per chi ha BA: notifica (anche a schermo bloccato, senza azioni) e foglio «Marta ti ha invitato a… · Entra · Non ora»; si entra ad ascoltare. Per chi non ha BA: mail o link, pagina d'arrivo web (ipotesi), accesso del 013 (email, codice, onboarding, termini con i 18 anni, nickname) e ingresso diretto nel DEN, senza passare dall'elenco. Stati: invito scaduto (7 giorni, ipotesi) e annullato.
+
+**Richiamo (D-042).** Proposta: spento di partenza; un consenso per persona (chi puoi avvisare) e, dall'altro lato, la scelta di ricevere l'avviso (chi può avvisarti). Solo DEN pubblici. L'avviso dice che una persona è entrata in un DEN pubblico e solo allora: non si vede quando è online. Il richiamo come notifica è nel 015 (K7). Schermate: design/handoff/030/. Token: BaPersoneTokens.
+
 ## 7.1  Come si rappresenta una persona
 
 La persona è rappresentata dall'**immagine che ha scelto**, usata come riempimento della sagoma assegnata dalla stanza. Le **iniziali su tinta assegnata** sono il ripiego. In alpha il ripiego è il caso dominante: è progettato come principale, e ogni stato deve leggersi identico nelle due varianti. Nessun nome visibile accanto alle presenze.
