@@ -50,6 +50,7 @@ Il team di sviluppo ha il suo server e il suo audio: **non stanno in questa repo
 | File | Che cosa trovi |
 | --- | --- |
 | [avvio.md](avvio.md) | Come farlo girare: la versione di Flutter, le dipendenze, la galleria in Chrome, analisi e test |
+| [prototipo.md](prototipo.md) | Il prototipo navigabile in Chrome: come si lancia e si naviga, i percorsi da provare, che cosa è finto, quali schermate sono collegate |
 | [architettura.md](architettura.md) | Come è fatto: la struttura di `app/lib/`, i principi, il modello della stanza, come si aggiunge un componente o un token |
 | [componenti.md](componenti.md) | La tabella dei componenti, ricavata dal codice: stati, token, test, fonte di design, note per la produzione; e quelli non ancora costruiti |
 | [schermate.md](schermate.md) | Dalle schermate dei prototipi ai componenti: quali esistono e quali no |

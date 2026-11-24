@@ -47,9 +47,10 @@ Un file per task, `NNN-nome.md`, al massimo una pagina, nel formato di `_templat
 | 023b | `023b-fogli-creazione-gestione.md` — Fogli di contenuto: creare e gestire i DEN, sotto-DEN (i passi di «Crea un DEN», `BaFoglioGestisci`, `BaFoglioSottoDen`) | Claude Code | Concluso |
 | 029 | `029-componenti-stanza-elenco.md` — Componenti della stanza, dell'elenco e dell'account chiuso (`BaIntestazione`, `BaRigaDen`, `BaSchermataCopertura` e gli altri) | Claude Code | Concluso |
 | 030 | `030-persone-inviti.md` — Persone, inviti e richiamo (proposta) | Claude Design | Concluso |
-| 033 | `033-persone-inviti-codice.md` — Persone e inviti: applicare il 030 e costruire componenti e fogli (`BaRicercaPersone`, `BaRigaPersona` estesa, `BaSelettorePersone`, `BaRigaConsenso`, `BaFoglioInvito`) | Claude Code | In corso |
+| 033 | `033-persone-inviti-codice.md` — Persone e inviti: applicare il 030 e costruire componenti e fogli (`BaRicercaPersone`, `BaRigaPersona` estesa, `BaSelettorePersone`, `BaRigaConsenso`, `BaFoglioInvito`) | Claude Code | Concluso |
 | 024c | Persone e inviti nel prototipo navigabile | — | Brief da scrivere |
-| 024 | Prototipo navigabile in locale | — | Brief da scrivere |
+| 024a | `024-prototipo-navigabile.md` — Prototipo navigabile, prima parte: struttura, accesso, elenco, stanza, «diventa partecipante», impostazioni | Claude Code | In corso |
+| 024b | Prototipo navigabile, seconda parte: coda, creazione e «Gestisci», simulazioni, account chiuso, schermo bloccato (nello stesso brief 024) | Claude Code | Da fare dopo la 024a |
 | 025 | `025-handoff.md` — Documentazione di handoff per il team di sviluppo | Claude Code | Concluso |
 | 026 | Aggiornamento finale dell'handoff (da fare prima della consegna, dopo le risposte degli stakeholder e dopo i task 022–024) | Claude Code | Brief da scrivere |
 | 027 | `027-aggiornamento-design.md` — Aggiornamento dei design 013–015 | Claude Design | Concluso |
