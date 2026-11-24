@@ -4,7 +4,7 @@ Che cosa è finto nel prototipo e dove si sostituisce, dove il codice si innesta
 
 Torna all'[indice](README.md). Per le regole che il codice deve rispettare vedi [regole](regole.md); per le ipotesi ancora aperte [aperte](aperte.md).
 
-**Che cosa è il prototipo.** Un design system in Flutter (token e 40 componenti, ciascuno con i suoi test) e una **galleria** per vederli in Chrome. Non c'è un'app: `main.dart` è uno schermo vuoto, non ci sono schermate, navigazione, rete, audio né server. Il team di sviluppo ha il suo server e il suo audio in tempo reale, e **non sono in questa repo** (lo dice `CLAUDE.md`, «Cosa non è in questa repo»; l'`README.md` della radice lascia aperta la scelta di dove vivranno server, LiveKit e trascrizione).
+**Che cosa è il prototipo.** Un design system in Flutter (token e 44 componenti, ciascuno con i suoi test) e una **galleria** per vederli in Chrome. Non c'è un'app: `main.dart` è uno schermo vuoto, non ci sono schermate, navigazione, rete, audio né server. Il team di sviluppo ha il suo server e il suo audio in tempo reale, e **non sono in questa repo** (lo dice `CLAUDE.md`, «Cosa non è in questa repo»; l'`README.md` della radice lascia aperta la scelta di dove vivranno server, LiveKit e trascrizione).
 
 ## Che cosa è finto, e dove si sostituisce
 

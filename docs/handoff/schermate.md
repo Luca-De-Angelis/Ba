@@ -106,13 +106,30 @@ Due schermate nuove del task 027: l'account chiuso dalla moderazione (D-049) e i
 | B2 · richiesta inviata | Dopo «Richiedi revisione» | `BaSchermataCopertura` (`richiestaInviata`) | — |
 | L1–L4 · controlli a schermo bloccato | Notifica fissa, Live Activity o widget: sul palco con il microfono acceso e spento (si può solo **spegnere**, D-025), per il pubblico in diretta e in pausa; «Prossimo DEN» come etichetta provvisoria | — | `BaControlliBloccato`: **non è un widget Flutter** (l'Inventario lo elenca in C4; sono superfici di sistema, come in C5); la fonte del «next» è da definire (D-050) |
 
+## 4 ter. Persone, inviti e richiamo: [Persone e inviti 030](../../design/handoff/030/Persone%20e%20inviti%20030.dc.html)
+
+Aggiungere persone, la rubrica, «Chi può trovarmi», il selettore degli invitati e del co-amministratore, «Sei stato invitato» e il richiamo con un consenso per persona. **Sono proposte di Luca (D-055), segnate «ipotesi» e ancora aperte** (vedi [aperte](aperte.md)). Principio che non si rompe: nessuna schermata mostra o lascia dedurre che una persona è online o in un DEN senza il suo consenso. Note in [`changelog.md`](../../design/handoff/030/changelog.md).
+
+| Schermata | Che cosa mostra | Esistono | Mancano |
+| --- | --- | --- | --- |
+| P1–P6 · aggiungere persone | Il «+» apre una ricerca con i suggeriti; due nickname uguali con l'alias; nessun suggerito; nessun risultato («Invita con un link»); persona aggiunta; errore di rete | `BaRicercaPersone`, `BaRigaPersona` (voci, alias), `BaFoglio`, `BaPillola`, `BaFraseErrore` | la pagina intera e la fonte dei suggeriti (task 024c) |
+| R1–R3 · rubrica | Il foglio del permesso (due azioni alla pari, il rifiuto senza colpa), lo stato dopo il rifiuto, «Dalla rubrica» | `BaFoglioPassi`/`BaFoglio` (richiesta), `BaRigaPersona` | il collegamento alla rubrica (task 024c) |
+| V1, V2 · chi può trovarmi | Una riga nelle impostazioni con la sua conseguenza e la scelta fra nessuno, chi conosco, tutti | `BaRigaImpostazione`, `BaSceltaDen` (la scelta esclusiva), `BaFoglio` | — |
+| S1–S3 · selettore | Gli invitati (nessuno scelto, due scelti) e il co-amministratore: lo **stesso** selettore | `BaSelettorePersone` (nel posto di `BaPassiCreazione.invitati` e di `BaFoglioGestisci.coAmministratori`), `BaRicercaPersone`, `BaRigaPersona` | — |
+| I1, I2 · sei stato invitato (chi ha BA) | La notifica a schermo bloccato (senza azioni) e il foglio «Entra» / «Non ora» | `BaFoglioInvito` (`.valido`) | la **notifica** (superficie di sistema, non un widget) |
+| I3, I3 bis · scaduto e annullato | «Questo invito è scaduto», «non è più valido»; «Ho capito» | `BaFoglioInvito` (`.scaduto`, `.annullato`) | — |
+| I4–I6 · chi non ha BA | La mail, la pagina d'arrivo web (fuori dall'app, ipotesi), l'accesso del 013 e l'ingresso diretto come ascoltatore | l'accesso del 013 (vedi §2) | la mail e la pagina web **non sono componenti dell'app** (D-030) |
+| C1–C5 · richiamo | Spento di partenza, un consenso per persona, la conferma prima di accendere, «Chi può avvisarti» | `BaRigaImpostazione.interruttore`, `BaRigaConsenso`, `BaFoglio` (la conferma, composta dal chiamante) | la notifica del richiamo (015 K7: superficie di sistema) |
+
+**Differenze dal prototipo 030, da correggere nel design:** «Entra» è attiva (a filetto) e non piena; il raggio dell'azione di una riga di persona è 16 (il token) e il prototipo lo disegna a 24. Un invito ricevuto mentre si è già in un DEN usa «Vuoi passare di qua?» del 015 (D-042): non è disegnato.
+
 ## 5. Prototipi precedenti
 
 Due prototipi più vecchi restano nella repo come storia: [Schermate 001](../../design/handoff/001/Schermate%20001.dc.html) (accesso, impostazioni, superfici di sistema) e [Schermate 004](../../design/handoff/004/Schermate%20004.dc.html) (accesso, elenco dei DEN, stanza, attesa, impostazioni). Non sono la fonte da seguire per costruire: l'accesso del 013 è più recente, e la stanza e le attese sono nel 002 e nel 015. **Da verificare**, schermata per schermata, se qualcosa dei due vecchi prototipi vale ancora. `design/system/md/fase-2-schermate.md` e `stanza-den.md` sono esplorazione e storia, non norma (lo dice `CLAUDE.md`).
 
 ## Che cosa resta da costruire
 
-Mettendo insieme le tabelle, i componenti che servono alle schermate e **non esistono**. Con il task 022 sono stati costruiti i nove componenti dei task 013–015 (campo di testo, codice, scelta del tipo, chip, punto di aggancio, interruttore di riga, riga di coda, fascia d'attesa, banda del posto) , con il 023a i contenuti dei fogli dell'accesso a parlare e della coda (`BaFoglioPassi` e i cinque fogli della coda), con il 023b quelli di creare e gestire i DEN (`BaPassiCreazione`, `BaFoglioGestisci`, `BaFoglioSottoDen`, `BaRigaValore`, `BaRigaPersona`) e con il 029 i componenti della stanza, dell'elenco e dell'account chiuso (`BaIntestazione`, `BaMarcatore`, `BaRigaStato`, `BaAlone`, `BaRigaDen`, `BaRigaImpostazione`, `BaRigaBloccata`, `BaSchermataCopertura`); restano:
+Mettendo insieme le tabelle, i componenti che servono alle schermate e **non esistono**. Con il task 022 sono stati costruiti i nove componenti dei task 013–015 (campo di testo, codice, scelta del tipo, chip, punto di aggancio, interruttore di riga, riga di coda, fascia d'attesa, banda del posto) , con il 023a i contenuti dei fogli dell'accesso a parlare e della coda (`BaFoglioPassi` e i cinque fogli della coda), con il 023b quelli di creare e gestire i DEN (`BaPassiCreazione`, `BaFoglioGestisci`, `BaFoglioSottoDen`, `BaRigaValore`, `BaRigaPersona`), con il 029 i componenti della stanza, dell'elenco e dell'account chiuso (`BaIntestazione`, `BaMarcatore`, `BaRigaStato`, `BaAlone`, `BaRigaDen`, `BaRigaImpostazione`, `BaRigaBloccata`, `BaSchermataCopertura`) e con il 033 quelli delle persone e degli inviti (`BaRicercaPersone`, `BaRigaPersona` estesa, `BaSelettorePersone`, `BaRigaConsenso`, `BaFoglioInvito`); restano:
 
 | Componente | Serve a | Sezione dell'Inventario |
 | --- | --- | --- |
@@ -120,4 +137,4 @@ Mettendo insieme le tabelle, i componenti che servono alle schermate e **non esi
 | `BaCardLive`, `BaIsola`, `BaNotificaAndroid` | superfici di sistema | C5 (non sono widget Flutter) |
 | `BaControlliBloccato` | i controlli a schermo bloccato (027: L1–L4): l'Inventario lo mette in C4, ma sono superfici di sistema (come C5), non un widget Flutter | C4 |
 
-Oltre ai componenti, **mancano le schermate**, la navigazione, l'accesso, l'audio, la connessione, il server: vedi [produzione](produzione.md). Nell'elenco dei task (`docs/tasks/README.md`) i task 022 (i nove componenti), 023a (i fogli dell'accesso e della coda), 023b (i fogli di creare e gestire i DEN) e 029 (i componenti della stanza e dell'elenco) sono costruiti o in corso; il prototipo navigabile in locale è il 024, «brief da scrivere».
+Oltre ai componenti, **mancano le schermate**, la navigazione, l'accesso, l'audio, la connessione, il server: vedi [produzione](produzione.md). Nell'elenco dei task (`docs/tasks/README.md`) i task 022 (i nove componenti), 023a (i fogli dell'accesso e della coda), 023b (i fogli di creare e gestire i DEN) 029 (i componenti della stanza e dell'elenco) e 033 (persone e inviti) sono costruiti o in corso; il prototipo navigabile in locale è il 024, «brief da scrivere».
