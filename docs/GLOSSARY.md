@@ -27,7 +27,12 @@ Questi termini valgono nell'interfaccia, nei documenti e nei nomi del codice (D-
 | Connessione | Legame fra due persone; fra le connessioni si scelgono gli invitati (D-014) |
 | Ascolto condiviso | Contenuto riprodotto nel DEN che tutti sentono insieme; si abbassa da solo quando qualcuno parla (D-017) |
 | Modalità radio | Quando il DEN finisce o si svuota, si passa da soli a uno simile per tema e lingua (B10, solo annotata, D-032) |
-| Richiamo | La notifica che dice che una persona è entrata in un DEN, con l'invito a passare («Ciccio è entrato nel DEN Famiglia: vuoi passare?», D-042). Si prevede |
+| Richiamo | La notifica che dice che una persona è entrata in un DEN pubblico, con l'invito a passare («Ciccio è entrato nel DEN Famiglia: vuoi passare?», D-042). Arriva solo a chi ha scelto di riceverla, e solo da una persona che ha scelto di avvisare: **parte spento, con un consenso per persona** (proposta del 030, ancora aperta, D-055) |
+| Aggiungi | L'azione per aggiungere una persona alla propria lista. **L'aggiunta è privata: l'altra persona non riceve un avviso.** Nome proposto dal design (D-039: «segui/aggiungi» da decidere), ancora aperto |
+| Alias | Il nome unico che distingue due persone con lo stesso nickname (`@sara.rossi`): i nickname possono ripetersi (D-052). Proposta del design, ancora aperta |
+| Chi può trovarmi | La visibilità di una persona nella ricerca: nessuno, chi conosco, tutti (D-038). Valore di partenza proposto: «Chi conosco» (aperto) |
+| Invito | Un DEN privato si apre solo a chi è invitato (D-041). Chi ha BA riceve una notifica e un foglio «Sei stato invitato»: «Entra» porta fra il pubblico. L'invito scade dopo 7 giorni (ipotesi: l'interfaccia non mostra il numero) o si annulla |
+| Persone | Le persone che si sono aggiunte: da qui si scelgono gli invitati e il co-amministratore (D-039). Nessuna è mai mostrata online o in un DEN senza il suo consenso |
 | Account bannato | Account chiuso dalla moderazione, in modo definitivo nei fatti (D-049). All'apertura o al login compare una schermata che copre tutto, con un messaggio e «Richiedi revisione» come unica azione |
 | Nickname | Nome che si sceglie alla registrazione: obbligatorio, anche ripetibile (l'unicità si deciderà con il following, D-052) |
 | Tipo di account | Ascoltatore o partecipante. Cambia con il consenso a parlare e con «Torna ascoltatore»; essere ascoltatore in un DEN è invece un ruolo, non un tipo di account (D-040) |

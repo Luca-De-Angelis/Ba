@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#0A0A09; color:#F2EEE9; font-family:'Instrument Sans',system-ui,sans-serif; }
+  a { color:#D9CFA8; text-decoration:none; }
+  a:hover { color:#EDE7DC; }
+</style>
+</helmet>
+
+<div style="--ts: {{ ts }};background:#0A0A09;color:#F2EEE9;display:flex;flex-direction:column">
+
+<div style="padding:40px 56px 32px;border-bottom:1px solid rgba(242,238,233,0.10);display:flex;flex-direction:column;gap:12px">
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#8A837B">BA · task 030 · persone, inviti e richiamo · proposta · 360 dp e 744 dp</div>
+  <div style="font-size:34px;font-weight:600;letter-spacing:-0.02em;line-height:1.15">Trovare, invitare e avvisare: solo con il consenso</div>
+  <div style="display:flex;flex-direction:column;gap:8px;max-width:900px;font-size:16px;line-height:1.5;color:#A09890;text-wrap:pretty">
+    <div><strong style="font-weight:600;color:#F2EEE9">Principio che non si rompe.</strong> Nessuna schermata mostra o lascia dedurre che una persona è online o in un DEN senza il suo consenso esplicito. Nessun contatore, nessuno stato «online», nessun «visto da». Il richiamo parte spento e si accende persona per persona.</div>
+    <div>Dove i documenti tacciono, è una proposta e porta il segno tratteggiato «ipotesi»: il nome dell'azione («Aggiungi»), l'alias per i nickname uguali, il valore di partenza di «Chi può trovarmi», la scadenza dell'invito, la pagina web d'arrivo, la forma del richiamo. Il segno si toglie dalla proprietà <span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#F2EEE9">segniIpotesi</span>. Altre proprietà: <span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#F2EEE9">lingua</span>, <span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#F2EEE9">testo</span> (fino a 2,0), <span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#F2EEE9">scorri</span>.</div>
+    <div style="color:#D9CFA8">{{ scorriNota }}</div>
+  </div>
+</div>
+
+<sc-for list="{{ groups }}" as="g" hint-placeholder-count="3">
+<section data-screen-label="{{ g.label }}" style="padding:44px 56px 56px;display:flex;flex-direction:column;gap:40px;border-bottom:1px solid rgba(242,238,233,0.10)">
+  <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:26px;font-weight:600;letter-spacing:-0.01em">{{ g.titolo }}</div><div style="font-size:15px;line-height:1.5;color:#A09890;max-width:820px;text-wrap:pretty">{{ g.nota }}</div></div>
+  <sc-for list="{{ g.screens }}" as="s" hint-placeholder-count="4">
+  <div style="display:flex;flex-direction:column;gap:20px">
+    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#100F0E;background:#D9CFA8;padding:3px 8px;border-radius:999px">{{ s.num }}</div><div style="font-size:22px;font-weight:600;letter-spacing:-0.01em">{{ s.name }}</div></div>
+    <div style="font-size:14px;line-height:1.5;color:#A09890;max-width:760px;text-wrap:pretty">{{ s.note }}</div>
+    <div style="display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start">
+      <sc-for list="{{ s.frames }}" as="f" hint-placeholder-count="2">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#A09890">{{ f.label }}</div>
+        <div id="f-{{ f.id }}" style="position:relative;width:{{ f.w }}px;height:{{ f.h }}px;background:#0A0A09;border-radius:28px;border:{{ f.frameBorder }};overflow:hidden;display:flex;flex-direction:column">
+          <div style="height:{{ f.statusH }}px;flex:none;display:flex;align-items:flex-end;padding:0 {{ f.m }}px 8px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8A837B">21:40</div>
+          <sc-if value="{{ f.backdrop }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;left:0;right:0;top:{{ f.statusH }}px;bottom:0;background:linear-gradient(180deg,#171413 0%,#100F0E 52%,#0B0A09 100%);display:flex;flex-direction:column">
+              <div style="padding:4px {{ f.m }}px 0;display:flex;flex-direction:column;gap:5px">
+                <div style="font-size:22px;line-height:1.2;font-weight:600;letter-spacing:-0.26px">{{ f.bdTitle }}</div>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#A09890">{{ f.bdS1 }}</div>
+                <sc-if value="{{ f.bdNote }}" hint-placeholder-val="{{ false }}"><div style="font-size:16px;line-height:1.4;color:#F2EEE9;text-wrap:pretty;margin-top:4px">{{ f.bdNote }}</div></sc-if>
+                <sc-if value="{{ f.bdTag }}" hint-placeholder-val="{{ false }}"><div style="display:block;width:fit-content;max-width:100%;box-sizing:border-box;margin-top:6px;padding:8px 14px;border-radius:16px;border:1px dashed rgba(217,207,168,0.42);font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#D9CFA8;line-height:1.3">{{ f.bdTag }}</div></sc-if>
+              </div>
+              <sc-if value="{{ f.bandOn }}" hint-placeholder-val="{{ false }}"><div style="margin:12px {{ f.m }}px 0;box-sizing:border-box;padding:12px 14px;border-radius:16px;border:{{ f.bandBd }};display:flex;flex-direction:column;gap:4px"><div style="font-size:16px;line-height:1.4;color:#F2EEE9;text-wrap:pretty">{{ f.bandT }}</div><div style="font-size:14px;line-height:1.43;color:#A09890;text-wrap:pretty">{{ f.bandSub }}</div></div></sc-if>
+              <div style="flex:1;display:flex;align-items:center;justify-content:center;gap:17px"><sc-for list="{{ f.bdBlobs }}" as="o" hint-placeholder-count="2"><div style="position:relative;width:{{ f.bdD }}px;height:{{ f.bdD }}px"><div style="box-sizing:border-box;width:100%;height:100%;border-radius:{{ o.br }};background:{{ o.bg }};opacity:{{ o.op }};filter:{{ o.gr }}"></div><sc-if value="{{ o.mine }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;right:-2px;bottom:-2px;width:30px;height:30px;box-sizing:border-box;border-radius:999px;background:#D9CFA8;border:1.5px solid #100F0E;display:flex;align-items:center;justify-content:center"><div style="position:relative;width:14px;height:20px;display:flex;align-items:center;justify-content:center"><div style="width:8px;height:13px;box-sizing:border-box;border:2px solid #1B1917;border-radius:5px"></div><div style="position:absolute;width:2px;height:22px;background:#1B1917;transform:rotate(-45deg)"></div></div></div></sc-if></div></sc-for></div>
+              <sc-if value="{{ f.stripOn }}" hint-placeholder-val="{{ false }}"><div style="margin:0 {{ f.m }}px 12px;box-sizing:border-box;padding:12px 14px;border-radius:16px;border:1px solid rgba(242,238,233,0.32);display:flex;flex-direction:column;gap:8px"><div style="display:flex;gap:6px"><sc-for list="{{ f.stripBlobs }}" as="o" hint-placeholder-count="3"><div style="width:32px;height:32px;border-radius:{{ o.br }};background:{{ o.bg }}"></div></sc-for></div><div style="font-size:14px;line-height:1.43;color:#F2EEE9;text-wrap:pretty">{{ f.stripT }}</div><div style="min-height:44px;display:flex;align-items:center;font-size:14px;color:#A09890">{{ f.stripAct }}</div></div></sc-if>
+              <div style="padding:0 {{ f.m }}px 24px"><div style="width:100%;max-width:{{ f.col }}px;margin:0 auto;display:flex;flex-direction:column;gap:10px">
+                <div style="box-sizing:border-box;width:100%;min-height:56px;padding:8px 20px;border-radius:999px;background:{{ f.bdPBg }};border:1px solid {{ f.bdPBd }};display:flex;align-items:center;justify-content:center;text-align:center;font-size:calc(16px * var(--ts, 1));line-height:1.2;font-weight:500;color:{{ f.bdPC }};word-break:keep-all;overflow-wrap:normal;hyphens:none">{{ f.bdP }}</div>
+                <sc-if value="{{ f.barRow }}" hint-placeholder-val="{{ false }}"><div style="display:flex;align-items:stretch;gap:10px"><sc-for list="{{ f.secs }}" as="s" hint-placeholder-count="2"><div style="flex:1 1 0;min-width:0;min-height:48px;box-sizing:border-box;padding:6px 12px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;text-align:center;font-size:calc(14px * var(--ts, 1));line-height:1.2;color:#A09890;word-break:keep-all;overflow-wrap:normal;hyphens:none">{{ s.t }}</div></sc-for><div style="flex:none;align-self:center;width:48px;height:48px;box-sizing:border-box;border-radius:999px;border:1px solid rgba(242,238,233,0.32);display:flex;align-items:center;justify-content:center;gap:3px"><div style="width:4px;height:4px;border-radius:999px;background:#F2EEE9"></div><div style="width:4px;height:4px;border-radius:999px;background:#F2EEE9"></div><div style="width:4px;height:4px;border-radius:999px;background:#F2EEE9"></div></div></div></sc-if>
+                <sc-if value="{{ f.barStack }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;gap:10px"><sc-for list="{{ f.secsInit }}" as="s" hint-placeholder-count="1"><div style="min-width:0;min-height:48px;box-sizing:border-box;padding:6px 12px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;text-align:center;font-size:calc(14px * var(--ts, 1));line-height:1.2;color:#A09890;word-break:keep-all;overflow-wrap:normal;hyphens:none">{{ s.t }}</div></sc-for><div style="display:flex;align-items:stretch;gap:10px"><div style="flex:1 1 0;min-width:0;min-height:48px;box-sizing:border-box;padding:6px 12px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;text-align:center;font-size:calc(14px * var(--ts, 1));line-height:1.2;color:#A09890;word-break:keep-all;overflow-wrap:normal;hyphens:none">{{ f.secLast }}</div><div style="flex:none;align-self:center;width:48px;height:48px;box-sizing:border-box;border-radius:999px;border:1px solid rgba(242,238,233,0.32);display:flex;align-items:center;justify-content:center;gap:3px"><div style="width:4px;height:4px;border-radius:999px;background:#F2EEE9"></div><div style="width:4px;height:4px;border-radius:999px;background:#F2EEE9"></div><div style="width:4px;height:4px;border-radius:999px;background:#F2EEE9"></div></div></div></div></sc-if>
+              </div></div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ f.lock }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:linear-gradient(180deg,#1E1B19 0%,#0F0E0D 70%);display:flex;flex-direction:column;align-items:center;padding:{{ f.lockTop }}px {{ f.m }}px 24px;box-sizing:border-box;gap:28px">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px"><div style="font-size:64px;line-height:1;font-weight:500;letter-spacing:-1px;color:#F2EEE9">21:40</div><div style="font-size:16px;color:#A09890">{{ f.lockDate }}</div></div>
+            <div style="width:100%;max-width:{{ f.col }}px;box-sizing:border-box;padding:14px 16px;border-radius:{{ f.lockRad }}px;background:rgba(58,54,51,0.82);border:1px solid rgba(242,238,233,0.12);display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#A09890"><span>BA</span><span>{{ f.lockWhen }}</span></div>
+              <div style="font-size:16px;line-height:1.3;font-weight:600;color:#F2EEE9;text-wrap:pretty">{{ f.lockTitle }}</div>
+              <div style="font-size:14px;line-height:1.43;color:#C9C2BA;text-wrap:pretty">{{ f.lockBody }}</div>
+              <sc-if value="{{ f.lockAct }}" hint-placeholder-val="{{ false }}"><div style="margin-top:6px;border-top:1px solid rgba(242,238,233,0.12);min-height:44px;display:flex;align-items:center;font-size:14px;font-weight:500;color:#F2EEE9">{{ f.lockAct }}</div></sc-if>
+            </div>
+            <div style="font-size:14px;line-height:1.43;color:#8A837B;text-align:center;max-width:{{ f.col }}px;text-wrap:pretty">{{ f.lockNote }}</div>
+          </div></sc-if>
+          <sc-if value="{{ f.sheet }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background:rgba(8,7,6,0.62)"></div></sc-if>
+          <div style="{{ f.panelStyle }}">
+            <div style="flex:1;min-height:0;overflow-y:auto;scrollbar-width:none;display:flex;flex-direction:column;justify-content:{{ f.justify }};padding:{{ f.padTop }}px {{ f.m }}px 12px">
+              <div style="width:100%;max-width:{{ f.col }}px;margin:0 auto;display:flex;flex-direction:column;gap:18px">
+                <sc-for list="{{ f.blocks }}" as="b" hint-placeholder-count="4">
+                  <div>
+                    <sc-if value="{{ b.isH }}" hint-placeholder-val="{{ false }}"><div style="font-size:calc({{ b.size }}px * var(--ts, 1));line-height:1.25;font-weight:600;letter-spacing:-0.26px;text-wrap:pretty;overflow-wrap:anywhere">{{ b.t }}</div></sc-if>
+                    <sc-if value="{{ b.isP }}" hint-placeholder-val="{{ false }}"><div style="font-size:calc({{ b.size }}px * var(--ts, 1));line-height:1.5;color:{{ b.c }};text-wrap:pretty">{{ b.t }}</div></sc-if>
+                    <sc-if value="{{ b.isMark }}" hint-placeholder-val="{{ false }}"><div style="font-family:'IBM Plex Mono',monospace;font-size:calc(12px * min(var(--ts, 1), 1.6));letter-spacing:0.06em;text-transform:uppercase;color:#8A837B;line-height:1.3">{{ b.t }}</div></sc-if>
+                    <sc-if value="{{ b.isField }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;flex-direction:column;gap:8px">
+                        <div style="font-family:'IBM Plex Mono',monospace;font-size:calc(12px * min(var(--ts, 1), 1.6));letter-spacing:0.06em;text-transform:uppercase;color:#8A837B">{{ b.label }}</div>
+                        <div style="min-height:{{ b.minH }}px;box-sizing:border-box;padding:{{ b.padV }}px 0;display:flex;align-items:{{ b.alignI }};gap:12px;border-bottom:2px {{ b.lineS }} {{ b.lineC }};font-size:calc(20px * var(--ts, 1));letter-spacing:0.01em;flex-wrap:wrap;overflow-wrap:anywhere"><span style="color:#A09890">{{ b.pre }}</span><span style="color:{{ b.vc }}">{{ b.value }}</span></div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ b.isCode }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;gap:8px">
+                        <sc-for list="{{ b.cells }}" as="c" hint-placeholder-count="6"><div style="flex:1 1 0;min-width:0;height:56px;box-sizing:border-box;border-radius:16px;border:{{ c.bd }};display:flex;align-items:center;justify-content:center;font-size:22px;color:#F2EEE9">{{ c.t }}</div></sc-for>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ b.isErr }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;align-items:flex-start;gap:10px">
+                        <div style="flex:none;width:22px;height:22px;box-sizing:border-box;border-radius:999px;border:2px solid #E4705B;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#E4705B;line-height:1;margin-top:1px">!</div>
+                        <div style="font-size:calc(16px * var(--ts, 1));line-height:1.4;color:#E4705B;text-wrap:pretty">{{ b.t }}</div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ b.isLink }}" hint-placeholder-val="{{ false }}"><div style="min-height:48px;box-sizing:border-box;padding:8px 0;border-top:1px solid rgba(242,238,233,0.12);display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:calc(16px * var(--ts, 1));line-height:1.3"><span>{{ b.t }}</span><span style="color:#A09890">›</span></div></sc-if>
+                    <sc-if value="{{ b.isTxtAct }}" hint-placeholder-val="{{ false }}"><div style="min-height:44px;display:flex;align-items:center;font-size:calc(14px * var(--ts, 1));line-height:1.3;color:{{ b.c }}">{{ b.t }}</div></sc-if>
+                    <sc-if value="{{ b.isTag }}" hint-placeholder-val="{{ false }}"><div style="display:block;width:fit-content;max-width:min(100%,26em);box-sizing:border-box;padding:8px 14px;border-radius:16px;border:1px dashed rgba(217,207,168,0.42);text-wrap:pretty;font-family:'IBM Plex Mono',monospace;font-size:calc(12px * min(var(--ts, 1), 1.6));letter-spacing:0.06em;text-transform:uppercase;color:#D9CFA8;line-height:1.3">{{ b.t }}</div></sc-if>
+                    <sc-if value="{{ b.isHead }}" hint-placeholder-val="{{ false }}"><div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap"><div style="font-size:calc(22px * var(--ts, 1));line-height:1.2;font-weight:600;letter-spacing:-0.26px">{{ b.t }}</div><div style="font-family:'IBM Plex Mono',monospace;font-size:calc(12px * min(var(--ts, 1), 1.6));letter-spacing:0.06em;text-transform:uppercase;color:#8A837B">{{ b.mark }}</div></div></sc-if>
+                    <sc-if value="{{ b.isDen }}" hint-placeholder-val="{{ false }}">
+                      <div style="padding:14px 0;border-top:1px solid rgba(242,238,233,0.10);display:flex;flex-direction:column;gap:8px">
+                        <div style="font-size:calc(18px * var(--ts, 1));line-height:1.3;font-weight:600;letter-spacing:-0.18px;text-wrap:pretty">{{ b.t }}</div>
+                        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                          <div style="display:flex;gap:4px"><sc-for list="{{ b.blobs }}" as="o" hint-placeholder-count="2"><div style="width:22px;height:22px;border-radius:{{ o.br }};background:{{ o.bg }}"></div></sc-for></div>
+                          <div style="font-family:'IBM Plex Mono',monospace;font-size:calc(12px * min(var(--ts, 1), 1.6));letter-spacing:0.06em;text-transform:uppercase;color:#8A837B;line-height:1.4">{{ b.info }}</div>
+                        </div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ b.isCh }}" hint-placeholder-val="{{ false }}">
+                      <div style="min-height:56px;box-sizing:border-box;padding:14px 16px;border-radius:16px;border:{{ b.bd }};display:flex;align-items:flex-start;gap:14px">
+                        <div style="flex:none;width:22px;height:22px;box-sizing:border-box;border-radius:999px;border:2px solid {{ b.rc }};display:flex;align-items:center;justify-content:center;margin-top:1px"><div style="width:10px;height:10px;border-radius:999px;background:{{ b.dot }}"></div></div>
+                        <div style="display:flex;flex-direction:column;gap:4px;min-width:0"><div style="font-size:calc(16px * var(--ts, 1));line-height:1.3;font-weight:600">{{ b.t }}</div><div style="font-size:calc(14px * var(--ts, 1));line-height:1.43;color:#A09890;text-wrap:pretty">{{ b.sub }}</div></div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ b.isChips }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ b.chips }}" as="c" hint-placeholder-count="4"><div style="min-height:48px;box-sizing:border-box;padding:6px 18px;border-radius:999px;border:{{ c.bd }};display:flex;align-items:center;gap:8px;font-size:calc(16px * var(--ts, 1));line-height:1.2;color:#F2EEE9"><span style="display:{{ c.ck }}">✓</span><span>{{ c.t }}</span></div></sc-for></div>
+                    </sc-if>
+                    <sc-if value="{{ b.isAgg }}" hint-placeholder-val="{{ false }}">
+                      <div style="min-height:48px;box-sizing:border-box;padding:10px 14px;border:1px dashed rgba(242,238,233,0.28);border-radius:16px;display:flex;flex-direction:column;gap:4px;justify-content:center"><div style="font-size:calc(16px * var(--ts, 1));line-height:1.3">{{ b.t }}</div><div style="font-family:'IBM Plex Mono',monospace;font-size:calc(12px * min(var(--ts, 1), 1.6));letter-spacing:0.06em;text-transform:uppercase;color:#8A837B;line-height:1.3">{{ b.sub }}</div></div>
+                    </sc-if>
+                    <sc-if value="{{ b.isPer }}" hint-placeholder-val="{{ false }}">
+                      <div style="min-height:56px;box-sizing:border-box;padding:10px 0;border-top:1px solid rgba(242,238,233,0.12);display:flex;align-items:center;gap:12px"><div style="flex:none;width:32px;height:32px;border-radius:{{ b.br }};background:{{ b.bg }}"></div><div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><div style="font-size:calc(16px * var(--ts, 1));line-height:1.3;overflow-wrap:anywhere">{{ b.t }}</div><div style="font-size:calc(14px * var(--ts, 1));line-height:1.43;color:#A09890;overflow-wrap:anywhere">{{ b.sub }}</div></div><div style="flex:none;font-size:calc(14px * var(--ts, 1));line-height:1.3;color:#F2EEE9">{{ b.v }}</div></div>
+                    </sc-if>
+                    <sc-if value="{{ b.isSw }}" hint-placeholder-val="{{ false }}">
+                      <div style="min-height:56px;box-sizing:border-box;padding:10px 0;border-top:1px dashed rgba(242,238,233,0.22);display:flex;align-items:center;justify-content:space-between;gap:12px"><div style="display:flex;flex-direction:column;gap:2px;min-width:0"><div style="font-family:'IBM Plex Mono',monospace;font-size:calc(12px * min(var(--ts, 1), 1.6));letter-spacing:0.06em;text-transform:uppercase;color:#8A837B">{{ b.label }}</div><div style="font-size:calc(16px * var(--ts, 1));line-height:1.3;color:#8A837B">{{ b.t }}</div><div style="font-size:calc(14px * var(--ts, 1));line-height:1.43;color:#8A837B;text-wrap:pretty">{{ b.sub }}</div></div><div style="flex:none;width:44px;height:26px;box-sizing:border-box;border-radius:999px;border:1px dashed rgba(242,238,233,0.32);display:flex;align-items:center;padding:0 4px"><div style="width:16px;height:16px;box-sizing:border-box;border-radius:999px;border:1px solid rgba(242,238,233,0.32)"></div></div></div>
+                    </sc-if>
+                    <sc-if value="{{ b.isTog }}" hint-placeholder-val="{{ false }}">
+                      <div style="min-height:56px;box-sizing:border-box;padding:12px 0;border-top:1px solid rgba(242,238,233,0.12);display:flex;align-items:flex-start;justify-content:space-between;gap:14px"><div style="display:flex;flex-direction:column;gap:4px;min-width:0"><div style="font-size:calc(16px * var(--ts, 1));line-height:1.3;font-weight:600;overflow-wrap:anywhere">{{ b.t }}</div><div style="font-size:calc(14px * var(--ts, 1));line-height:1.43;color:#A09890;text-wrap:pretty">{{ b.sub }}</div></div><div style="flex:none;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:44px;height:26px;box-sizing:border-box;border-radius:999px;border:{{ b.tbd }};background:{{ b.tbg }};display:flex;align-items:center;justify-content:{{ b.tjc }};padding:0 4px"><div style="width:16px;height:16px;box-sizing:border-box;border-radius:999px;background:{{ b.tdot }}"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:{{ b.tc }}">{{ b.tw }}</div></div></div>
+                    </sc-if>
+                    <sc-if value="{{ b.isAct }}" hint-placeholder-val="{{ false }}">
+                      <div style="min-height:56px;box-sizing:border-box;padding:10px 0;border-top:1px solid rgba(242,238,233,0.12);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap"><div style="display:flex;flex-direction:column;gap:2px;min-width:0"><div style="font-size:calc(16px * var(--ts, 1));line-height:1.3;overflow-wrap:anywhere">{{ b.t }}</div><div style="font-size:calc(14px * var(--ts, 1));line-height:1.43;color:#A09890;text-wrap:pretty">{{ b.sub }}</div></div><div style="flex:0 1 auto;max-width:100%;min-height:44px;box-sizing:border-box;padding:8px 16px;border-radius:24px;border:1px solid rgba(242,238,233,0.14);display:flex;align-items:center;font-size:calc(14px * var(--ts, 1));line-height:1.2;color:#F2EEE9;overflow-wrap:anywhere;text-align:center">{{ b.v }}</div></div>
+                    </sc-if>
+                    <sc-if value="{{ b.isPerA }}" hint-placeholder-val="{{ false }}">
+                      <div style="min-height:56px;box-sizing:border-box;padding:8px 0;border-top:1px solid rgba(242,238,233,0.12);display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px"><div style="flex:none;width:32px;height:32px;border-radius:{{ b.br }};background:{{ b.bg }}"></div><div style="flex:1 1 7em;min-width:0;display:flex;flex-direction:column;gap:2px"><div style="font-size:calc(16px * var(--ts, 1));line-height:1.3">{{ b.t }}</div><div style="font-size:calc(14px * var(--ts, 1));line-height:1.43;color:#A09890">{{ b.sub }}</div></div><div style="flex:0 0 auto;min-height:44px;box-sizing:border-box;padding:8px 16px;border-radius:24px;border:1px solid {{ b.aBd }};display:flex;align-items:center;justify-content:center;text-align:center;font-size:calc(14px * var(--ts, 1));line-height:1.2;color:{{ b.aC }};word-break:keep-all;overflow-wrap:normal;hyphens:none">{{ b.act }}</div></div>
+                    </sc-if>
+                    <sc-if value="{{ b.isPerS }}" hint-placeholder-val="{{ false }}">
+                      <div style="min-height:56px;box-sizing:border-box;padding:8px 0;border-top:1px solid rgba(242,238,233,0.12);display:flex;align-items:center;gap:12px"><div style="flex:none;width:32px;height:32px;border-radius:{{ b.br }};background:{{ b.bg }}"></div><div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><div style="font-size:calc(16px * var(--ts, 1));line-height:1.3">{{ b.t }}</div><div style="font-size:calc(14px * var(--ts, 1));line-height:1.43;color:#A09890">{{ b.sub }}</div></div><div style="flex:none;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:44px;height:26px;box-sizing:border-box;border-radius:999px;border:{{ b.tbd }};background:{{ b.tbg }};display:flex;align-items:center;justify-content:{{ b.tjc }};padding:0 4px"><div style="width:16px;height:16px;box-sizing:border-box;border-radius:999px;background:{{ b.tdot }}"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:{{ b.tc }}">{{ b.tw }}</div></div></div>
+                    </sc-if>
+                    <sc-if value="{{ b.isRow }}" hint-placeholder-val="{{ false }}">
+                      <div style="min-height:48px;box-sizing:border-box;padding:10px 0;border-top:1px solid rgba(242,238,233,0.12);display:flex;flex-direction:column;justify-content:center;gap:4px"><div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:calc(16px * var(--ts, 1));line-height:1.3;color:{{ b.c }}"><span style="overflow-wrap:anywhere">{{ b.t }}</span><span style="color:#A09890">{{ b.v }}</span></div><div style="font-size:calc(14px * var(--ts, 1));line-height:1.43;color:#A09890;text-wrap:pretty">{{ b.sub }}</div></div>
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="flex:none;padding:12px {{ f.m }}px 24px">
+              <div style="width:100%;max-width:{{ f.col }}px;margin:0 auto;display:flex;flex-direction:column;gap:10px">
+                <sc-if value="{{ f.act1 }}" hint-placeholder-val="{{ true }}"><div style="min-height:56px;padding:8px 20px;box-sizing:border-box;border-radius:999px;background:{{ f.pBg }};border:1px solid {{ f.pBd }};display:flex;align-items:center;justify-content:center;text-align:center;font-size:calc(16px * var(--ts, 1));line-height:1.3;font-weight:500;color:{{ f.pC }};text-wrap:pretty">{{ f.act1T }}</div></sc-if>
+                <sc-if value="{{ f.act2 }}" hint-placeholder-val="{{ false }}"><div style="min-height:48px;padding:6px 14px;box-sizing:border-box;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;text-align:center;font-size:calc(14px * var(--ts, 1));line-height:1.3;color:#A09890">{{ f.act2T }}</div></sc-if>
+                <sc-if value="{{ f.slot }}" hint-placeholder-val="{{ false }}"><div style="min-height:48px;box-sizing:border-box;padding:8px 14px;border:1px dashed rgba(242,238,233,0.22);border-radius:999px;display:flex;align-items:center;justify-content:center;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:calc(12px * min(var(--ts, 1), 1.6));letter-spacing:0.06em;text-transform:uppercase;color:#8A837B;line-height:1.3">{{ f.slotT }}</div></sc-if>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-for>
+</section>
+</sc-for>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;lingua&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;it&quot;,&quot;de&quot;],&quot;default&quot;:&quot;it&quot;,&quot;tsType&quot;:&quot;'it'|'de'&quot;},&quot;testo&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:1,&quot;max&quot;:2,&quot;step&quot;:0.1,&quot;default&quot;:1,&quot;tsType&quot;:&quot;number&quot;},&quot;scorri&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;inizio&quot;,&quot;fine&quot;],&quot;default&quot;:&quot;inizio&quot;,&quot;tsType&quot;:&quot;'inizio'|'fine'&quot;},&quot;segniIpotesi&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const de = this.props.lingua === 'de';
+    const ts = Math.min(2, Math.max(1, Number(this.props.testo ?? 1)));
+    const ip = this.props.segniIpotesi !== false;
+    const fine = this.props.scorri === 'fine';
+    const t = (a, b) => (de ? b : a);
+    const C1 = '#A09890', C0 = '#F2EEE9';
+    const H = (s, size = 22) => ({ isH: true, t: s, size });
+    const P = (s, c = C1, size = 16) => ({ isP: true, t: s, c, size });
+    const MK = s => ({ isMark: true, t: s });
+    const TAG = s => ({ isTag: true, t: s });
+    const TOG = (tt, sub, on) => ({ isTog: true, t: tt, sub, tbd: on ? '2px solid #D9CFA8' : '1px solid rgba(242,238,233,0.32)', tbg: on ? 'rgba(217,207,168,0.16)' : 'transparent', tjc: on ? 'flex-end' : 'flex-start', tdot: on ? '#D9CFA8' : 'rgba(242,238,233,0.5)', tw: on ? t('Acceso', 'An') : t('Spento', 'Aus'), tc: on ? '#D9CFA8' : '#8A837B' });
+    const ROW = (tt, sub, v = '', c = C0) => ({ isAct: false, isRow: true, t: tt, sub, v, c });
+    const ACT = (tt, sub, v) => ({ isAct: true, t: tt, sub, v });
+    const TAGIP = s => (ip ? [TAG(s)] : []);
+    const BP = [['57% 43% 48% 52% / 46% 54% 50% 50%', '#A83E2E', '#6E251C'], ['45% 55% 56% 44% / 53% 47% 52% 48%', '#23735A', '#14473A'], ['52% 48% 43% 57% / 49% 51% 46% 54%', '#2A6894', '#1B4463'], ['47% 53% 58% 42% / 55% 45% 42% 58%', '#96621A', '#5F3C0B']];
+    const PA = (nm, sub, i, act, done) => ({ isPerA: true, t: nm, sub, br: BP[i % 4][0], bg: 'linear-gradient(155deg,' + BP[i % 4][1] + ' 0%,' + BP[i % 4][2] + ' 100%)', act, aBd: done ? 'transparent' : 'rgba(242,238,233,0.14)', aC: done ? '#A09890' : '#F2EEE9' });
+    const PS = (nm, sub, i, on) => ({ isPerS: true, t: nm, sub, br: BP[i % 4][0], bg: 'linear-gradient(155deg,' + BP[i % 4][1] + ' 0%,' + BP[i % 4][2] + ' 100%)', tbd: on ? '2px solid #D9CFA8' : '1px solid rgba(242,238,233,0.32)', tbg: on ? 'rgba(217,207,168,0.16)' : 'transparent', tjc: on ? 'flex-end' : 'flex-start', tdot: on ? '#D9CFA8' : 'rgba(242,238,233,0.5)', tw: on ? t('Acceso', 'An') : t('Spento', 'Aus'), tc: on ? '#D9CFA8' : '#8A837B' });
+    const FLD = (label, value, o = {}) => ({ isField: true, label, value, pre: '', vc: o.empty ? '#8A837B' : C0, minH: 56, padV: 0, alignI: 'center', lineS: 'solid', lineC: o.err ? '#E4705B' : '#D9CFA8' });
+    const ERR = s => ({ isErr: true, t: s });
+    const CH = (tt, sub, sel) => ({ isCh: true, t: tt, sub, bd: sel ? '2px solid #D9CFA8' : '1px solid rgba(242,238,233,0.14)', rc: sel ? '#D9CFA8' : 'rgba(242,238,233,0.32)', dot: sel ? '#D9CFA8' : 'transparent' });
+    const tIp = {
+      act: t("ipotesi · il nome dell'azione è «Aggiungi»; l'aggiunta è privata, l'altra persona non riceve un avviso", "Annahme · die Aktion heißt «Hinzufügen»; das Hinzufügen ist privat, die andere Person wird nicht benachrichtigt"),
+      alias: t("ipotesi · i nickname uguali si distinguono con un alias unico", "Annahme · gleiche Nicknames unterscheiden sich durch einen eindeutigen Alias"),
+      rub: t("ipotesi · compare solo chi ha scelto di essere trovato per numero", "Annahme · es erscheint nur, wer per Nummer gefunden werden will"),
+      vis: t("ipotesi · valore di partenza «Chi conosco»", "Annahme · Startwert «Wer mich kennt»"),
+      inv: t("ipotesi · si può creare il DEN senza invitati e invitare dopo", "Annahme · der DEN kann ohne Eingeladene erstellt und später eingeladen werden"),
+      scad: t("ipotesi · l'invito scade dopo 7 giorni", "Annahme · die Einladung läuft nach 7 Tagen ab"),
+      pag: t("ipotesi · pagina web d'arrivo, fuori dall'app", "Annahme · Web-Landingpage außerhalb der App"),
+      ric: t("ipotesi · il richiamo parte spento, un consenso per persona, solo DEN pubblici", "Annahme · der Rückruf startet aus, eine Einwilligung pro Person, nur öffentliche DEN")
+    };
+    const den = 'Cena senza fretta';
+    const cont = t('Continua', 'Weiter'), nonOra = t('Non ora', 'Nicht jetzt'), chiudi = t('Chiudi', 'Schließen'), agg = t('Aggiungi', 'Hinzufügen'), inv = t('Invita', 'Einladen');
+    const cerca = t('Cerca', 'Suchen'), cercaPh = t('Nickname, alias, email o numero', 'Nickname, Alias, E-Mail oder Nummer'), link = t('Invita con un link', 'Per Link einladen'), ok = t('Ho capito', 'Verstanden');
+    const nel = t("✓ Nell'invito", '✓ In der Einladung'), fatto = t('✓ Aggiunta', '✓ Hinzugefügt');
+    const sub1 = (i) => ['@marta.v', '@davide.k', '@luca.r', '@sara.m'][i];
+    const pb = { backdrop: true, bdN: 0, bdTitle: 'DEN', bdS1: t('sei ascoltatore', 'du hörst zu'), bdP: t('Crea un DEN', 'DEN erstellen'), bdLine: true, sheet: true };
+    const S = [];
+    const add = (g, id, num, name, note, o) => S.push({ g, id, num, name, note, ...o });
+
+    add('pers', 'persone-suggeriti', 'P1', t("Aggiungi persone · suggeriti", "Personen hinzufügen · Vorschläge"), "Il «+» apre una superficie con un campo che filtra (nickname, alias, email, numero) e, sotto, chi hai frequentato di più. Una riga per persona: sagoma, nickname, alias e l'azione. Nessuna riga dice se la persona è online o in un DEN. Il nome dell'azione, «Aggiungi», è una proposta.",
+      { blocks: [H(t('Aggiungi persone', 'Personen hinzufügen'), 28), FLD(cerca, cercaPh, { empty: true }), MK(t('Chi hai frequentato di più', 'Mit wem du am meisten Zeit verbracht hast')), PA('Marta', sub1(0), 0, agg), PA('Davide', sub1(1), 1, agg), PA('Luca', sub1(2), 2, agg), ...TAGIP(tIp.act)], a2: chiudi });
+    add('pers', 'persone-ricerca', 'P2', t("Ricerca · due nickname uguali", "Suche · zwei gleiche Nicknames"), "I nickname possono ripetersi (D-052): sotto il nickname c'è un alias unico, che distingue le due Sara. L'alias è una proposta.",
+      { blocks: [H(t('Aggiungi persone', 'Personen hinzufügen'), 28), FLD(cerca, 'sar'), MK(t('2 risultati', '2 Ergebnisse')), PA('Sara', sub1(3), 3, agg), PA('Sara', '@sara.rossi', 0, agg), P(t("Due persone si chiamano Sara: l'alias le distingue.", 'Zwei Personen heißen Sara: der Alias unterscheidet sie.'), C1, 14), ...TAGIP(tIp.alias)], a2: chiudi });
+    add('pers', 'persone-nessun-suggerito', 'P3', t("Nessun suggerito", "Keine Vorschläge"), "All'inizio la lista dei suggeriti è vuota: una frase dice quando si riempie. L'unica azione è l'invito con un link.",
+      { blocks: [H(t('Aggiungi persone', 'Personen hinzufügen'), 28), FLD(cerca, cercaPh, { empty: true }), P(t('Le persone con cui parli di più compariranno qui.', 'Die Personen, mit denen du am meisten sprichst, erscheinen hier.'))], a1: link, a1Line: true, a2: chiudi });
+    add('pers', 'persone-nessun-risultato', 'P4', t("Nessun risultato", "Kein Ergebnis"), "Nessuna persona trovata: la frase dice cosa si può fare. Chi non ha BA può entrare ad ascoltare con un link (D-041).",
+      { blocks: [H(t('Aggiungi persone', 'Personen hinzufügen'), 28), FLD(cerca, 'xyzq'), P(t('Nessuna persona trovata per «xyzq».', 'Keine Person für «xyzq» gefunden.')), P(t('Se non ha BA, puoi invitarla con un link: entrerà ad ascoltare.', 'Wenn sie BA nicht hat, kannst du sie per Link einladen: sie hört dann zu.'), C0)], a1: link, a1Line: true, a2: chiudi });
+    add('pers', 'persone-aggiunta', 'P5', t("Persona aggiunta", "Person hinzugefügt"), "Dopo il tocco la riga diventa un fatto: «✓ Aggiunta», senza contorno. L'altra persona non riceve un avviso (ipotesi): niente indica se è online.",
+      { blocks: [H(t('Aggiungi persone', 'Personen hinzufügen'), 28), FLD(cerca, cercaPh, { empty: true }), MK(t('Chi hai frequentato di più', 'Mit wem du am meisten Zeit verbracht hast')), PA('Marta', sub1(0), 0, fatto, true), PA('Davide', sub1(1), 1, agg), PA('Luca', sub1(2), 2, agg), ...TAGIP(tIp.act)], a2: chiudi });
+    add('pers', 'persone-errore', 'P6', t("Errore di rete", "Netzwerkfehler"), "Il segno «!» e la frase dicono lo stato, mai il solo colore. L'azione riprova.",
+      { blocks: [H(t('Aggiungi persone', 'Personen hinzufügen'), 28), FLD(cerca, 'sar', { err: true }), ERR(t('Non riusciamo a cercare adesso. Controlla la connessione e riprova.', 'Wir können gerade nicht suchen. Prüfe die Verbindung und versuche es noch einmal.'))], a1: t('Riprova', 'Noch einmal versuchen'), a1Line: true, a2: chiudi });
+
+    add('rub', 'rubrica-permesso', 'R1', t("Rubrica · richiesta del permesso", "Kontakte · Berechtigung"), "Il foglio prima del permesso del sistema: titolo, una frase sul perché e due azioni. Il rifiuto è una scelta normale, senza colpa: «Non ora» è alla pari.",
+      { blocks: [H(t('Trovare chi conosci', 'Finde, wen du kennst'), 28), P(t('BA può leggere la rubrica per mostrarti chi c\'è già su BA. Si usa solo per questo.', 'BA kann deine Kontakte lesen, um dir zu zeigen, wer schon bei BA ist. Sie werden nur dafür verwendet.')), P(t('Puoi cambiare idea quando vuoi, dalle impostazioni del telefono.', 'Du kannst es jederzeit in den Telefoneinstellungen ändern.'), C1, 14)], a1: t("Consenti l'accesso", 'Zugriff erlauben'), a1Line: true, a2: nonOra });
+    add('rub', 'rubrica-rifiutata', 'R2', t("Rubrica · dopo il rifiuto", "Kontakte · nach der Ablehnung"), "Dopo «Non ora» o dopo il no del sistema: nessuna colpa e nessun invito a ripensarci. La frase dice cosa si può fare lo stesso.",
+      { blocks: [H(t('Rubrica non collegata', 'Kontakte nicht verbunden'), 28), P(t('Va bene così. Puoi cercare le persone per nickname, alias, email o numero.', 'Das ist in Ordnung. Du kannst Personen per Nickname, Alias, E-Mail oder Nummer suchen.')), P(t('Se cambi idea, lo trovi nelle impostazioni del telefono.', 'Wenn du es dir anders überlegst, findest du es in den Telefoneinstellungen.'), C1, 14)], a1: t('Cerca una persona', 'Person suchen'), a1Line: true });
+    add('rub', 'rubrica-lista', 'R3', t("Dalla rubrica", "Aus den Kontakten"), "Con il permesso: chi c'è già su BA e chi no. Compare solo chi ha scelto di essere trovato per numero («Chi può trovarmi»). Per chi non c'è, l'azione è l'invito.",
+      { blocks: [H(t('Dalla rubrica', 'Aus den Kontakten'), 28), MK(t('Su BA', 'Bei BA')), PA('Marta', sub1(0), 0, agg), PA('Davide', sub1(1), 1, agg), MK(t('Non ancora su BA', 'Noch nicht bei BA')), PA('Giulia', t('dalla tua rubrica', 'aus deinen Kontakten'), 2, inv), ...TAGIP(tIp.rub)], a2: chiudi });
+
+    add('vis', 'trovarmi-riga', 'V1', t("Impostazioni · «Chi può trovarmi»", "Einstellungen · «Wer mich finden kann»"), "Una riga in più, con la scelta attuale e una frase sulla conseguenza. Il valore di partenza proposto è «Chi conosco».",
+      { blocks: [H(t('Impostazioni', 'Einstellungen'), 28), ROW(t('Lingua', 'Sprache'), '', t('Italiano', 'Deutsch')), ROW(t('Chi può trovarmi', 'Wer mich finden kann'), t('Ti trovano le persone che hai aggiunto e quelle che hanno il tuo numero o la tua email.', 'Dich finden Personen, die du hinzugefügt hast, und Personen, die deine Nummer oder E-Mail haben.'), t('Chi conosco', 'Wer mich kennt')), ROW(t('Persone bloccate', 'Blockierte Personen'), '', t('3 persone', '3 Personen')), ...TAGIP(tIp.vis)] });
+    add('vis', 'trovarmi-scelta', 'V2', t("Chi può trovarmi · scelta", "Wer mich finden kann · Auswahl"), "Tre scelte, ciascuna con la sua conseguenza scritta. Quella scelta ha bordo spesso e cerchio pieno, non solo il colore. «Tutti» mostra solo nickname e alias: il profilo «pubblico» è di un altro task.",
+      { blocks: [H(t('Chi può trovarmi', 'Wer mich finden kann'), 28), CH(t('Nessuno', 'Niemand'), t('Nessuno ti trova. Chi vuole invitarti non può farlo; tu puoi ancora cercare e invitare.', 'Niemand findet dich. Wer dich einladen will, kann es nicht; du kannst weiterhin suchen und einladen.'), false), CH(t('Chi conosco', 'Wer mich kennt'), t('Ti trovano le persone che hai aggiunto e quelle che hanno il tuo numero o la tua email.', 'Dich finden Personen, die du hinzugefügt hast, und Personen mit deiner Nummer oder E-Mail.'), true), CH(t('Tutti', 'Alle'), t('Ti trova chiunque cerchi il tuo nickname o il tuo alias. Si vedono solo nickname e alias.', 'Dich findet jede Person, die deinen Nickname oder Alias sucht. Man sieht nur Nickname und Alias.'), false), ...TAGIP(tIp.vis)], a1: t('Salva', 'Speichern'), a1Line: true, a2: nonOra });
+
+    add('sel', 'selettore-vuoto', 'S1', t("Invita · nessuna persona scelta (C4)", "Einladen · niemand ausgewählt (C4)"), "Sostituisce la riga tratteggiata del passo «Invita»: ricerca, le persone aggiunte e, in fondo, l'invito con un link. Con nessuna persona scelta si può continuare e invitare dopo (ipotesi).",
+      { blocks: [H(t('Chi inviti?', 'Wen lädst du ein?'), 28), P(t('Un DEN privato si apre solo a chi inviti.', 'Ein privater DEN öffnet sich nur für die, die du einlädst.')), FLD(cerca, cercaPh, { empty: true }), MK(t('Persone che hai aggiunto', 'Personen, die du hinzugefügt hast')), PA('Marta', sub1(0), 0, inv), PA('Davide', sub1(1), 1, inv), PA('Luca', sub1(2), 2, inv), P(t('Nessuno nell\'invito. Puoi invitare anche dopo.', 'Niemand in der Einladung. Du kannst auch später einladen.'), C1, 14), ...TAGIP(tIp.inv)], a1: cont, a2: nonOra });
+    add('sel', 'selettore-scelti', 'S2', t("Invita · due persone scelte", "Einladen · zwei Personen ausgewählt"), "Lo stato «nell'invito» è una parola con un segno, non solo un colore. Un tocco sulla riga la toglie.",
+      { blocks: [H(t('Chi inviti?', 'Wen lädst du ein?'), 28), FLD(cerca, cercaPh, { empty: true }), MK(t('Persone che hai aggiunto', 'Personen, die du hinzugefügt hast')), PA('Marta', sub1(0), 0, nel, true), PA('Davide', sub1(1), 1, nel, true), PA('Luca', sub1(2), 2, inv), P(t('2 persone nell\'invito.', '2 Personen in der Einladung.'), C0)], a1: cont, a2: nonOra });
+    add('sel', 'selettore-coamm', 'S3', t("Co-amministratore · lo stesso selettore (G2)", "Co-Administrator:in · derselbe Selektor (G2)"), "Lo stesso selettore del passo «Invita», con un limite scritto e l'azione inattiva finché non si sceglie. «Scegli» sostituisce «Invita».",
+      { blocks: [H(t('Co-amministratori', 'Co-Administrator:innen'), 28), P(t('Puoi averne uno. Sceglilo fra le persone che hai aggiunto.', 'Du kannst eine:n haben. Wähle unter den Personen, die du hinzugefügt hast.')), FLD(cerca, cercaPh, { empty: true }), PA('Davide', sub1(1), 1, t('Scegli', 'Wählen')), PA('Luca', sub1(2), 2, t('Scegli', 'Wählen')), PA('Marta', sub1(0), 0, t('Scegli', 'Wählen'))], a1: t('Aggiungi un co-amministratore', 'Co-Administrator:in hinzufügen'), a1Line: true, inatt: true, a2: chiudi });
+
+    add('inv', 'invito-lock', 'I1', t("Invito · notifica a schermo bloccato", "Einladung · Benachrichtigung bei gesperrtem Bildschirm"), "Per chi ha BA. Dice chi invita e a cosa, senza dire se quella persona è dentro il DEN. Nessuna azione (D-025 vale anche qui): toccarla apre l'invito.",
+      { lock: true, lockRad: 24, lockWhen: t('adesso', 'jetzt'), lockTitle: den, lockBody: t('Marta ti ha invitato.', 'Marta hat dich eingeladen.'), lockNote: t("Toccala per aprire l'invito.", 'Tippe darauf, um die Einladung zu öffnen.'), blocks: [], panelOff: true });
+    add('inv', 'invito-foglio', 'I2', t("Invito · nell'app", "Einladung · in der App"), "Il foglio «Marta ti ha invitato a… · Entra · Non ora». Si entra sempre fra il pubblico (D-006), anche per chi è ascoltatore (D-041). «Non ora» chiude senza conseguenze.",
+      { ...pb, blocks: [H(t('Marta ti ha invitato a ' + den, 'Marta hat dich zu ' + den + ' eingeladen'), 20), P(t('Entri ad ascoltare.', 'Du hörst zu.'))], a1: t('Entra', 'Eintreten'), a2: nonOra });
+    add('inv', 'invito-scaduto', 'I3', t("Invito scaduto", "Einladung abgelaufen"), "L'invito non vale più: una frase dice cosa fare, senza colpa.",
+      { blocks: [H(t('Questo invito è scaduto', 'Diese Einladung ist abgelaufen'), 28), P(t('Chiedi a Marta di invitarti di nuovo.', 'Bitte Marta, dich noch einmal einzuladen.')), ...TAGIP(tIp.scad)], a1: ok });
+    add('inv', 'invito-annullato', 'I3 bis', t("Invito annullato", "Einladung zurückgezogen"), "Non dice chi lo ha annullato né perché.",
+      { blocks: [H(t('Questo invito non è più valido', 'Diese Einladung ist nicht mehr gültig'), 28), P(t('Chi lo ha mandato lo ha annullato.', 'Wer sie gesendet hat, hat sie zurückgezogen.'))], a1: ok });
+    add('inv', 'invito-mail', 'I4', t("Chi non ha BA · la mail", "Ohne BA · die E-Mail"), "La mail d'invito: chi invita, il DEN, e un solo pulsante. Chi riceve non è ancora un utente: la mail non dice se Marta è nel DEN.",
+      { blocks: [MK(t('Email · da BA', 'E-Mail · von BA')), H(t('Marta ti ha invitato a ' + den, 'Marta hat dich zu ' + den + ' eingeladen'), 20), P(t('BA è un posto dove si parla dal vivo. Per entrare ad ascoltare ti basta questa email.', 'BA ist ein Ort, an dem man live spricht. Zum Zuhören genügt diese E-Mail.'))], a1: t("Apri l'invito", 'Einladung öffnen') });
+    add('inv', 'invito-pagina', 'I5', t("Chi non ha BA · pagina di arrivo", "Ohne BA · Landingpage"), "La pagina web a cui porta la mail o il link. Un'azione: continuare con la email. Il resto è l'accesso del 013 (A1 email, A2 codice, A3 onboarding, A4 termini con i 18 anni, A5 nickname) e poi l'ingresso diretto nel DEN (I6), senza passare dall'elenco.",
+      { blocks: [MK(t("Pagina web · fuori dall'app", 'Webseite · außerhalb der App')), H(t('Marta ti ha invitato a ' + den, 'Marta hat dich zu ' + den + ' eingeladen'), 20), P(t('Per entrare crei un account da ascoltatore con la tua email. Non serve altro.', 'Zum Eintreten erstellst du ein Zuhörer-Konto mit deiner E-Mail. Mehr braucht es nicht.')), P(t('Per parlare, ti chiederemo il numero e il consenso quando vorrai salire sul palco.', 'Zum Sprechen fragen wir dich nach Nummer und Einwilligung, wenn du auf die Bühne willst.'), C1, 14), ...TAGIP(tIp.pag)], a1: t('Continua con la email', 'Weiter mit der E-Mail') });
+    add('inv', 'invito-ingresso', 'I6', t("Ingresso diretto come ascoltatore", "Direkter Eintritt als Zuhörer:in"), "Dopo l'accesso del 013 si entra nel DEN dell'invito, fra il pubblico e senza passare dall'elenco (D-041). Per parlare c'è il percorso del 013 (P1–P4), con il filetto.",
+      { backdrop: true, bdTitle: den, bdN: 3, bdBar: true, bdS1: t('3 sul palco', '3 auf der Bühne'), bdNote: t('Sei entrato su invito di Marta. Ascolti.', 'Du bist auf Einladung von Marta eingetreten. Du hörst zu.'), bdP: t('Sali sul palco', 'Auf die Bühne'), bdLine: true, blocks: [], panelOff: true });
+
+    add('ric', 'richiamo-spento', 'C1', t("Richiamo · spento (impostazioni)", "Rückruf · aus (Einstellungen)"), "Il richiamo parte spento. La riga lo dice con la parola «Spento» e con una frase che spiega a cosa serve. Nessuno viene avvisato di nulla finché non si accende e non si sceglie una persona.",
+      { blocks: [H(t('Impostazioni', 'Einstellungen'), 28), ROW(t('Lingua', 'Sprache'), '', t('Italiano', 'Deutsch')), TOG(t('Richiamo', 'Rückruf'), t('Un avviso quando una persona che hai scelto entra in un DEN pubblico e ti chiede di passare. Parte spento.', 'Ein Hinweis, wenn eine Person, die du gewählt hast, einem öffentlichen DEN beitritt und dich bittet, nachzukommen. Startet aus.'), false), ...TAGIP(tIp.ric)] });
+    add('ric', 'richiamo-acceso', 'C2', t("Richiamo · acceso, nessuna persona", "Rückruf · an, keine Person"), "Acceso, il richiamo non fa ancora nulla: si sceglie persona per persona. Due righe: chi puoi avvisare e chi può avvisarti. La frase dice il principio.",
+      { blocks: [H(t('Impostazioni', 'Einstellungen'), 28), TOG(t('Richiamo', 'Rückruf'), t('Un avviso quando una persona che hai scelto entra in un DEN pubblico e ti chiede di passare.', 'Ein Hinweis, wenn eine Person, die du gewählt hast, einem öffentlichen DEN beitritt und dich bittet, nachzukommen.'), true), ROW(t('Chi puoi avvisare', 'Wen du benachrichtigen kannst'), t('Persone che avvisi quando entri in un DEN pubblico', 'Personen, die du benachrichtigst, wenn du einem öffentlichen DEN beitrittst'), t('0 persone', '0 Personen')), ROW(t('Chi può avvisarti', 'Wer dich benachrichtigen kann'), t('Persone che hanno scelto di avvisarti', 'Personen, die dich benachrichtigen wollen'), '›'), P(t('Nessuno sa che sei online o in un DEN se non lo scegli tu.', 'Niemand weiß, dass du online oder in einem DEN bist, wenn du es nicht wählst.'), C0), ...TAGIP(tIp.ric)] });
+    add('ric', 'richiamo-chi', 'C3', t("Chi puoi avvisare", "Wen du benachrichtigen kannst"), "Un consenso per persona: ogni riga è spenta, e lo stato è la parola «Spento»/«Acceso», non solo la posizione. Chi non scegli non sa nulla di te.",
+      { blocks: [H(t('Chi puoi avvisare', 'Wen du benachrichtigen kannst'), 28), P(t('Una persona che scegli riceve un avviso quando entri in un DEN pubblico. Chi non scegli non sa nulla di te.', 'Eine Person, die du wählst, bekommt einen Hinweis, wenn du einem öffentlichen DEN beitrittst. Wen du nicht wählst, erfährt nichts über dich.')), PS('Marta', sub1(0), 0, false), PS('Davide', sub1(1), 1, false), PS('Luca', sub1(2), 2, false), ...TAGIP(tIp.ric)] });
+    add('ric', 'richiamo-conferma', 'C4', t("Avvisare una persona · conferma", "Person benachrichtigen · Bestätigung"), "Prima di accendere una persona, un foglio dice cosa vedrà: solo che sei entrato in un DEN pubblico, e solo quando entri. Si toglie quando si vuole.",
+      { ...pb, blocks: [H(t('Avvisare Marta?', 'Marta benachrichtigen?'), 20), P(t('Marta riceve un avviso solo quando entri in un DEN pubblico. Non vede se sei online. Puoi toglierlo quando vuoi.', 'Marta bekommt nur einen Hinweis, wenn du einem öffentlichen DEN beitrittst. Sie sieht nicht, ob du online bist. Du kannst es jederzeit entfernen.'))], a1: t('Avvisa Marta', 'Marta benachrichtigen'), a1Line: true, a2: nonOra });
+    add('ric', 'richiamo-ricevi', 'C5', t("Chi può avvisarti", "Wer dich benachrichtigen kann"), "Solo le persone che hanno scelto di avvisarti; tu scegli se ricevere l'avviso. Non si vede quando sono online. Il richiamo è la notifica del 015 (K7), a schermo bloccato senza azioni.",
+      { blocks: [H(t('Chi può avvisarti', 'Wer dich benachrichtigen kann'), 28), P(t("Solo chi ha scelto di avvisarti. Tu decidi se ricevere l'avviso.", 'Nur wer dich benachrichtigen will. Du entscheidest, ob du den Hinweis bekommst.')), PS('Marta', sub1(0), 0, true), PS('Davide', sub1(1), 1, false), P(t('Non vedi quando queste persone sono online.', 'Du siehst nicht, wann diese Personen online sind.'), C1, 14), ...TAGIP(tIp.ric)] });
+
+    const GR = [
+      { id: 'pers', label: 'Persone', titolo: 'Aggiungere persone', nota: "Il «+», la ricerca, i suggeriti, i nickname uguali, gli stati vuoto, nessun risultato, aggiunta ed errore. Nessuna riga mostra se una persona è online." },
+      { id: 'rub', label: 'Rubrica', titolo: 'La rubrica', nota: "Il permesso, il rifiuto senza colpa e la lista «Dalla rubrica»." },
+      { id: 'vis', label: 'Chi può trovarmi', titolo: 'Chi può trovarmi', nota: "La riga nelle impostazioni e la scelta con le conseguenze scritte. Valore di partenza proposto: «Chi conosco»." },
+      { id: 'sel', label: 'Selettore', titolo: 'Il selettore delle persone', nota: "Lo stesso selettore per gli invitati (C4) e per il co-amministratore (G2)." },
+      { id: 'inv', label: 'Sei stato invitato', titolo: 'Sei stato invitato', nota: "Per chi ha BA: notifica e foglio. Per chi non ha BA: mail, pagina di arrivo, accesso del 013 e ingresso diretto come ascoltatore (D-041). Stati: scaduto, annullato." },
+      { id: 'ric', label: 'Richiamo', titolo: 'Il richiamo: chi può mandarlo e riceverlo', nota: "Proposta: spento di partenza, un consenso per persona, solo DEN pubblici. Nessuno sa che sei online o in un DEN senza il tuo consenso esplicito." }
+    ];
+    const BL = [['56% 44% 51% 49% / 47% 53% 53% 47%', '#A83E2E', '#6E251C'], ['47% 53% 58% 42% / 55% 45% 42% 58%', '#23735A', '#14473A'], ['52% 48% 42% 58% / 43% 57% 54% 46%', '#2A6894', '#1B4463']];
+    const make = (d, w) => {
+      const tablet = w >= 600;
+      const h = tablet ? 1133 : 740, m = tablet ? 32 : 20, col = tablet ? 512 : 320;
+      const sheetH = Math.round(h * (tablet ? 0.62 : 0.8));
+      const sheet = !!d.sheet, inatt = !!d.inatt || !!d.bdInatt;
+      const panelStyle = d.panelOff ? 'display:none' : sheet
+        ? 'position:absolute;left:0;right:0;bottom:0;max-height:' + sheetH + 'px;display:flex;flex-direction:column;background:#161412;border:1px solid rgba(242,238,233,0.12);border-bottom:none;border-radius:24px 24px 0 0;' + (tablet ? 'margin:0 auto;max-width:' + (col + 2 * m) + 'px;' : '')
+        : 'flex:1;min-height:0;display:flex;flex-direction:column';
+      const blocks = (d.blocks || []).map(b => ({ size: 16, c: '#A09890', label: '', pre: '', vc: '#F2EEE9', value: '', mark: '', cells: [], blobs: [], chips: [], info: '', sub: '', v: '', t: '', minH: 56, padV: 0, alignI: 'center', lineS: 'solid', lineC: '#D9CFA8', ...b }));
+      const n = d.bdN === undefined ? 3 : d.bdN;
+      const bdBlobs = [];
+      for (let i = 0; i < n; i++) { const mine = !!d.bdMine && i === n - 1; bdBlobs.push({ br: BL[i][0], bg: 'linear-gradient(155deg,' + BL[i][1] + ' 0%,' + BL[i][2] + ' 100%)', mine, op: mine && d.bdDim ? 0.34 : 1, gr: mine && d.bdDim ? 'grayscale(1)' : 'none' }); }
+      const st = d.strip, bd = d.band;
+      const esciL = t('Esci', 'Verlassen'), scendiL = t('Scendi dal palco', 'Von der Bühne gehen');
+      const secsL = d.stage ? [scendiL, esciL] : [esciL];
+      const nS = secsL.length, pillW = (col - 48 - 10 * nS) / nS - 24;
+      const longest = Math.max(...secsL.map(x => Math.max(...x.split(' ').map(w => w.length))));
+      const stack = !!d.bdBar && longest * 0.52 * 14 * ts > pillW;
+      const barRow = !!d.bdBar && !stack;
+      return {
+        id: d.id + '-' + w, w, h, m, col, statusH: tablet ? 32 : 46, label: tablet ? '744 dp · tablet, verticale' : '360 dp · telefono',
+        frameBorder: '1px solid rgba(242,238,233,0.12)',
+        backdrop: sheet || !!d.backdrop, sheet, bdS1: d.bdS1 || '', bdTitle: d.bdTitle || den, bdD: tablet ? 130 : 88, bdBlobs, bdBar: !!d.bdBar, bdEsci: '', bdNote: d.bdNote || '', bdTag: d.bdTag || '', bdP: d.bdP || '',
+        barRow, barStack: stack, secs: secsL.map(x => ({ t: x })), secsInit: secsL.slice(0, -1).map(x => ({ t: x })), secLast: secsL[secsL.length - 1],
+        bdPBg: d.bdLine || d.bdInatt ? 'transparent' : 'linear-gradient(180deg,#EDE7DC 0%,#D2C9B6 100%)', bdPBd: d.bdInatt ? 'rgba(242,238,233,0.10)' : d.bdLine ? 'rgba(242,238,233,0.14)' : 'transparent', bdPC: d.bdInatt ? '#8A837B' : d.bdLine ? '#F2EEE9' : '#100F0E',
+        bandOn: !!bd, bandT: bd ? bd.t : '', bandSub: bd ? bd.sub : '', bandBd: bd && bd.dashed ? '1px dashed rgba(217,207,168,0.42)' : '1px solid rgba(242,238,233,0.32)',
+        stripOn: !!st, stripT: st ? st.t : '', stripAct: st ? st.act : '', stripBlobs: st ? [0, 1, 2, 0].slice(0, st.n).map(i => ({ br: BL[i][0], bg: 'linear-gradient(155deg,' + BL[i][1] + ' 0%,' + BL[i][2] + ' 100%)' })) : [],
+        lock: !!d.lock, lockTop: tablet ? 120 : 72, lockRad: d.lockRad || 24, lockDate: t('martedì 24 novembre', 'Dienstag, 24. November'), lockWhen: d.lockWhen || '', lockTitle: d.lockTitle || '', lockBody: d.lockBody || '', lockAct: d.lockAct || '', lockNote: d.lockNote || '',
+        panelStyle, justify: fine ? 'flex-end' : 'flex-start', padTop: sheet ? 24 : (tablet ? 56 : 40),
+        blocks,
+        act1: !!d.a1, act1T: d.a1 || '', pBg: inatt || d.a1Line ? 'transparent' : 'linear-gradient(180deg,#EDE7DC 0%,#D2C9B6 100%)', pBd: inatt ? 'rgba(242,238,233,0.10)' : d.a1Line ? 'rgba(242,238,233,0.14)' : 'transparent', pC: inatt ? '#8A837B' : d.a1Line ? '#F2EEE9' : '#100F0E',
+        act2: !!d.a2, act2T: d.a2 || '', slot: false, slotT: ''
+      };
+    };
+    const groups = GR.map(g => ({ ...g, screens: S.filter(s => s.g === g.id).map(s => ({ num: s.num, name: s.name, note: s.note, frames: [make(s, 360), make(s, 744)] })) }));
+    return {
+      ts: String(ts), groups,
+      scorriNota: fine ? 'Il prototipo non scorre: questo è lo stato scrollato in fondo. Con scorri = inizio si vede lo stato iniziale.' : 'Il prototipo non scorre: con testo grande, scorri = fine mostra lo stato scrollato in fondo; le azioni restano ancorate.'
+    };
+  }
+}
+</script>
+</body>
+</html>

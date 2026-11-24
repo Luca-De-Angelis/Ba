@@ -16,7 +16,7 @@ app/lib/
 └── main.dart        uno schermo vuoto del colore di fondo
 ```
 
-- **`design_system/`** è tutto ciò che esiste oggi di prodotto: i token e 36 file di componenti. L'elenco completo, riga per riga, è in [componenti](componenti.md).
+- **`design_system/`** è tutto ciò che esiste oggi di prodotto: i token e 40 file di componenti. L'elenco completo, riga per riga, è in [componenti](componenti.md).
 - **`design_system/palco/disposizione.dart`** non è un widget: è la **funzione pura** `disponiPalco(persone, scatola, larghezzaSchermo)` che restituisce diametro e centri delle presenze (`BaDisposizionePalco`: `diametro`, `centri`, `sfora`). `BaPalco` la usa; i test la provano da sola (`palco_disposizione_test.dart`).
 - **`galleria/`** è uno strumento di sviluppo, fuori dall'app e fuori dalle traduzioni (D-030). Non si porta in produzione: vedi [produzione](produzione.md).
 - **`l10n/`**: cinque lingue (IT, EN, FR, ES, DE), l'italiano è il file di riferimento (`template-arb-file: app_it.arb` in `app/l10n.yaml`). I componenti del design system **non importano le traduzioni**: i testi arrivano dal chiamante.

@@ -1014,3 +1014,31 @@ class BaSchermoBloccatoTokens {
   static const double controlloRaggio = _S.roundedFull;
   static const double controlloBordo = _S.border1;
 }
+
+// ------------------------------------------------------------------ persone, inviti e richiamo
+
+/// Persone, inviti e richiamo (task 030, D-038, D-039, D-041, D-042). Nessun colore nuovo.
+/// Principio: nessun valore qui serve a mostrare che una persona è online o in un DEN.
+/// Lo stato di una riga (aggiunta, nell'invito, acceso) è una parola con un segno, mai solo il colore.
+class BaPersoneTokens {
+  BaPersoneTokens._();
+
+  // riga di una persona: sagoma, nickname, alias e un'azione; con testo grande l'azione va a capo
+  static const double rigaAltezza = _S.sp14; // minima: cresce col testo
+  static const double rigaGap = _S.sp3;
+  static const double sagomaLato = _S.sp8;
+  static const double azioneAltezza = _S.sp11; // minimo di tocco
+  static const double azioneRaggio = _S.rounded2xl; // non roundedFull: con il testo a capo la pillola cresce e non lo taglia
+  static const double azioneBordo = _S.border1;
+
+  // campo di ricerca: una riga con la linea sotto, come il campo del 013
+  static const double ricercaAltezza = _S.sp14;
+  static const int ricercaCaratteriMin = 2; // eccezione: regola di prodotto, ipotesi: la lista si filtra da due caratteri
+
+  // un solo interruttore per persona nel richiamo: stessa forma di quello della coda
+  static const double consensoInterruttoreLarghezza = BaCodaTokens.interruttoreLarghezza;
+  static const double consensoInterruttoreAltezza = BaCodaTokens.interruttoreAltezza;
+
+  // inviti
+  static const Duration invitoScadenza = Duration(days: 7); // eccezione: ipotesi, regola di prodotto. L'interfaccia non mostra il numero di giorni
+}
