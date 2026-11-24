@@ -430,4 +430,34 @@ void main() {
       expect(BaSchermoBloccatoTokens.controlloBordo, 1);
     });
   });
+
+  group('persone, inviti e richiamo (task 030, D-038, D-039, D-041, D-042)', () {
+    test('la riga e il campo di ricerca sono alti almeno 56 (minimi: il testo li alza)', () {
+      expect(BaPersoneTokens.rigaAltezza, 56);
+      expect(BaPersoneTokens.ricercaAltezza, 56);
+    });
+
+    test('l\'azione non scende sotto areaMinima, ha il raggio del riquadro e il bordo sottile', () {
+      expect(BaPersoneTokens.azioneAltezza, greaterThanOrEqualTo(BaControlloTokens.areaMinima));
+      expect(BaPersoneTokens.azioneRaggio, BaRaggioTokens.riquadro);
+      expect(BaPersoneTokens.azioneBordo, 1);
+    });
+
+    test('la sagoma ha il lato di quella del gruppo d\'attesa', () {
+      expect(BaPersoneTokens.sagomaLato, BaCodaTokens.gruppoPresenzaLato);
+    });
+
+    test('la ricerca filtra da due caratteri (ipotesi)', () {
+      expect(BaPersoneTokens.ricercaCaratteriMin, 2);
+    });
+
+    test('l\'interruttore del richiamo ha la forma di quello della coda', () {
+      expect(BaPersoneTokens.consensoInterruttoreLarghezza, BaCodaTokens.interruttoreLarghezza);
+      expect(BaPersoneTokens.consensoInterruttoreAltezza, BaCodaTokens.interruttoreAltezza);
+    });
+
+    test('l\'invito scade dopo 7 giorni (ipotesi: l\'interfaccia non mostra il numero)', () {
+      expect(BaPersoneTokens.invitoScadenza, const Duration(days: 7));
+    });
+  });
 }
