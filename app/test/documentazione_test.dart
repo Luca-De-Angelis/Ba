@@ -35,6 +35,7 @@ const Map<String, String> _esenti = {
   'tokens.dart': 'i valori di design (e BaOra, BaPayloadStanza, BaRegole): non è un widget',
   'forma.dart': 'una funzione di geometria (ingrandisci): non è un widget',
   'palco/disposizione.dart': 'la funzione pura disponiPalco: diametro e centri, senza widget',
+  'passi_creazione.dart': 'BaPassiCreazione: funzioni statiche che compongono i passi di «Crea un DEN» (valori BaPassoFoglio per BaFoglioPassi): nessun widget pubblico',
 };
 
 /// Un componente è una classe pubblica `Ba…` che estende un widget, oppure la
