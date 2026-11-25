@@ -368,7 +368,33 @@ abstract final class T {
   static const String avvisartiNota = 'Non vedi quando queste persone sono online.';
   static const String nessunaPersona = 'Nessuna persona aggiunta: aggiungile da «Aggiungi persone».';
 
+  // ------------------------------------------------------------- «Sei stato invitato» (030 I1–I6)
+  static String bannerInvito(String den, String chi) => '$den · $chi ti ha invitato.';
+  static String invitoTitolo(String chi, String den) => '$chi ti ha invitato a $den';
+  static const String invitoFrase = 'Entri ad ascoltare.';
+  static const String entra = 'Entra';
+  static const String invitoScadutoTitolo = 'Questo invito è scaduto';
+  static String invitoScadutoFrase(String chi) => 'Chiedi a $chi di invitarti di nuovo.';
+  static const String invitoAnnullatoTitolo = 'Questo invito non è più valido';
+  static const String invitoAnnullatoFrase = 'Chi lo ha mandato lo ha annullato.';
+  static const String invitoPassaP1 = 'Vuoi passare di qua? Entri ad ascoltare.';
+  static String seiEntratoSuInvito(String chi) => 'Sei entrato su invito di $chi. Ascolti.';
+
+  // Fuori dall'app (I4, I5): la mail e la pagina d'arrivo
+  static const String fuoriApp = 'fuori dall\'app · simulazione';
+  static const String mailMarcatore = 'Email · da BA';
+  static const String mailFrase = 'BA è un posto dove si parla dal vivo. Per entrare ad ascoltare ti basta questa email.';
+  static const String apriLInvito = 'Apri l\'invito';
+  static const String paginaMarcatore = 'Pagina web · fuori dall\'app';
+  static const String paginaP1 = 'Per entrare crei un account da ascoltatore con la tua email. Non serve altro.';
+  static const String paginaP2 = 'Per parlare, ti chiederemo il numero e il consenso quando vorrai salire sul palco.';
+  static const String continuaConLaEmail = 'Continua con la email';
+
   // ------------------------------------------------------------- simulazioni (strumento, non è il prodotto)
+  static const String simInvitoBa = 'arriva un invito (ho BA)';
+  static const String simInvitoSenzaBa = 'arriva un invito (non ho BA)';
+  static const String simInvitoScaduto = 'l\'invito è scaduto';
+  static const String simInvitoAnnullato = 'l\'invito è annullato';
   static const String simulazioniTitolo = 'Simulazioni';
   static const String simParla = 'qualcuno parla';
   static const String simLiberaPosto = 'si libera un posto';

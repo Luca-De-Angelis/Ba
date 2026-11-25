@@ -23,7 +23,13 @@ enum Posto { nessuno, offerto, scaduto }
 enum Chiusura { chiuso, sospeso }
 
 /// Che cosa dice il banner delle notifiche: un posto che si libera (K3) o un richiamo (K7).
-enum TipoBanner { postoLibero, richiamo }
+enum TipoBanner { postoLibero, richiamo, invito }
+
+/// Lo stato di un invito (030 I2, I3, I3 bis): valido, scaduto (dopo 7 giorni, ipotesi) o annullato.
+enum StatoInvito { valido, scaduto, annullato }
+
+/// Le pagine **fuori dall'app** dell'invito per chi non ha BA (030 I4, I5): la mail e la pagina d'arrivo.
+enum FuoriApp { nessuna, mail, pagina }
 
 /// Dopo la linea persa: il posto c'era ancora (P2) o è stato preso (P3).
 enum Ritorno { nessuno, postoRimasto, postoPreso }
@@ -149,6 +155,10 @@ final List<Den> denDiProva = [
   Den(id: 'serra', nome: 'Serra', palco: _personeDiProva, inAscolto: 12, codaPiena: true),
   // Il DEN del richiamo (015 K7): pubblico.
   Den(id: 'famiglia', nome: 'Famiglia', palco: _personeDiProva.sublist(0, 2), inAscolto: 5),
+  // Il DEN privato dell'invito (030): si entra solo su invito, fra il pubblico (D-041).
+  Den(id: 'cena', nome: 'Cena senza fretta', palco: _personeDiProva.sublist(2, 5), inAscolto: 5, suInvito: true),
+  // Un DEN privato con il palco pieno: la coda usa lo stesso «Mettiti in coda» (nessuna schermata nuova).
+  Den(id: 'salotto', nome: 'Salotto', palco: _personeDiProva, inAscolto: 3, suInvito: true),
 ];
 
 class StatoProto extends ChangeNotifier {
@@ -229,6 +239,12 @@ class StatoProto extends ChangeNotifier {
     onboardingFatto = true;
     account = Account.ascoltatore;
     azzera(const Rotta(Pagina.elenco));
+    // L'invito per chi non ha BA (030 I6): dopo l'accesso si entra nel DEN, fra il pubblico, senza passare dall'elenco.
+    if (invitoPendente) {
+      invitoPendente = false;
+      final d = denPerId('cena');
+      if (d != null) entraPerInvito(d, 'marta');
+    }
   }
 
   /// «Esci da BA»: si torna al login; lo stato riparte.
@@ -243,6 +259,10 @@ class StatoProto extends ChangeNotifier {
     postoDen = null;
     posto = Posto.nessuno;
     banner = null;
+    invitoDa = null;
+    invitoDen = null;
+    fuoriApp = FuoriApp.nessuna;
+    invitoPendente = false;
     schermoBloccato = false;
     bloccate = [..._bloccateDiProva];
     azzera(const Rotta(Pagina.email));
@@ -317,6 +337,8 @@ class StatoProto extends ChangeNotifier {
   /// Esce dalla stanza e torna all'elenco. Chi è in coda **resta in coda** (015: «Le tue code»).
   void esciDallaStanza() {
     denCorrente = null;
+    invitoDa = null;
+    invitoDen = null;
     _azzeraStanza();
     if (corrente.pagina == Pagina.stanza) {
       indietro();
@@ -601,6 +623,55 @@ class StatoProto extends ChangeNotifier {
     notifyListeners();
   }
 
+  // ------------------------------------------------------------- gli inviti (030 I1–I6)
+
+  /// Ho BA: l'invito arriva come banner (la notifica a schermo bloccato, I1); al tocco, il foglio (I2, I3, I3 bis).
+  void arrivaInvito(StatoInvito s) {
+    banner = BannerProto(TipoBanner.invito, 'cena', chi: 'marta', invito: s);
+    notifyListeners();
+  }
+
+  /// L'invito è stato accettato: chi ha invitato e dove, per la riga «Sei entrato su invito di Marta».
+  String? invitoDa;
+  String? invitoDen;
+
+  /// «Entra» (I2) o «Passa» (K6): si entra nel DEN privato **come pubblico** (D-041, D-006), mai sul palco.
+  void entraPerInvito(Den d, String chi) {
+    if (denCorrente == null) {
+      entraInDen(d);
+    } else if (denCorrente!.id != d.id) {
+      passaA(d);
+    }
+    invitoDa = chi;
+    invitoDen = d.id;
+    notifyListeners();
+  }
+
+  /// Non ho BA: la mail e la pagina d'arrivo stanno **fuori dall'app**; poi l'accesso del 013 e l'ingresso diretto.
+  FuoriApp fuoriApp = FuoriApp.nessuna;
+  bool invitoPendente = false;
+
+  void arrivaInvitoSenzaBa() {
+    esciDaBa();
+    // Chi non ha BA è una persona nuova: ripassa dall'accesso intero (A1–A5, 013).
+    onboardingFatto = false;
+    invitoPendente = true;
+    fuoriApp = FuoriApp.mail;
+    notifyListeners();
+  }
+
+  void vaiAllaPagina() {
+    fuoriApp = FuoriApp.pagina;
+    notifyListeners();
+  }
+
+  void continuaConLaEmail() {
+    fuoriApp = FuoriApp.nessuna;
+    notifyListeners();
+  }
+
+  bool get loggato => nickname.isNotEmpty;
+
   // ------------------------------------------------------------- creare e gestire un DEN (014)
 
   /// La prossima «Crea il DEN» non riesce (S2), una volta: «Riprova» riesce.
@@ -811,13 +882,16 @@ class StatoProto extends ChangeNotifier {
 /// che al tocco porta dove deve. Non scompare da solo: niente timer.
 @immutable
 class BannerProto {
-  const BannerProto(this.tipo, this.den, {this.chi});
+  const BannerProto(this.tipo, this.den, {this.chi, this.invito});
 
   final TipoBanner tipo;
   final String den;
 
   /// Chi manda il richiamo (id di `persone.dart`).
   final String? chi;
+
+  /// Per un invito: valido, scaduto o annullato.
+  final StatoInvito? invito;
 }
 
 /// Mette lo stato a disposizione di tutto l'albero; chi lo legge con [of] si

@@ -19,6 +19,7 @@ import 'package:flutter/widgets.dart';
 
 import '../design_system/pillola.dart';
 import '../design_system/tokens.dart';
+import 'fuori_app.dart';
 import 'navigatore.dart';
 import 'schermo_bloccato.dart';
 import 'stato.dart';
@@ -201,7 +202,7 @@ class _Strati extends StatelessWidget {
   Widget build(BuildContext context) {
     final stato = ProtoScope.of(context);
     final banner = stato.banner;
-    final coperto = stato.schermoBloccato || stato.chiusura != null;
+    final coperto = stato.schermoBloccato || stato.chiusura != null || stato.fuoriApp != FuoriApp.nessuna;
     return Stack(
       children: [
         // Sotto uno strato che copre tutto, le pagine non si toccano, non prendono il focus e non si leggono.
@@ -215,6 +216,7 @@ class _Strati extends StatelessWidget {
           Positioned(top: 0, left: 0, right: 0, child: BannerNotifica(banner: banner)),
         if (stato.schermoBloccato) const Positioned.fill(child: SchermoBloccato()),
         if (stato.chiusura != null) Positioned.fill(child: CoperturaAccount(chiusura: stato.chiusura!)),
+        if (stato.fuoriApp != FuoriApp.nessuna) const Positioned.fill(child: PaginaFuoriApp()),
       ],
     );
   }
@@ -344,6 +346,22 @@ class _Simulazioni extends StatelessWidget {
         testo: T.simRichiamo,
         acceso: stato.banner?.tipo == TipoBanner.richiamo,
         onTap: se(stato.personaDelRichiamo != null, stato.arrivaUnRichiamo, '«${T.simRichiamo}»: serve il richiamo acceso (Impostazioni) e una persona che ti ha scelto con il consenso acceso'),
+      ),
+      _Comando(
+        testo: T.simInvitoBa,
+        acceso: stato.banner?.tipo == TipoBanner.invito && stato.banner?.invito == StatoInvito.valido,
+        onTap: se(stato.loggato, () => stato.arrivaInvito(StatoInvito.valido), '«${T.simInvitoBa}»: serve essere dentro (accesso fatto)'),
+      ),
+      _Comando(testo: T.simInvitoSenzaBa, acceso: stato.fuoriApp != FuoriApp.nessuna, onTap: stato.arrivaInvitoSenzaBa),
+      _Comando(
+        testo: T.simInvitoScaduto,
+        acceso: stato.banner?.invito == StatoInvito.scaduto,
+        onTap: se(stato.loggato, () => stato.arrivaInvito(StatoInvito.scaduto), '«${T.simInvitoScaduto}»: serve essere dentro (accesso fatto)'),
+      ),
+      _Comando(
+        testo: T.simInvitoAnnullato,
+        acceso: stato.banner?.invito == StatoInvito.annullato,
+        onTap: se(stato.loggato, () => stato.arrivaInvito(StatoInvito.annullato), '«${T.simInvitoAnnullato}»: serve essere dentro (accesso fatto)'),
       ),
       _Comando(testo: T.simRicerca, acceso: stato.ricercaFallisce, onTap: stato.cambiaRicercaFallisce),
       _Comando(testo: T.simChiuso, acceso: stato.chiusura == Chiusura.chiuso, onTap: () => stato.chiudiAccount(Chiusura.chiuso)),
