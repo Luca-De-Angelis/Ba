@@ -5,15 +5,14 @@
 // (D-041). L'elenco ha **un'azione sola** in fondo (014b); le impostazioni sono una
 // riga, non un'azione: proposta del task 024, nessun documento dice da dove si aprono.
 //
-// «Crea un DEN»: da ascoltatore apre «diventa partecipante» (014 R1–R2) e a fine
-// percorso l'account è partecipante; da partecipante è inattivo finché il 024b non
-// collega i passi della creazione.
+// «Crea un DEN» (task 024b): da ascoltatore passa prima da «diventa partecipante» (014
+// R1–R2) e poi dai passi della creazione; da partecipante apre subito i passi (C1–C5).
 import 'package:flutter/widgets.dart';
 
 import '../design_system/intestazione.dart';
 import '../design_system/riga_den.dart';
 import '../design_system/riga_impostazione.dart';
-import 'fogli_partecipante.dart';
+import 'fogli_creazione.dart';
 import 'pagina_base.dart';
 import 'stato.dart';
 import 'testi.dart';
@@ -56,16 +55,7 @@ class PaginaElenco extends StatelessWidget {
         ),
       ],
       azioni: [
-        pillola(
-          T.creaUnDen,
-          stato.partecipante
-              ? null
-              : () => apriFoglioPartecipante(
-                    context,
-                    perCreare: true,
-                    alTermine: stato.diventaPartecipante,
-                  ),
-        ),
+        pillola(T.creaUnDen, () => apriCreazione(context)),
       ],
     );
   }
