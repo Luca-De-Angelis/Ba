@@ -534,6 +534,25 @@ void main() {
       }
     });
 
+    // Nessuna schermata mostra o lascia dedurre che una persona è «online» o «in un DEN» senza il suo
+    // consenso (task 024c, 030). Le due parole possono comparire SOLO nelle costanti di `testi.dart`
+    // che contengono le due frasi rassicuranti del 030 (C2 e C5), elencate qui: ogni altra occorrenza
+    // nel sorgente di `lib/prototipo/`, commenti compresi, fa fallire il test.
+    test('«online» e «in un DEN» solo nelle due frasi rassicuranti del 030', () {
+      const eccezioni = [
+        'Nessuno sa che sei online o in un DEN se non lo scegli tu.',
+        'Non vedi quando queste persone sono online.',
+      ];
+      for (final f in file) {
+        for (final r in f.readAsLinesSync()) {
+          final minuscolo = r.toLowerCase();
+          if (!minuscolo.contains('online') && !minuscolo.contains('in un den')) continue;
+          final ammessa = f.path.endsWith('testi.dart') && eccezioni.any(r.contains);
+          expect(ammessa, isTrue, reason: '${f.path}: $r');
+        }
+      }
+    });
+
     test('nessun Material, nessun Cupertino e nessun import oltre widgets.dart', () {
       for (final f in file) {
         final importi = [

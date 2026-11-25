@@ -180,7 +180,7 @@ abstract final class T {
   // Il posto offerto (K4, K4 bis, K5) e «Vuoi passare di qua?» (K6)
   static const String postoOfferto = 'Si è liberato un posto sul palco. Hai pochi secondi per salire. Salirai a microfono spento.';
   static const String postoScaduto = 'Il posto è passato alla persona dopo di te. Resti in coda.';
-  static String bannerPosto(String den) => 'Si è liberato un posto in $den';
+  static String bannerPosto(String den) => '$den · Si è liberato un posto sul palco. Hai pochi secondi per salire.';
   static String passaTitolo(String den) => 'Si è liberato un posto in $den';
   static const String passaP1 = 'Vuoi passare di qua? Salirai a microfono spento.';
   static const String passaP2 = 'Hai pochi secondi per decidere.';
@@ -197,7 +197,7 @@ abstract final class T {
   static const String lineaPersaSotto = 'Il microfono è spento.';
   static const String sentoDiNuovo = 'Sto riprovando…';
   static const String ritornoP2 = 'Sei di nuovo in linea. Il tuo posto c\'era: sei sul palco, a microfono spento.';
-  static const String ritornoP3 = 'Sei di nuovo in linea. Il tuo posto è stato preso: sei fra il pubblico.';
+  static const String ritornoP3 = 'Sei di nuovo in linea. Il tuo posto sul palco è stato preso: sei fra il pubblico.';
 
   // ------------------------------------------------------------- creare un DEN (014)
   static const String creaNome = 'Crea un DEN';
@@ -281,21 +281,22 @@ abstract final class T {
   static const String micNegata = 'Negato — senza il microfono non puoi parlare';
   static const String apri = 'Apri';
   static const String micFaseTitolo = 'Senza microfono non posso farti parlare';
-  static const String micFaseP1 = 'Il permesso del microfono è negato. Lo cambi nelle impostazioni del telefono.';
+  static const String micFaseP1 =
+      'Il permesso è chiuso nelle impostazioni del telefono, non qui. Puoi restare ad ascoltare quanto vuoi: per gli altri non cambia niente.';
   static const String apriLeImpostazioni = 'Apri le impostazioni';
   static const String restoAdAscoltare = 'Resto ad ascoltare';
 
   // ------------------------------------------------------------- l'account chiuso (027 B1, B1 bis, B2)
-  static const String chiusoTitolo = 'Account chiuso';
-  static const String chiusoP1 = 'Il tuo account è stato chiuso dalla moderazione.';
-  static const String chiusoP2 = 'Se pensi sia un errore, puoi chiedere una revisione.';
-  static const String sospesoTitolo = 'Blocco temporaneo';
-  static const String sospesoP1 = 'Il tuo account è bloccato per un po\'.';
+  static const String chiusoTitolo = 'Questo account non può più usare BA';
+  static const String chiusoP1 = 'Un contenuto non rispetta le regole di BA.';
+  static const String chiusoP2 = 'Se pensi che sia un errore, puoi chiedere una revisione.';
+  static const String sospesoTitolo = 'L\'accesso a BA è sospeso';
+  static const String sospesoP1 = 'Un contenuto non rispetta le regole di BA.';
   static const String sospesoRiga = 'Potrai rientrare il 21 novembre alle 21:40.';
-  static const String sospesoP2 = 'Se pensi sia un errore, puoi chiedere una revisione.';
+  static const String sospesoP2 = 'Se pensi che sia un errore, puoi chiedere una revisione.';
   static const String richiediRevisione = 'Richiedi revisione';
-  static const String revisioneTitolo = 'Revisione richiesta';
-  static const String revisioneP1 = 'Abbiamo ricevuto la tua richiesta. La esaminiamo e ti scriviamo.';
+  static const String revisioneTitolo = 'Questo account non può più usare BA';
+  static const String revisioneP1 = 'Abbiamo ricevuto la richiesta di revisione. Ti scriviamo all\'email dell\'account.';
   static const String richiestaInviata = 'Richiesta inviata';
 
   // ------------------------------------------------------------- lo schermo bloccato (027 L1–L4, D-050)

@@ -153,7 +153,7 @@ void main() {
       expect(_pillola(tester, 'si libera un posto').onTap, isNotNull);
       await _tocca(tester, 'si libera un posto');
       expect(find.text('Si è liberato un posto sul palco. Hai pochi secondi per salire. Salirai a microfono spento.'), findsOneWidget);
-      expect(find.text('Si è liberato un posto in Tavolo lungo'), findsOneWidget, reason: 'il banner');
+      expect(find.text('Tavolo lungo · Si è liberato un posto sul palco. Hai pochi secondi per salire.'), findsOneWidget, reason: 'il banner');
       await _tocca(tester, 'Sali sul palco');
       expect(stato.ruolo, Ruolo.sulPalco);
       expect(stato.micAcceso, isFalse, reason: 'D-007: si sale a microfono spento');
@@ -193,7 +193,7 @@ void main() {
       await _tocca(tester, 'Esci');
       await _tocca(tester, 'Cucina di notte');
       await _tocca(tester, 'si libera un posto');
-      await _tocca(tester, 'Si è liberato un posto in Tavolo lungo');
+      await _tocca(tester, 'Tavolo lungo · Si è liberato un posto sul palco. Hai pochi secondi per salire.');
       await _sale(tester);
       expect(_inFoglio('Vuoi passare di qua? Salirai a microfono spento.'), findsOneWidget);
       expect(_inFoglio('Hai pochi secondi per decidere.'), findsOneWidget, reason: 'una frase ferma, nessun conto alla rovescia');
@@ -204,7 +204,7 @@ void main() {
       // Il posto scade e si libera di nuovo: stavolta si passa.
       await _tocca(tester, 'il posto scade');
       await _tocca(tester, 'si libera un posto');
-      await _tocca(tester, 'Si è liberato un posto in Tavolo lungo');
+      await _tocca(tester, 'Tavolo lungo · Si è liberato un posto sul palco. Hai pochi secondi per salire.');
       await _sale(tester);
       await _nelFoglio(tester, 'Passa');
       await _sale(tester);
@@ -413,7 +413,7 @@ void main() {
       await _tocca(tester, 'perdo la linea');
       await _tocca(tester, 'il posto scade');
       await _tocca(tester, 'torno in linea');
-      expect(find.text('Sei di nuovo in linea. Il tuo posto è stato preso: sei fra il pubblico.'), findsOneWidget);
+      expect(find.text('Sei di nuovo in linea. Il tuo posto sul palco è stato preso: sei fra il pubblico.'), findsOneWidget);
       expect(stato.ruolo, Ruolo.pubblico);
       expect(find.text('Mettiti in coda'), findsOneWidget, reason: 'il palco è di nuovo pieno');
     });
@@ -467,18 +467,20 @@ void main() {
     testWidgets('chiuso → «Richiedi revisione» → «Richiesta inviata» inattiva; il blocco temporaneo ha la sua durata', (tester) async {
       final stato = await _dentro(tester);
       await _tocca(tester, 'l\'account viene chiuso');
-      expect(find.text('Account chiuso'), findsOneWidget);
+      expect(find.text('Questo account non può più usare BA'), findsOneWidget);
+      expect(find.text('Un contenuto non rispetta le regole di BA.'), findsOneWidget);
+      expect(find.text('Se pensi che sia un errore, puoi chiedere una revisione.'), findsOneWidget);
       await _tocca(tester, 'Richiedi revisione');
-      expect(find.text('Revisione richiesta'), findsOneWidget);
+      expect(find.text('Abbiamo ricevuto la richiesta di revisione. Ti scriviamo all\'email dell\'account.'), findsOneWidget);
       expect(_pillola(tester, 'Richiesta inviata').onTap, isNull);
       expect(stato.revisioneRichiesta, isTrue);
 
       await _tocca(tester, 'blocco temporaneo');
-      expect(find.text('Blocco temporaneo'), findsOneWidget);
+      expect(find.text('L\'accesso a BA è sospeso'), findsOneWidget);
       expect(find.text('Potrai rientrare il 21 novembre alle 21:40.'), findsOneWidget);
       expect(find.text('Richiedi revisione'), findsOneWidget, reason: 'una nuova chiusura riparte dalla richiesta');
       await _tocca(tester, 'riapri l\'account');
-      expect(find.text('Blocco temporaneo'), findsNothing);
+      expect(find.text('L\'accesso a BA è sospeso'), findsNothing);
       expect(stato.chiusura, isNull);
     });
   });
