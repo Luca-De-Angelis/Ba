@@ -19,6 +19,7 @@ import 'package:flutter/widgets.dart';
 
 import '../design_system/pillola.dart';
 import '../design_system/tokens.dart';
+import 'fuori_app.dart';
 import 'navigatore.dart';
 import 'schermo_bloccato.dart';
 import 'stato.dart';
@@ -201,7 +202,7 @@ class _Strati extends StatelessWidget {
   Widget build(BuildContext context) {
     final stato = ProtoScope.of(context);
     final banner = stato.banner;
-    final coperto = stato.schermoBloccato || stato.chiusura != null;
+    final coperto = stato.schermoBloccato || stato.chiusura != null || stato.fuoriApp != FuoriApp.nessuna;
     return Stack(
       children: [
         // Sotto uno strato che copre tutto, le pagine non si toccano, non prendono il focus e non si leggono.
@@ -215,6 +216,7 @@ class _Strati extends StatelessWidget {
           Positioned(top: 0, left: 0, right: 0, child: BannerNotifica(banner: banner)),
         if (stato.schermoBloccato) const Positioned.fill(child: SchermoBloccato()),
         if (stato.chiusura != null) Positioned.fill(child: CoperturaAccount(chiusura: stato.chiusura!)),
+        if (stato.fuoriApp != FuoriApp.nessuna) const Positioned.fill(child: PaginaFuoriApp()),
       ],
     );
   }
@@ -260,7 +262,7 @@ class _Pannello extends StatelessWidget {
         // I codici di prova: nessun codice vero, e il pannello non è il prodotto.
         Text(T.strumentoCodici, style: BaTestoTokens.minore.copyWith(color: BaColorTokens.testoSecondo)),
         const SizedBox(height: BaSpazioTokens.l),
-        _Simulazioni(stato: stato),
+        const _Simulazioni(),
         const SizedBox(height: BaSpazioTokens.l),
         Text(
           '${stato.account.name} · ${stato.corrente.pagina.name}'
@@ -298,13 +300,52 @@ class _Comando extends StatelessWidget {
 /// Le simulazioni: un tasto per evento, **a un colpo**, senza timer. Ciò che nei documenti scade
 /// da solo ha un secondo tasto («il posto scade»). Un tasto senza niente da simulare è inattivo e
 /// la sua ragione sta scritta sotto.
-class _Simulazioni extends StatelessWidget {
-  const _Simulazioni({required this.stato});
+class _Simulazioni extends StatefulWidget {
+  const _Simulazioni();
 
-  final StatoProto stato;
+  @override
+  State<_Simulazioni> createState() => _SimulazioniState();
+}
+
+class _SimulazioniState extends State<_Simulazioni> {
+  // I tasti dipendono da pochi fatti dello stato: se nessuno è cambiato si riusa lo stesso albero e
+  // non si ricostruiscono una ventina di pillole a ogni tocco nella cornice.
+  String? _firma;
+  Widget? _albero;
 
   @override
   Widget build(BuildContext context) {
+    final stato = ProtoScope.of(context);
+    final firma = [
+      stato.parla != null,
+      stato.denCorrente != null,
+      stato.palco.any((p) => p.id != 'io'),
+      stato.posto,
+      stato.puoLiberarePosto,
+      stato.puoScadere,
+      stato.lineaPersa,
+      stato.puoPerdereLinea,
+      stato.banner?.tipo,
+      stato.banner?.invito,
+      stato.chiusura,
+      stato.creazioneFallisce,
+      stato.permessoMic,
+      stato.schermoBloccato,
+      stato.puoBloccareLoSchermo,
+      stato.capacitaAspettare,
+      stato.personaDelRichiamo,
+      stato.ricercaFallisce,
+      stato.loggato,
+      stato.fuoriApp,
+    ].join('|');
+    if (firma != _firma || _albero == null) {
+      _firma = firma;
+      _albero = _costruisci(stato);
+    }
+    return _albero!;
+  }
+
+  Widget _costruisci(StatoProto stato) {
     final ragioni = <String>[];
     VoidCallback? se(bool vale, VoidCallback azione, String ragione) {
       if (vale) return azione;
@@ -340,7 +381,28 @@ class _Simulazioni extends StatelessWidget {
         acceso: false,
         onTap: se(stato.lineaPersa, stato.tornoInLinea, '«${T.simTornoInLinea}»: serve aver perso la linea'),
       ),
-      _Comando(testo: T.simRichiamo, acceso: stato.banner?.tipo == TipoBanner.richiamo, onTap: stato.arrivaUnRichiamo),
+      _Comando(
+        testo: T.simRichiamo,
+        acceso: stato.banner?.tipo == TipoBanner.richiamo,
+        onTap: se(stato.personaDelRichiamo != null, stato.arrivaUnRichiamo, '«${T.simRichiamo}»: serve il richiamo acceso (Impostazioni) e una persona che ti ha scelto con il consenso acceso'),
+      ),
+      _Comando(
+        testo: T.simInvitoBa,
+        acceso: stato.banner?.tipo == TipoBanner.invito && stato.banner?.invito == StatoInvito.valido,
+        onTap: se(stato.loggato, () => stato.arrivaInvito(StatoInvito.valido), '«${T.simInvitoBa}»: serve essere dentro (accesso fatto)'),
+      ),
+      _Comando(testo: T.simInvitoSenzaBa, acceso: stato.fuoriApp != FuoriApp.nessuna, onTap: stato.arrivaInvitoSenzaBa),
+      _Comando(
+        testo: T.simInvitoScaduto,
+        acceso: stato.banner?.invito == StatoInvito.scaduto,
+        onTap: se(stato.loggato, () => stato.arrivaInvito(StatoInvito.scaduto), '«${T.simInvitoScaduto}»: serve essere dentro (accesso fatto)'),
+      ),
+      _Comando(
+        testo: T.simInvitoAnnullato,
+        acceso: stato.banner?.invito == StatoInvito.annullato,
+        onTap: se(stato.loggato, () => stato.arrivaInvito(StatoInvito.annullato), '«${T.simInvitoAnnullato}»: serve essere dentro (accesso fatto)'),
+      ),
+      _Comando(testo: T.simRicerca, acceso: stato.ricercaFallisce, onTap: stato.cambiaRicercaFallisce),
       _Comando(testo: T.simChiuso, acceso: stato.chiusura == Chiusura.chiuso, onTap: () => stato.chiudiAccount(Chiusura.chiuso)),
       _Comando(testo: T.simSospeso, acceso: stato.chiusura == Chiusura.sospeso, onTap: () => stato.chiudiAccount(Chiusura.sospeso)),
       if (stato.chiusura != null) _Comando(testo: T.simRiapri, acceso: false, onTap: stato.riapriAccount),

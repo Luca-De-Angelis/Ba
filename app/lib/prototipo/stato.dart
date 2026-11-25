@@ -23,13 +23,41 @@ enum Posto { nessuno, offerto, scaduto }
 enum Chiusura { chiuso, sospeso }
 
 /// Che cosa dice il banner delle notifiche: un posto che si libera (K3) o un richiamo (K7).
-enum TipoBanner { postoLibero, richiamo }
+enum TipoBanner { postoLibero, richiamo, invito }
+
+/// Lo stato di un invito (030 I2, I3, I3 bis): valido, scaduto (dopo 7 giorni, ipotesi) o annullato.
+enum StatoInvito { valido, scaduto, annullato }
+
+/// Le pagine **fuori dall'app** dell'invito per chi non ha BA (030 I4, I5): la mail e la pagina d'arrivo.
+enum FuoriApp { nessuna, mail, pagina }
 
 /// Dopo la linea persa: il posto c'era ancora (P2) o è stato preso (P3).
 enum Ritorno { nessuno, postoRimasto, postoPreso }
 
 /// Le pagine intere del prototipo.
-enum Pagina { email, codice, onboarding, termini, nickname, elenco, stanza, impostazioni, bloccate }
+enum Pagina {
+  email,
+  codice,
+  onboarding,
+  termini,
+  nickname,
+  elenco,
+  stanza,
+  impostazioni,
+  bloccate,
+  // Le persone (024c): aggiungerle, la rubrica, chi può trovarmi, il richiamo.
+  aggiungiPersone,
+  rubrica,
+  chiPuoTrovarmi,
+  chiPuoiAvvisare,
+  chiPuoAvvisarti,
+}
+
+/// Il permesso della rubrica (030 R1–R3): non ancora chiesto, rifiutato (senza colpa) o dato.
+enum PermessoRubrica { nonChiesto, rifiutato, consentito }
+
+/// Chi può trovarmi (030 V2). Parte «Chi conosco» (ipotesi del 030).
+enum Visibilita { nessuno, conosco, tutti }
 
 /// Una pagina nella pila: la pagina e, per la stanza, il DEN.
 @immutable
@@ -127,6 +155,10 @@ final List<Den> denDiProva = [
   Den(id: 'serra', nome: 'Serra', palco: _personeDiProva, inAscolto: 12, codaPiena: true),
   // Il DEN del richiamo (015 K7): pubblico.
   Den(id: 'famiglia', nome: 'Famiglia', palco: _personeDiProva.sublist(0, 2), inAscolto: 5),
+  // Il DEN privato dell'invito (030): si entra solo su invito, fra il pubblico (D-041).
+  Den(id: 'cena', nome: 'Cena senza fretta', palco: _personeDiProva.sublist(2, 5), inAscolto: 5, suInvito: true),
+  // Un DEN privato con il palco pieno: la coda usa lo stesso «Mettiti in coda» (nessuna schermata nuova).
+  Den(id: 'salotto', nome: 'Salotto', palco: _personeDiProva, inAscolto: 3, suInvito: true),
 ];
 
 class StatoProto extends ChangeNotifier {
@@ -207,6 +239,12 @@ class StatoProto extends ChangeNotifier {
     onboardingFatto = true;
     account = Account.ascoltatore;
     azzera(const Rotta(Pagina.elenco));
+    // L'invito per chi non ha BA (030 I6): dopo l'accesso si entra nel DEN, fra il pubblico, senza passare dall'elenco.
+    if (invitoPendente) {
+      invitoPendente = false;
+      final d = denPerId('cena');
+      if (d != null) entraPerInvito(d, 'marta');
+    }
   }
 
   /// «Esci da BA»: si torna al login; lo stato riparte.
@@ -221,6 +259,10 @@ class StatoProto extends ChangeNotifier {
     postoDen = null;
     posto = Posto.nessuno;
     banner = null;
+    invitoDa = null;
+    invitoDen = null;
+    fuoriApp = FuoriApp.nessuna;
+    invitoPendente = false;
     schermoBloccato = false;
     bloccate = [..._bloccateDiProva];
     azzera(const Rotta(Pagina.email));
@@ -295,6 +337,8 @@ class StatoProto extends ChangeNotifier {
   /// Esce dalla stanza e torna all'elenco. Chi è in coda **resta in coda** (015: «Le tue code»).
   void esciDallaStanza() {
     denCorrente = null;
+    invitoDa = null;
+    invitoDen = null;
     _azzeraStanza();
     if (corrente.pagina == Pagina.stanza) {
       indietro();
@@ -537,11 +581,96 @@ class StatoProto extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Simulazione «arriva un richiamo»: arriva solo da chi ti ha scelto e solo per DEN pubblici (proposta 030).
-  void arrivaUnRichiamo() {
-    banner = const BannerProto(TipoBanner.richiamo, 'famiglia');
+  /// Il richiamo (030 C1–C5): parte **spento**; un consenso per persona, in due versi.
+  bool richiamoAcceso = false;
+
+  /// Chi avviso io quando entro in un DEN pubblico (spento di partenza, uno per persona aggiunta).
+  List<String> avvisoA = [];
+
+  /// Chi ha scelto di avvisarmi, e se io accetto l'avviso (come in C5).
+  Map<String, bool> avvisoDa = {'marta': true, 'davide': false};
+
+  void impostaRichiamo(bool v) {
+    richiamoAcceso = v;
     notifyListeners();
   }
+
+  void impostaAvvisoA(String id, bool v) {
+    avvisoA = [for (final a in avvisoA) if (a != id) a, if (v) id];
+    notifyListeners();
+  }
+
+  void impostaAvvisoDa(String id, bool v) {
+    avvisoDa = {...avvisoDa, id: v};
+    notifyListeners();
+  }
+
+  /// La persona che può far arrivare un richiamo: ha scelto di avvisarmi e io accetto, e il richiamo è acceso.
+  String? get personaDelRichiamo {
+    if (!richiamoAcceso) return null;
+    for (final e in avvisoDa.entries) {
+      if (e.value) return e.key;
+    }
+    return null;
+  }
+
+  /// Simulazione «una persona che ho scelto entra in un DEN pubblico»: il banner K7. Vale solo per DEN
+  /// pubblici («Famiglia» lo è) e solo per chi ha il consenso acceso (proposta 030).
+  void arrivaUnRichiamo() {
+    final chi = personaDelRichiamo;
+    if (chi == null) return;
+    banner = BannerProto(TipoBanner.richiamo, 'famiglia', chi: chi);
+    notifyListeners();
+  }
+
+  // ------------------------------------------------------------- gli inviti (030 I1–I6)
+
+  /// Ho BA: l'invito arriva come banner (la notifica a schermo bloccato, I1); al tocco, il foglio (I2, I3, I3 bis).
+  void arrivaInvito(StatoInvito s) {
+    banner = BannerProto(TipoBanner.invito, 'cena', chi: 'marta', invito: s);
+    notifyListeners();
+  }
+
+  /// L'invito è stato accettato: chi ha invitato e dove, per la riga «Sei entrato su invito di Marta».
+  String? invitoDa;
+  String? invitoDen;
+
+  /// «Entra» (I2) o «Passa» (K6): si entra nel DEN privato **come pubblico** (D-041, D-006), mai sul palco.
+  void entraPerInvito(Den d, String chi) {
+    if (denCorrente == null) {
+      entraInDen(d);
+    } else if (denCorrente!.id != d.id) {
+      passaA(d);
+    }
+    invitoDa = chi;
+    invitoDen = d.id;
+    notifyListeners();
+  }
+
+  /// Non ho BA: la mail e la pagina d'arrivo stanno **fuori dall'app**; poi l'accesso del 013 e l'ingresso diretto.
+  FuoriApp fuoriApp = FuoriApp.nessuna;
+  bool invitoPendente = false;
+
+  void arrivaInvitoSenzaBa() {
+    esciDaBa();
+    // Chi non ha BA è una persona nuova: ripassa dall'accesso intero (A1–A5, 013).
+    onboardingFatto = false;
+    invitoPendente = true;
+    fuoriApp = FuoriApp.mail;
+    notifyListeners();
+  }
+
+  void vaiAllaPagina() {
+    fuoriApp = FuoriApp.pagina;
+    notifyListeners();
+  }
+
+  void continuaConLaEmail() {
+    fuoriApp = FuoriApp.nessuna;
+    notifyListeners();
+  }
+
+  bool get loggato => nickname.isNotEmpty;
 
   // ------------------------------------------------------------- creare e gestire un DEN (014)
 
@@ -700,6 +829,39 @@ class StatoProto extends ChangeNotifier {
     notifyListeners();
   }
 
+  // ------------------------------------------------------------- le persone (024c, 030)
+
+  /// Gli id delle persone aggiunte (`persone.dart`): l'aggiunta è privata, l'altra persona non riceve un avviso.
+  List<String> aggiunte = [];
+
+  void aggiungiPersona(String id) {
+    if (aggiunte.contains(id)) return;
+    aggiunte = [...aggiunte, id];
+    notifyListeners();
+  }
+
+  PermessoRubrica permessoRubrica = PermessoRubrica.nonChiesto;
+
+  void impostaPermessoRubrica(PermessoRubrica p) {
+    permessoRubrica = p;
+    notifyListeners();
+  }
+
+  Visibilita visibilita = Visibilita.conosco;
+
+  void impostaVisibilita(Visibilita v) {
+    visibilita = v;
+    notifyListeners();
+  }
+
+  /// La ricerca non riesce (030 P6): provocata dal pannello, «Riprova» la fa riuscire.
+  bool ricercaFallisce = false;
+
+  void cambiaRicercaFallisce() {
+    ricercaFallisce = !ricercaFallisce;
+    notifyListeners();
+  }
+
   // ------------------------------------------------------------- le persone bloccate
 
   List<Persona> bloccate = [..._bloccateDiProva];
@@ -720,10 +882,16 @@ class StatoProto extends ChangeNotifier {
 /// che al tocco porta dove deve. Non scompare da solo: niente timer.
 @immutable
 class BannerProto {
-  const BannerProto(this.tipo, this.den);
+  const BannerProto(this.tipo, this.den, {this.chi, this.invito});
 
   final TipoBanner tipo;
   final String den;
+
+  /// Chi manda il richiamo (id di `persone.dart`).
+  final String? chi;
+
+  /// Per un invito: valido, scaduto o annullato.
+  final StatoInvito? invito;
 }
 
 /// Mette lo stato a disposizione di tutto l'albero; chi lo legge con [of] si

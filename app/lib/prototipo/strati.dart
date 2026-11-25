@@ -9,6 +9,8 @@ import '../design_system/schermata_copertura.dart';
 import '../design_system/tokens.dart';
 import '../design_system/touchable.dart';
 import 'fogli_coda.dart';
+import 'fogli_invito.dart';
+import 'persone.dart';
 import 'stato.dart';
 import 'testi.dart';
 
@@ -20,7 +22,12 @@ class BannerNotifica extends StatelessWidget {
 
   static String testo(StatoProto stato, BannerProto b) {
     final nome = stato.denPerId(b.den)?.nome ?? '';
-    return b.tipo == TipoBanner.postoLibero ? T.bannerPosto(nome) : T.bannerRichiamo(T.ciccio, nome);
+    final chi = contattoPerId(b.chi ?? '')?.nome ?? T.ciccio;
+    return switch (b.tipo) {
+      TipoBanner.postoLibero => T.bannerPosto(nome),
+      TipoBanner.richiamo => T.bannerRichiamo(chi, nome),
+      TipoBanner.invito => T.bannerInvito(nome, chi),
+    };
   }
 
   @override
@@ -59,6 +66,11 @@ void usaBanner(StatoProto stato) {
   if (b == null) return;
   stato.togliBanner();
   final d = stato.denPerId(b.den);
+  if (b.tipo == TipoBanner.invito) {
+    final c = stato.chiaveNavigatore.currentContext;
+    if (c != null) apriInvito(c, stato, b);
+    return;
+  }
   if (d == null || stato.denCorrente?.id == d.id) return;
   if (stato.denCorrente == null) {
     stato.entraInDen(d);
@@ -69,7 +81,7 @@ void usaBanner(StatoProto stato) {
   apriPassaDiQua(
     contesto,
     verso: d,
-    titolo: b.tipo == TipoBanner.postoLibero ? T.passaTitolo(d.nome) : T.richiamoTitolo(T.ciccio, d.nome),
+    titolo: b.tipo == TipoBanner.postoLibero ? T.passaTitolo(d.nome) : T.richiamoTitolo(contattoPerId(b.chi ?? '')?.nome ?? T.ciccio, d.nome),
     primo: b.tipo == TipoBanner.postoLibero ? T.passaP1 : T.richiamoP1,
   );
 }

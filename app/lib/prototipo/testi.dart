@@ -180,7 +180,7 @@ abstract final class T {
   // Il posto offerto (K4, K4 bis, K5) e «Vuoi passare di qua?» (K6)
   static const String postoOfferto = 'Si è liberato un posto sul palco. Hai pochi secondi per salire. Salirai a microfono spento.';
   static const String postoScaduto = 'Il posto è passato alla persona dopo di te. Resti in coda.';
-  static String bannerPosto(String den) => 'Si è liberato un posto in $den';
+  static String bannerPosto(String den) => '$den · Si è liberato un posto sul palco. Hai pochi secondi per salire.';
   static String passaTitolo(String den) => 'Si è liberato un posto in $den';
   static const String passaP1 = 'Vuoi passare di qua? Salirai a microfono spento.';
   static const String passaP2 = 'Hai pochi secondi per decidere.';
@@ -197,7 +197,7 @@ abstract final class T {
   static const String lineaPersaSotto = 'Il microfono è spento.';
   static const String sentoDiNuovo = 'Sto riprovando…';
   static const String ritornoP2 = 'Sei di nuovo in linea. Il tuo posto c\'era: sei sul palco, a microfono spento.';
-  static const String ritornoP3 = 'Sei di nuovo in linea. Il tuo posto è stato preso: sei fra il pubblico.';
+  static const String ritornoP3 = 'Sei di nuovo in linea. Il tuo posto sul palco è stato preso: sei fra il pubblico.';
 
   // ------------------------------------------------------------- creare un DEN (014)
   static const String creaNome = 'Crea un DEN';
@@ -281,21 +281,22 @@ abstract final class T {
   static const String micNegata = 'Negato — senza il microfono non puoi parlare';
   static const String apri = 'Apri';
   static const String micFaseTitolo = 'Senza microfono non posso farti parlare';
-  static const String micFaseP1 = 'Il permesso del microfono è negato. Lo cambi nelle impostazioni del telefono.';
+  static const String micFaseP1 =
+      'Il permesso è chiuso nelle impostazioni del telefono, non qui. Puoi restare ad ascoltare quanto vuoi: per gli altri non cambia niente.';
   static const String apriLeImpostazioni = 'Apri le impostazioni';
   static const String restoAdAscoltare = 'Resto ad ascoltare';
 
   // ------------------------------------------------------------- l'account chiuso (027 B1, B1 bis, B2)
-  static const String chiusoTitolo = 'Account chiuso';
-  static const String chiusoP1 = 'Il tuo account è stato chiuso dalla moderazione.';
-  static const String chiusoP2 = 'Se pensi sia un errore, puoi chiedere una revisione.';
-  static const String sospesoTitolo = 'Blocco temporaneo';
-  static const String sospesoP1 = 'Il tuo account è bloccato per un po\'.';
+  static const String chiusoTitolo = 'Questo account non può più usare BA';
+  static const String chiusoP1 = 'Un contenuto non rispetta le regole di BA.';
+  static const String chiusoP2 = 'Se pensi che sia un errore, puoi chiedere una revisione.';
+  static const String sospesoTitolo = 'L\'accesso a BA è sospeso';
+  static const String sospesoP1 = 'Un contenuto non rispetta le regole di BA.';
   static const String sospesoRiga = 'Potrai rientrare il 21 novembre alle 21:40.';
-  static const String sospesoP2 = 'Se pensi sia un errore, puoi chiedere una revisione.';
+  static const String sospesoP2 = 'Se pensi che sia un errore, puoi chiedere una revisione.';
   static const String richiediRevisione = 'Richiedi revisione';
-  static const String revisioneTitolo = 'Revisione richiesta';
-  static const String revisioneP1 = 'Abbiamo ricevuto la tua richiesta. La esaminiamo e ti scriviamo.';
+  static const String revisioneTitolo = 'Questo account non può più usare BA';
+  static const String revisioneP1 = 'Abbiamo ricevuto la richiesta di revisione. Ti scriviamo all\'email dell\'account.';
   static const String richiestaInviata = 'Richiesta inviata';
 
   // ------------------------------------------------------------- lo schermo bloccato (027 L1–L4, D-050)
@@ -309,14 +310,99 @@ abstract final class T {
   static const String inPausaFrase = 'In pausa';
   static const String inDirettaFrase = 'In diretta';
 
+  // ------------------------------------------------------------- aggiungere persone (030 P1–P6)
+  static const String aggiungiPersone = 'Aggiungi persone';
+  static const String suggeriti = 'Chi hai frequentato di più';
+  static String risultati(int n) => n == 1 ? '1 risultato' : '$n risultati';
+  static String stessoNome(String nome) => 'Due persone si chiamano $nome: l\'alias le distingue.';
+  static String nessunRisultato(String q) => 'Nessuna persona trovata per «$q».';
+  static const String senzaBa = 'Se non ha BA, puoi invitarla con un link: entrerà ad ascoltare.';
+  static const String invitaConUnLink = 'Invita con un link';
+  static const String aggiungi = 'Aggiungi';
+  static const String aggiunta = 'Aggiunta';
+  static const String erroreRete = 'Non riusciamo a cercare adesso. Controlla la connessione e riprova.';
+  static const String dallaRubrica = 'Dalla rubrica';
+  static const String linkTitolo = 'Invita con un link';
+  static const String linkFrase = 'Mandi un link: chi lo apre entra ad ascoltare, anche senza BA.';
+
+  // La rubrica (030 R1–R3)
+  static const String rubricaTitolo = 'Trovare chi conosci';
+  static const String rubricaP1 = 'BA può leggere la rubrica per mostrarti chi c\'è già su BA. Si usa solo per questo.';
+  static const String rubricaP2 = 'Puoi cambiare idea quando vuoi, dalle impostazioni del telefono.';
+  static const String consentiAccesso = 'Consenti l\'accesso';
+  static const String rubricaNonCollegata = 'Rubrica non collegata';
+  static const String rubricaR2P1 = 'Va bene così. Puoi cercare le persone per nickname, alias, email o numero.';
+  static const String rubricaR2P2 = 'Se cambi idea, lo trovi nelle impostazioni del telefono.';
+  static const String cercaUnaPersona = 'Cerca una persona';
+  static const String suBa = 'Su BA';
+  static const String nonAncoraSuBa = 'Non ancora su BA';
+  static const String dallaTuaRubrica = 'dalla tua rubrica';
+
+  // «Chi può trovarmi» (030 V1–V2)
+  static const String chiPuoTrovarmi = 'Chi può trovarmi';
+  static const String visNessuno = 'Nessuno';
+  static const String visNessunoFrase = 'Nessuno ti trova. Chi vuole invitarti non può farlo; tu puoi ancora cercare e invitare.';
+  static const String visConosco = 'Chi conosco';
+  static const String visConoscoFrase = 'Ti trovano le persone che hai aggiunto e quelle che hanno il tuo numero o la tua email.';
+  static const String visTutti = 'Tutti';
+  static const String visTuttiFrase = 'Ti trova chiunque cerchi il tuo nickname o il tuo alias. Si vedono solo nickname e alias.';
+
+  // Il richiamo (030 C1–C5)
+  static const String richiamo = 'Richiamo';
+  static const String richiamoSpentoFrase =
+      'Un avviso quando una persona che hai scelto entra in un DEN pubblico e ti chiede di passare. Parte spento.';
+  static const String richiamoAccesoFrase =
+      'Un avviso quando una persona che hai scelto entra in un DEN pubblico e ti chiede di passare.';
+  static const String chiPuoiAvvisare = 'Chi puoi avvisare';
+  static const String chiPuoiAvvisareSotto = 'Persone che avvisi quando entri in un DEN pubblico';
+  static const String chiPuoAvvisarti = 'Chi può avvisarti';
+  static const String chiPuoAvvisartiSotto = 'Persone che hanno scelto di avvisarti';
+  static const String richiamoRassicura = 'Nessuno sa che sei online o in un DEN se non lo scegli tu.';
+  static const String avvisareFrase =
+      'Una persona che scegli riceve un avviso quando entri in un DEN pubblico. Chi non scegli non sa nulla di te.';
+  static String avvisareTitolo(String nome) => 'Avvisare $nome?';
+  static String avvisareConferma(String nome) =>
+      '$nome riceve un avviso solo quando entri in un DEN pubblico. Non vede se sei online. Puoi toglierlo quando vuoi.';
+  static String avvisaNome(String nome) => 'Avvisa $nome';
+  static const String avvisartiFrase = 'Solo chi ha scelto di avvisarti. Tu decidi se ricevere l\'avviso.';
+  static const String avvisartiNota = 'Non vedi quando queste persone sono online.';
+  static const String nessunaPersona = 'Nessuna persona aggiunta: aggiungile da «Aggiungi persone».';
+
+  // ------------------------------------------------------------- «Sei stato invitato» (030 I1–I6)
+  static String bannerInvito(String den, String chi) => '$den · $chi ti ha invitato.';
+  static String invitoTitolo(String chi, String den) => '$chi ti ha invitato a $den';
+  static const String invitoFrase = 'Entri ad ascoltare.';
+  static const String entra = 'Entra';
+  static const String invitoScadutoTitolo = 'Questo invito è scaduto';
+  static String invitoScadutoFrase(String chi) => 'Chiedi a $chi di invitarti di nuovo.';
+  static const String invitoAnnullatoTitolo = 'Questo invito non è più valido';
+  static const String invitoAnnullatoFrase = 'Chi lo ha mandato lo ha annullato.';
+  static const String invitoPassaP1 = 'Vuoi passare di qua? Entri ad ascoltare.';
+  static String seiEntratoSuInvito(String chi) => 'Sei entrato su invito di $chi. Ascolti.';
+
+  // Fuori dall'app (I4, I5): la mail e la pagina d'arrivo
+  static const String fuoriApp = 'fuori dall\'app · simulazione';
+  static const String mailMarcatore = 'Email · da BA';
+  static const String mailFrase = 'BA è un posto dove si parla dal vivo. Per entrare ad ascoltare ti basta questa email.';
+  static const String apriLInvito = 'Apri l\'invito';
+  static const String paginaMarcatore = 'Pagina web · fuori dall\'app';
+  static const String paginaP1 = 'Per entrare crei un account da ascoltatore con la tua email. Non serve altro.';
+  static const String paginaP2 = 'Per parlare, ti chiederemo il numero e il consenso quando vorrai salire sul palco.';
+  static const String continuaConLaEmail = 'Continua con la email';
+
   // ------------------------------------------------------------- simulazioni (strumento, non è il prodotto)
+  static const String simInvitoBa = 'arriva un invito (ho BA)';
+  static const String simInvitoSenzaBa = 'arriva un invito (non ho BA)';
+  static const String simInvitoScaduto = 'l\'invito è scaduto';
+  static const String simInvitoAnnullato = 'l\'invito è annullato';
   static const String simulazioniTitolo = 'Simulazioni';
   static const String simParla = 'qualcuno parla';
   static const String simLiberaPosto = 'si libera un posto';
   static const String simPostoScade = 'il posto scade';
   static const String simPerdoLinea = 'perdo la linea';
   static const String simTornoInLinea = 'torno in linea';
-  static const String simRichiamo = 'arriva un richiamo';
+  static const String simRichiamo = 'una persona che ho scelto entra in un DEN pubblico';
+  static const String simRicerca = 'la ricerca non riesce';
   static const String simRichiamoNota = 'il richiamo arriva solo da chi ti ha scelto e solo per DEN pubblici (proposta 030)';
   static const String simChiuso = 'l\'account viene chiuso';
   static const String simSospeso = 'blocco temporaneo';

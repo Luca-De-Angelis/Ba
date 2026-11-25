@@ -135,7 +135,8 @@ Future<void> apriCodaPiena(BuildContext context) => showBaFoglio<void>(
 
 /// «Vuoi passare di qua?» (K6): si partecipa a un solo DEN alla volta (D-042). [titolo] e
 /// [primo] dicono perché (un posto che si libera, un richiamo); «Passa» porta nel DEN.
-Future<void> apriPassaDiQua(BuildContext context, {required Den verso, required String titolo, required String primo}) async {
+Future<void> apriPassaDiQua(BuildContext context,
+    {required Den verso, required String titolo, required String primo, String? invitoDa}) async {
   final stato = ProtoScope.leggi(context);
   final passa = await showBaFoglio<bool>(
     context,
@@ -147,5 +148,11 @@ Future<void> apriPassaDiQua(BuildContext context, {required Den verso, required 
       restaQui: azioneFoglio(T.restaQui, () => Navigator.of(foglio).pop(false)),
     ),
   );
-  if (passa == true) stato.passaA(verso);
+  if (passa != true) return;
+  // Un invito accettato: si entra fra il pubblico e la stanza lo dice.
+  if (invitoDa != null) {
+    stato.entraPerInvito(verso, invitoDa);
+  } else {
+    stato.passaA(verso);
+  }
 }

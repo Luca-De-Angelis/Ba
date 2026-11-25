@@ -28,6 +28,7 @@ import 'fogli_creazione.dart';
 import 'fogli_gestisci.dart';
 import 'fogli_partecipante.dart';
 import 'pagina_base.dart';
+import 'persone.dart';
 import 'stato.dart';
 import 'testi.dart';
 import 'util.dart';
@@ -357,6 +358,14 @@ class _PaginaStanzaState extends State<PaginaStanza> {
               ),
             ),
           ),
+          if (stato.invitoDen == den.id && stato.invitoDa != null)
+            Padding(
+              padding: EdgeInsets.fromLTRB(margine, BaSpazioTokens.s, margine, 0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Frase(T.seiEntratoSuInvito(contattoPerId(stato.invitoDa!)?.nome ?? ''), piccola: true),
+              ),
+            ),
           if (den.creatoDaMe)
             Padding(
               padding: EdgeInsets.fromLTRB(margine, BaSpazioTokens.s, margine, 0),
