@@ -26,15 +26,13 @@ class ProtoNavigatore extends StatefulWidget {
 }
 
 class _ProtoNavigatoreState extends State<ProtoNavigatore> {
-  final GlobalKey<NavigatorState> _navigatore = GlobalKey<NavigatorState>();
-
   @override
   Widget build(BuildContext context) {
     final stato = ProtoScope.of(context);
     return NavigatorPopHandler<void>(
-      onPopWithResult: (_) => _navigatore.currentState?.maybePop(),
+      onPopWithResult: (_) => ProtoScope.leggi(context).chiaveNavigatore.currentState?.maybePop(),
       child: Navigator(
-        key: _navigatore,
+        key: stato.chiaveNavigatore,
         pages: [for (final r in stato.pila) _PaginaRotta(r)],
         // La pagina in cima è stata tolta dal Navigator (gesto «indietro»): la pila segue.
         onDidRemovePage: (pagina) => stato.rimossa((pagina as _PaginaRotta).rotta),

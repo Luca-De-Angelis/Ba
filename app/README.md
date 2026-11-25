@@ -57,4 +57,4 @@ La galleria sta in `lib/galleria/`, usa solo i token e i suoi testi sono fissi (
 
 ## Prototipo navigabile (task 024)
 
-Da `app/`: `flutter run -d chrome -t lib/prototipo/main_prototipo.dart`. Parte dal login e si naviga come un'app, con dati finti (codice di prova `123456`), dentro una cornice da telefono; fuori dalla cornice c'è il pannello dello strumento. Il codice è in `lib/prototipo/`; non tocca il design system né la galleria. Vedi [`docs/handoff/prototipo.md`](../docs/handoff/prototipo.md).
+Da `app/`: `flutter run -d chrome -t lib/prototipo/main_prototipo.dart`. Parte dal login e si naviga come un'app, con dati finti (codice di prova `123456`), dentro una cornice da telefono; fuori dalla cornice c'è il pannello dello strumento, con le **simulazioni** degli eventi (qualcuno parla, si libera un posto, perdo la linea, l'account viene chiuso, il microfono negato, lo schermo bloccato…), ognuna un tasto a un colpo, senza timer. Il codice è in `lib/prototipo/`; non tocca il design system né la galleria. Vedi [`docs/handoff/prototipo.md`](../docs/handoff/prototipo.md).

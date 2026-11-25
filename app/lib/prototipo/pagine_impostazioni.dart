@@ -7,7 +7,7 @@
 // «Torna ascoltatore» ritira il consenso a parlare (D-003, D-040): chi parla esce
 // dalla stanza. Dopo il cambio non c'è un nuovo accesso: si resta nell'app (ipotesi
 // 17 di `aperte.md`: «può servire un nuovo accesso»). Il permesso del microfono
-// negato arriva con il 024b.
+// negato (simulazione del pannello) mostra «Negato» con «Apri» (001).
 //
 // «Sblocca» toglie la persona dall'elenco subito: lo stato «sblocco in corso» del
 // design ha bisogno del tempo, e senza timer non c'è.
@@ -41,7 +41,18 @@ class PaginaImpostazioni extends StatelessWidget {
           children: [
             // Di sola lettura: nel prototipo la lingua è una e il permesso è dato.
             BaRigaImpostazione.valore(titolo: T.lingua, valore: T.italiano),
-            BaRigaImpostazione.valore(titolo: T.microfono, valore: T.consentito),
+            // Il permesso lo cambia il pannello; «Apri» simula il ritorno dalle impostazioni del telefono
+            // con il permesso dato.
+            if (stato.permessoMic)
+              BaRigaImpostazione.valore(titolo: T.microfono, valore: T.consentito)
+            else
+              BaRigaImpostazione.negata(
+                titolo: T.microfono,
+                frase: T.micNegata,
+                apri: T.apri,
+                apriSemanticsLabel: '${T.apri} ${T.microfono}',
+                onApri: () => stato.impostaPermessoMic(true),
+              ),
             BaRigaImpostazione.valore(
               titolo: T.personeBloccate,
               valore: T.nPersone(stato.bloccate.length),

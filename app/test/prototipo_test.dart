@@ -167,8 +167,15 @@ void main() {
       await _avvia(tester);
       await _accedi(tester);
       final righe = tester.widgetList<BaRigaDen>(find.byType(BaRigaDen)).toList();
-      expect(righe.map((r) => r.nome), ['Cucina di notte', 'Fra due turni', 'Radio insonni']);
-      expect(righe.map((r) => r.stato), [BaStatoRigaDen.viva, BaStatoRigaDen.viva, BaStatoRigaDen.spenta]);
+      expect(righe.map((r) => r.nome), ['Cucina di notte', 'Fra due turni', 'Radio insonni', 'Tavolo lungo', 'Serra', 'Famiglia']);
+      expect(righe.map((r) => r.stato), [
+        BaStatoRigaDen.viva,
+        BaStatoRigaDen.viva,
+        BaStatoRigaDen.spenta,
+        BaStatoRigaDen.viva,
+        BaStatoRigaDen.viva,
+        BaStatoRigaDen.viva,
+      ]);
       await _tocca(tester, 'Cucina di notte');
       expect(find.text('Sali sul palco'), findsOneWidget);
       expect(find.text('5 SUL PALCO'), findsOneWidget);
@@ -397,22 +404,25 @@ void main() {
   });
 
   group('«Crea un DEN»', () {
-    testWidgets('da ascoltatore apre «Per creare un DEN bisogna diventare partecipante» e finisce partecipante', (tester) async {
+    testWidgets('da ascoltatore apre «Per creare un DEN bisogna diventare partecipante», poi i passi della creazione', (tester) async {
       await _avvia(tester);
       await _accedi(tester);
       await _tocca(tester, 'Crea un DEN');
       expect(find.text('Per creare un DEN bisogna diventare partecipante'), findsOneWidget);
       await _diventaPartecipante(tester, 'Acconsento e continuo');
+      // L'account è partecipante e, dal 024b, il foglio dei passi della creazione si apre subito dopo.
       expect(find.text('SEI PARTECIPANTE'), findsOneWidget);
-      expect(find.byType(BaFoglio), findsNothing);
+      expect(find.text('Che DEN vuoi creare?'), findsOneWidget);
     });
 
-    testWidgets('da partecipante è inattivo finché il 024b non collega i passi', (tester) async {
+    testWidgets('da partecipante «Crea un DEN» è attivo e apre i passi della creazione (024b)', (tester) async {
       await _avvia(tester);
       await _accedi(tester);
       await _tocca(tester, 'Crea un DEN');
       await _diventaPartecipante(tester, 'Acconsento e continuo');
-      expect(_pillola(tester, 'Crea un DEN').onTap, isNull);
+      await _toccaNelFoglio(tester, 'Non ora');
+      await _sale(tester);
+      expect(_pillola(tester, 'Crea un DEN').onTap, isNotNull);
     });
   });
 
