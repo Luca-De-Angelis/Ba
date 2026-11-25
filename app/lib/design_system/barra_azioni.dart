@@ -1,7 +1,7 @@
 // BaBarraAzioni: la barra in fondo allo schermo (task 002, punto 12). Tre posti,
 // sempre: uno primario e due secondari. Dalla quarta azione compare «Altro»
 // (48 × 48), che chiama `onAltro`: il foglio con le azioni rimanenti non è
-// qui (arriva con BaFoglio). **Task 034:** un'azione segnata `inAltro` va in
+// qui (arriva con BaFoglio). **Task 024a:** un'azione segnata `inAltro` va in
 // «Altro» qualunque sia la sua posizione, e «Altro» compare se ce n'è almeno una
 // (015 e 027: un ascoltatore ha la primaria, «Esci» e «Altro»). Chi non usa
 // `inAltro` non vede nessun cambiamento; `BaBarraAzioni.eccedenti` dà le azioni
@@ -59,7 +59,7 @@ class BaAzioneBarra {
   /// microfono» è `attiva`.
   final BaVariantePillola? variante;
 
-  /// Va in «Altro» **qualunque sia la sua posizione** (task 034, 015 e 027: un
+  /// Va in «Altro» **qualunque sia la sua posizione** (task 024a, 015 e 027: un
   /// ascoltatore ha la primaria, «Esci» e «Altro» con «Impostazioni» dentro). «Altro»
   /// compare se ce n'è almeno una, oltre alla regola della quarta azione. Non può
   /// esserlo né la primaria né un'azione fissa (assert in debug, come per i posti).
@@ -84,8 +84,7 @@ class BaBarraAzioni extends StatelessWidget {
 
   final List<BaAzioneBarra> azioni;
 
-  /// Quello che «Altro» fa: apre il foglio con [eccedenti] (le azioni oltre le tre e
-  /// quelle segnate `inAltro`, nell'ordine in cui sono date).
+  /// Quello che «Altro» fa: apre il foglio con [eccedenti].
   final VoidCallback? onAltro;
 
   /// Etichetta di «Altro» per lo screen reader, dal chiamante.
