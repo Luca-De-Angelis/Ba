@@ -261,6 +261,14 @@ class StatoProto extends ChangeNotifier {
     return [...d.palco];
   }
 
+  /// Chi prende il posto che si libera o che si perde: la prima persona di prova che non è sul palco.
+  Persona? _rimpiazzo() {
+    for (final p in _personeDiProva) {
+      if (!palco.any((x) => x.id == p.id)) return p;
+    }
+    return null;
+  }
+
   void _azzeraStanza() {
     palco = const [];
     ruolo = Ruolo.pubblico;
@@ -463,9 +471,9 @@ class StatoProto extends ChangeNotifier {
       posto = Posto.scaduto;
       if (banner != null && banner!.tipo == TipoBanner.postoLibero) banner = null;
       // Il posto passa a un'altra persona: sul palco torna pieno.
-      final d = denPerId(postoDen ?? '');
-      if (d != null && denCorrente?.id == d.id && palco.length < palcoMax) {
-        palco = [...palco, if (d.palco.isNotEmpty) d.palco.last];
+      if (denCorrente?.id == postoDen && palco.length < palcoMax) {
+        final r = _rimpiazzo();
+        if (r != null) palco = [...palco, r];
       }
     }
     notifyListeners();
@@ -497,6 +505,10 @@ class StatoProto extends ChangeNotifier {
     lineaPersa = false;
     if (postoPreso) {
       palco = [for (final p in palco) if (p.id != 'io') p];
+      // Il posto è stato preso: il palco è di nuovo pieno.
+      for (var r = _rimpiazzo(); r != null && palco.length < palcoMax; r = _rimpiazzo()) {
+        palco = [...palco, r];
+      }
       ruolo = Ruolo.pubblico;
       ritorno = Ritorno.postoPreso;
     } else {

@@ -187,9 +187,10 @@ abstract final class T {
   static const String passa = 'Passa';
   static const String restaQui = 'Resta qui';
   static String bannerRichiamo(String chi, String den) => '$chi è entrato nel DEN $den · vuoi passare?';
-  static String richiamoTitolo(String den) => '$den ti ha chiamato';
+  static String richiamoTitolo(String chi, String den) => '$chi è entrato nel DEN $den';
   static const String richiamoP1 = 'Vuoi passare di qua? Entri ad ascoltare.';
   static const String ciccio = 'Ciccio';
+  static const String seiInCoda = 'Sei in coda';
 
   // La linea persa (015 P1–P3)
   static const String lineaPersaBanda = 'Hai perso la linea. Il posto resta tuo ancora per un momento.';
