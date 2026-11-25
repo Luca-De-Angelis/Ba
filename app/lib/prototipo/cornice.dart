@@ -262,7 +262,7 @@ class _Pannello extends StatelessWidget {
         // I codici di prova: nessun codice vero, e il pannello non è il prodotto.
         Text(T.strumentoCodici, style: BaTestoTokens.minore.copyWith(color: BaColorTokens.testoSecondo)),
         const SizedBox(height: BaSpazioTokens.l),
-        _Simulazioni(stato: stato),
+        const _Simulazioni(),
         const SizedBox(height: BaSpazioTokens.l),
         Text(
           '${stato.account.name} · ${stato.corrente.pagina.name}'
@@ -300,13 +300,52 @@ class _Comando extends StatelessWidget {
 /// Le simulazioni: un tasto per evento, **a un colpo**, senza timer. Ciò che nei documenti scade
 /// da solo ha un secondo tasto («il posto scade»). Un tasto senza niente da simulare è inattivo e
 /// la sua ragione sta scritta sotto.
-class _Simulazioni extends StatelessWidget {
-  const _Simulazioni({required this.stato});
+class _Simulazioni extends StatefulWidget {
+  const _Simulazioni();
 
-  final StatoProto stato;
+  @override
+  State<_Simulazioni> createState() => _SimulazioniState();
+}
+
+class _SimulazioniState extends State<_Simulazioni> {
+  // I tasti dipendono da pochi fatti dello stato: se nessuno è cambiato si riusa lo stesso albero e
+  // non si ricostruiscono una ventina di pillole a ogni tocco nella cornice.
+  String? _firma;
+  Widget? _albero;
 
   @override
   Widget build(BuildContext context) {
+    final stato = ProtoScope.of(context);
+    final firma = [
+      stato.parla != null,
+      stato.denCorrente != null,
+      stato.palco.any((p) => p.id != 'io'),
+      stato.posto,
+      stato.puoLiberarePosto,
+      stato.puoScadere,
+      stato.lineaPersa,
+      stato.puoPerdereLinea,
+      stato.banner?.tipo,
+      stato.banner?.invito,
+      stato.chiusura,
+      stato.creazioneFallisce,
+      stato.permessoMic,
+      stato.schermoBloccato,
+      stato.puoBloccareLoSchermo,
+      stato.capacitaAspettare,
+      stato.personaDelRichiamo,
+      stato.ricercaFallisce,
+      stato.loggato,
+      stato.fuoriApp,
+    ].join('|');
+    if (firma != _firma || _albero == null) {
+      _firma = firma;
+      _albero = _costruisci(stato);
+    }
+    return _albero!;
+  }
+
+  Widget _costruisci(StatoProto stato) {
     final ragioni = <String>[];
     VoidCallback? se(bool vale, VoidCallback azione, String ragione) {
       if (vale) return azione;

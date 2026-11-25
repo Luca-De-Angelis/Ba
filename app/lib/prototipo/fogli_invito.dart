@@ -1,7 +1,7 @@
 // «Sei stato invitato» per chi ha BA (task 024c, prototipo 030: I2, I3, I3 bis). Il banner (la
 // notifica dell'invito, I1) porta al foglio `BaFoglioInvito`: valido («Entra» / «Non ora»), scaduto o
 // annullato («Ho capito»). Entrando si sta **fra il pubblico**, mai sul palco, nel DEN privato (D-041,
-// D-006). Se si è già in un DEN, l'invito apre «Vuoi passare di qua?» (K6, D-042) invece del foglio.
+// D-006). Se si è già in una stanza, l'invito apre «Vuoi passare di qua?» (K6, D-042) invece del foglio.
 import 'package:flutter/widgets.dart';
 
 import '../design_system/foglio.dart';
@@ -42,7 +42,7 @@ Future<void> apriInvito(BuildContext contesto, StatoProto stato, BannerProto b) 
     case StatoInvito.valido:
       if (stato.denCorrente?.id == d.id) return;
       if (stato.denCorrente != null) {
-        // Già in un DEN: si partecipa a uno solo alla volta (D-042).
+        // Già in una stanza: si partecipa a uno solo alla volta (D-042).
         await apriPassaDiQua(contesto, verso: d, titolo: T.invitoTitolo(chi, d.nome), primo: T.invitoPassaP1, invitoDa: b.chi);
         return;
       }
