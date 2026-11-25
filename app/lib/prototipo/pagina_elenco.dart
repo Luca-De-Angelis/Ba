@@ -47,6 +47,8 @@ class PaginaElenco extends StatelessWidget {
                     : (d.palco.isEmpty ? BaStatoRigaDen.spenta : BaStatoRigaDen.viva),
                 onTap: () => stato.entraInDen(d),
               ),
+            // L'ingresso di «Aggiungi persone»: il «+» di D-039 non è disegnato (proposta del 024c).
+            BaRigaImpostazione.valore(titolo: T.aggiungiPersone, onTap: () => stato.vai(const Rotta(Pagina.aggiungiPersone))),
             BaRigaImpostazione.valore(
               titolo: T.impostazioniRiga,
               onTap: () => stato.vai(const Rotta(Pagina.impostazioni)),

@@ -13,6 +13,7 @@ import '../design_system/pillola.dart';
 import '../design_system/riga_persona.dart';
 import '../design_system/riga_valore.dart';
 import 'ganci.dart';
+import 'persone.dart';
 import 'stato.dart';
 import 'testi.dart';
 import 'util.dart';
@@ -117,7 +118,7 @@ class _GestisciState extends State<_Gestisci> {
             nonOra: azioneFoglio(T.chiudi, () => _vai(_Vista.menu), variante: BaVariantePillola.spenta),
           );
         }
-        final scelta = [for (final p in personeInvitabili) if (_scelto.contains(p.persona.id)) p.persona];
+        final scelta = [for (final c in contatti) if (_scelto.contains(c.id)) c.persona];
         return BaFoglioGestisci.coAmministratori(
           nome: T.gestisciTitolo,
           titolo: T.coAmministratori,

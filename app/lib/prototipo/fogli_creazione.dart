@@ -19,6 +19,7 @@ import '../design_system/riga_valore.dart';
 import '../design_system/scelta_den.dart';
 import 'fogli_partecipante.dart';
 import 'ganci.dart';
+import 'persone.dart';
 import 'stato.dart';
 import 'testi.dart';
 import 'util.dart';
@@ -78,8 +79,8 @@ class _CreaDenState extends State<_CreaDen> {
       return;
     }
     final invitati = [
-      for (final p in personeInvitabili)
-        if (_invitati.contains(p.persona.id)) p.persona,
+      for (final c in contatti)
+        if (_invitati.contains(c.id)) c.persona,
     ];
     Navigator.of(context).pop();
     stato.creaDen(

@@ -1,32 +1,15 @@
 // I ganci del prototipo (task 024b): i due punti in cui le persone si scelgono — gli
 // invitati di un DEN privato (014 C4) e il co-amministratore (G2) — riempiti con
-// `BaSelettorePersone` su **persone finte**. Le persone e la fonte vera (rubrica, ricerca,
-// inviti) sono il task 024c: quando arriva si sostituiscono queste due funzioni e **nient'altro**
-// (i passi e i fogli non cambiano, 033). Nessuna persona è vera: nomi e alias sono di prova.
+// `BaSelettorePersone`. Dal task 024c le persone sono quelle **aggiunte** (`persone.dart`), filtrate
+// come nel 030. La fonte vera (rubrica, ricerca, inviti) è del prodotto: si sostituiscono queste due
+// funzioni e **nient'altro** (i passi e i fogli non cambiano, 033). Nessuna persona è vera.
 import 'package:flutter/widgets.dart';
 
 import '../design_system/ricerca_persone.dart';
 import '../design_system/selettore_persone.dart';
+import 'persone.dart';
 import 'stato.dart';
 import 'testi.dart';
-
-/// Una persona che si può scegliere: i suoi dati e il suo alias (`@marta.b`).
-@immutable
-class PersonaInvitabile {
-  const PersonaInvitabile(this.persona, this.alias);
-
-  final Persona persona;
-  final String alias;
-}
-
-const List<PersonaInvitabile> personeInvitabili = [
-  PersonaInvitabile(Persona('mb', 'Marta B.', 'MB', 1, 1), '@marta.b'),
-  PersonaInvitabile(Persona('ah', 'Andrea H.', 'AH', 2, 2), '@andrea.h'),
-  PersonaInvitabile(Persona('tr', 'Tommaso R.', 'TR', 3, 3), '@tommaso.r'),
-  PersonaInvitabile(Persona('gt', 'Giulia T.', 'GT', 4, 4), '@giulia.t'),
-  PersonaInvitabile(Persona('nv', 'Nico V.', 'NV', 5, 0), '@nico.v'),
-  PersonaInvitabile(Persona('ci', 'Ciccio', 'CI', 6, 1), '@ciccio'),
-];
 
 /// Il posto degli invitati (C4): [scelti] sono gli id già nell'invito; [alToccare] li aggiunge o li toglie.
 Widget postoInvitati({
@@ -94,10 +77,10 @@ class _SelettoreState extends State<_Selettore> {
 
   @override
   Widget build(BuildContext context) {
-    final sceltiNomi = [
-      for (final p in personeInvitabili)
-        if (widget.scelti.contains(p.persona.id)) p.persona.nome,
-    ];
+    final stato = ProtoScope.of(context);
+    // Solo le persone aggiunte (030 S1: «Persone che hai aggiunto»).
+    final aggiunte = [for (final c in contatti) if (stato.aggiunte.contains(c.id)) c];
+    final sceltiNomi = [for (final c in aggiunte) if (widget.scelti.contains(c.id)) c.nome];
     return BaSelettorePersone(
       ricerca: BaRicercaPersone(
         controller: _ricerca,
@@ -107,22 +90,22 @@ class _SelettoreState extends State<_Selettore> {
       ),
       intestazione: widget.intestazione,
       persone: [
-        for (final p in personeInvitabili)
-          if (BaRicercaPersone.corrisponde(_ricerca.text, nickname: p.persona.nome, alias: p.alias))
+        for (final p in aggiunte)
+          if (BaRicercaPersone.corrisponde(_ricerca.text, nickname: p.nome, alias: p.alias, email: p.email, numero: p.numero))
             BaPersonaSelezionabile(
-              nome: p.persona.nome,
+              nome: p.nome,
               alias: p.alias,
               tinta: p.persona.tinta,
               sagoma: p.persona.sagoma,
-              scelta: widget.scelti.contains(p.persona.id),
-              semanticsLabel: '${widget.scelti.contains(p.persona.id) ? widget.parolaScelta : widget.parolaScegli} ${p.persona.nome}',
+              scelta: widget.scelti.contains(p.id),
+              semanticsLabel: '${widget.scelti.contains(p.id) ? widget.parolaScelta : widget.parolaScegli} ${p.nome}',
               onTap: () => widget.alToccare(p.persona),
             ),
       ],
       parolaScegli: widget.parolaScegli,
       parolaScelta: widget.parolaScelta,
       limite: widget.limite,
-      frase: widget.frase(widget.scelti.length),
+      frase: aggiunte.isEmpty ? T.nessunaPersona : widget.frase(widget.scelti.length),
       fraseLimite: sceltiNomi.isEmpty || widget.fraseLimite == null ? null : widget.fraseLimite!(sceltiNomi.first),
     );
   }

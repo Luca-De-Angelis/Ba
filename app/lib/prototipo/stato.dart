@@ -29,7 +29,29 @@ enum TipoBanner { postoLibero, richiamo }
 enum Ritorno { nessuno, postoRimasto, postoPreso }
 
 /// Le pagine intere del prototipo.
-enum Pagina { email, codice, onboarding, termini, nickname, elenco, stanza, impostazioni, bloccate }
+enum Pagina {
+  email,
+  codice,
+  onboarding,
+  termini,
+  nickname,
+  elenco,
+  stanza,
+  impostazioni,
+  bloccate,
+  // Le persone (024c): aggiungerle, la rubrica, chi può trovarmi, il richiamo.
+  aggiungiPersone,
+  rubrica,
+  chiPuoTrovarmi,
+  chiPuoiAvvisare,
+  chiPuoAvvisarti,
+}
+
+/// Il permesso della rubrica (030 R1–R3): non ancora chiesto, rifiutato (senza colpa) o dato.
+enum PermessoRubrica { nonChiesto, rifiutato, consentito }
+
+/// Chi può trovarmi (030 V2). Parte «Chi conosco» (ipotesi del 030).
+enum Visibilita { nessuno, conosco, tutti }
 
 /// Una pagina nella pila: la pagina e, per la stanza, il DEN.
 @immutable
@@ -537,9 +559,45 @@ class StatoProto extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Simulazione «arriva un richiamo»: arriva solo da chi ti ha scelto e solo per DEN pubblici (proposta 030).
+  /// Il richiamo (030 C1–C5): parte **spento**; un consenso per persona, in due versi.
+  bool richiamoAcceso = false;
+
+  /// Chi avviso io quando entro in un DEN pubblico (spento di partenza, uno per persona aggiunta).
+  List<String> avvisoA = [];
+
+  /// Chi ha scelto di avvisarmi, e se io accetto l'avviso (come in C5).
+  Map<String, bool> avvisoDa = {'marta': true, 'davide': false};
+
+  void impostaRichiamo(bool v) {
+    richiamoAcceso = v;
+    notifyListeners();
+  }
+
+  void impostaAvvisoA(String id, bool v) {
+    avvisoA = [for (final a in avvisoA) if (a != id) a, if (v) id];
+    notifyListeners();
+  }
+
+  void impostaAvvisoDa(String id, bool v) {
+    avvisoDa = {...avvisoDa, id: v};
+    notifyListeners();
+  }
+
+  /// La persona che può far arrivare un richiamo: ha scelto di avvisarmi e io accetto, e il richiamo è acceso.
+  String? get personaDelRichiamo {
+    if (!richiamoAcceso) return null;
+    for (final e in avvisoDa.entries) {
+      if (e.value) return e.key;
+    }
+    return null;
+  }
+
+  /// Simulazione «una persona che ho scelto entra in un DEN pubblico»: il banner K7. Vale solo per DEN
+  /// pubblici («Famiglia» lo è) e solo per chi ha il consenso acceso (proposta 030).
   void arrivaUnRichiamo() {
-    banner = const BannerProto(TipoBanner.richiamo, 'famiglia');
+    final chi = personaDelRichiamo;
+    if (chi == null) return;
+    banner = BannerProto(TipoBanner.richiamo, 'famiglia', chi: chi);
     notifyListeners();
   }
 
@@ -700,6 +758,39 @@ class StatoProto extends ChangeNotifier {
     notifyListeners();
   }
 
+  // ------------------------------------------------------------- le persone (024c, 030)
+
+  /// Gli id delle persone aggiunte (`persone.dart`): l'aggiunta è privata, l'altra persona non riceve un avviso.
+  List<String> aggiunte = [];
+
+  void aggiungiPersona(String id) {
+    if (aggiunte.contains(id)) return;
+    aggiunte = [...aggiunte, id];
+    notifyListeners();
+  }
+
+  PermessoRubrica permessoRubrica = PermessoRubrica.nonChiesto;
+
+  void impostaPermessoRubrica(PermessoRubrica p) {
+    permessoRubrica = p;
+    notifyListeners();
+  }
+
+  Visibilita visibilita = Visibilita.conosco;
+
+  void impostaVisibilita(Visibilita v) {
+    visibilita = v;
+    notifyListeners();
+  }
+
+  /// La ricerca non riesce (030 P6): provocata dal pannello, «Riprova» la fa riuscire.
+  bool ricercaFallisce = false;
+
+  void cambiaRicercaFallisce() {
+    ricercaFallisce = !ricercaFallisce;
+    notifyListeners();
+  }
+
   // ------------------------------------------------------------- le persone bloccate
 
   List<Persona> bloccate = [..._bloccateDiProva];
@@ -720,10 +811,13 @@ class StatoProto extends ChangeNotifier {
 /// che al tocco porta dove deve. Non scompare da solo: niente timer.
 @immutable
 class BannerProto {
-  const BannerProto(this.tipo, this.den);
+  const BannerProto(this.tipo, this.den, {this.chi});
 
   final TipoBanner tipo;
   final String den;
+
+  /// Chi manda il richiamo (id di `persone.dart`).
+  final String? chi;
 }
 
 /// Mette lo stato a disposizione di tutto l'albero; chi lo legge con [of] si

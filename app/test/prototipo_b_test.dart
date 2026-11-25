@@ -222,6 +222,7 @@ void main() {
 
     testWidgets('privato: i passi, gli invitati dal selettore, il riepilogo, si entra amministratore a microfono spento', (tester) async {
       final stato = await _dentro(tester);
+      stato.aggiungiPersona('marta');
       await _tocca(tester, 'Crea un DEN');
       await _sale(tester);
       expect(find.text('Che DEN vuoi creare?'), findsOneWidget);
@@ -310,6 +311,7 @@ void main() {
   group('«Gestisci» e il sotto-DEN', () {
     Future<StatoProto> creato(WidgetTester tester, {bool privato = false}) async {
       final stato = await _dentro(tester);
+      stato.aggiungiPersona('davide');
       stato.creaDen(nome: 'Tavolo 9', privato: privato, descrizione: 'Due chiacchiere', invitati: const []);
       await tester.pump();
       return stato;
@@ -331,12 +333,12 @@ void main() {
       expect(_pillola(tester, 'Aggiungi un co-amministratore').onTap, isNull);
       await _nelFoglio(tester, 'Chiudi');
       await _nelFoglio(tester, 'Persone nel DEN');
-      // Chi è co-amministratore non ha «Rimuovi»: ne resta una.
-      expect(find.text('Rimuovi'), findsOneWidget);
+      // Le due persone del DEN hanno «Rimuovi»; dopo averne rimossa una ne resta una.
+      expect(find.text('Rimuovi'), findsNWidgets(2));
       await _nelFoglio(tester, 'Rimuovi');
       expect(find.textContaining('Rimuovere'), findsOneWidget);
       await _nelFoglio(tester, 'Rimuovi');
-      expect(find.text('Rimuovi'), findsNothing);
+      expect(find.text('Rimuovi'), findsOneWidget);
       await _nelFoglio(tester, 'Chiudi');
       await _nelFoglio(tester, 'Termina il DEN');
       expect(find.text('Terminare il DEN?'), findsOneWidget);
@@ -418,21 +420,24 @@ void main() {
       expect(find.text('Mettiti in coda'), findsOneWidget, reason: 'il palco è di nuovo pieno');
     });
 
-    testWidgets('arriva un richiamo: il banner porta nel DEN pubblico «Famiglia»; da una stanza apre «Vuoi passare di qua?»', (tester) async {
+    testWidgets('una persona che ho scelto entra in un DEN pubblico: il banner porta in «Famiglia»; da una stanza apre «Vuoi passare di qua?»', (tester) async {
       final stato = await _dentro(tester);
+      expect(_pillola(tester, 'una persona che ho scelto entra in un DEN pubblico').onTap, isNull, reason: 'il richiamo parte spento');
+      stato.impostaRichiamo(true);
+      await tester.pump();
       expect(find.text('il richiamo arriva solo da chi ti ha scelto e solo per DEN pubblici (proposta 030)'), findsOneWidget);
-      await _tocca(tester, 'arriva un richiamo');
-      await _tocca(tester, 'Ciccio è entrato nel DEN Famiglia · vuoi passare?');
+      await _tocca(tester, 'una persona che ho scelto entra in un DEN pubblico');
+      await _tocca(tester, 'Marta è entrato nel DEN Famiglia · vuoi passare?');
       expect(stato.denCorrente!.id, 'famiglia');
       expect(stato.denCorrente!.suInvito, isFalse, reason: 'il richiamo è solo per DEN pubblici');
       expect(stato.ruolo, Ruolo.pubblico);
 
       await _tocca(tester, 'Esci');
       await _tocca(tester, 'Cucina di notte');
-      await _tocca(tester, 'arriva un richiamo');
-      await _tocca(tester, 'Ciccio è entrato nel DEN Famiglia · vuoi passare?');
+      await _tocca(tester, 'una persona che ho scelto entra in un DEN pubblico');
+      await _tocca(tester, 'Marta è entrato nel DEN Famiglia · vuoi passare?');
       await _sale(tester);
-      expect(_inFoglio('Ciccio è entrato nel DEN Famiglia'), findsOneWidget);
+      expect(_inFoglio('Marta è entrato nel DEN Famiglia'), findsOneWidget);
       await _nelFoglio(tester, 'Passa');
       await _sale(tester);
       expect(stato.denCorrente!.id, 'famiglia');

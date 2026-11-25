@@ -340,7 +340,12 @@ class _Simulazioni extends StatelessWidget {
         acceso: false,
         onTap: se(stato.lineaPersa, stato.tornoInLinea, '«${T.simTornoInLinea}»: serve aver perso la linea'),
       ),
-      _Comando(testo: T.simRichiamo, acceso: stato.banner?.tipo == TipoBanner.richiamo, onTap: stato.arrivaUnRichiamo),
+      _Comando(
+        testo: T.simRichiamo,
+        acceso: stato.banner?.tipo == TipoBanner.richiamo,
+        onTap: se(stato.personaDelRichiamo != null, stato.arrivaUnRichiamo, '«${T.simRichiamo}»: serve il richiamo acceso (Impostazioni) e una persona che ti ha scelto con il consenso acceso'),
+      ),
+      _Comando(testo: T.simRicerca, acceso: stato.ricercaFallisce, onTap: stato.cambiaRicercaFallisce),
       _Comando(testo: T.simChiuso, acceso: stato.chiusura == Chiusura.chiuso, onTap: () => stato.chiudiAccount(Chiusura.chiuso)),
       _Comando(testo: T.simSospeso, acceso: stato.chiusura == Chiusura.sospeso, onTap: () => stato.chiudiAccount(Chiusura.sospeso)),
       if (stato.chiusura != null) _Comando(testo: T.simRiapri, acceso: false, onTap: stato.riapriAccount),

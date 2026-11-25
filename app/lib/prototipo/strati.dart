@@ -9,6 +9,7 @@ import '../design_system/schermata_copertura.dart';
 import '../design_system/tokens.dart';
 import '../design_system/touchable.dart';
 import 'fogli_coda.dart';
+import 'persone.dart';
 import 'stato.dart';
 import 'testi.dart';
 
@@ -20,7 +21,7 @@ class BannerNotifica extends StatelessWidget {
 
   static String testo(StatoProto stato, BannerProto b) {
     final nome = stato.denPerId(b.den)?.nome ?? '';
-    return b.tipo == TipoBanner.postoLibero ? T.bannerPosto(nome) : T.bannerRichiamo(T.ciccio, nome);
+    return b.tipo == TipoBanner.postoLibero ? T.bannerPosto(nome) : T.bannerRichiamo(contattoPerId(b.chi ?? '')?.nome ?? T.ciccio, nome);
   }
 
   @override
@@ -69,7 +70,7 @@ void usaBanner(StatoProto stato) {
   apriPassaDiQua(
     contesto,
     verso: d,
-    titolo: b.tipo == TipoBanner.postoLibero ? T.passaTitolo(d.nome) : T.richiamoTitolo(T.ciccio, d.nome),
+    titolo: b.tipo == TipoBanner.postoLibero ? T.passaTitolo(d.nome) : T.richiamoTitolo(contattoPerId(b.chi ?? '')?.nome ?? T.ciccio, d.nome),
     primo: b.tipo == TipoBanner.postoLibero ? T.passaP1 : T.richiamoP1,
   );
 }

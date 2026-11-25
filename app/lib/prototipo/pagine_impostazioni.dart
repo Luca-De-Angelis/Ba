@@ -19,6 +19,7 @@ import '../design_system/marcatore.dart';
 import '../design_system/pillola.dart';
 import '../design_system/riga_bloccata.dart';
 import '../design_system/riga_impostazione.dart';
+import '../design_system/tokens.dart';
 import 'pagina_base.dart';
 import 'stato.dart';
 import 'testi.dart';
@@ -53,6 +54,40 @@ class PaginaImpostazioni extends StatelessWidget {
                 apriSemanticsLabel: '${T.apri} ${T.microfono}',
                 onApri: () => stato.impostaPermessoMic(true),
               ),
+            // «Chi può trovarmi» (030 V1): parte «Chi conosco».
+            BaRigaImpostazione.valore(
+              titolo: T.chiPuoTrovarmi,
+              valore: switch (stato.visibilita) {
+                Visibilita.nessuno => T.visNessuno,
+                Visibilita.conosco => T.visConosco,
+                Visibilita.tutti => T.visTutti,
+              },
+              sottotitolo: T.visConoscoFrase,
+              onTap: () => stato.vai(const Rotta(Pagina.chiPuoTrovarmi)),
+            ),
+            // Il richiamo (030 C1–C2): parte spento; acceso, le due liste di persone.
+            BaRigaImpostazione.interruttore(
+              titolo: T.richiamo,
+              descrizione: stato.richiamoAcceso ? T.richiamoAccesoFrase : T.richiamoSpentoFrase,
+              acceso: stato.richiamoAcceso,
+              parolaAcceso: T.acceso,
+              parolaSpento: T.spento,
+              onCambia: stato.impostaRichiamo,
+            ),
+            if (stato.richiamoAcceso) ...[
+              BaRigaImpostazione.valore(
+                titolo: T.chiPuoiAvvisare,
+                sottotitolo: T.chiPuoiAvvisareSotto,
+                valore: T.nPersone(stato.avvisoA.length),
+                onTap: () => stato.vai(const Rotta(Pagina.chiPuoiAvvisare)),
+              ),
+              BaRigaImpostazione.valore(
+                titolo: T.chiPuoAvvisarti,
+                sottotitolo: T.chiPuoAvvisartiSotto,
+                onTap: () => stato.vai(const Rotta(Pagina.chiPuoAvvisarti)),
+              ),
+              const Padding(padding: EdgeInsets.only(top: BaSpazioTokens.m), child: Frase(T.richiamoRassicura, piccola: true)),
+            ],
             BaRigaImpostazione.valore(
               titolo: T.personeBloccate,
               valore: T.nPersone(stato.bloccate.length),
