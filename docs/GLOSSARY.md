@@ -58,3 +58,16 @@ L'interfaccia italiana **non usa participi o aggettivi che dipendano dal genere 
 Gli accordi con un sostantivo (posto passato, persona aggiunta, DEN creato) sono ammessi: dipendono dal sostantivo, non dalla persona; non si scrivono accanto al nome di una persona. I verbi con *avere* (hai aggiunto, hai lasciato) non si accordano con chi li compie. I **nomi di ruolo** (ascoltatore, partecipante, co-amministratore) sono termini del glossario: sono al maschile e restano finché non si decide una forma neutra (domanda aperta). Il tedesco usa già le forme inclusive (Teilnehmer:in, Zuhörer:in) e i suoi participi non si accordano.
 
 **Nomi del codice già in uso:** `BaPresenza`, `BaPalco`, `BaTouchable`, `BaRegole`, `BaOra`. Vedi `design/system/md/inventario-componenti.md`.
+
+## Nomi di ruolo (task 036)
+
+«**Partecipante**» è già neutro (epiceno): resta. «**Ascoltatore**» e «**co-amministratore**» hanno un genere. **Eccezione dichiarata:** restano come **termini di tipo di account e di funzione** (D-040, catalogo D04), nei documenti e nel codice, perché sono i nomi con cui il prodotto li chiama. Non compaiono nell'interfaccia come predicato di una persona né accanto al suo nome.
+
+| Non così | Così |
+| --- | --- |
+| «sei ascoltatore» (marcatore fermo) | «in ascolto» |
+| «Torna ascoltatore» (azione) | «Torna all’ascolto» |
+| «Con il consenso il tuo account passa da ascoltatore a partecipante» | invariata: «da ascoltatore» e «a partecipante» sono nomi di tipo dopo una preposizione e non si accordano con chi legge |
+| «Aggiungi un co-amministratore» | invariata finché il nome della funzione non cambia; forma neutra proposta: «Aggiungi chi amministra con te» (ipotesi, da decidere) |
+
+Il tedesco usa già le forme inclusive («Zuhörer:in», «Co-Administrator:in»).

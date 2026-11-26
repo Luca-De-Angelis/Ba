@@ -48,7 +48,7 @@ Quello che i componenti si aspettano **in ingresso**. Sono i punti d'innesto; la
 Per non promettere: nel codice **non c'è** niente di tutto questo, solo i valori di design in `tokens.dart`.
 
 - **Il server (Servizio)**, l'audio (LiveKit, coturn), la trascrizione, la rete e la persistenza.
-- **L'accesso, la registrazione, il consenso, «Torna ascoltatore»**: ci sono i token (`BaAccessoTokens`), il prototipo 013 (aggiornato dal 027) e, dai task 022 e 023a, i controlli (`BaCampoTesto`, `BaCampoCodice`) e il foglio a più passi (`BaFoglioPassi`); la logica e le schermate no.
+- **L'accesso, la registrazione, il consenso, «Torna all'ascolto»**: ci sono i token (`BaAccessoTokens`), il prototipo 013 (aggiornato dal 027) e, dai task 022 e 023a, i controlli (`BaCampoTesto`, `BaCampoCodice`) e il foglio a più passi (`BaFoglioPassi`); la logica e le schermate no.
 - **La navigazione e le schermate**. `app/lib/core/` e `app/lib/features/` sono vuote.
 - **Le notifiche**, la Live Activity su iPhone, la Dynamic Island, la notifica Android: l'Inventario le descrive (C5), il codice no. Il meccanismo per spegnere il microfono a schermo bloccato è un'ipotesi in attesa dello sviluppo (domanda 18 della mail).
 - **Gli annunci dello screen reader dei propri cambi di stato** (D-034): nel codice ci sono la regione viva di `BaMessaggio` e di `BaFraseErrore` per un errore e, dal task 023a, il titolo di `BaFoglioPassi` dal secondo passo (anche per i passi di «Crea un DEN» e le viste di «Gestisci», che lo usano; da provare con TalkBack e VoiceOver, vedi sotto).
@@ -69,6 +69,8 @@ Le tre regole che reggono la tabella: un suono a microfono aperto finisce nella 
 
 Che cosa il codice fa già e che cosa va costruito:
 
+- **Movimento ridotto o screen reader (task 036):** `BaMovimentoTokens.statico(context)` è vero con «riduci movimento» **o** con lo screen reader (`accessibleNavigation`: le animazioni di posizione confondono l'ordine dell'annuncio), e ogni durata esce da `durata(context, d)`. I cinque componenti che animano (`BaTouchable`, `BaGlifo`, `BaAnello`, `BaPresenza`, `showBaFoglio`) lo seguono; con il movimento normale le durate non cambiano. In produzione va letto dal sistema: `movimento_test.dart`. Voce per il design: `statico` usa `MediaQuery.of` ([aperte](aperte.md)).
+- **Il ripiego della barra delle azioni si misura (task 036):** nessun numero per lingua; in riga finché ogni secondaria sta intera su una riga, poi in colonna. A 360 dp, con il font vero: italiano in riga fino a 1,50, in tedesco già a colonna (`misure_font_vero_test.dart`); chi aggiunge una lingua o un'azione lo riprova con quel test, non con un valore.
 - **Etichetta per lo screen reader** su ogni presenza e su ogni controllo: la dà sempre il chiamante (`semanticsLabel`), in lingua. Il contenuto visivo di un `BaTouchable` è escluso dalla semantica: l'etichetta è l'unica rappresentazione accessibile. Anello, disco e glifo sono decorativi: il significato sta nell'etichetta.
 - **Ordine di lettura del palco:** `BaPalco` lo fissa con `OrdinalSortKey`, uguale all'ordine dei centri (l'ordine geometrico di Flutter con le righe sfalsate può leggere le presenze nell'ordine sbagliato). Per questo `palco.dart` importa `package:flutter/semantics.dart` ([architettura](architettura.md)).
 - **Annunci:** vedi la regola D-034 in [regole](regole.md). Oggi esiste solo la regione viva dell'errore (`BaMessaggio`). I fogli si annunciano come finestre (`namesRoute` e `scopesRoute`) con il titolo come nome, e **non annunciano l'arrivo di nessuno**.
