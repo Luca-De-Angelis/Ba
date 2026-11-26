@@ -53,6 +53,27 @@ class BaInterruttoreRiga extends StatelessWidget {
   /// Se manca: titolo e descrizione. Lo stato lo dice `toggled`, non il testo.
   final String? semanticsLabel;
 
+  /// Il titolo e, sotto, la descrizione (che può andare a capo).
+  Widget _testi(ValueChanged<bool>? onCambia) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            titolo,
+            style: BaTestoTokens.controllo.copyWith(
+              color: onCambia == null ? BaColorTokens.testoInattivo : BaColorTokens.testoPrimo,
+            ),
+          ),
+          if (descrizione != null) ...[
+            const SizedBox(height: BaSpazioTokens.xxs),
+            Text(
+              descrizione!,
+              style: BaTestoTokens.minore.copyWith(color: BaColorTokens.testoSecondo),
+            ),
+          ],
+        ],
+      );
+
   @override
   Widget build(BuildContext context) {
     final onCambia = this.onCambia;
@@ -72,29 +93,24 @@ class BaInterruttoreRiga extends StatelessWidget {
           decoration: const BoxDecoration(
             border: Border(top: BorderSide(color: BaColorTokens.filettoDivisorio)),
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
+          // Dal testo a `azioneSottoDa` (1,3) la disposizione è verticale (task 032c): titolo e
+          // descrizione a tutta larghezza (nessuna parola si spezza) e l'interruttore con la sua
+          // parola sotto, a sinistra. A testo normale è com'era: l'interruttore a destra.
+          child: BaScalaTokens.testo(context) >= BaPersoneTokens.azioneSottoDa
+              ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      titolo,
-                      style: BaTestoTokens.controllo.copyWith(
-                        color: onCambia == null ? BaColorTokens.testoInattivo : BaColorTokens.testoPrimo,
-                      ),
-                    ),
-                    if (descrizione != null) ...[
-                      const SizedBox(height: BaSpazioTokens.xxs),
-                      Text(
-                        descrizione!,
-                        style: BaTestoTokens.minore.copyWith(color: BaColorTokens.testoSecondo),
-                      ),
-                    ],
+                    _testi(onCambia),
+                    const SizedBox(height: BaSpazioTokens.s),
+                    _Interruttore(acceso: acceso, parola: acceso ? parolaAcceso : parolaSpento),
                   ],
-                ),
+                )
+              : Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: _testi(onCambia),
               ),
               const SizedBox(width: BaSpazioTokens.md),
               _Interruttore(acceso: acceso, parola: acceso ? parolaAcceso : parolaSpento),

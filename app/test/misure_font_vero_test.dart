@@ -5,8 +5,10 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:ba/design_system/barra_azioni.dart';
 import 'package:ba/design_system/campo_testo.dart';
+import 'package:ba/design_system/interruttore_riga.dart';
 import 'package:ba/design_system/pillola.dart';
 import 'package:ba/design_system/riga_persona.dart';
+import 'package:ba/design_system/riga_impostazione.dart';
 import 'package:ba/design_system/riga_valore.dart';
 import 'package:ba/design_system/tokens.dart';
 import 'package:ba/design_system/touchable.dart';
@@ -342,6 +344,56 @@ void main() {
         expect(_larghezzaTesto(parola, BaTestoTokens.campo, scala: 2.0), lessThanOrEqualTo(larghezza), reason: parola);
       }
       expect(_righe(tester, testo), greaterThan(1), reason: 'a capo fra le parole');
+    });
+  });
+
+  group('nessuna parola spezzata a testo 2,0 e 360 dp, con il font vero (task 032c)', () {
+    // La regola generale: in ogni testo delle righe, la parola più lunga sta nella larghezza che il
+    // testo ha davvero. Un paragrafo con una parola spezzata ha per riga più larga tutta la sua
+    // larghezza disponibile, minore della parola: il test fallisce e dice quale.
+    const lunga = 'Quando si libera un posto, la notifica ti porta alla stanza, automaticamente.';
+    final casi = <String, Widget>{
+      'BaInterruttoreRiga': BaInterruttoreRiga(
+        titolo: 'Fammi entrare automaticamente',
+        descrizione: lunga,
+        acceso: false,
+        parolaAcceso: 'Acceso',
+        parolaSpento: 'Spento',
+        onCambia: (_) {},
+      ),
+      'BaRigaValore': const BaRigaValore(etichetta: 'Chi può trovarmi', valore: 'Chi conosco', sottotitolo: 'Impostazioni dell\'account, automaticamente.'),
+      'BaRigaPersona (azione)': BaRigaPersona(nome: 'Maria Antonietta Bianchi-Rossi', alias: '@maria.antonietta', voce: BaVoceRigaPersona.daAggiungere, azione: 'Aggiungi', onAzione: () {}),
+      'BaRigaPersona (interruttore)': BaRigaPersona(nome: 'Maria Antonietta', alias: '@maria.antonietta', acceso: true, parolaAcceso: 'Acceso', parolaSpento: 'Spento', onCambia: (_) {}),
+      'BaRigaImpostazione.interruttore': BaRigaImpostazione.interruttore(
+        titolo: 'Richiamo',
+        descrizione: lunga,
+        acceso: true,
+        parolaAcceso: 'Acceso',
+        parolaSpento: 'Spento',
+        onCambia: (_) {},
+      ),
+      'BaRigaImpostazione.valore': BaRigaImpostazione.valore(titolo: 'Persone bloccate', valore: '3 persone', sottotitolo: 'Restano finché non le sblocchi.'),
+    };
+
+    testWidgets('la parola più lunga di ogni testo sta nella larghezza disponibile', (tester) async {
+      for (final MapEntry(key: nome, value: riga) in casi.entries) {
+        await tester.pumpWidget(Directionality(
+          textDirection: TextDirection.ltr,
+          child: MediaQuery(
+            data: const MediaQueryData(size: Size(360, 800), textScaler: TextScaler.linear(2.0)),
+            child: Align(alignment: Alignment.topLeft, child: SizedBox(width: 320, child: SingleChildScrollView(child: riga))),
+          ),
+        ));
+        expect(tester.takeException(), isNull, reason: nome);
+        for (final r in tester.renderObjectList<RenderParagraph>(find.descendant(of: find.byWidget(riga), matching: find.byType(RichText)))) {
+          final testo = r.text.toPlainText();
+          for (final parola in testo.split(RegExp(r'\s+')).where((p) => p.isNotEmpty)) {
+            final misura = TextPainter(text: TextSpan(text: parola, style: r.text.style), textDirection: TextDirection.ltr, textScaler: r.textScaler)..layout();
+            expect(misura.width, lessThanOrEqualTo(r.size.width + 0.5), reason: '$nome: «$parola» (in «$testo») si spezza: ${misura.width.toStringAsFixed(1)} dp in ${r.size.width.toStringAsFixed(1)}');
+            misura.dispose();
+          }
+        }
+      }
     });
   });
 }

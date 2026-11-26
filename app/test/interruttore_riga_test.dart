@@ -148,18 +148,28 @@ void main() {
   });
 
   group('testo grande', () {
-    testWidgets('a 2,0 il testo va a capo e l\'interruttore resta a destra, senza overflow', (tester) async {
+    // Task 032c: prima a 2,0 l'interruttore restava a destra e il testo, stretto, spezzava
+    // «automaticamente» a metà; ora, da 1,3, titolo e descrizione hanno tutta la larghezza e
+    // l'interruttore sta sotto, a sinistra.
+    testWidgets('a 2,0 titolo e descrizione a tutta larghezza e l\'interruttore sotto, a sinistra, senza overflow', (tester) async {
       await tester.pumpWidget(_app(_riga(acceso: true, onCambia: (_) {})));
-      final alto1 = tester.getRect(find.text('Fammi entrare automaticamente')).height;
+      final accanto = tester.getRect(_interruttore());
+      expect(tester.getRect(find.text('Fammi entrare automaticamente')).right, lessThanOrEqualTo(accanto.left), reason: 'a 1,0 è com\'era: l\'interruttore a destra');
       await tester.pumpWidget(_app(_riga(acceso: true, onCambia: (_) {}), testo: 2.0));
       expect(tester.takeException(), isNull);
       final riga = tester.getRect(find.byType(BaInterruttoreRiga));
       final sw = tester.getRect(_interruttore());
-      expect(sw.right, lessThanOrEqualTo(riga.right));
-      expect(sw.center.dx, greaterThan(riga.center.dx), reason: 'a destra');
       final titolo = tester.getRect(find.text('Fammi entrare automaticamente'));
-      expect(titolo.right, lessThanOrEqualTo(sw.left), reason: 'il testo non finisce sotto l\'interruttore');
-      expect(titolo.height, greaterThan(alto1 * 2), reason: 'a 2,0 il titolo va a capo: più alto del doppio di una riga a 1,0');
+      final descrizione = tester.getRect(find.text('Quando si libera un posto, entri tu.'));
+      expect(sw.right, lessThanOrEqualTo(riga.right));
+      expect(sw.top, greaterThanOrEqualTo(descrizione.bottom), reason: 'sotto la descrizione');
+      expect(sw.left, lessThanOrEqualTo(titolo.left + 40), reason: 'a sinistra (la parola sotto lo centra)');
+      expect(titolo.right, lessThanOrEqualTo(riga.right));
+    });
+
+    testWidgets('la soglia è azioneSottoDa: a 1,29 l\'interruttore sta ancora a destra', (tester) async {
+      await tester.pumpWidget(_app(_riga(acceso: true, onCambia: (_) {}), testo: 1.29));
+      expect(tester.getRect(_interruttore()).left, greaterThan(tester.getRect(find.byType(BaInterruttoreRiga)).center.dx));
     });
 
     testWidgets('senza descrizione regge l\'altezza minima', (tester) async {
