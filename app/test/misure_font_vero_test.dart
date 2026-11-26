@@ -499,4 +499,54 @@ void main() {
       expect(a.width, BaLayoutTokens.larghezzaColonna(360));
     });
   });
+
+  group('le regole del testo grande: i campi (task 036)', () {
+    Widget app(Widget figlio, double testo) => Directionality(
+          textDirection: TextDirection.ltr,
+          child: MediaQuery(
+            data: MediaQueryData(size: const Size(360, 800), textScaler: TextScaler.linear(testo)),
+            child: Align(alignment: Alignment.topLeft, child: SizedBox(width: 320, child: SingleChildScrollView(child: figlio))),
+          ),
+        );
+
+    testWidgets('il segnaposto di più parole (la ricerca) va a capo fra le parole a 1,4 e a 2,0, mai a metà', (tester) async {
+      const testo = 'Nickname, alias, email o numero';
+      for (final scala in [1.4, 2.0]) {
+        await tester.pumpWidget(app(
+          BaCampoTesto(controller: TextEditingController(), etichetta: 'Cerca', segnaposto: testo, segnapostoSuPiuRighe: true),
+          scala,
+        ));
+        expect(tester.takeException(), isNull, reason: 'testo $scala');
+        final larghezza = tester.getSize(find.text(testo)).width;
+        for (final parola in testo.split(' ')) {
+          expect(_larghezzaTesto(parola, BaTestoTokens.campo, scala: scala), lessThanOrEqualTo(larghezza), reason: '«$parola» a $scala');
+        }
+        // A 2,0 il segnaposto di più parole va a capo; a 1,4 può starci in una riga o in due, mai spezzato.
+        if (scala == 2.0) expect(_righe(tester, testo), greaterThan(1), reason: 'a capo fra le parole');
+      }
+    });
+
+    testWidgets('il testo scritto non va a capo: una riga che scorre in orizzontale, e si vede la fine', (tester) async {
+      const lungo = 'nome.cognome.molto.lungo@esempio-di-dominio-lungo.it';
+      final controller = TextEditingController();
+      addTearDown(controller.dispose);
+      await tester.pumpWidget(app(BaCampoTesto(controller: controller, etichetta: 'Email'), 2.0));
+      await tester.enterText(find.byType(EditableText), lungo);
+      await tester.pump();
+      expect(tester.takeException(), isNull);
+      final scorrimento = tester.state<ScrollableState>(find.descendant(of: find.byType(EditableText), matching: find.byType(Scrollable)).first);
+      expect(scorrimento.position.axis, Axis.horizontal, reason: 'scorre in orizzontale');
+      expect(scorrimento.position.maxScrollExtent, greaterThan(0), reason: 'il testo è più largo del campo');
+      expect(tester.getSize(find.byType(EditableText)).height, closeTo(_altezzaUnaRiga(BaTestoTokens.campo, scala: 2.0), 1.5), reason: 'una sola riga');
+    });
+
+    testWidgets('la descrizione (multilinea) va a capo, anche il suo segnaposto', (tester) async {
+      await tester.pumpWidget(app(
+        BaCampoTesto(controller: TextEditingController(), etichetta: 'Descrizione', segnaposto: 'Due chiacchiere dopo cena, senza un argomento fisso.', minRighe: 3, maxRighe: 6),
+        2.0,
+      ));
+      expect(tester.takeException(), isNull);
+      expect(_righe(tester, 'Due chiacchiere dopo cena, senza un argomento fisso.'), greaterThan(1));
+    });
+  });
 }
