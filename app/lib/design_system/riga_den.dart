@@ -29,6 +29,7 @@ import 'package:flutter/widgets.dart';
 
 import 'marcatore.dart';
 import 'pubblico.dart';
+import 'sagoma.dart';
 import 'tokens.dart';
 import 'touchable.dart';
 
@@ -164,13 +165,7 @@ class _Campione extends StatelessWidget {
       children: [
         for (var i = 0; i < n; i++) ...[
           if (i > 0) const SizedBox(width: BaSpazioTokens.xxs),
-          DecoratedBox(
-            decoration: BoxDecoration(
-              borderRadius: BaSagomaTokens.bordo(sagome[i % sagome.length], BaPresenzaTokens.pubblico),
-              gradient: BaTintaTokens.mazzo[tinte[i % tinte.length] % BaTintaTokens.mazzo.length].gradiente,
-            ),
-            child: const SizedBox.square(dimension: BaPresenzaTokens.pubblico),
-          ),
+          BaSagoma(tinta: tinte[i % tinte.length], sagoma: sagome[i % sagome.length], lato: BaPresenzaTokens.pubblico),
         ],
       ],
     );

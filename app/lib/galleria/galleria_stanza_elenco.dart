@@ -157,14 +157,15 @@ class _GalleriaStanzaElencoState extends State<GalleriaStanzaElenco> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           galleriaTitolo('Intestazione della stanza (C2)'),
-          for (final (stato, marcatore) in const [
-            (BaStatoIntestazione.pubblica, 'entra chiunque'),
-            (BaStatoIntestazione.suInvito, 'su invito'),
-            (BaStatoIntestazione.viva, '5 sul palco'),
-            (BaStatoIntestazione.inIngresso, 'sto entrando'),
-            (BaStatoIntestazione.disconnessa, 'linea persa'),
+          // L'etichetta dice lo stato in italiano (non il nome nel codice: «suInvito», «inIngresso»).
+          for (final (stato, etichetta, marcatore) in const [
+            (BaStatoIntestazione.pubblica, 'pubblica', 'entra chiunque'),
+            (BaStatoIntestazione.suInvito, 'su invito', 'su invito'),
+            (BaStatoIntestazione.viva, 'viva', '5 sul palco'),
+            (BaStatoIntestazione.inIngresso, 'in ingresso', 'sto entrando'),
+            (BaStatoIntestazione.disconnessa, 'disconnessa', 'linea persa'),
           ]) ...[
-            _etichetta(stato.name),
+            _etichetta(etichetta),
             BaIntestazione(nome: 'Serata sul balcone', marcatore: marcatore, stato: stato),
             const SizedBox(height: gap),
           ],

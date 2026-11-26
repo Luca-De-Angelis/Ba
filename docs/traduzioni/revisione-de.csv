@@ -1,0 +1,10 @@
+﻿chiave;contesto;italiano;tedesco (de);correzione;nota;lunghezza;segnaposto
+appNome;Chiave di prova del task 000: nome dell'app.;BA;BA;;;2;
+palcoLibero;Palco vuoto, prima riga. Non mette pressione (D-006).;Il palco è libero.;Die Bühne ist frei.;;;19;
+palcoInvito;Palco vuoto, seconda riga. Nessun conto alla rovescia, nessun «tocca a te».;Puoi salire quando vuoi.;Du kannst jederzeit aufsteigen.;;;31;
+palcoEtichetta;Etichetta del palco per lo screen reader. Casi 0 e 1 espliciti: in francese 0 e 1 sono entrambi «uno».;{n, plural, =0{Palco, nessuna persona} =1{Palco, 1 persona} other{Palco, {n} persone}};{n, plural, =0{Bühne, niemand} =1{Bühne, 1 Person} other{Bühne, {n} Personen}};;;78;n
+presenzaParla;Etichetta di una presenza che sta parlando, per lo screen reader.;{nome}, sta parlando;{nome}, spricht;;;15;nome
+presenzaMutata;Etichetta di una presenza con la voce mutata da me, per lo screen reader.;{nome}, voce mutata da te;{nome}, Stimme von dir stummgeschaltet;;;38;nome
+presenzaBloccata;Etichetta di una persona bloccata, per lo screen reader.;Persona bloccata: {nome};{nome}, blockiert;;;17;nome
+presenzaMicSpento;Etichetta di una presenza a microfono spento, per lo screen reader.;{nome}, microfono spento;{nome}, Mikrofon aus;;;20;nome
+presenzaHaLaParola;Etichetta di chi ha la parola nel sotto-DEN, per lo screen reader.;{nome}, ha la parola;{nome}, hat das Wort;;;20;nome

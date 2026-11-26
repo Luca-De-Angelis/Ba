@@ -16,6 +16,7 @@
 // Importa solo widgets.dart: nessuna eccezione.
 import 'package:flutter/widgets.dart';
 
+import 'segno_errore.dart';
 import 'tokens.dart';
 
 enum BaVarianteMessaggio { neutro, errore }
@@ -62,7 +63,7 @@ class BaMessaggio extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (errore) ...[
-                const _SegnoErrore(),
+                const BaSegnoErrore(),
                 const SizedBox(width: BaSpazioTokens.m),
               ],
               Expanded(
@@ -74,38 +75,6 @@ class BaMessaggio extends StatelessWidget {
                 ),
               ),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Il segno «!»: un cerchio di `erroreSegnoLato` con tratto `erroreSegnoTratto`.
-/// Non scala col testo: sta sull'altezza della prima riga.
-class _SegnoErrore extends StatelessWidget {
-  const _SegnoErrore();
-
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: BaColorTokens.erroreTesto,
-          width: BaAccessoTokens.erroreSegnoTratto,
-        ),
-      ),
-      child: SizedBox.square(
-        dimension: BaAccessoTokens.erroreSegnoLato,
-        child: Center(
-          child: Text(
-            '!',
-            textScaler: TextScaler.noScaling,
-            style: BaTestoTokens.azione.copyWith(
-              color: BaColorTokens.erroreTesto,
-              fontWeight: FontWeight.w600,
-            ),
           ),
         ),
       ),

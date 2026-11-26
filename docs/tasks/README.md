@@ -48,8 +48,9 @@ Un file per task, `NNN-nome.md`, al massimo una pagina, nel formato di `_templat
 | 029 | `029-componenti-stanza-elenco.md` — Componenti della stanza, dell'elenco e dell'account chiuso (`BaIntestazione`, `BaRigaDen`, `BaSchermataCopertura` e gli altri) | Claude Code | Concluso |
 | 030 | `030-persone-inviti.md` — Persone, inviti e richiamo (proposta) | Claude Design | Concluso |
 | 032 | Consolidamento del design: dieci decisioni dove design e codice divergevano, più la regola sul genere grammaticale | Claude Design | Concluso |
-| 032c | `032c-applicare-032.md` — Portare il consolidamento del design (032) nel codice e nei documenti: token, titolo a 28, barra, curva del foglio, testi neutri rispetto al genere | Claude Code | In corso |
+| 032c | `032c-applicare-032.md` — Portare il consolidamento del design (032) nel codice e nei documenti: token, titolo a 28, barra, curva del foglio, testi neutri rispetto al genere | Claude Code | Concluso |
 | 033 | `033-persone-inviti-codice.md` — Persone e inviti: applicare il 030 e costruire componenti e fogli (`BaRicercaPersone`, `BaRigaPersona` estesa, `BaSelettorePersone`, `BaRigaConsenso`, `BaFoglioInvito`) | Claude Code | Concluso |
+| 035 | `035-ritocchi-traduzioni.md` — Ritocchi 2 (sagoma e segno «!» condivisi, `dart:math`, chiavi ARB), foglio di revisione delle traduzioni e test più leggeri | Claude Code | In corso |
 | 024c | `024c-persone-inviti-prototipo.md` — Persone e inviti nel prototipo, testi allineati ai prototipi, test più leggeri | Claude Code | In corso |
 | 024a | `024-prototipo-navigabile.md` — Prototipo navigabile, prima parte: struttura, accesso, elenco, stanza, «diventa partecipante», impostazioni | Claude Code | Concluso |
 | 024b | Prototipo navigabile, seconda parte: coda, creazione e «Gestisci», simulazioni, account chiuso, schermo bloccato (nello stesso brief 024) | Claude Code | Concluso |
