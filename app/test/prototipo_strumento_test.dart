@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'prototipo_aiuti.dart';
 
 // Il pannello dello strumento del prototipo (task 036): il testo ha un terzo valore, 1,4, per
-// provare la barra (in italiano ancora in riga, in tedesco già a colonna).
+// provare la barra (in italiano ancora in riga; si ripiega da circa 1,55, vedi misure_font_vero_test).
 
 void main() {
   testWidgets('il testo gira 1,0 → 2,0 → 1,4 → 1,0, e il tasto dice il valore; da 1,0 un tocco dà 2,0 come prima', (tester) async {

@@ -37,7 +37,7 @@ const double _altezzaTablet = 1133;
 const double _altezzaTelefonoTestoGrande = 1200;
 const double _larghezzaPannello = 320;
 // Il testo intermedio dello strumento, per provare la barra (task 036): fra 1,0 e 2,0 la barra del palco
-// in italiano è ancora in riga, in tedesco è già a colonna. È un valore dello strumento, non del design.
+// in italiano è ancora in riga (si ripiega da circa 1,55). È un valore dello strumento, non del design.
 const double _testoIntermedio = 1.4;
 
 double _altezza(Strumento s) =>
