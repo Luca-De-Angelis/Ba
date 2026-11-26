@@ -37,8 +37,7 @@
 //
 // Valori che i token non hanno: la proporzione della spunta (costanti private) e
 // il fondo dell'interruttore acceso (`azioneAttivaFondo`, come in
-// `BaInterruttoreRiga`). Il raggio dell'azione è `azioneRaggio` (16): il prototipo
-// 030 la disegna a 24 (segnalato nel report del task 033).
+// `BaInterruttoreRiga`). Il raggio dell'azione è `azioneRaggio` (24, task 032).
 //
 // Importa solo widgets.dart: nessuna eccezione.
 import 'package:flutter/widgets.dart';

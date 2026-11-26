@@ -149,6 +149,25 @@ void main() {
       expect(sotto.top, greaterThanOrEqualTo(testi.bottom), reason: 'a testo grande va a capo');
     });
 
+    testWidgets('con il raggio 24 l\x27azione a capo su due righe non taglia il testo: gli angoli del testo stanno dentro l\x27arco', (tester) async {
+      await tester.pumpWidget(_app(
+        _voce(BaVoceRigaPersona.daAggiungere, 'Aggiungi alla lista', onAzione: () {}),
+        testo: BaScalaTokens.maxTesto,
+      ));
+      expect(tester.takeException(), isNull);
+      final contorno = find.descendant(of: find.byType(BaRigaPersona), matching: find.byType(Container)).evaluate().map((e) => e.widget as Container).firstWhere(
+            (c) => c.decoration is BoxDecoration && (c.decoration! as BoxDecoration).border is Border,
+          );
+      final pillola = tester.getRect(find.byWidget(contorno));
+      final testo = tester.getRect(find.text('Aggiungi alla lista'));
+      expect(BaPersoneTokens.azioneRaggio, 24);
+      expect(testo.height, greaterThan(2 * 14 * BaScalaTokens.maxTesto * 1.0), reason: 'su due righe almeno');
+      final arco = RRect.fromRectAndRadius(pillola, const Radius.circular(BaPersoneTokens.azioneRaggio));
+      for (final angolo in [testo.topLeft, testo.topRight, testo.bottomLeft, testo.bottomRight]) {
+        expect(arco.contains(angolo), isTrue, reason: 'l\x27angolo $angolo del testo esce dal contorno $pillola');
+      }
+    });
+
     for (final larghezza in [360.0, 744.0]) {
       testWidgets('a 2,0 su ${larghezza.round()} dp nessuna voce si taglia né sborda', (tester) async {
         for (final riga in <Widget>[
