@@ -38,6 +38,7 @@ class BaPillola extends StatelessWidget {
     this.allarga = true,
     this.altezzaMinima = BaControlloTokens.primario,
     this.stile = BaTestoTokens.controllo,
+    this.riempimento = BaSpazioTokens.xl,
   }) : assert(
           altezzaMinima >= BaControlloTokens.areaMinima,
           'la pillola non scende mai sotto areaMinima',
@@ -73,6 +74,11 @@ class BaPillola extends StatelessWidget {
   /// qui sotto prendono lo stesso [stile].
   final TextStyle stile;
 
+  /// Il riempimento orizzontale fra il bordo e il testo. Il default è `xl` (20), com'è sempre stato;
+  /// la barra delle azioni dà alle secondarie `m` (12, task 036: il design le vuole così). Le misure
+  /// statiche qui sotto prendono lo stesso [riempimento].
+  final double riempimento;
+
   // --------------------------------------------------------------- misure
   //
   // Chi mette più pillole in una riga ha bisogno di due risposte prima di
@@ -93,8 +99,8 @@ class BaPillola extends StatelessWidget {
 
   /// La larghezza che il testo ha a disposizione in una pillola larga
   /// [larghezza]: tolti il padding orizzontale e il filetto.
-  static double _larghezzaUtile(double larghezza, BaVariantePillola variante, bool inattiva) =>
-      larghezza - 2 * BaSpazioTokens.xl - 2 * _bordo(variante, inattiva);
+  static double _larghezzaUtile(double larghezza, BaVariantePillola variante, bool inattiva, double riempimento) =>
+      larghezza - 2 * riempimento - 2 * _bordo(variante, inattiva);
 
   /// L'altezza che la pillola avrebbe, larga [larghezza], col testo e il testo
   /// di sistema correnti: mai sotto [altezzaMinima].
@@ -106,9 +112,10 @@ class BaPillola extends StatelessWidget {
     bool inattiva = false,
     double altezzaMinima = BaControlloTokens.primario,
     TextStyle stile = BaTestoTokens.controllo,
+    double riempimento = BaSpazioTokens.xl,
   }) {
     final m = _misuratore(context, testo, stile)
-      ..layout(maxWidth: _larghezzaUtile(larghezza, variante, inattiva).clamp(0, double.infinity));
+      ..layout(maxWidth: _larghezzaUtile(larghezza, variante, inattiva, riempimento).clamp(0, double.infinity));
     final h = m.height + 2 * BaSpazioTokens.sm + 2 * _bordo(variante, inattiva);
     m.dispose();
     return h > altezzaMinima ? h : altezzaMinima;
@@ -124,8 +131,9 @@ class BaPillola extends StatelessWidget {
     BaVariantePillola variante = BaVariantePillola.attiva,
     bool inattiva = false,
     TextStyle stile = BaTestoTokens.controllo,
+    double riempimento = BaSpazioTokens.xl,
   }) {
-    final utile = _larghezzaUtile(larghezza, variante, inattiva);
+    final utile = _larghezzaUtile(larghezza, variante, inattiva, riempimento);
     for (final parola in testo.split(RegExp(r'\s+'))) {
       if (parola.isEmpty) continue;
       final m = _misuratore(context, parola, stile)..layout();
@@ -144,11 +152,12 @@ class BaPillola extends StatelessWidget {
     BaVariantePillola variante = BaVariantePillola.attiva,
     bool inattiva = false,
     TextStyle stile = BaTestoTokens.controllo,
+    double riempimento = BaSpazioTokens.xl,
   }) {
     final m = _misuratore(context, testo, stile)..layout();
     final w = m.width;
     m.dispose();
-    return w + 2 * BaSpazioTokens.xl + 2 * _bordo(variante, inattiva);
+    return w + 2 * riempimento + 2 * _bordo(variante, inattiva);
   }
 
   @override
@@ -207,8 +216,8 @@ class BaPillola extends StatelessWidget {
         minHeight: altezzaMinima,
         minWidth: allarga ? double.infinity : 0,
       ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: BaSpazioTokens.xl,
+      padding: EdgeInsets.symmetric(
+        horizontal: riempimento,
         vertical: BaSpazioTokens.sm,
       ),
       alignment: Alignment.center,
