@@ -19,6 +19,7 @@
 // Importa solo widgets.dart: nessuna eccezione.
 import 'package:flutter/widgets.dart';
 
+import 'sagoma.dart';
 import 'tokens.dart';
 import 'touchable.dart';
 
@@ -89,7 +90,7 @@ class BaFasciaAttesa extends StatelessWidget {
                   runSpacing: BaCodaTokens.gruppoPresenzaGap,
                   children: [
                     for (var i = 0; i < n; i++)
-                      _Sagoma(tinta: tinte[i % tinte.length], sagoma: sagome[i % sagome.length]),
+                      BaSagoma(tinta: tinte[i % tinte.length], sagoma: sagome[i % sagome.length], lato: BaCodaTokens.gruppoPresenzaLato),
                   ],
                 ),
               ),
@@ -119,25 +120,6 @@ class BaFasciaAttesa extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-/// Una sagoma del gruppo: la forma e la tinta della presenza, senza iniziali.
-class _Sagoma extends StatelessWidget {
-  const _Sagoma({required this.tinta, required this.sagoma});
-
-  final int tinta;
-  final int sagoma;
-
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BaSagomaTokens.bordo(sagoma, BaCodaTokens.gruppoPresenzaLato),
-        gradient: BaTintaTokens.mazzo[tinta % BaTintaTokens.mazzo.length].gradiente,
-      ),
-      child: const SizedBox.square(dimension: BaCodaTokens.gruppoPresenzaLato),
     );
   }
 }

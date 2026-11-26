@@ -10,6 +10,7 @@
 // Importa solo widgets.dart: nessuna eccezione.
 import 'package:flutter/widgets.dart';
 
+import 'sagoma.dart';
 import 'tokens.dart';
 
 class BaPubblico extends StatelessWidget {
@@ -47,9 +48,10 @@ class BaPubblico extends StatelessWidget {
     final gruppo = <Widget>[];
     for (var i = 0; i < n; i++) {
       if (i > 0) gruppo.add(const SizedBox(width: BaSpazioTokens.xxs));
-      gruppo.add(_Sagoma(
+      gruppo.add(BaSagoma(
         tinta: tinte[i % tinte.length],
         sagoma: sagome[i % sagome.length],
+        lato: BaPresenzaTokens.pubblico,
       ));
     }
 
@@ -75,24 +77,6 @@ class BaPubblico extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _Sagoma extends StatelessWidget {
-  const _Sagoma({required this.tinta, required this.sagoma});
-
-  final int tinta;
-  final int sagoma;
-
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BaSagomaTokens.bordo(sagoma, BaPresenzaTokens.pubblico),
-        gradient: BaTintaTokens.mazzo[tinta % BaTintaTokens.mazzo.length].gradiente,
-      ),
-      child: const SizedBox.square(dimension: BaPresenzaTokens.pubblico),
     );
   }
 }

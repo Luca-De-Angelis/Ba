@@ -43,6 +43,7 @@
 // Importa solo widgets.dart: nessuna eccezione.
 import 'package:flutter/widgets.dart';
 
+import 'sagoma.dart';
 import 'tokens.dart';
 import 'touchable.dart';
 
@@ -130,13 +131,7 @@ class BaRigaPersona extends StatelessWidget {
   }
 
   /// La sagoma.
-  Widget _sagoma() => DecoratedBox(
-        decoration: BoxDecoration(
-          borderRadius: BaSagomaTokens.bordo(sagoma, BaPersoneTokens.sagomaLato),
-          gradient: BaTintaTokens.mazzo[tinta % BaTintaTokens.mazzo.length].gradiente,
-        ),
-        child: const SizedBox.square(dimension: BaPersoneTokens.sagomaLato),
-      );
+  Widget _sagoma() => BaSagoma(tinta: tinta, sagoma: sagoma, lato: BaPersoneTokens.sagomaLato);
 
   /// Nome, alias e stato, uno sotto l'altro; un elemento solo per lo screen reader.
   Widget _testi() => Semantics(
