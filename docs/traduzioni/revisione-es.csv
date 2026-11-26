@@ -1,0 +1,10 @@
+﻿chiave;contesto;italiano;spagnolo (es);correzione;nota;lunghezza;segnaposto
+appNome;Chiave di prova del task 000: nome dell'app.;BA;BA;;;2;
+palcoLibero;Palco vuoto, prima riga. Non mette pressione (D-006).;Il palco è libero.;El escenario está libre.;;;24;
+palcoInvito;Palco vuoto, seconda riga. Nessun conto alla rovescia, nessun «tocca a te».;Puoi salire quando vuoi.;Puedes subir cuando quieras.;;;28;
+palcoEtichetta;Etichetta del palco per lo screen reader. Casi 0 e 1 espliciti: in francese 0 e 1 sono entrambi «uno».;{n, plural, =0{Palco, nessuna persona} =1{Palco, 1 persona} other{Palco, {n} persone}};{n, plural, =0{Escenario, nadie} =1{Escenario, 1 persona} other{Escenario, {n} personas}};;;89;n
+presenzaParla;Etichetta di una presenza che sta parlando, per lo screen reader.;{nome}, sta parlando;{nome}, está hablando;;;21;nome
+presenzaMutata;Etichetta di una presenza con la voce mutata da me, per lo screen reader.;{nome}, voce mutata da te;{nome}, voz silenciada por ti;;;29;nome
+presenzaBloccata;Etichetta di una persona bloccata, per lo screen reader.;Persona bloccata: {nome};{nome}, persona bloqueada;;;25;nome
+presenzaMicSpento;Etichetta di una presenza a microfono spento, per lo screen reader.;{nome}, microfono spento;{nome}, micrófono apagado;;;25;nome
+presenzaHaLaParola;Etichetta di chi ha la parola nel sotto-DEN, per lo screen reader.;{nome}, ha la parola;{nome}, tiene la palabra;;;24;nome
