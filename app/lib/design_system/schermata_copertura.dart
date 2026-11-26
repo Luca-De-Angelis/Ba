@@ -96,8 +96,9 @@ class BaSchermataCopertura extends StatelessWidget {
                     child: ConstrainedBox(
                       constraints: BoxConstraints(minHeight: c.maxHeight - sopra - sotto),
                       child: Center(
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(maxWidth: colonna),
+                        // Testo e azione stanno nella stessa colonna (task 032): il testo la riempie, allineato a sinistra.
+                        child: SizedBox(
+                          width: colonna,
                           child: _Testi(titolo: titolo, paragrafi: paragrafi, riga: riga),
                         ),
                       ),

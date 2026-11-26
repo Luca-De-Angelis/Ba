@@ -180,6 +180,27 @@ void main() {
     });
   });
 
+  group('una sola colonna (task 032)', () {
+    testWidgets('a 744 dp il testo e l\x27azione stanno nella stessa colonna di 512: stesso bordo sinistro e stessa larghezza', (tester) async {
+      _vista(tester, larghezza: 744, altezza: 1133);
+      await tester.pumpWidget(_app(_schermata(titolo: 'Titolo breve', paragrafi: const [BaParagrafoPasso('Una frase.')])));
+      final colonna = BaLayoutTokens.larghezzaColonna(744);
+      expect(colonna, 512);
+      final azione = tester.getRect(find.byType(BaPillola));
+      expect(azione.width, colonna);
+      expect(tester.getTopLeft(find.text('Titolo breve')).dx, azione.left, reason: 'il titolo, anche se corto, parte dal bordo della colonna');
+      expect(tester.getTopLeft(find.text('Una frase.')).dx, azione.left);
+    });
+
+    testWidgets('a 360 dp la colonna e\x27 la larghezza meno i margini: 320', (tester) async {
+      _vista(tester);
+      await tester.pumpWidget(_app(_schermata(titolo: 'Titolo breve', paragrafi: const [BaParagrafoPasso('Una frase.')])));
+      final azione = tester.getRect(find.byType(BaPillola));
+      expect(azione.width, 320);
+      expect(tester.getTopLeft(find.text('Titolo breve')).dx, azione.left);
+    });
+  });
+
   group('copre tutto', () {
     testWidgets('riempie lo spazio e non lascia passare i tocchi a ciò che sta sotto', (tester) async {
       _vista(tester);
