@@ -189,7 +189,7 @@ su invito · 3 sul palco
 
 DEN
 
-sei ascoltatore
+in ascolto
 
 Cucina di notte
 
@@ -349,7 +349,7 @@ Persone bloccate
 
 →
 
-Torna ascoltatore
+Torna all’ascolto
 
 Non potrai più parlare. Se stai parlando, esci dalla stanza.
 
@@ -403,7 +403,7 @@ Le presenze bloccate sono già neutre in elenco, con il glifo a 20 pt: lo stesso
 
 **Permessi negati senza colpa:** la riga Notifiche dice la conseguenza ("senza queste non posso avvisarti") e offre l'uscita, invece di rimproverare. Stesso schema per il microfono.
 
-**Torna ascoltatore, non un interruttore.** Il consenso a parlare si ritira con una riga sola, con la conseguenza scritta. Non esiste un interruttore della trascrizione: chi parla viene trascritto, chi non vuole torna ad ascoltare. La riga finale dice cosa succede a voce e testo, come l'onboarding.
+**Torna all’ascolto, non un interruttore.** Il consenso a parlare si ritira con una riga sola, con la conseguenza scritta. Non esiste un interruttore della trascrizione: chi parla viene trascritto, chi non vuole torna ad ascoltare. La riga finale dice cosa succede a voce e testo, come l'onboarding.
 
 **Un gruppo solo in alpha.** In beta, con i DEN privati, il gruppo "ricevuti" di [5j](#5j) si aggiunge sotto questo, con la stessa intestazione e senza azioni; la riga in Impostazioni diventerà *Blocchi*. La schermata non si rifà.
 
@@ -854,7 +854,7 @@ Mostra le voci come testo, sul tuo telefono
 
 l'unico controllo ammesso · non in v1
 
-**Fuori dall'interfaccia, adesso.** Via il marcatore di stanza. Non esiste un interruttore della trascrizione: il consenso a parlare si dà all'accesso e si ritira con *Torna ascoltatore* (5d). Se e quando esisteranno, i *Sottotitoli* saranno una preferenza di visualizzazione, distinta dalla scelta fra ascoltatore e partecipante: dicono cosa vedo io, non cosa accade alla mia voce.
+**Fuori dall'interfaccia, adesso.** Via il marcatore di stanza. Non esiste un interruttore della trascrizione: il consenso a parlare si dà all'accesso e si ritira con *Torna all’ascolto* (5d). Se e quando esisteranno, i *Sottotitoli* saranno una preferenza di visualizzazione, distinta dalla scelta fra ascoltatore e partecipante: dicono cosa vedo io, non cosa accade alla mia voce.
 
 **Si tiene la fascia.** Fra il palco e le azioni esiste già una posizione nell'ordine di cessione, tenuta a quota zero: quando comparirà, il palco cede un passo di scala e le azioni non si muovono di un pixel. È l'unica cosa che va decisa ora — inserire due righe più tardi in un impacchettamento che non le prevede vuol dire rifare la stanza.
 
