@@ -33,7 +33,7 @@
 
 <sc-for list="{{ groups }}" as="g" hint-placeholder-count="2">
 <section data-screen-label="{{ g.label }}" style="padding:44px 56px 56px;display:flex;flex-direction:column;gap:40px;border-bottom:1px solid rgba(242,238,233,0.10)">
-  <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:26px;font-weight:600;letter-spacing:-0.01em">{{ g.titolo }}</div><div style="font-size:15px;line-height:1.5;color:#A09890;max-width:820px;text-wrap:pretty">{{ g.nota }}</div></div>
+  <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:26px;font-weight:600;letter-spacing:-0.01em">{{ g.titolo }}</div><div style="font-size:16px;line-height:1.5;color:#A09890;max-width:820px;text-wrap:pretty">{{ g.nota }}</div></div>
   <sc-for list="{{ g.states }}" as="st" hint-placeholder-count="3">
   <div id="s-{{ st.id }}" style="display:flex;flex-direction:column;gap:20px">
     <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#100F0E;background:#D9CFA8;padding:3px 8px;border-radius:999px">{{ st.num }}</div><div style="font-size:22px;font-weight:600;letter-spacing:-0.01em">{{ st.name }}</div></div>
@@ -161,7 +161,7 @@
 </sc-for>
 
 <section data-screen-label="Distinzione" style="padding:44px 56px 56px;display:flex;flex-direction:column;gap:28px;border-bottom:1px solid rgba(242,238,233,0.10)">
-  <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:26px;font-weight:600;letter-spacing:-0.01em">Distinzione a colpo d'occhio</div><div style="font-size:15px;line-height:1.5;color:#A09890;max-width:820px;text-wrap:pretty">Le cinque presenze che si possono incontrare sul palco, in colore e in scala di grigi. Il microfono spento tiene la tinta piena e le iniziali al 100%, e porta un disco: non si confonde con la voce mutata, che perde saturazione e ha un altoparlante barrato, né con la bloccata, che è neutra e ha il cerchio barrato. «Microfono acceso» non ha nessun segno.</div></div>
+  <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:26px;font-weight:600;letter-spacing:-0.01em">Distinzione a colpo d'occhio</div><div style="font-size:16px;line-height:1.5;color:#A09890;max-width:820px;text-wrap:pretty">Le cinque presenze che si possono incontrare sul palco, in colore e in scala di grigi. Il microfono spento tiene la tinta piena e le iniziali al 100%, e porta un disco: non si confonde con la voce mutata, che perde saturazione e ha un altoparlante barrato, né con la bloccata, che è neutra e ha il cerchio barrato. «Microfono acceso» non ha nessun segno.</div></div>
   <div id="distinzione" style="display:flex;flex-direction:column;gap:28px">
     <sc-for list="{{ distinzione }}" as="r" hint-placeholder-count="2">
     <div style="display:flex;flex-direction:column;gap:12px">
@@ -210,11 +210,11 @@
 </section>
 
 <section data-screen-label="Regole" style="padding:44px 56px 56px;display:flex;flex-direction:column;gap:28px;border-bottom:1px solid rgba(242,238,233,0.10)">
-  <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:26px;font-weight:600;letter-spacing:-0.01em">La barra delle azioni e la scheda di una persona</div><div style="font-size:15px;line-height:1.5;color:#A09890;max-width:820px;text-wrap:pretty">La regola, senza le funzioni che potrebbero arrivare. Vale a 360 dp e a 744 dp: sul tablet la colonna è di 512 e il numero di posti non cambia, così chi conosce il telefono trova le stesse cose negli stessi posti.</div></div>
+  <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:26px;font-weight:600;letter-spacing:-0.01em">La barra delle azioni e la scheda di una persona</div><div style="font-size:16px;line-height:1.5;color:#A09890;max-width:820px;text-wrap:pretty">La regola, senza le funzioni che potrebbero arrivare. Vale a 360 dp e a 744 dp: sul tablet la colonna è di 512 e il numero di posti non cambia, così chi conosce il telefono trova le stesse cose negli stessi posti.</div></div>
   <div style="display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start">
     <div style="display:flex;flex-direction:column;gap:14px;max-width:420px">
       <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#A09890">Barra delle azioni · tre posti</div>
-      <div style="font-size:15px;line-height:1.55;color:#F2EEE9;text-wrap:pretty">Un posto primario e due secondari, sempre. Dalla quarta azione compare «Altro» (48 × 48 dp), che apre un foglio con le rimanenti nell'ordine in cui sono definite. «Esci» e «Scendi dal palco» hanno un posto fisso e non finiscono mai in «Altro». Il primario cambia con lo stato; il resto non si riordina.</div>
+      <div style="font-size:16px;line-height:1.55;color:#F2EEE9;text-wrap:pretty">Un posto primario e due secondari, sempre. Dalla quarta azione compare «Altro» (48 × 48 dp), che apre un foglio con le rimanenti nell'ordine in cui sono definite. «Esci» e «Scendi dal palco» hanno un posto fisso e non finiscono mai in «Altro». Il primario cambia con lo stato; il resto non si riordina.</div>
       <sc-for list="{{ barre }}" as="b" hint-placeholder-count="3">
         <div style="display:flex;flex-direction:column;gap:8px;padding:14px 16px 16px;border-radius:16px;background:#100F0E;border:1px solid rgba(242,238,233,0.10)">
           <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#8A837B">{{ b.titolo }}</div>
@@ -230,7 +230,7 @@
     </div>
     <div style="display:flex;flex-direction:column;gap:14px;max-width:420px">
       <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#A09890">Scheda di una persona · tre fisse e un gruppo</div>
-      <div style="font-size:15px;line-height:1.55;color:#F2EEE9;text-wrap:pretty">In alto nome e stato. Poi le tre azioni fisse, nello stesso ordine: muta questa voce, blocca, segnala. Ogni azione nuova entra in un gruppo sotto un filetto: righe da 48 dp o più, etichetta e, se ha una conseguenza, la conseguenza scritta sotto. Il gruppo cresce verso il basso e il foglio scorre; le tre fisse non si muovono. Le azioni di questo gruppo riguardano la persona, non la stanza.</div>
+      <div style="font-size:16px;line-height:1.55;color:#F2EEE9;text-wrap:pretty">In alto nome e stato. Poi le tre azioni fisse, nello stesso ordine: muta questa voce, blocca, segnala. Ogni azione nuova entra in un gruppo sotto un filetto: righe da 48 dp o più, etichetta e, se ha una conseguenza, la conseguenza scritta sotto. Il gruppo cresce verso il basso e il foglio scorre; le tre fisse non si muovono. Le azioni di questo gruppo riguardano la persona, non la stanza.</div>
       <div style="display:flex;flex-direction:column;border-radius:16px;background:#161412;border:1px solid rgba(242,238,233,0.12);padding:6px 16px 14px">
         <div style="padding:12px 0 10px;font-size:14px;color:#8A837B;font-family:'IBM Plex Mono',monospace;letter-spacing:0.06em;text-transform:uppercase">nome · stato</div>
         <div style="min-height:48px;display:flex;align-items:center;border-top:1px solid rgba(242,238,233,0.12);font-size:16px;color:#F2EEE9">fissa 1</div>
@@ -243,11 +243,11 @@
 </section>
 
 <section data-screen-label="Accessibilità" style="padding:44px 56px 64px;display:flex;flex-direction:column;gap:24px">
-  <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:26px;font-weight:600;letter-spacing:-0.01em">Etichette e annunci</div><div style="font-size:15px;line-height:1.5;color:#A09890;max-width:820px;text-wrap:pretty">Ogni presenza è un elemento con etichetta completa; ogni cambio di stato è un annuncio, una volta, senza ripeterlo al rientro sulla schermata. L'anello e il disco sono decorativi per lo screen reader: il significato sta nell'etichetta. Gli annunci degli altri sono quelli del §7.12 e non includono mai chi entra.</div></div>
+  <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:26px;font-weight:600;letter-spacing:-0.01em">Etichette e annunci</div><div style="font-size:16px;line-height:1.5;color:#A09890;max-width:820px;text-wrap:pretty">Ogni presenza è un elemento con etichetta completa; ogni cambio di stato è un annuncio, una volta, senza ripeterlo al rientro sulla schermata. L'anello e il disco sono decorativi per lo screen reader: il significato sta nell'etichetta. Gli annunci degli altri sono quelli del §7.12 e non includono mai chi entra.</div></div>
   <div style="display:flex;flex-direction:column;max-width:1100px;border-top:1px solid #F2EEE9">
     <div style="display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.5fr) minmax(0,1.5fr);gap:20px;padding:10px 0;border-bottom:1px solid rgba(242,238,233,0.30);font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#A09890"><div>stato</div><div>etichetta</div><div>annuncio</div></div>
     <sc-for list="{{ a11y }}" as="a" hint-placeholder-count="8">
-      <div style="display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.5fr) minmax(0,1.5fr);gap:20px;padding:12px 0;border-bottom:1px solid rgba(242,238,233,0.12);font-size:15px;line-height:1.45"><div style="color:#A09890">{{ a.s }}</div><div>{{ a.e }}</div><div>{{ a.a }}</div></div>
+      <div style="display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.5fr) minmax(0,1.5fr);gap:20px;padding:12px 0;border-bottom:1px solid rgba(242,238,233,0.12);font-size:16px;line-height:1.45"><div style="color:#A09890">{{ a.s }}</div><div>{{ a.e }}</div><div>{{ a.a }}</div></div>
     </sc-for>
   </div>
 </section>
