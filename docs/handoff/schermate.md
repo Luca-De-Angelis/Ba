@@ -45,7 +45,7 @@ L'accesso dell'ascoltatore con email (D-031), il percorso «diventa partecipante
 | A2 · codice | Codice via email: sei caselle, sbagliato, scaduto, nuovo invio con attesa | `BaCampoCodice` (tutti e quattro gli stati), `BaPillola` | il conto del nuovo invio non c'è e non ci sarà a schermo: è una frase ferma; l'attesa (`BaAccessoTokens.nuovoInvioAttesa`, 30 s) è solo un valore del server; l'azione «Mandalo di nuovo» è del chiamante |
 | A3 · onboarding · A4 · termini | Primo accesso; termini e privacy, con la frase «dichiari di avere almeno 18 anni» sopra l'azione (**ipotesi**: età minima 18, obiettivo 16, D-052) | `BaPillola` | i testi; nessun componente specifico (**da verificare**) |
 | A5 · nickname · A5 bis | «Scegli un nickname»: obbligatorio, può ripetersi (D-052); A5 bis a campo vuoto con l'azione inattiva | `BaCampoTesto`, `BaPillola` | — |
-| A6 · elenco | Elenco per l'ascoltatore, di soli DEN pubblici: un privato si apre solo su invito, da un percorso a parte (D-041) | `BaPillola`, `BaRigaDen`, `BaIntestazione` | il flusso «Sei stato invitato» non è disegnato |
+| A6 · elenco | Elenco per l'ascoltatore, di soli DEN pubblici: un privato si apre solo su invito, da un percorso a parte (D-041) | `BaPillola`, `BaRigaDen`, `BaIntestazione` | il flusso «Hai un invito» non è disegnato |
 | P1 · sali-avviso | Sali sul palco: avviso su voce e testo | `BaFoglioPassi` (passo `avviso`), `BaPillola` | — |
 | P2 · sali-numero | Il numero | `BaFoglioPassi` (passo `numero`), `BaCampoTesto` (con il prefisso del chiamante), `BaPillola` | — |
 | P3 · sali-codice | Codice SMS (**rimovibile**) | `BaFoglioPassi` (passo `codice`), `BaCampoCodice` | — |
@@ -108,7 +108,7 @@ Due schermate nuove del task 027: l'account chiuso dalla moderazione (D-049) e i
 
 ## 4 ter. Persone, inviti e richiamo: [Persone e inviti 030](../../design/handoff/030/Persone%20e%20inviti%20030.dc.html)
 
-Aggiungere persone, la rubrica, «Chi può trovarmi», il selettore degli invitati e del co-amministratore, «Sei stato invitato» e il richiamo con un consenso per persona. **Sono proposte di Luca (D-055), segnate «ipotesi» e ancora aperte** (vedi [aperte](aperte.md)). Principio che non si rompe: nessuna schermata mostra o lascia dedurre che una persona è online o in un DEN senza il suo consenso. Note in [`changelog.md`](../../design/handoff/030/changelog.md).
+Aggiungere persone, la rubrica, «Chi può trovarmi», il selettore degli invitati e del co-amministratore, «Hai un invito» e il richiamo con un consenso per persona. **Sono proposte di Luca (D-055), segnate «ipotesi» e ancora aperte** (vedi [aperte](aperte.md)). Principio che non si rompe: nessuna schermata mostra o lascia dedurre che una persona è online o in un DEN senza il suo consenso. Note in [`changelog.md`](../../design/handoff/030/changelog.md).
 
 | Schermata | Che cosa mostra | Esistono | Mancano |
 | --- | --- | --- | --- |
@@ -116,12 +116,12 @@ Aggiungere persone, la rubrica, «Chi può trovarmi», il selettore degli invita
 | R1–R3 · rubrica | Il foglio del permesso (due azioni alla pari, il rifiuto senza colpa), lo stato dopo il rifiuto, «Dalla rubrica» | `BaFoglioPassi`/`BaFoglio` (richiesta), `BaRigaPersona` | il collegamento alla rubrica (task 024c) |
 | V1, V2 · chi può trovarmi | Una riga nelle impostazioni con la sua conseguenza e la scelta fra nessuno, chi conosco, tutti | `BaRigaImpostazione`, `BaSceltaDen` (la scelta esclusiva), `BaFoglio` | — |
 | S1–S3 · selettore | Gli invitati (nessuno scelto, due scelti) e il co-amministratore: lo **stesso** selettore | `BaSelettorePersone` (nel posto di `BaPassiCreazione.invitati` e di `BaFoglioGestisci.coAmministratori`), `BaRicercaPersone`, `BaRigaPersona` | — |
-| I1, I2 · sei stato invitato (chi ha BA) | La notifica a schermo bloccato (senza azioni) e il foglio «Entra» / «Non ora» | `BaFoglioInvito` (`.valido`) | la **notifica** (superficie di sistema, non un widget) |
+| I1, I2 · hai un invito (chi ha BA) | La notifica a schermo bloccato («Invito di Marta», senza azioni) e il foglio «Invito di Marta a Cena senza fretta», con «Entra» (a filetto) e «Non ora» | `BaFoglioInvito` (`.valido`) | la **notifica** (superficie di sistema, non un widget) |
 | I3, I3 bis · scaduto e annullato | «Questo invito è scaduto», «non è più valido»; «Ho capito» | `BaFoglioInvito` (`.scaduto`, `.annullato`) | — |
 | I4–I6 · chi non ha BA | La mail, la pagina d'arrivo web (fuori dall'app, ipotesi), l'accesso del 013 e l'ingresso diretto come ascoltatore | l'accesso del 013 (vedi §2) | la mail e la pagina web **non sono componenti dell'app** (D-030) |
 | C1–C5 · richiamo | Spento di partenza, un consenso per persona, la conferma prima di accendere, «Chi può avvisarti» | `BaRigaImpostazione.interruttore`, `BaRigaConsenso`, `BaFoglio` (la conferma, composta dal chiamante) | la notifica del richiamo (015 K7: superficie di sistema) |
 
-**Differenze dal prototipo 030, da correggere nel design:** «Entra» è attiva (a filetto) e non piena; il raggio dell'azione di una riga di persona è 16 (il token) e il prototipo lo disegna a 24. Un invito ricevuto mentre si è già in un DEN usa «Vuoi passare di qua?» del 015 (D-042): non è disegnato.
+**Dal 032 il design e il codice coincidono** su «Entra» (attiva, a filetto) e sul raggio dell'azione di una riga di persona (24). I testi sono neutri rispetto al genere: «Invito di Marta», «Hai un invito», «Sei dentro, su invito di Marta», «✓ In lista». Un invito ricevuto mentre si è già in un DEN usa «Vuoi passare di qua?» del 015 (D-042): non è disegnato.
 
 ## 5. Prototipi precedenti
 
