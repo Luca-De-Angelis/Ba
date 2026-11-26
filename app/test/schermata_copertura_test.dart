@@ -51,6 +51,16 @@ BaSchermataCopertura _schermata({
 
 void main() {
   group('B1 · account chiuso', () {
+    testWidgets('il titolo è un titolo di schermata intera: 28/600 (titoloSchermata), non il 22 della stanza', (tester) async {
+      _vista(tester);
+      await tester.pumpWidget(_app(_schermata()));
+      final stile = tester.widget<Text>(find.text('Questo account non può più usare BA')).style!;
+      expect(stile.fontSize, 28);
+      expect(stile.fontWeight, FontWeight.w600);
+      expect(stile.fontSize, isNot(BaTestoTokens.stanza.fontSize));
+      expect(stile.color, BaColorTokens.testoPrimo);
+    });
+
     testWidgets('il titolo, i paragrafi e una sola azione: chiara', (tester) async {
       _vista(tester);
       await tester.pumpWidget(_app(_schermata()));

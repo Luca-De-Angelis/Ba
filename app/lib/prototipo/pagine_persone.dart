@@ -146,6 +146,7 @@ class _PaginaAggiungiPersoneState extends State<PaginaAggiungiPersone> {
     return PaginaProto(
       nome: T.aggiungiPersone,
       titolo: T.aggiungiPersone,
+      titoloSchermata: true,
       corpo: [
         BaRicercaPersone(
           controller: _ricerca,
@@ -173,6 +174,7 @@ class PaginaRubrica extends StatelessWidget {
       return PaginaProto(
         nome: T.rubricaNonCollegata,
         titolo: T.rubricaNonCollegata,
+        titoloSchermata: true,
         corpo: const [Frase(T.rubricaR2P1), Frase(T.rubricaR2P2, piccola: true)],
         // Nessun invito a ripensarci: solo la ricerca per nome.
         azioni: [pillola(T.cercaUnaPersona, stato.indietro, variante: BaVariantePillola.attiva)],
@@ -183,6 +185,7 @@ class PaginaRubrica extends StatelessWidget {
     return PaginaProto(
       nome: T.dallaRubrica,
       titolo: T.dallaRubrica,
+      titoloSchermata: true,
       corpo: [
         const BaMarcatore(testo: T.suBa),
         Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [for (final c in suBa) rigaPerAggiungere(stato, c)]),

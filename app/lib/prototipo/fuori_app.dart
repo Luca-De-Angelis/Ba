@@ -56,7 +56,7 @@ class PaginaFuoriApp extends StatelessWidget {
                         header: true,
                         child: Text(
                           T.invitoTitolo(chi, den),
-                          style: BaTestoTokens.stanza.copyWith(
+                          style: BaTestoTokens.titoloSchermata.copyWith(
                             color: BaColorTokens.testoPrimo,
                           ),
                         ),
