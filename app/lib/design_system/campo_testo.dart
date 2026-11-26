@@ -94,6 +94,7 @@ class BaCampoTesto extends StatefulWidget {
     this.onSubmitted,
     this.minRighe = 1,
     this.maxRighe = 1,
+    this.segnapostoSuPiuRighe = false,
     this.semanticsLabel,
   }) : assert(minRighe >= 1 && maxRighe >= minRighe);
 
@@ -131,6 +132,13 @@ class BaCampoTesto extends StatefulWidget {
   final int minRighe;
   final int maxRighe;
 
+  /// Un campo di una riga mostra il segnaposto **su una riga**, troncato con i puntini, a ogni
+  /// scala (task 032c): «nome@esempio.it» e «320 000 0000» non vanno a capo né si spezzano. Il
+  /// segnaposto fatto di più parole («Nickname, alias, email o numero») può andare a capo fra
+  /// le parole, mai a metà: lo chiede così, con questo parametro. Nei campi a più righe
+  /// (descrizione) il segnaposto va a capo sempre.
+  final bool segnapostoSuPiuRighe;
+
   /// Se manca: [etichetta].
   final String? semanticsLabel;
 
@@ -145,6 +153,7 @@ class _BaCampoTestoState extends State<BaCampoTesto> {
   FocusNode get _focus => widget.focusNode ?? (_proprio ??= FocusNode(debugLabel: 'BaCampoTesto'));
 
   bool get _multi => widget.maxRighe > 1;
+  bool get _segnapostoUnaRiga => !_multi && !widget.segnapostoSuPiuRighe;
 
   @override
   void initState() {
@@ -246,6 +255,9 @@ class _BaCampoTestoState extends State<BaCampoTesto> {
                               child: Text(
                                 widget.segnaposto!,
                                 style: stileTesto.copyWith(color: BaColorTokens.testoSpento),
+                                maxLines: _segnapostoUnaRiga ? 1 : null,
+                                softWrap: !_segnapostoUnaRiga,
+                                overflow: _segnapostoUnaRiga ? TextOverflow.ellipsis : TextOverflow.clip,
                               ),
                             ),
                           Semantics(

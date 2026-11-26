@@ -4,8 +4,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:ba/design_system/barra_azioni.dart';
+import 'package:ba/design_system/campo_testo.dart';
 import 'package:ba/design_system/pillola.dart';
 import 'package:ba/design_system/riga_persona.dart';
+import 'package:ba/design_system/riga_valore.dart';
 import 'package:ba/design_system/tokens.dart';
 import 'package:ba/design_system/touchable.dart';
 
@@ -285,6 +287,61 @@ void main() {
         expect(azione(tester, i).left, greaterThan(nome.right), reason: nomi[i]);
         expect(azione(tester, i).center.dy, lessThan(nome.bottom + 20), reason: '${nomi[i]}: sulla riga del nome');
       }
+    });
+  });
+
+  group('valori e campi a testo 2,0, con il font vero (task 032c)', () {
+    Widget app(Widget figlio, double testo) => Directionality(
+          textDirection: TextDirection.ltr,
+          child: MediaQuery(
+            data: MediaQueryData(size: const Size(360, 800), textScaler: TextScaler.linear(testo)),
+            child: Align(alignment: Alignment.topLeft, child: SizedBox(width: 320, child: SingleChildScrollView(child: figlio))),
+          ),
+        );
+
+    testWidgets('in una lista di righe con valore, a 2,0 tutti i valori stanno sotto l\'etichetta, a sinistra', (tester) async {
+      const coppie = [('Lingua', 'Italiano'), ('Microfono', 'Consentito'), ('Chi può trovarmi', 'Chi conosco'), ('Persone bloccate', '3 persone')];
+      await tester.pumpWidget(app(Column(children: [for (final (e, v) in coppie) BaRigaValore(etichetta: e, valore: v)]), 2.0));
+      expect(tester.takeException(), isNull);
+      final bordi = <double>{};
+      for (final (e, v) in coppie) {
+        expect(tester.getRect(find.text(v)).top, greaterThanOrEqualTo(tester.getRect(find.text(e)).bottom), reason: e);
+        bordi.add(tester.getRect(find.text(v)).left);
+      }
+      expect(bordi, hasLength(1), reason: '$bordi');
+    });
+
+    testWidgets('a 1,0 «Lingua Italiano» sta ancora su una riga', (tester) async {
+      await tester.pumpWidget(app(const BaRigaValore(etichetta: 'Lingua', valore: 'Italiano'), 1.0));
+      expect(tester.getRect(find.text('Italiano')).left, greaterThan(tester.getRect(find.text('Lingua')).right));
+    });
+
+    BaCampoTesto campo(String segnaposto, {bool piuRighe = false}) => BaCampoTesto(
+          controller: TextEditingController(),
+          etichetta: 'Campo',
+          segnaposto: segnaposto,
+          segnapostoSuPiuRighe: piuRighe,
+        );
+
+    testWidgets('a 2,0 «nome@esempio.it» e «320 000 0000» stanno su una riga (con i puntini), mai spezzati', (tester) async {
+      for (final segnaposto in ['nome@esempio.it', '320 000 0000']) {
+        await tester.pumpWidget(app(campo(segnaposto), 2.0));
+        expect(tester.takeException(), isNull);
+        expect(_righe(tester, segnaposto), 1, reason: segnaposto);
+        // ignore: avoid_print
+        print('MISURA campo a 2,0 e 360 dp: «$segnaposto» su ${_righe(tester, segnaposto)} riga');
+      }
+    });
+
+    testWidgets('il segnaposto della ricerca va a capo fra le parole, mai a metà: ogni parola entra intera', (tester) async {
+      const testo = 'Nickname, alias, email o numero';
+      await tester.pumpWidget(app(campo(testo, piuRighe: true), 2.0));
+      expect(tester.takeException(), isNull);
+      final larghezza = tester.getSize(find.text(testo)).width;
+      for (final parola in testo.split(' ')) {
+        expect(_larghezzaTesto(parola, BaTestoTokens.campo, scala: 2.0), lessThanOrEqualTo(larghezza), reason: parola);
+      }
+      expect(_righe(tester, testo), greaterThan(1), reason: 'a capo fra le parole');
     });
   });
 }

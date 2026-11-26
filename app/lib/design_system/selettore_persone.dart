@@ -1,7 +1,7 @@
 // BaSelettorePersone: il selettore delle persone (task 033, Inventario C4;
 // prototipo 030: S1–S3). **Lo stesso componente** per gli invitati di un DEN
 // privato (il passo «Invita», C4) e per il co-amministratore (G2): cambiano solo le
-// parole («Invita» o «Scegli»; «Nell'invito» o «Scelto») e il limite. È il
+// parole («Invita» o «Scegli»; «Nell'invito» o «Nella scelta») e il limite. È il
 // `Widget posto` che `BaPassiCreazione.invitati` e `BaFoglioGestisci.coAmministratori`
 // accettano già: **le loro API non cambiano**.
 //
@@ -86,7 +86,7 @@ class BaSelettorePersone extends StatelessWidget {
   /// La parola per scegliere: «Invita» per gli invitati, «Scegli» per il co-amministratore.
   final String parolaScegli;
 
-  /// La parola di una persona già scelta: «Nell'invito», «Scelto».
+  /// La parola di una persona già scelta: «Nell'invito», «Nella scelta».
   final String parolaScelta;
 
   /// Quante persone si possono scegliere al più. Un numero dato dal chiamante,

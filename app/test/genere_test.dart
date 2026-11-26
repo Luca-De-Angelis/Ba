@@ -24,6 +24,7 @@ final _vietate = <String, RegExp>{
   '«Non siamo riusciti» → «Non è stato possibile»': RegExp(r'Non siamo riusciti'),
   '«solo se invitato» → «solo su invito»': RegExp(r'solo se invitat'),
   '«✓ Aggiunta» → «✓ In lista»': RegExp('[\'"«]Aggiunta[\'"»:]'),
+  '«✓ Scelto» → «✓ Nella scelta»': RegExp('[\'"«]Scelto[\'"»]'),
   '«persona bloccata» dopo il nome → «Persona bloccata: nome»': RegExp(r'\{nome\}, persona bloccata'),
 };
 

@@ -259,7 +259,7 @@ abstract final class T {
   static String coAmmLimiteSceglie(String nome) => 'Hai raggiunto il limite di co-amministratori. Per sceglierne un altro, togli $nome.';
   static const String aggiungiCoAmm = 'Aggiungi un co-amministratore';
   static const String scegli = 'Scegli';
-  static const String scelto = 'Scelto';
+  static const String scelto = 'Nella scelta';
   static const String togli = 'Togli';
   static const String rimuovi = 'Rimuovi';
   static String rimuoviTitolo(String nome) => 'Rimuovere $nome?';

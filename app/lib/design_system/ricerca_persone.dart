@@ -84,6 +84,7 @@ class BaRicercaPersone extends StatelessWidget {
       focusNode: focusNode,
       etichetta: etichetta,
       segnaposto: segnaposto,
+      segnapostoSuPiuRighe: true, // «Nickname, alias, email o numero»: a capo fra le parole, mai a metà
       errore: erroreRete,
       semanticsLabel: semanticsLabel,
       onChanged: (testo) => onRicerca?.call(attiva(testo) ? testo.trim() : ''),
