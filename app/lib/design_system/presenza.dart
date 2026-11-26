@@ -372,7 +372,7 @@ class _BaDiscoGlifoState extends State<BaDiscoGlifo> with SingleTickerProviderSt
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _riduciMovimento = MediaQuery.disableAnimationsOf(context);
+    _riduciMovimento = BaMovimentoTokens.statico(context); // movimento ridotto o screen reader (task 036)
   }
 
   @override
@@ -478,7 +478,7 @@ class _ScheletroState extends State<_Scheletro> with SingleTickerProviderStateMi
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (MediaQuery.disableAnimationsOf(context)) {
+    if (BaMovimentoTokens.statico(context)) {
       _controller.stop();
       _controller.value = 1; // fermo al valore più alto
     } else if (!_controller.isAnimating) {

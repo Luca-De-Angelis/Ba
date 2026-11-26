@@ -109,7 +109,7 @@ class _BaAnelloState extends State<BaAnello> with TickerProviderStateMixin {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final riduci = MediaQuery.disableAnimationsOf(context);
+    final riduci = BaMovimentoTokens.statico(context); // movimento ridotto o screen reader (task 036)
     if (riduci != _riduciMovimento) {
       _riduciMovimento = riduci;
       _allinea(subito: true);
