@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:ba/design_system/tokens.dart';
@@ -437,9 +438,11 @@ void main() {
       expect(BaPersoneTokens.ricercaAltezza, 56);
     });
 
-    test('l\'azione non scende sotto areaMinima, ha il raggio del riquadro e il bordo sottile', () {
+    test('l\'azione non scende sotto areaMinima, ha il raggio 24 e il bordo sottile', () {
       expect(BaPersoneTokens.azioneAltezza, greaterThanOrEqualTo(BaControlloTokens.areaMinima));
-      expect(BaPersoneTokens.azioneRaggio, BaRaggioTokens.riquadro);
+      // Task 032c: 24 (rounded3xl), come le altre azioni testuali; prima era il riquadro (16).
+      expect(BaPersoneTokens.azioneRaggio, 24);
+      expect(BaPersoneTokens.azioneRaggio, BaRaggioTokens.foglio);
       expect(BaPersoneTokens.azioneBordo, 1);
     });
 
@@ -458,6 +461,44 @@ void main() {
 
     test('l\'invito scade dopo 7 giorni (ipotesi: l\'interfaccia non mostra il numero)', () {
       expect(BaPersoneTokens.invitoScadenza, const Duration(days: 7));
+    });
+  });
+
+  group('consolidamento del design (task 032)', () {
+    test('titoloSchermata è 28/600, tracking −0,26, e non è la stanza (22)', () {
+      expect(BaPrimitiveTokens.text28, 28);
+      expect(BaTestoTokens.titoloSchermata.fontSize, 28);
+      expect(BaTestoTokens.titoloSchermata.fontWeight, FontWeight.w600);
+      expect(BaTestoTokens.titoloSchermata.letterSpacing, -0.26);
+      expect(BaTestoTokens.titoloSchermata.height, BaTestoTokens.foglio.height, reason: 'leading tight');
+      expect(BaTestoTokens.stanza.fontSize, 22, reason: 'la stanza non cambia');
+    });
+
+    test('campo è 20/400 e cifra è 22/400: non sono titoli', () {
+      expect(BaTestoTokens.campo.fontSize, 20);
+      expect(BaTestoTokens.campo.fontWeight, isNull, reason: '400, il peso normale');
+      expect(BaTestoTokens.cifra.fontSize, 22);
+      expect(BaTestoTokens.cifra.fontWeight, isNull);
+      expect(BaTestoTokens.foglio.fontWeight, FontWeight.w600, reason: 'foglio resta dei titoli');
+    });
+
+    test('curvaFoglio è la curva del foglio senza rimbalzo: cubic-bezier(.34,1,.64,1)', () {
+      expect(BaMovimentoTokens.curvaFoglio, const Cubic(0.34, 1.0, 0.64, 1.0));
+      expect(BaMovimentoTokens.curvaScheda.b, 1.2, reason: 'curvaScheda ha il suo rimbalzo');
+      for (var t = 0.0; t <= 1.0; t += 0.01) {
+        expect(BaMovimentoTokens.curvaFoglio.transform(t), lessThanOrEqualTo(1.0 + 1e-9), reason: 't=$t');
+      }
+    });
+
+    test('la scelta, il tratteggio e l\'interruttore hanno i loro token', () {
+      expect(BaCreazioneTokens.sceltaPuntoLato, 10);
+      expect(BaCreazioneTokens.tratteggioTratto, 6);
+      expect(BaCreazioneTokens.tratteggioVuoto, 4);
+      expect(BaCreazioneTokens.tratteggioColore, BaColorTokens.ascoltoGruppoBordo);
+      // sabbia300 a16: il fondo dell'interruttore acceso, un colore piatto.
+      expect(BaCodaTokens.interruttoreFondoAcceso.a, closeTo(0x29 / 255, 0.001));
+      expect(BaCodaTokens.interruttoreFondoAcceso.toARGB32() & 0x00FFFFFF, BaColorTokens.azioneChiara.toARGB32() & 0x00FFFFFF);
+      expect(BaCodaTokens.interruttorePallinoSpentoOpacita, 0.5);
     });
   });
 }

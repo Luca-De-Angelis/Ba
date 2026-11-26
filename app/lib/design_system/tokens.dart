@@ -99,6 +99,7 @@ class BaPaletteTokens {
   static const int a34 = 0x57000000, a42 = 0x6B000000, a55 = 0x8C000000;
   static const int a62 = 0x9E000000, a66 = 0xA8000000, a86 = 0xDB000000;
   static const int a92 = 0xEB000000;
+  static const int a16 = 0x29000000; // il fondo dell'interruttore acceso (task 032)
 }
 
 /// Misure primitive. Spazio su base 4 (Tailwind v4, --spacing: 4): spN = N × 4.
@@ -114,10 +115,11 @@ class BaPrimitiveTokens {
   // larghezze massime
   static const double maxWLg = 512; // max-w-lg
 
-  // testo (text-*). Una sola estensione: text22, il titolo della stanza.
+  // testo (text-*). Due estensioni: text22, il titolo della stanza, e text28, il titolo di una schermata intera.
   static const double textXs = 12, textSm = 14, textBase = 16;
   static const double textLg = 18, textXl = 20;
   static const double text22 = 22; // fuori scala, fra xl (20) e 2xl (24)
+  static const double text28 = 28; // fuori scala, fra 2xl (24) e 3xl (30): il titolo di una schermata intera (task 032)
 
   // interlinea e spaziatura
   static const double leadingTight = 1.25, leadingNormal = 1.5;
@@ -445,6 +447,17 @@ class BaTestoTokens {
   // eccezione, nessun passo di tracking-* gli somiglia (tight = -0,025em).
   static const TextStyle stanza =
       TextStyle(fontFamily: famiglia, fontSize: _S.text22, fontWeight: FontWeight.w600, letterSpacing: -0.26);
+  /// Il titolo di una schermata intera che non è la stanza né un foglio (account
+  /// chiuso, persone, rubrica, selettori): 28/600. Prima non aveva un token e il
+  /// codice usava stanza (22). Task 032.
+  static const TextStyle titoloSchermata =
+      TextStyle(fontFamily: famiglia, fontSize: _S.text28, fontWeight: FontWeight.w600, letterSpacing: -0.26, height: _S.leadingTight);
+  /// Il testo scritto in un campo (email, nickname, numero): 20/400. Task 032.
+  static const TextStyle campo =
+      TextStyle(fontFamily: famiglia, fontSize: _S.textXl);
+  /// La cifra di una casella del codice: 22/400. Task 032.
+  static const TextStyle cifra =
+      TextStyle(fontFamily: famiglia, fontSize: _S.text22);
   static const TextStyle foglio =
       TextStyle(fontFamily: famiglia, fontSize: _S.textXl, fontWeight: FontWeight.w600, letterSpacing: -0.30, height: _S.leadingTight);
   static const TextStyle riga =
@@ -575,6 +588,7 @@ class BaMovimentoTokens {
 
   static const Cubic curvaAssestamento = Cubic(0.22, 0.9, 0.25, 1.0); // si sposta, cambia scala
   static const Cubic curvaScheda = Cubic(0.34, 1.2, 0.64, 1.0); // appare sopra il resto
+  static const Cubic curvaFoglio = Cubic(0.34, 1.0, 0.64, 1.0); // il foglio sale: la stessa curva senza rimbalzo (task 032)
 
   // L'anello sta su DUE canali, e i token seguono la divisione.
   //
@@ -929,6 +943,7 @@ class BaCreazioneTokens {
   static const double sceltaRaggio = _S.rounded2xl;
   static const double sceltaBordo = _S.border1;
   static const double sceltaBordoScelta = _S.border2;
+  static const double sceltaPuntoLato = _S.sp2_5; // il punto interno al cerchio della scelta (task 032)
   static const double sceltaSegnoLato = BaAccessoTokens.erroreSegnoLato; // eccezione: la stessa del segno «!», sta sull'altezza della riga di testo
 
   // chip del tema e della lingua: vanno a capo e restano a vista
@@ -943,6 +958,9 @@ class BaCreazioneTokens {
   static const double aggancioAltezza = _S.sp12;
   static const double aggancioRaggio = _S.rounded2xl;
   static const double aggancioBordo = _S.border1; // tratteggiato
+  static const double tratteggioTratto = _S.sp1_5; // 6: il tratteggio di BaTratteggio (task 032)
+  static const double tratteggioVuoto = _S.sp1; // 4
+  static const Color tratteggioColore = BaColorTokens.ascoltoGruppoBordo;
 
   // campo «quando» spento (D07): l'interruttore c'è già e non si può toccare
   static const double quandoInterruttoreLarghezza = _S.sp11;
@@ -968,6 +986,8 @@ class BaCodaTokens {
   static const double interruttorePallino = _S.sp4;
   static const double interruttoreBordo = _S.border1;
   static const double interruttoreBordoAcceso = _S.border2; // acceso: bordo spesso e la parola «Acceso», non solo il colore
+  static const Color interruttoreFondoAcceso = Color(_P.a16 | _P.sabbia300); // acceso: il fondo (task 032)
+  static const double interruttorePallinoSpentoOpacita = 0.5; // spento: il pallino è a metà (task 032)
 
   // riga di una coda (le tue code): nome, stato e uscita
   static const double rigaAltezza = _S.sp14; // minima: cresce col testo
@@ -1028,7 +1048,7 @@ class BaPersoneTokens {
   static const double rigaGap = _S.sp3;
   static const double sagomaLato = _S.sp8;
   static const double azioneAltezza = _S.sp11; // minimo di tocco
-  static const double azioneRaggio = _S.rounded2xl; // non roundedFull: con il testo a capo la pillola cresce e non lo taglia
+  static const double azioneRaggio = _S.rounded3xl; // 24 (era 16, task 032): a una riga è una pillola come le altre azioni; non roundedFull: a capo cresce e non taglia il testo
   static const double azioneBordo = _S.border1;
 
   // campo di ricerca: una riga con la linea sotto, come il campo del 013
