@@ -14,9 +14,8 @@
 // Nessuna animazione del pallino: T8 non ne prevede, e lo spostamento è
 // immediato, come la comparsa delle presenze.
 //
-// Valori che i token non hanno (segnalati nel report del task 022): il fondo
-// dell'interruttore acceso del prototipo (sabbia300 a16: uso `azioneAttivaFondo`,
-// la più vicina) e il pallino spento a metà opacità (uso `testoTerzo`).
+// Il fondo dell'interruttore acceso è `BaCodaTokens.interruttoreFondoAcceso` (sabbia300 a16) e
+// il pallino spento è a metà (`interruttorePallinoSpentoOpacita`): token del task 032.
 //
 // Importa solo widgets.dart: nessuna eccezione.
 import 'package:flutter/widgets.dart';
@@ -130,20 +129,16 @@ class _Interruttore extends StatelessWidget {
                 color: acceso ? BaColorTokens.azioneChiara : BaColorTokens.ascoltoGruppoBordo,
                 width: acceso ? BaCodaTokens.interruttoreBordoAcceso : BaCodaTokens.interruttoreBordo,
               ),
-              gradient: acceso
-                  ? LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: BaColorTokens.azioneAttivaFondo,
-                    )
-                  : null,
+              // Acceso: il fondo è sabbia300 a16, un colore piatto (task 032); spento, nessun fondo.
+              color: acceso ? BaCodaTokens.interruttoreFondoAcceso : null,
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: BaSpazioTokens.xxs),
               child: Align(
                 alignment: acceso ? Alignment.centerRight : Alignment.centerLeft,
                 child: DecoratedBox(
-                  decoration: BoxDecoration(shape: BoxShape.circle, color: colore),
+                  // Spento il pallino è a metà (task 032): il segno di stato è la posizione e la parola.
+                  decoration: BoxDecoration(shape: BoxShape.circle, color: acceso ? colore : BaColorTokens.testoPrimo.withValues(alpha: BaCodaTokens.interruttorePallinoSpentoOpacita)),
                   child: const SizedBox.square(dimension: BaCodaTokens.interruttorePallino),
                 ),
               ),

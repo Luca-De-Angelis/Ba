@@ -56,7 +56,7 @@ void main() {
       final deco = _decorazione(tester);
       expect((deco.border! as Border).top.width, BaCodaTokens.interruttoreBordoAcceso);
       expect(BaCodaTokens.interruttoreBordoAcceso, greaterThan(BaCodaTokens.interruttoreBordo));
-      expect(deco.gradient, isNotNull);
+      expect(deco.color, BaCodaTokens.interruttoreFondoAcceso, reason: 'task 032: il fondo acceso è un colore piatto (prima un gradiente)');
       final sw = tester.getRect(_interruttore());
       expect(tester.getRect(_pallino()).center.dx, greaterThan(sw.center.dx));
       expect(find.text('ACCESO'), findsOneWidget);
@@ -165,6 +165,30 @@ void main() {
     testWidgets('senza descrizione regge l\'altezza minima', (tester) async {
       await tester.pumpWidget(_app(_riga(descrizione: null, onCambia: (_) {})));
       expect(tester.getSize(find.byType(BaInterruttoreRiga)).height, greaterThanOrEqualTo(BaControlloTokens.primario));
+    });
+  });
+
+  group('il fondo e il pallino (task 032)', () {
+    testWidgets('acceso: il fondo è sabbia300 a16, un colore piatto, non il gradiente della pillola', (tester) async {
+      await tester.pumpWidget(_app(_riga(acceso: true, onCambia: (_) {})));
+      final deco = _decorazione(tester);
+      expect(deco.color, BaCodaTokens.interruttoreFondoAcceso);
+      expect(deco.gradient, isNull);
+      expect(deco.color, isNot(BaColorTokens.azioneAttivaFondo.first));
+    });
+
+    testWidgets('spento: nessun fondo e il pallino è a metà opacità', (tester) async {
+      await tester.pumpWidget(_app(_riga(acceso: false, onCambia: (_) {})));
+      expect(_decorazione(tester).color, isNull);
+      final pallino = tester.widget<DecoratedBox>(find.ancestor(of: _pallino(), matching: find.byType(DecoratedBox)).first).decoration as BoxDecoration;
+      expect(pallino.color!.a, closeTo(BaCodaTokens.interruttorePallinoSpentoOpacita, 0.01));
+      expect(pallino.color!.toARGB32() & 0x00FFFFFF, BaColorTokens.testoPrimo.toARGB32() & 0x00FFFFFF);
+    });
+
+    testWidgets('acceso: il pallino è pieno, del colore dell\'azione', (tester) async {
+      await tester.pumpWidget(_app(_riga(acceso: true, onCambia: (_) {})));
+      final pallino = tester.widget<DecoratedBox>(find.ancestor(of: _pallino(), matching: find.byType(DecoratedBox)).first).decoration as BoxDecoration;
+      expect(pallino.color, BaColorTokens.azioneChiara);
     });
   });
 }

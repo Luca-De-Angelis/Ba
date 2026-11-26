@@ -35,9 +35,9 @@
 // `BaPubblico`): non si calcolano dall'id. Per lo screen reader la riga ha due
 // elementi: il nome (con alias e stato) e l'azione o l'interruttore.
 //
-// Valori che i token non hanno: la proporzione della spunta (costanti private) e
-// il fondo dell'interruttore acceso (`azioneAttivaFondo`, come in
-// `BaInterruttoreRiga`). Il raggio dell'azione è `azioneRaggio` (24, task 032).
+// Valore che i token non hanno: la proporzione della spunta (costanti private). Il fondo
+// dell'interruttore acceso e il pallino spento sono quelli di `BaInterruttoreRiga` (token del
+// task 032); il raggio dell'azione è `azioneRaggio` (24).
 //
 // Importa solo widgets.dart: nessuna eccezione.
 import 'package:flutter/widgets.dart';
@@ -392,20 +392,16 @@ class _Interruttore extends StatelessWidget {
                 color: acceso ? BaColorTokens.azioneChiara : BaColorTokens.ascoltoGruppoBordo,
                 width: acceso ? BaCodaTokens.interruttoreBordoAcceso : BaCodaTokens.interruttoreBordo,
               ),
-              gradient: acceso
-                  ? LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: BaColorTokens.azioneAttivaFondo,
-                    )
-                  : null,
+              // Acceso: il fondo è sabbia300 a16, un colore piatto (task 032); spento, nessun fondo.
+              color: acceso ? BaCodaTokens.interruttoreFondoAcceso : null,
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: BaSpazioTokens.xxs),
               child: Align(
                 alignment: acceso ? Alignment.centerRight : Alignment.centerLeft,
                 child: DecoratedBox(
-                  decoration: BoxDecoration(shape: BoxShape.circle, color: colore),
+                  // Spento il pallino è a metà (task 032): il segno di stato è la posizione e la parola.
+                  decoration: BoxDecoration(shape: BoxShape.circle, color: acceso ? colore : BaColorTokens.testoPrimo.withValues(alpha: BaCodaTokens.interruttorePallinoSpentoOpacita)),
                   child: const SizedBox.square(dimension: BaCodaTokens.interruttorePallino),
                 ),
               ),

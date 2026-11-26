@@ -19,8 +19,8 @@
 // scrive, si incolla dalla tastiera del telefono e da tastiera fisica, e si
 // cancella; il resto, in produzione, va aggiunto. Vedi `docs/handoff/produzione.md`.
 //
-// Valori che i token non hanno (segnalati nel report del task 022): lo stile del
-// testo del campo, 20/400 nel prototipo — qui `BaTestoTokens.foglio` (20/600).
+// Il testo scritto nel campo è `BaTestoTokens.campo` (20/400, task 032): non è un titolo,
+// quindi non usa `foglio` (20/600).
 //
 // Importa solo widgets.dart: nessuna eccezione.
 import 'package:flutter/widgets.dart';
@@ -197,7 +197,7 @@ class _BaCampoTestoState extends State<BaCampoTesto> {
             ? BaColorTokens.azioneChiara
             : BaColorTokens.filettoMarcato;
 
-    final stileTesto = BaTestoTokens.foglio.copyWith(color: BaColorTokens.testoPrimo);
+    final stileTesto = BaTestoTokens.campo.copyWith(color: BaColorTokens.testoPrimo);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

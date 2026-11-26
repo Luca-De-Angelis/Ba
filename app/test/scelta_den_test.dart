@@ -40,7 +40,7 @@ List<BoxDecoration> _righe(WidgetTester tester) => [
 Finder _punti() => find.descendant(
       of: find.byType(BaSceltaDen),
       matching: find.byWidgetPredicate((w) =>
-          w is SizedBox && w.width == BaSpazioTokens.sm && w.height == BaSpazioTokens.sm),
+          w is SizedBox && w.width == BaCreazioneTokens.sceltaPuntoLato && w.height == BaCreazioneTokens.sceltaPuntoLato),
     );
 
 void main() {

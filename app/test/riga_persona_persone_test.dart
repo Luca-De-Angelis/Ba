@@ -259,4 +259,27 @@ void main() {
       expect(riga.alias, isNull);
     });
   });
+
+  group('l\'interruttore ha il fondo e il pallino del 032', () {
+    BoxDecoration pallinoDi(WidgetTester tester) {
+      final p = find.byWidgetPredicate((w) => w is SizedBox && w.width == BaCodaTokens.interruttorePallino && w.height == BaCodaTokens.interruttorePallino);
+      return tester.widget<DecoratedBox>(find.ancestor(of: p, matching: find.byType(DecoratedBox)).first).decoration as BoxDecoration;
+    }
+
+    BoxDecoration scatolaDi(WidgetTester tester) {
+      final s = find.byWidgetPredicate((w) => w is SizedBox && w.width == BaPersoneTokens.consensoInterruttoreLarghezza && w.height == BaPersoneTokens.consensoInterruttoreAltezza);
+      return tester.widget<DecoratedBox>(find.descendant(of: s, matching: find.byType(DecoratedBox)).first).decoration as BoxDecoration;
+    }
+
+    testWidgets('acceso: fondo piatto sabbia300 a16; spento: nessun fondo e pallino a metà', (tester) async {
+      await tester.pumpWidget(_app(BaRigaPersona(nome: 'Marta', acceso: true, parolaAcceso: 'Acceso', parolaSpento: 'Spento', onCambia: (_) {})));
+      expect(scatolaDi(tester).color, BaCodaTokens.interruttoreFondoAcceso);
+      expect(scatolaDi(tester).gradient, isNull);
+      expect(pallinoDi(tester).color, BaColorTokens.azioneChiara);
+
+      await tester.pumpWidget(_app(BaRigaPersona(nome: 'Marta', acceso: false, parolaAcceso: 'Acceso', parolaSpento: 'Spento', onCambia: (_) {})));
+      expect(scatolaDi(tester).color, isNull);
+      expect(pallinoDi(tester).color!.a, closeTo(BaCodaTokens.interruttorePallinoSpentoOpacita, 0.01));
+    });
+  });
 }

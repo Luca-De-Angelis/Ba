@@ -230,4 +230,17 @@ void main() {
       expect(campo.contains(frase.topLeft) && campo.contains(frase.bottomRight - const Offset(0.01, 0.01)), isTrue);
     });
   });
+
+  group('il testo del campo (task 032)', () {
+    testWidgets('è campo: 20/400, non il titolo del foglio (20/600)', (tester) async {
+      final controller = TextEditingController(text: 'sara@esempio.it');
+      addTearDown(controller.dispose);
+      await tester.pumpWidget(_app(_campo(controller: controller)));
+      final stile = tester.widget<EditableText>(find.byType(EditableText)).style;
+      expect(stile.fontSize, 20);
+      expect(stile.fontSize, BaTestoTokens.campo.fontSize);
+      expect(stile.fontWeight, isNot(FontWeight.w600));
+      expect(stile.letterSpacing, isNull, reason: 'senza il tracking dei titoli');
+    });
+  });
 }

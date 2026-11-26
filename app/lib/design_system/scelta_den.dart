@@ -11,8 +11,7 @@
 // `inMutuallyExclusiveGroup` e `selected` quando è la scelta. La frase sotto è
 // una regione viva cortese: cambiando con la scelta, si legge.
 //
-// Valore che i token non hanno (segnalato nel report del task 022): il punto
-// interno al cerchio (10 nel prototipo): uso `BaSpazioTokens.sm`.
+// Il punto interno al cerchio è `BaCreazioneTokens.sceltaPuntoLato` (10, task 032).
 //
 // Importa solo widgets.dart: nessuna eccezione.
 import 'package:flutter/widgets.dart';
@@ -164,7 +163,7 @@ class _Cerchio extends StatelessWidget {
           child: scelta
               ? const DecoratedBox(
                   decoration: BoxDecoration(shape: BoxShape.circle, color: BaColorTokens.azioneChiara),
-                  child: SizedBox.square(dimension: BaSpazioTokens.sm),
+                  child: SizedBox.square(dimension: BaCreazioneTokens.sceltaPuntoLato),
                 )
               : null,
         ),
