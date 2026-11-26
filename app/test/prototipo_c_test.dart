@@ -84,7 +84,7 @@ void main() {
           await scriviNellaPagina(tester, '');
           await tocca(tester, 'Aggiungi');
           expect(
-            find.text('Aggiunta'),
+            find.text('In lista'),
             findsOneWidget,
             reason: 'passo: aggiunta',
           );
@@ -257,7 +257,7 @@ void main() {
           await tester.pump();
           await tocca(tester, tasto);
           expect(
-            find.text('Davide è entrato nel DEN Famiglia · vuoi passare?'),
+            find.text("In Famiglia c'è Davide · vuoi passare?"),
             findsOneWidget,
             reason: 'passo: banner',
           );
@@ -271,23 +271,23 @@ void main() {
     );
   });
 
-  group('«Sei stato invitato» (030 I1–I6)', () {
+  group('«Hai un invito» (030 I1–I6)', () {
     testWidgets(
-      '«Sei stato invitato» (030 I1–I6): scenari riuniti, un passo per scenario',
+      '«Hai un invito» (030 I1–I6): scenari riuniti, un passo per scenario',
       (tester) async {
         // passo: ho BA: banner, foglio, «Non ora» senza conseguenze, «Entra» fra il pubblico del DEN privato
         await passo('ho BA: banner, foglio, «Non ora» senza conseguenze, «Entra» fra il pubblico del DEN privato', () async {
           final stato = await dentro(tester, partecipante: false);
           await tocca(tester, 'arriva un invito (ho BA)');
           expect(
-            find.text('Cena senza fretta · Marta ti ha invitato.'),
+            find.text('Cena senza fretta · Invito di Marta.'),
             findsOneWidget,
             reason: 'passo: banner',
           );
-          await tocca(tester, 'Cena senza fretta · Marta ti ha invitato.');
+          await tocca(tester, 'Cena senza fretta · Invito di Marta.');
           await sale(tester);
           expect(
-            inFoglio('Marta ti ha invitato a Cena senza fretta'),
+            inFoglio('Invito di Marta a Cena senza fretta'),
             findsOneWidget,
             reason: 'passo: foglio',
           );
@@ -305,7 +305,7 @@ void main() {
           );
 
           await tocca(tester, 'arriva un invito (ho BA)');
-          await tocca(tester, 'Cena senza fretta · Marta ti ha invitato.');
+          await tocca(tester, 'Cena senza fretta · Invito di Marta.');
           await sale(tester);
           await nelFoglio(tester, 'Entra');
           await sale(tester);
@@ -321,7 +321,7 @@ void main() {
             reason: 'passo: resta ascoltatore',
           );
           expect(
-            find.text('Sei entrato su invito di Marta. Ascolti.'),
+            find.text('Sei dentro, su invito di Marta. Ascolti.'),
             findsOneWidget,
             reason: 'passo: la riga',
           );
@@ -331,7 +331,7 @@ void main() {
           final stato = await dentro(tester);
           // passo: scaduto
           await tocca(tester, 'l\'invito è scaduto');
-          await tocca(tester, 'Cena senza fretta · Marta ti ha invitato.');
+          await tocca(tester, 'Cena senza fretta · Invito di Marta.');
           await sale(tester);
           expect(
             inFoglio('Questo invito è scaduto'),
@@ -347,7 +347,7 @@ void main() {
           await sale(tester);
           // passo: annullato
           await tocca(tester, 'l\'invito è annullato');
-          await tocca(tester, 'Cena senza fretta · Marta ti ha invitato.');
+          await tocca(tester, 'Cena senza fretta · Invito di Marta.');
           await sale(tester);
           expect(
             inFoglio('Questo invito non è più valido'),
@@ -360,7 +360,7 @@ void main() {
           // passo: già in un DEN
           await tocca(tester, 'Cucina di notte');
           await tocca(tester, 'arriva un invito (ho BA)');
-          await tocca(tester, 'Cena senza fretta · Marta ti ha invitato.');
+          await tocca(tester, 'Cena senza fretta · Invito di Marta.');
           await sale(tester);
           expect(
             inFoglio('Vuoi passare di qua? Entri ad ascoltare.'),
@@ -411,7 +411,7 @@ void main() {
           );
           expect(stato.ruolo, Ruolo.pubblico, reason: 'passo: fra il pubblico');
           expect(
-            find.text('Sei entrato su invito di Marta. Ascolti.'),
+            find.text('Sei dentro, su invito di Marta. Ascolti.'),
             findsOneWidget,
             reason: 'passo: I6',
           );

@@ -496,7 +496,7 @@ void main() {
         await _sale(tester);
         await _toccaNelFoglio(tester, 'Continua');
         expect(
-          find.text('Ne sei sicuro?'),
+          find.text('Confermi?'),
           findsOneWidget,
           reason: 'la seconda conferma',
         );

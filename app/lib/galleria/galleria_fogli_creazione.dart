@@ -342,7 +342,7 @@ class _CreaDenState extends State<_CreaDen> {
           ),
         _Passo.nonCreato => BaPassiCreazione.nonCreato(
             titolo: 'Il DEN non è stato creato',
-            errore: 'Non siamo riusciti ad aprirlo. Controlla la connessione e riprova.',
+            errore: 'Non è stato possibile aprirlo. Controlla la connessione e riprova.',
             nota: 'Quello che hai scritto è ancora qui.',
             azione: _azione('Riprova', _indietro),
           ),

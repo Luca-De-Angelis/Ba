@@ -1,5 +1,5 @@
-// BaFoglioInvito: il foglio «Sei stato invitato» (task 033, Inventario C4; prototipo
-// 030: I2, I3, I3 bis). Per chi ha BA: «Marta ti ha invitato a Cena senza fretta»,
+// BaFoglioInvito: il foglio «Hai un invito» (task 033, Inventario C4; prototipo
+// 030: I2, I3, I3 bis). Per chi ha BA: «Invito di Marta a Cena senza fretta»,
 // una frase e due azioni, «Entra» e «Non ora». Due stati in cui l'invito non
 // serve più: **scaduto** («Questo invito è scaduto») e **annullato** («Questo
 // invito non è più valido»), con un'azione sola, «Ho capito».
@@ -30,7 +30,7 @@ enum BaStatoInvito { valido, scaduto, annullato }
 class BaFoglioInvito extends StatelessWidget {
   const BaFoglioInvito._({super.key, required this.stato, required this.foglio});
 
-  /// L'invito si può accettare: [titolo] («Marta ti ha invitato a Cena senza
+  /// L'invito si può accettare: [titolo] («Invito di Marta a Cena senza
   /// fretta»), la [frase] («Entri ad ascoltare.»), «Entra» e «Non ora».
   BaFoglioInvito.valido({
     Key? key,

@@ -340,7 +340,7 @@ void main() {
   group('creazione non riuscita (S2)', () {
     BaPassoFoglio nonCreato() => BaPassiCreazione.nonCreato(
           titolo: 'Il DEN non è stato creato',
-          errore: 'Non siamo riusciti ad aprirlo. Controlla la connessione e riprova.',
+          errore: 'Non è stato possibile aprirlo. Controlla la connessione e riprova.',
           nota: 'Quello che hai scritto è ancora qui.',
           azione: _azione('Riprova'),
         );
@@ -349,10 +349,10 @@ void main() {
       _vista(tester);
       final semantica = tester.ensureSemantics();
       await _mostra(tester, nonCreato());
-      expect(find.text('Non siamo riusciti ad aprirlo. Controlla la connessione e riprova.'), findsOneWidget);
+      expect(find.text('Non è stato possibile aprirlo. Controlla la connessione e riprova.'), findsOneWidget);
       expect(find.text('!'), findsOneWidget);
       expect(
-        tester.getSemantics(find.bySemanticsLabel('Non siamo riusciti ad aprirlo. Controlla la connessione e riprova.')).flagsCollection.isLiveRegion,
+        tester.getSemantics(find.bySemanticsLabel('Non è stato possibile aprirlo. Controlla la connessione e riprova.')).flagsCollection.isLiveRegion,
         isTrue,
       );
       expect(find.text('Quello che hai scritto è ancora qui.'), findsOneWidget);
@@ -388,7 +388,7 @@ void main() {
           ),
       'non creato': () => BaPassiCreazione.nonCreato(
             titolo: 'Il DEN non è stato creato',
-            errore: 'Non siamo riusciti ad aprirlo.',
+            errore: 'Non è stato possibile aprirlo.',
             azione: _azione('Riprova'),
           ),
     };

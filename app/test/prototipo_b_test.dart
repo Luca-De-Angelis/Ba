@@ -616,7 +616,7 @@ void main() {
           );
           await _tocca(
             tester,
-            'Marta è entrato nel DEN Famiglia · vuoi passare?',
+            "In Famiglia c'è Marta · vuoi passare?",
           );
           expect(stato.denCorrente!.id, 'famiglia');
           expect(
@@ -634,10 +634,10 @@ void main() {
           );
           await _tocca(
             tester,
-            'Marta è entrato nel DEN Famiglia · vuoi passare?',
+            "In Famiglia c'è Marta · vuoi passare?",
           );
           await _sale(tester);
-          expect(_inFoglio('Marta è entrato nel DEN Famiglia'), findsOneWidget);
+          expect(_inFoglio("In Famiglia c'è Marta"), findsOneWidget);
           await _nelFoglio(tester, 'Passa');
           await _sale(tester);
           expect(stato.denCorrente!.id, 'famiglia');

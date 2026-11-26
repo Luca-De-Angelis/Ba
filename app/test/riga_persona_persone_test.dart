@@ -86,8 +86,8 @@ void main() {
     });
 
     testWidgets('aggiunta: la spunta disegnata e la parola, senza contorno e senza tocco', (tester) async {
-      await tester.pumpWidget(_app(_voce(BaVoceRigaPersona.aggiunta, 'Aggiunta')));
-      expect(find.text('Aggiunta'), findsOneWidget);
+      await tester.pumpWidget(_app(_voce(BaVoceRigaPersona.aggiunta, 'In lista')));
+      expect(find.text('In lista'), findsOneWidget);
       expect(_conSpunta(tester), isTrue, reason: 'il segno');
       expect(_conContorno(tester), isFalse);
       expect(find.byType(BaTouchable), findsNothing, reason: 'una persona aggiunta non si tocca');
@@ -173,7 +173,7 @@ void main() {
         for (final riga in <Widget>[
           _voce(BaVoceRigaPersona.daAggiungere, 'Aggiungi', onAzione: () {}),
           _voce(BaVoceRigaPersona.scegli, 'Scegli', onAzione: () {}),
-          _voce(BaVoceRigaPersona.aggiunta, 'Aggiunta'),
+          _voce(BaVoceRigaPersona.aggiunta, 'In lista'),
           _voce(BaVoceRigaPersona.nellInvito, 'Nell\'invito', onAzione: () {}),
           BaRigaPersona(nome: 'Maria Antonietta Bianchi-Rossi', alias: '@maria.antonietta.bianchi', acceso: false, parolaAcceso: 'Acceso', parolaSpento: 'Spento', onCambia: (_) {}),
         ]) {

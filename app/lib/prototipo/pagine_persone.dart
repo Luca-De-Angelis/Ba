@@ -1,6 +1,6 @@
 // Aggiungere persone e la rubrica (task 024c, prototipo 030: P1–P6 e R1–R3). La pagina «Aggiungi
 // persone» ha `BaRicercaPersone` che **filtra davvero** persone di prova (nickname, alias, email,
-// numero, da due caratteri) e, sotto, chi hai frequentato di più; «Aggiungi» diventa «Aggiunta» (la
+// numero, da due caratteri) e, sotto, chi hai frequentato di più; «Aggiungi» diventa «In lista» (la
 // spunta e la parola), l'aggiunta è privata e **non produce nessun avviso**. Due persone con lo stesso
 // nickname si distinguono per l'alias. Nessun risultato: «Invita con un link» (il link è fuori
 // dall'app: un foglio breve di prova). Errore di rete: lo provoca il pannello, «Riprova» fa riuscire.
@@ -22,7 +22,7 @@ import 'stato.dart';
 import 'testi.dart';
 import 'util.dart';
 
-/// Una riga di persona con «Aggiungi» o «Aggiunta».
+/// Una riga di persona con «Aggiungi» o «In lista».
 Widget rigaPerAggiungere(StatoProto stato, Contatto c) {
   final aggiunta = stato.aggiunte.contains(c.id);
   return BaRigaPersona(

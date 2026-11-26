@@ -16,7 +16,7 @@
 // manca [onAzione], l'azione è inattiva.
 //
 // **Le voci del 030** ([voce]): la parola sta in [azione] («Aggiungi», «Invita»,
-// «Scegli», «Aggiunta», «Nell'invito»). Mai il solo colore: *da aggiungere* e
+// «Scegli», «In lista», «Nell'invito»). Mai il solo colore: *da aggiungere* e
 // *scegli* sono un'azione **con il contorno** e la parola; *aggiunta* e *nell'invito*
 // sono **una spunta disegnata più la parola**, senza contorno (e «Nell'invito» si
 // può toccare per toglierla). Con testo grande l'azione **va a capo** sotto il
@@ -51,7 +51,7 @@ enum BaVoceRigaPersona {
   /// «Aggiungi», «Invita»: un'azione con il contorno.
   daAggiungere,
 
-  /// «Aggiunta»: la spunta e la parola, senza contorno.
+  /// «In lista»: la spunta e la parola, senza contorno.
   aggiunta,
 
   /// «Nell'invito»: la spunta e la parola, senza contorno; si può toccare per
@@ -311,7 +311,7 @@ class _AzioneContorno extends StatelessWidget {
   }
 }
 
-/// La spunta disegnata e la parola («Aggiunta», «Nell'invito»), senza contorno.
+/// La spunta disegnata e la parola («In lista», «Nell'invito»), senza contorno.
 class _SpuntaParola extends StatelessWidget {
   const _SpuntaParola({required this.testo, required this.toccabile});
 

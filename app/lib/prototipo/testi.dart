@@ -144,7 +144,7 @@ abstract final class T {
   static const String t2Titolo = 'Tornare ascoltatore?';
   static const String t2Frase1 = 'Il tuo account passa da partecipante ad ascoltatore. Non potrai più parlare.';
   static const String t2Frase2 = 'Se stai parlando, esci dalla stanza.';
-  static const String t3Titolo = 'Ne sei sicuro?';
+  static const String t3Titolo = 'Confermi?';
   static const String t3Frase = 'Per parlare di nuovo dovrai dare di nuovo il consenso.';
 
   static const String bloccateNome = 'Persone bloccate';
@@ -186,8 +186,8 @@ abstract final class T {
   static const String passaP2 = 'Hai pochi secondi per decidere.';
   static const String passa = 'Passa';
   static const String restaQui = 'Resta qui';
-  static String bannerRichiamo(String chi, String den) => '$chi è entrato nel DEN $den · vuoi passare?';
-  static String richiamoTitolo(String chi, String den) => '$chi è entrato nel DEN $den';
+  static String bannerRichiamo(String chi, String den) => "In $den c'è $chi · vuoi passare?";
+  static String richiamoTitolo(String chi, String den) => "In $den c'è $chi";
   static const String richiamoP1 = 'Vuoi passare di qua? Entri ad ascoltare.';
   static const String ciccio = 'Ciccio';
   static const String seiInCoda = 'Sei in coda';
@@ -236,7 +236,7 @@ abstract final class T {
   static const String invitati = 'Invitati';
   static const String creaIlDen = 'Crea il DEN';
   static const String nonCreatoTitolo = 'Il DEN non è stato creato';
-  static const String nonCreatoErrore = 'Non siamo riusciti ad aprirlo. Controlla la connessione e riprova.';
+  static const String nonCreatoErrore = 'Non è stato possibile aprirlo. Controlla la connessione e riprova.';
   static const String nonCreatoNota = 'Quello che hai scritto è ancora qui.';
   static const String riprova = 'Riprova';
   static String seiAmministratore(String den) => 'Hai creato $den. Sei amministratore.';
@@ -319,7 +319,7 @@ abstract final class T {
   static const String senzaBa = 'Se non ha BA, puoi invitarla con un link: entrerà ad ascoltare.';
   static const String invitaConUnLink = 'Invita con un link';
   static const String aggiungi = 'Aggiungi';
-  static const String aggiunta = 'Aggiunta';
+  static const String aggiunta = 'In lista';
   static const String erroreRete = 'Non riusciamo a cercare adesso. Controlla la connessione e riprova.';
   static const String dallaRubrica = 'Dalla rubrica';
   static const String linkTitolo = 'Invita con un link';
@@ -368,9 +368,9 @@ abstract final class T {
   static const String avvisartiNota = 'Non vedi quando queste persone sono online.';
   static const String nessunaPersona = 'Nessuna persona aggiunta: aggiungile da «Aggiungi persone».';
 
-  // ------------------------------------------------------------- «Sei stato invitato» (030 I1–I6)
-  static String bannerInvito(String den, String chi) => '$den · $chi ti ha invitato.';
-  static String invitoTitolo(String chi, String den) => '$chi ti ha invitato a $den';
+  // ------------------------------------------------------------- «Hai un invito» (030 I1–I6)
+  static String bannerInvito(String den, String chi) => '$den · Invito di $chi.';
+  static String invitoTitolo(String chi, String den) => 'Invito di $chi a $den';
   static const String invitoFrase = 'Entri ad ascoltare.';
   static const String entra = 'Entra';
   static const String invitoScadutoTitolo = 'Questo invito è scaduto';
@@ -378,7 +378,7 @@ abstract final class T {
   static const String invitoAnnullatoTitolo = 'Questo invito non è più valido';
   static const String invitoAnnullatoFrase = 'Chi lo ha mandato lo ha annullato.';
   static const String invitoPassaP1 = 'Vuoi passare di qua? Entri ad ascoltare.';
-  static String seiEntratoSuInvito(String chi) => 'Sei entrato su invito di $chi. Ascolti.';
+  static String seiEntratoSuInvito(String chi) => 'Sei dentro, su invito di $chi. Ascolti.';
 
   // Fuori dall'app (I4, I5): la mail e la pagina d'arrivo
   static const String fuoriApp = 'fuori dall\'app · simulazione';

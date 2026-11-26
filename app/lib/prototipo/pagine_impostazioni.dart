@@ -132,7 +132,7 @@ class _FoglioTorna extends StatefulWidget {
 }
 
 class _FoglioTornaState extends State<_FoglioTorna> {
-  /// 0 = T2 («Tornare ascoltatore?»), 1 = T3 («Ne sei sicuro?»).
+  /// 0 = T2 («Tornare ascoltatore?»), 1 = T3 («Confermi?»).
   int _passo = 0;
 
   @override

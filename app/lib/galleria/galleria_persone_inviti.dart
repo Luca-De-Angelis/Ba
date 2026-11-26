@@ -1,13 +1,13 @@
 // La galleria delle persone e degli inviti (task 033): la ricerca, le righe di
 // persona nei loro stati, il selettore (nessuno scelto, scelti, limite), il richiamo
-// per persona con la sua conferma e «Sei stato invitato» (foglio, scaduto,
+// per persona con la sua conferma e «Hai un invito» (foglio, scaduto,
 // annullato) del prototipo 030. Strumento di sviluppo: testi fissi in italiano,
 // presi dal prototipo, niente l10n (D-030). Solo token per colori, misure e durate;
 // 360 e 744 sono i dispositivi di riferimento (D-022, D-027), 1,0 e 2,0 i due testi
 // di sistema da provare (C6).
 //
 // Il design system non sa che cosa succede dopo e non ha logica: qui, e solo qui, i
-// tocchi fanno da macchina a stati di prova («Aggiungi» passa ad «Aggiunta», «Invita»
+// tocchi fanno da macchina a stati di prova («Aggiungi» passa a «In lista», «Invita»
 // a «Nell'invito», il richiamo si accende dopo la conferma). Il **posto riempito**:
 // due pulsanti aprono `BaPassiCreazione.invitati(posto: …)` e
 // `BaFoglioGestisci.coAmministratori(posto: …)` con `BaSelettorePersone`, senza
@@ -112,7 +112,7 @@ class _GalleriaPersoneInvitiState extends State<GalleriaPersoneInviti> {
                 Text('Persone e inviti', style: BaTestoTokens.stanza),
                 const SizedBox(height: BaSpazioTokens.s),
                 Text(
-                  "La ricerca, le righe di persona, il selettore, il richiamo e «Sei stato invitato», sulla schermata finta. "
+                  "La ricerca, le righe di persona, il selettore, il richiamo e «Hai un invito», sulla schermata finta. "
                   "«Aggiungi», «Invita» e il richiamo passano agli stati successivi solo qui. Nessuna persona è «online» o "
                   "«in un DEN»: il principio del 030. Strumento di sviluppo: non fa parte dell'app.",
                   style: BaTestoTokens.minore.copyWith(color: BaColorTokens.testoSecondo),
@@ -212,7 +212,7 @@ class _GalleriaPersoneInvitiState extends State<GalleriaPersoneInviti> {
           galleriaTitolo('Le righe di persona nei loro stati'),
           _etichetta('da aggiungere · aggiunta · nell\'invito · scegli'),
           BaRigaPersona(nome: 'Marta', alias: '@marta.v', tinta: 0, sagoma: 0, voce: BaVoceRigaPersona.daAggiungere, azione: 'Aggiungi', onAzione: () {}),
-          const BaRigaPersona(nome: 'Davide', alias: '@davide.r', tinta: 1, sagoma: 1, voce: BaVoceRigaPersona.aggiunta, azione: 'Aggiunta'),
+          const BaRigaPersona(nome: 'Davide', alias: '@davide.r', tinta: 1, sagoma: 1, voce: BaVoceRigaPersona.aggiunta, azione: 'In lista'),
           BaRigaPersona(nome: 'Luca', alias: '@luca.b', tinta: 2, sagoma: 2, voce: BaVoceRigaPersona.nellInvito, azione: "Nell'invito", onAzione: () {}),
           BaRigaPersona(nome: 'Sara', alias: '@sara.m', tinta: 3, sagoma: 3, voce: BaVoceRigaPersona.scegli, azione: 'Scegli', onAzione: () {}),
           const SizedBox(height: gap),
@@ -246,9 +246,9 @@ class _GalleriaPersoneInvitiState extends State<GalleriaPersoneInviti> {
               onCambia: (v) => _cambiaRichiamo(contesto, p.nome, v),
             ),
           const SizedBox(height: gap),
-          galleriaTitolo('Sei stato invitato (I2, I3)'),
+          galleriaTitolo('Hai un invito (I2, I3)'),
           _pulsanti([
-            ('Sei stato invitato', () => _apri(contesto, (foglio) => _valido(foglio))),
+            ('Hai un invito', () => _apri(contesto, (foglio) => _valido(foglio))),
             ('Invito scaduto', () => _apri(contesto, (foglio) => _scaduto(foglio))),
             ('Invito annullato', () => _apri(contesto, (foglio) => _annullato(foglio))),
           ]),
@@ -278,7 +278,7 @@ class _GalleriaPersoneInvitiState extends State<GalleriaPersoneInviti> {
         children: [for (final (testo, onTap) in voci) galleriaInterruttore(testo, false, onTap)],
       );
 
-  /// Una riga con «Aggiungi»: al tocco passa ad «Aggiunta».
+  /// Una riga con «Aggiungi»: al tocco passa a «In lista».
   Widget _rigaAggiungi(int i) {
     final aggiunta = _aggiunte.contains(i);
     return BaRigaPersona(
@@ -287,8 +287,8 @@ class _GalleriaPersoneInvitiState extends State<GalleriaPersoneInviti> {
       tinta: i,
       sagoma: i,
       voce: aggiunta ? BaVoceRigaPersona.aggiunta : BaVoceRigaPersona.daAggiungere,
-      azione: aggiunta ? 'Aggiunta' : 'Aggiungi',
-      azioneSemanticsLabel: aggiunta ? 'Aggiunta: ${_persone[i].nome}' : 'Aggiungi ${_persone[i].nome}',
+      azione: aggiunta ? 'In lista' : 'Aggiungi',
+      azioneSemanticsLabel: aggiunta ? 'In lista: ${_persone[i].nome}' : 'Aggiungi ${_persone[i].nome}',
       onAzione: aggiunta ? null : () => setState(() => _aggiunte.add(i)),
     );
   }
@@ -358,13 +358,13 @@ class _GalleriaPersoneInvitiState extends State<GalleriaPersoneInviti> {
     if (confermato == true) setState(() => _richiamo.add(nome));
   }
 
-  // ------------------------------------------------------- sei stato invitato
+  // ------------------------------------------------------- hai un invito
 
   BaAzioneFoglio _chiudi(BuildContext foglio, String testo) =>
       BaAzioneFoglio(testo: testo, semanticsLabel: testo, onTap: () => Navigator.of(foglio).pop());
 
   Widget _valido(BuildContext foglio) => BaFoglioInvito.valido(
-        titolo: 'Marta ti ha invitato a Cena senza fretta',
+        titolo: 'Invito di Marta a Cena senza fretta',
         frase: 'Entri ad ascoltare.',
         entra: _chiudi(foglio, 'Entra'),
         nonOra: _chiudi(foglio, 'Non ora'),

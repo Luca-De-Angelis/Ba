@@ -631,7 +631,7 @@ class StatoProto extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// L'invito è stato accettato: chi ha invitato e dove, per la riga «Sei entrato su invito di Marta».
+  /// L'invito è stato accettato: chi ha invitato e dove, per la riga «Sei dentro, su invito di Marta».
   String? invitoDa;
   String? invitoDen;
 

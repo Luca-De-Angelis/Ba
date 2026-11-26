@@ -8,7 +8,7 @@ import 'package:ba/design_system/foglio_invito.dart';
 import 'package:ba/design_system/pillola.dart';
 import 'package:ba/design_system/tokens.dart';
 
-// «Sei stato invitato» (task 033): I2, I3, I3 bis del prototipo 030.
+// «Hai un invito» (task 033): I2, I3, I3 bis del prototipo 030.
 
 void _vista(WidgetTester tester, {double larghezza = 360, double altezza = 800, double testo = 1.0}) {
   tester.view.physicalSize = Size(larghezza, altezza);
@@ -33,7 +33,7 @@ Widget _app(Widget foglio) => WidgetsApp(
     );
 
 BaFoglioInvito _valido({VoidCallback? onEntra, VoidCallback? onNonOra, BaVariantePillola? variante}) => BaFoglioInvito.valido(
-      titolo: 'Marta ti ha invitato a Cena senza fretta',
+      titolo: 'Invito di Marta a Cena senza fretta',
       frase: 'Entri ad ascoltare.',
       entra: _azione('Entra', onTap: onEntra, variante: variante),
       nonOra: _azione('Non ora', onTap: onNonOra),
@@ -63,7 +63,7 @@ void main() {
     testWidgets('il titolo, la frase, «Entra» attiva e «Non ora» spenta', (tester) async {
       _vista(tester);
       await tester.pumpWidget(_app(_valido()));
-      expect(find.text('Marta ti ha invitato a Cena senza fretta'), findsOneWidget);
+      expect(find.text('Invito di Marta a Cena senza fretta'), findsOneWidget);
       expect(find.text('Entri ad ascoltare.'), findsOneWidget);
       expect(_pillola(tester, 'Entra').variante, BaVariantePillola.attiva,
           reason: 'un invito non blocca niente e «Non ora» c\'è sempre (BaRegole 1): attiva, non chiara');
@@ -93,7 +93,7 @@ void main() {
       final semantica = tester.ensureSemantics();
       await tester.pumpWidget(_app(_valido()));
       expect(find.byType(BaFoglio), findsOneWidget);
-      expect(find.bySemanticsLabel('Marta ti ha invitato a Cena senza fretta'), findsWidgets);
+      expect(find.bySemanticsLabel('Invito di Marta a Cena senza fretta'), findsWidgets);
       semantica.dispose();
     });
   });
