@@ -282,4 +282,66 @@ void main() {
       expect(pallinoDi(tester).color!.a, closeTo(BaCodaTokens.interruttorePallinoSpentoOpacita, 0.01));
     });
   });
+
+  group('a testo grande l\'azione sta sotto il nome in ogni riga (task 032c, 030 con testo 2,0)', () {
+    final righe = <Widget>[
+      BaRigaPersona(nome: 'Marta', alias: '@marta.v', tinta: 1, sagoma: 1, voce: BaVoceRigaPersona.aggiunta, azione: 'In lista'),
+      BaRigaPersona(nome: 'Davide', alias: '@davide.k', tinta: 2, sagoma: 2, voce: BaVoceRigaPersona.daAggiungere, azione: 'Aggiungi', onAzione: () {}),
+      BaRigaPersona(nome: 'Luca', alias: '@luca.r', tinta: 3, sagoma: 3, voce: BaVoceRigaPersona.daAggiungere, azione: 'Aggiungi', onAzione: () {}),
+      BaRigaPersona(nome: 'Maria Antonietta Bianchi-Rossi', alias: '@maria.antonietta', voce: BaVoceRigaPersona.scegli, azione: 'Scegli', onAzione: () {}),
+      BaRigaPersona(nome: 'Sara', alias: '@sara.m', voce: BaVoceRigaPersona.nellInvito, azione: 'Nell\'invito', onAzione: () {}),
+      BaRigaPersona(nome: 'Ciccio', acceso: false, parolaAcceso: 'Acceso', parolaSpento: 'Spento', onCambia: (_) {}),
+    ];
+    const nomi = ['Marta', 'Davide', 'Luca', 'Maria Antonietta Bianchi-Rossi', 'Sara', 'Ciccio'];
+    const parole = ['In lista', 'Aggiungi', 'Aggiungi', 'Scegli', 'Nell\'invito', 'SPENTO'];
+
+    Rect azioneDi(WidgetTester tester, int i) => tester.getRect(find.descendant(of: find.byWidget(righe[i]), matching: find.text(parole[i])));
+
+    /// Il blocco dell'azione: il contorno (`BaTouchable`), la spunta con la parola, o l'interruttore.
+    Rect bloccoAzione(WidgetTester tester, int i) {
+      final r = find.byWidget(righe[i]);
+      final interruttore = find.descendant(
+        of: r,
+        matching: find.byWidgetPredicate((w) => w is SizedBox && w.width == BaPersoneTokens.consensoInterruttoreLarghezza && w.height == BaPersoneTokens.consensoInterruttoreAltezza),
+      );
+      if (interruttore.evaluate().isNotEmpty) return tester.getRect(interruttore).expandToInclude(azioneDi(tester, i)); // l'interruttore e la sua parola
+      if (i == 0) return tester.getRect(find.descendant(of: r, matching: find.byType(CustomPaint)).first).expandToInclude(azioneDi(tester, i));
+      return tester.getRect(find.descendant(of: r, matching: find.byType(BaTouchable)));
+    }
+
+    testWidgets('a 2,0 e 360 dp tutte le azioni hanno lo stesso bordo sinistro e stanno sotto il nome', (tester) async {
+      await tester.pumpWidget(_app(Column(children: righe), testo: 2.0));
+      expect(tester.takeException(), isNull);
+      final bordi = <double>[];
+      for (var i = 0; i < righe.length; i++) {
+        final nome = tester.getRect(find.descendant(of: find.byWidget(righe[i]), matching: find.text(nomi[i])));
+        final riga = tester.getRect(find.byWidget(righe[i]));
+        final blocco = bloccoAzione(tester, i);
+        expect(blocco.top, greaterThanOrEqualTo(nome.bottom), reason: '${nomi[i]}: sotto il nome');
+        expect(azioneDi(tester, i).top, greaterThanOrEqualTo(nome.bottom), reason: '${nomi[i]}: la parola sotto il nome');
+        bordi.add(blocco.left);
+        expect(blocco.left, riga.left, reason: '${nomi[i]}: a sinistra, sul bordo della riga');
+      }
+      expect(bordi.toSet(), hasLength(1), reason: 'stesso bordo sinistro: $bordi');
+    });
+
+    testWidgets('a 1,0 le azioni stanno accanto al nome, a destra, come prima', (tester) async {
+      await tester.pumpWidget(_app(Column(children: righe.take(3).toList())));
+      for (var i = 0; i < 3; i++) {
+        final nome = tester.getRect(find.descendant(of: find.byWidget(righe[i]), matching: find.text(nomi[i])));
+        expect(azioneDi(tester, i).left, greaterThan(nome.right), reason: '${nomi[i]}: accanto');
+      }
+    });
+
+    testWidgets('la soglia è azioneSottoDa: sotto a 1,3, accanto sotto 1,3 (con spazio)', (tester) async {
+      expect(BaPersoneTokens.azioneSottoDa, 1.3);
+      const piccola = BaRigaPersona(nome: 'Io', voce: BaVoceRigaPersona.aggiunta, azione: 'In lista');
+      await tester.pumpWidget(_app(piccola, testo: 1.29));
+      var nome = tester.getRect(find.text('Io'));
+      expect(tester.getRect(find.text('In lista')).left, greaterThan(nome.right));
+      await tester.pumpWidget(_app(piccola, testo: 1.3));
+      nome = tester.getRect(find.text('Io'));
+      expect(tester.getRect(find.text('In lista')).top, greaterThanOrEqualTo(nome.bottom));
+    });
+  });
 }

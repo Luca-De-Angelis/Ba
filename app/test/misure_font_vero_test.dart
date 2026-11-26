@@ -7,6 +7,7 @@ import 'package:ba/design_system/barra_azioni.dart';
 import 'package:ba/design_system/pillola.dart';
 import 'package:ba/design_system/riga_persona.dart';
 import 'package:ba/design_system/tokens.dart';
+import 'package:ba/design_system/touchable.dart';
 
 // Misure con il **font vero** (task 032c). I widget test, da soli, disegnano con Ahem, in cui ogni
 // lettera è larga quanto la taglia: «Scendi dal palco» a 14 vale 224 dp invece di 104, e «una riga»
@@ -235,5 +236,55 @@ void main() {
         expect(tester.getRect(find.text('In lista')).right, lessThanOrEqualTo(r.right + 0.01));
       });
     }
+  });
+
+  group('lista di persone a testo 2,0, con il font vero (task 032c)', () {
+    // Come negli screenshot del 030 con il testo grande: Marta «In lista», Davide e Luca «Aggiungi».
+    final righe = <BaRigaPersona>[
+      BaRigaPersona(nome: 'Marta', tinta: 1, sagoma: 1, voce: BaVoceRigaPersona.aggiunta, azione: 'In lista'),
+      BaRigaPersona(nome: 'Davide', tinta: 2, sagoma: 2, voce: BaVoceRigaPersona.daAggiungere, azione: 'Aggiungi', onAzione: () {}),
+      BaRigaPersona(nome: 'Luca', tinta: 3, sagoma: 3, voce: BaVoceRigaPersona.daAggiungere, azione: 'Aggiungi', onAzione: () {}),
+      BaRigaPersona(nome: 'Maria Antonietta Bianchi-Rossi', tinta: 4, sagoma: 4, voce: BaVoceRigaPersona.daAggiungere, azione: 'Aggiungi', onAzione: () {}),
+    ];
+    const nomi = ['Marta', 'Davide', 'Luca', 'Maria Antonietta Bianchi-Rossi'];
+
+    Widget app(double testo) => Directionality(
+          textDirection: TextDirection.ltr,
+          child: MediaQuery(
+            data: MediaQueryData(size: const Size(360, 800), textScaler: TextScaler.linear(testo)),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: SizedBox(width: 320, child: SingleChildScrollView(child: Column(children: righe))),
+            ),
+          ),
+        );
+
+    Rect azione(WidgetTester tester, int i) {
+      final r = find.byWidget(righe[i]);
+      if (i == 0) return tester.getRect(find.descendant(of: r, matching: find.byType(CustomPaint)).first).expandToInclude(tester.getRect(find.descendant(of: r, matching: find.text('In lista'))));
+      return tester.getRect(find.descendant(of: r, matching: find.byType(BaTouchable)));
+    }
+
+    testWidgets('a 2,0 tutte le azioni hanno lo stesso bordo sinistro e stanno sotto il nome', (tester) async {
+      await tester.pumpWidget(app(2.0));
+      expect(tester.takeException(), isNull);
+      final bordi = <double>{};
+      for (var i = 0; i < righe.length; i++) {
+        final nome = tester.getRect(find.descendant(of: find.byWidget(righe[i]), matching: find.text(nomi[i])));
+        final a = azione(tester, i);
+        expect(a.top, greaterThanOrEqualTo(nome.bottom), reason: '${nomi[i]}: sotto il nome');
+        bordi.add(a.left);
+      }
+      expect(bordi, hasLength(1), reason: 'stesso bordo sinistro: $bordi');
+    });
+
+    testWidgets('a 1,0 le azioni di Marta, Davide e Luca stanno accanto al nome', (tester) async {
+      await tester.pumpWidget(app(1.0));
+      for (var i = 0; i < 3; i++) {
+        final nome = tester.getRect(find.descendant(of: find.byWidget(righe[i]), matching: find.text(nomi[i])));
+        expect(azione(tester, i).left, greaterThan(nome.right), reason: nomi[i]);
+        expect(azione(tester, i).center.dy, lessThan(nome.bottom + 20), reason: '${nomi[i]}: sulla riga del nome');
+      }
+    });
   });
 }

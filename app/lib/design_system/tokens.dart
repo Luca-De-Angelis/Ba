@@ -1050,6 +1050,7 @@ class BaPersoneTokens {
   static const double azioneAltezza = _S.sp11; // minimo di tocco
   static const double azioneRaggio = _S.rounded3xl; // 24 (era 16, task 032): a una riga è una pillola come le altre azioni; non roundedFull: a capo cresce e non taglia il testo
   static const double azioneBordo = _S.border1;
+  static const double azioneSottoDa = 1.3; // eccezione: rapporto di Dynamic Type; dal testo a 1,3 l'azione sta sotto il nome in ogni riga (task 032c)
 
   // campo di ricerca: una riga con la linea sotto, come il campo del 013
   static const double ricercaAltezza = _S.sp14;

@@ -19,8 +19,9 @@
 // «Scegli», «In lista», «Nell'invito»). Mai il solo colore: *da aggiungere* e
 // *scegli* sono un'azione **con il contorno** e la parola; *aggiunta* e *nell'invito*
 // sono **una spunta disegnata più la parola**, senza contorno (e «Nell'invito» si
-// può toccare per toglierla). Con testo grande l'azione **va a capo** sotto il
-// nome e nessuna parola si spezza. **Mai lo stato di presenza né il luogo in cui la
+// può toccare per toglierla). Dal testo a 1,3 (`azioneSottoDa`) l'azione sta **sotto il
+// nome, a sinistra, in ogni riga** (task 032c: prima stava accanto se c'era posto e sotto
+// se no, riga per riga); a 1,0 è accanto. Nessuna parola si spezza. **Mai lo stato di presenza né il luogo in cui la
 // persona si trova:** nessun parametro lo ammette, e nessun valore di questo file
 // serve a mostrarlo.
 //
@@ -212,6 +213,9 @@ class BaRigaPersona extends StatelessWidget {
 
   Widget _costruisciNuova(BuildContext context) {
     final interruttore = acceso != null;
+    // Dal testo a `azioneSottoDa` l'azione sta sotto il nome in **ogni** riga (task 032c, 030 con testo 2,0):
+    // senza questa soglia l'azione stava accanto se c'era posto e sotto se no, riga per riga.
+    final sotto = BaScalaTokens.testo(context) >= BaPersoneTokens.azioneSottoDa;
     final riga = Container(
       constraints: const BoxConstraints(
         minHeight: BaPersoneTokens.rigaAltezza,
@@ -219,27 +223,7 @@ class BaRigaPersona extends StatelessWidget {
       ),
       padding: const EdgeInsets.symmetric(vertical: BaSpazioTokens.s),
       decoration: _filetto,
-      // Wrap: a testo grande l'azione va a capo sotto il nome.
-      child: Wrap(
-        alignment: WrapAlignment.spaceBetween,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        spacing: BaPersoneTokens.rigaGap,
-        runSpacing: BaSpazioTokens.s,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _sagoma(),
-              const SizedBox(width: BaPersoneTokens.rigaGap),
-              Flexible(child: _testi()),
-            ],
-          ),
-          if (interruttore)
-            _Interruttore(acceso: acceso!, parola: acceso! ? parolaAcceso! : parolaSpento!)
-          else
-            _destra(),
-        ],
-      ),
+      child: sotto ? _impilata(interruttore) : _affiancata(interruttore),
     );
     if (!interruttore) return riga;
     // L'interruttore: tutta la riga è toccabile, e per lo screen reader è un interruttore.
@@ -254,6 +238,45 @@ class BaRigaPersona extends StatelessWidget {
       ),
     );
   }
+
+  Widget _destraOInterruttore(bool interruttore) =>
+      interruttore ? _Interruttore(acceso: acceso!, parola: acceso! ? parolaAcceso! : parolaSpento!) : _destra();
+
+  /// Testo normale: l'azione accanto al nome (a capo, sotto, solo se non c'è posto).
+  Widget _affiancata(bool interruttore) => Wrap(
+        alignment: WrapAlignment.spaceBetween,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        spacing: BaPersoneTokens.rigaGap,
+        runSpacing: BaSpazioTokens.s,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _sagoma(),
+              const SizedBox(width: BaPersoneTokens.rigaGap),
+              Flexible(child: _testi()),
+            ],
+          ),
+          _destraOInterruttore(interruttore),
+        ],
+      );
+
+  /// Testo grande: il nome sopra e l'azione sotto, allineata a sinistra con la sagoma, uguale in ogni riga.
+  Widget _impilata(bool interruttore) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            children: [
+              _sagoma(),
+              const SizedBox(width: BaPersoneTokens.rigaGap),
+              Expanded(child: _testi()),
+            ],
+          ),
+          const SizedBox(height: BaSpazioTokens.s),
+          _destraOInterruttore(interruttore),
+        ],
+      );
 
   /// La parte destra di una voce: l'azione con il contorno, o la spunta e la parola.
   Widget _destra() {
