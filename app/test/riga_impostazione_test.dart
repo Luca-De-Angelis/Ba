@@ -66,11 +66,11 @@ void main() {
   });
 
   group('azione con la conseguenza scritta', () {
-    testWidgets('«Torna ascoltatore» mostra la frase di conseguenza e chiama onTap', (tester) async {
+    testWidgets('«Torna all\'ascolto» mostra la frase di conseguenza e chiama onTap', (tester) async {
       var tocchi = 0;
-      await tester.pumpWidget(_app(BaRigaImpostazione.azione(titolo: 'Torna ascoltatore', conseguenza: _conseguenza, onTap: () => tocchi++)));
+      await tester.pumpWidget(_app(BaRigaImpostazione.azione(titolo: "Torna all'ascolto", conseguenza: _conseguenza, onTap: () => tocchi++)));
       expect(find.byType(BaRigaAzione), findsOneWidget);
-      expect(find.text('Torna ascoltatore'), findsOneWidget);
+      expect(find.text("Torna all'ascolto"), findsOneWidget);
       expect(find.text(_conseguenza), findsOneWidget);
       await tester.tap(find.byType(BaRigaAzione));
       expect(tocchi, 1);
@@ -78,8 +78,8 @@ void main() {
 
     testWidgets('la conseguenza è nella semantica, prima del tocco', (tester) async {
       final semantica = tester.ensureSemantics();
-      await tester.pumpWidget(_app(BaRigaImpostazione.azione(titolo: 'Torna ascoltatore', conseguenza: _conseguenza, onTap: () {})));
-      expect(find.bySemanticsLabel('Torna ascoltatore. $_conseguenza'), findsOneWidget);
+      await tester.pumpWidget(_app(BaRigaImpostazione.azione(titolo: "Torna all'ascolto", conseguenza: _conseguenza, onTap: () {})));
+      expect(find.bySemanticsLabel("Torna all'ascolto. $_conseguenza"), findsOneWidget);
       semantica.dispose();
     });
   });
@@ -130,7 +130,7 @@ void main() {
         for (final riga in <Widget>[
           BaRigaImpostazione.valore(titolo: 'Persone bloccate', valore: '3 persone', sottotitolo: 'Restano finché non le sblocchi.'),
           BaRigaImpostazione.interruttore(titolo: 'Avvisami', descrizione: 'Quando si libera un posto.', acceso: true, parolaAcceso: 'Acceso', parolaSpento: 'Spento', onCambia: (_) {}),
-          BaRigaImpostazione.azione(titolo: 'Torna ascoltatore', conseguenza: _conseguenza, onTap: () {}),
+          BaRigaImpostazione.azione(titolo: "Torna all'ascolto", conseguenza: _conseguenza, onTap: () {}),
           _neg(onApri: () {}),
         ]) {
           await tester.pumpWidget(_app(riga, testo: BaScalaTokens.maxTesto, larghezza: larghezza));
