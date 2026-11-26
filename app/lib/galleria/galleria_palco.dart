@@ -26,12 +26,14 @@ const double _tablet = 744;
 /// Le altezze della stanza finta, dalla più alta: per far cedere il palco
 /// senza ridimensionare la finestra. Dati di prova, non misure di design.
 /// Scelte per il caso del testo 2,0 con otto persone: intestazione, indicatore,
-/// pubblico e barra delle azioni (task 020) prendono circa 740 dp (nei test, con
+/// pubblico e barra delle azioni (task 020) prendono circa 700 dp (nei test, con
 /// il font di prova, più largo di quello vero: con quello vero il palco ha più
-/// spazio), il palco resta con 322, 272, 222 e 172 dp e il diametro scende per
-/// gradi senza mai sfiorare. Sotto i 910 il palco avrebbe meno dei 150 dp che
-/// servono a otto presenze al minimo e uscirebbe sull'intestazione (`sfora`).
-const List<double> _altezze = [1060, 1010, 960, 910];
+/// spazio) e il diametro scende per gradi senza mai sfiorare (88, 74, 63, 52 nei
+/// test). Task 032: con le secondarie a 14 la barra è più bassa e le altezze di
+/// prima (1060 … 910) non facevano più scendere il palco per gradi: ora sono
+/// 960 … 860. Più in basso il palco avrebbe meno dei 150 dp che servono a otto
+/// presenze al minimo e uscirebbe sull'intestazione (`sfora`).
+const List<double> _altezze = [960, 920, 890, 860];
 
 /// I due testi del testo di sistema da provare (C6: oltre 2,0 non si scala).
 const double _testoNormale = 1.0;

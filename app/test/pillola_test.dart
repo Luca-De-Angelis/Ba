@@ -205,4 +205,39 @@ void main() {
       semantica.dispose();
     });
   });
+
+  group('lo stile del testo (task 032): il default non cambia', () {
+    testWidgets('senza stile il testo è controllo: 16/500, come prima', (tester) async {
+      await tester.pumpWidget(_app(BaPillola(testo: 'Sali', semanticsLabel: 'Sali', onTap: () {})));
+      final stile = tester.widget<Text>(find.text('Sali')).style!;
+      expect(stile.fontSize, BaTestoTokens.controllo.fontSize);
+      expect(stile.fontSize, 16);
+      expect(stile.fontWeight, FontWeight.w500);
+    });
+
+    testWidgets('con uno stile, lo usa; il colore resta quello della variante', (tester) async {
+      await tester.pumpWidget(_app(BaPillola(testo: 'Esci', semanticsLabel: 'Esci', onTap: () {}, stile: BaTestoTokens.azione)));
+      final stile = tester.widget<Text>(find.text('Esci')).style!;
+      expect(stile.fontSize, 14);
+      expect(stile.color, BaColorTokens.testoPrimo, reason: 'la variante di default è attiva');
+    });
+
+    testWidgets('le misure senza stile sono quelle di sempre; con lo stile 14 sono più piccole', (tester) async {
+      late BuildContext contesto;
+      await tester.pumpWidget(_app(Builder(builder: (c) {
+        contesto = c;
+        return const SizedBox();
+      })));
+      final a16 = BaPillola.larghezzaNecessaria(contesto, testo: 'Scendi dal palco');
+      final a14 = BaPillola.larghezzaNecessaria(contesto, testo: 'Scendi dal palco', stile: BaTestoTokens.azione);
+      expect(a14, lessThan(a16));
+      // Il testo più il padding orizzontale (20 per lato) e il filetto (1 per lato).
+      final m = TextPainter(
+        text: const TextSpan(text: 'Scendi dal palco', style: BaTestoTokens.controllo),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      expect(a16, closeTo(m.width + 2 * BaSpazioTokens.xl + 2 * const BorderSide().width, 0.01));
+      expect(BaPillola.parolaEntra(contesto, testo: 'Scendi dal palco', larghezza: 175), isTrue);
+    });
+  });
 }

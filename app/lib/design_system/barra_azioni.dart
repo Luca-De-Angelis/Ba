@@ -9,9 +9,14 @@
 //
 // Disposizione, come nel prototipo del 002: la primaria sopra, a tutta
 // larghezza; sotto, in una riga, le due secondarie e, se c'è, «Altro» a destra.
-// Le pillole della stessa riga hanno la stessa altezza (la più alta). A testo
-// grande, se la parola più lunga di una secondaria non entra nella sua pillola,
-// le secondarie vanno in colonna e «Altro» sta sulla riga dell’ultima (020b).
+// Le pillole della stessa riga hanno la stessa altezza (la più alta). **Task 032:** le
+// secondarie sono a 14 (`BaTestoTokens.azione`, la primaria resta a 16) e, in una riga,
+// **non hanno la stessa larghezza**: ognuna parte dalla larghezza del suo testo più il
+// riempimento e si divide con le altre l'avanzo (come `flex: 1 1 auto` del prototipo), così
+// «Scendi dal palco» sta su una riga a 360 dp e una parola lunga non decide per tutte. Se i
+// testi su una riga non entrano, vale la disposizione di prima (020b): a testo grande, se
+// la parola più lunga di una secondaria non entra nella sua pillola, le secondarie vanno in
+// colonna e «Altro» sta sulla riga dell’ultima.
 // Con due azioni c’è una sola secondaria, centrata come in BaAzioniInCoppia; con
 // una sola, c'è la primaria.
 //
@@ -95,6 +100,9 @@ class BaBarraAzioni extends StatelessWidget {
 
   static const double _mezzoGap = BaControlloTokens.gapCoppia / 2;
 
+  /// Le secondarie sono a 14, sotto la primaria nella gerarchia (task 032).
+  static const TextStyle _stileSecondaria = BaTestoTokens.azione;
+
   /// Le azioni che finiscono in «Altro»: quelle segnate `inAltro` e quelle che, fra le
   /// altre, stanno oltre i tre posti, nell'ordine in cui sono date. Chi apre il foglio
   /// di «Altro» lo riempie con queste.
@@ -145,6 +153,7 @@ class BaBarraAzioni extends StatelessWidget {
   Widget _pillola(BaAzioneBarra a,
           {EdgeInsets estensione = EdgeInsets.zero, bool primaria = false, double? altezza}) =>
       BaPillola(
+        stile: primaria ? BaTestoTokens.controllo : _stileSecondaria,
         testo: a.testo,
         semanticsLabel: a.semanticsLabel,
         onTap: a.onTap,
@@ -205,6 +214,7 @@ class BaBarraAzioni extends StatelessWidget {
           larghezza: l,
           variante: a.varianteEffettiva,
           inattiva: a.onTap == null,
+          stile: _stileSecondaria,
         );
     double altezza(BaAzioneBarra a, double l) => BaPillola.altezzaNecessaria(
           context,
@@ -213,6 +223,14 @@ class BaBarraAzioni extends StatelessWidget {
           variante: a.varianteEffettiva,
           inattiva: a.onTap == null,
           altezzaMinima: BaControlloTokens.coppia,
+          stile: _stileSecondaria,
+        );
+    double contenuto(BaAzioneBarra a) => BaPillola.larghezzaNecessaria(
+          context,
+          testo: a.testo,
+          variante: a.varianteEffettiva,
+          inattiva: a.onTap == null,
+          stile: _stileSecondaria,
         );
 
     // Una sola secondaria, senza «Altro»: centrata, larga come una di due; se la
@@ -228,6 +246,34 @@ class BaBarraAzioni extends StatelessWidget {
     }
 
     final voci = secondarie.length + (conAltro ? 1 : 0);
+
+    // La riga dal contenuto (task 032): se i testi stanno tutti su una riga, ognuna parte dalla
+    // sua larghezza e l'avanzo si divide in parti uguali; stessa altezza per tutte.
+    final fisso = (voci - 1) * gap + (conAltro ? BaBarraAzioniTokens.altroLato : 0);
+    final larghezze = [for (final a in secondarie) contenuto(a)];
+    final somma = larghezze.fold<double>(0, (x, y) => x + y);
+    if (somma <= larghezza - fisso) {
+      final avanzo = (larghezza - fisso - somma) / secondarie.length;
+      final h = [
+        for (var i = 0; i < secondarie.length; i++) altezza(secondarie[i], larghezze[i]),
+      ].reduce((a, b) => a > b ? a : b);
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          for (var i = 0; i < secondarie.length; i++) ...[
+            if (i > 0) const SizedBox(width: gap),
+            SizedBox(
+              width: larghezze[i] + avanzo,
+              child: _pillola(secondarie[i], estensione: _estensione(i, voci), altezza: h),
+            ),
+          ],
+          if (conAltro) ...[
+            const SizedBox(width: gap),
+            _Altro(semanticsLabel: semanticsLabelAltro, onTap: onAltro, estensione: _estensione(voci - 1, voci)),
+          ],
+        ],
+      );
+    }
     final affiancata = conAltro
         ? (larghezza - secondarie.length * gap - BaBarraAzioniTokens.altroLato) / secondarie.length
         : (larghezza - (secondarie.length - 1) * gap) / secondarie.length;
