@@ -25,6 +25,7 @@
 // Importa solo widgets.dart: nessuna eccezione.
 import 'package:flutter/widgets.dart';
 
+import 'segno_errore.dart';
 import 'tokens.dart';
 
 /// Il segno «!» e una frase: l'errore di un campo o del codice. Non è un
@@ -46,28 +47,7 @@ class BaFraseErrore extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          DecoratedBox(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: BaColorTokens.erroreTesto,
-                width: BaAccessoTokens.erroreSegnoTratto,
-              ),
-            ),
-            child: SizedBox.square(
-              dimension: BaAccessoTokens.erroreSegnoLato,
-              child: Center(
-                child: Text(
-                  '!',
-                  textScaler: TextScaler.noScaling,
-                  style: BaTestoTokens.azione.copyWith(
-                    color: BaColorTokens.erroreTesto,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ),
-          ),
+          const BaSegnoErrore(),
           const SizedBox(width: BaSpazioTokens.sm),
           Expanded(
             child: Text(frase, style: BaTestoTokens.corpo.copyWith(color: BaColorTokens.erroreTesto)),
