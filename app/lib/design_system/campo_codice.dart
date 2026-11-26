@@ -33,8 +33,7 @@
 // aggiunti (`docs/handoff/produzione.md`). L'incolla dalla tastiera e dal
 // suggerimento dell'SMS funziona.
 //
-// Valore che i token non hanno (segnalato nel report del task 022): lo stile
-// delle cifre, 22/400 nel prototipo — qui `BaTestoTokens.stanza` (22/600).
+// Le cifre sono `BaTestoTokens.cifra` (22/400, task 032): non è il titolo della stanza.
 //
 // Importa solo widgets.dart: nessuna eccezione.
 import 'package:flutter/widgets.dart';
@@ -303,7 +302,7 @@ class _Casella extends StatelessWidget {
       // quella con la cifra, anche a testo grande.
       child: Text(
         cifra.isEmpty ? ' ' : cifra,
-        style: BaTestoTokens.stanza.copyWith(color: BaColorTokens.testoPrimo),
+        style: BaTestoTokens.cifra.copyWith(color: BaColorTokens.testoPrimo),
       ),
     );
   }

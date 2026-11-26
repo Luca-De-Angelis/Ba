@@ -267,19 +267,6 @@ class _CorpoRichiesta extends StatelessWidget {
   }
 }
 
-/// La curva del foglio: `curvaScheda` (T8), ma limitata a 1. La curva ha un
-/// rimbalzo (1,2): su un foglio che sale dal basso lo spingerebbe sopra la sua
-/// posizione e lascerebbe una striscia vuota sotto. Così arriva e si ferma.
-class _CurvaFoglio extends Curve {
-  const _CurvaFoglio();
-
-  @override
-  double transformInternal(double t) {
-    final v = BaMovimentoTokens.curvaScheda.transform(t);
-    return v > 1 ? 1 : v;
-  }
-}
-
 class _RottaFoglio<T> extends PageRouteBuilder<T> {
   _RottaFoglio({
     required WidgetBuilder builder,
@@ -295,7 +282,7 @@ class _RottaFoglio<T> extends PageRouteBuilder<T> {
           pageBuilder: (context, animation, secondaryAnimation) => builder(context),
           transitionsBuilder: (context, animation, secondaryAnimation, child) => SlideTransition(
             position: Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero).animate(
-              CurvedAnimation(parent: animation, curve: const _CurvaFoglio(), reverseCurve: const _CurvaFoglio().flipped),
+              CurvedAnimation(parent: animation, curve: BaMovimentoTokens.curvaFoglio, reverseCurve: BaMovimentoTokens.curvaFoglio.flipped),
             ),
             child: child,
           ),

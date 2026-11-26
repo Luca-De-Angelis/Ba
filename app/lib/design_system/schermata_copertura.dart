@@ -21,10 +21,9 @@
 //   - i paragrafi sono `BaParagrafoPasso` di `foglio_passi.dart` (testo e
 //     evidenza): lo stesso tipo dei passi dei fogli.
 //
-// **Differenza dal prototipo 027, da portare nel consolidamento del design:** il
-// titolo è 28 nel prototipo; qui è `BaTestoTokens.stanza` (22), perché **il token
-// del titolo di schermata a 28 non esiste**. La distanza fra le voci (18) è
-// `BaSpazioTokens.l`.
+// Il titolo è `BaTestoTokens.titoloSchermata` (28/600, task 032): un titolo di
+// schermata intera non è il nome della stanza (`stanza`, 22). La distanza fra le
+// voci (18) è `BaSpazioTokens.l`.
 //
 // Importa solo widgets.dart: nessuna eccezione.
 import 'package:flutter/widgets.dart';
@@ -97,8 +96,9 @@ class BaSchermataCopertura extends StatelessWidget {
                     child: ConstrainedBox(
                       constraints: BoxConstraints(minHeight: c.maxHeight - sopra - sotto),
                       child: Center(
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(maxWidth: colonna),
+                        // Testo e azione stanno nella stessa colonna (task 032): il testo la riempie, allineato a sinistra.
+                        child: SizedBox(
+                          width: colonna,
                           child: _Testi(titolo: titolo, paragrafi: paragrafi, riga: riga),
                         ),
                       ),
@@ -157,7 +157,7 @@ class _Testi extends StatelessWidget {
       children: [
         Semantics(
           header: true,
-          child: Text(titolo, style: BaTestoTokens.stanza.copyWith(color: BaColorTokens.testoPrimo)),
+          child: Text(titolo, style: BaTestoTokens.titoloSchermata.copyWith(color: BaColorTokens.testoPrimo)),
         ),
         for (var i = 0; i < paragrafi.length; i++) ...[
           const SizedBox(height: BaSpazioTokens.l),

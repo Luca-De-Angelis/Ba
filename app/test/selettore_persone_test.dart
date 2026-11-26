@@ -130,7 +130,7 @@ void main() {
       await tester.pumpWidget(_pagina(_selettore(
         c,
         scegli: 'Scegli',
-        scelta: 'Scelto',
+        scelta: 'Nella scelta',
         limite: 1,
         persone: _tre(scelte: {'Davide'}, onTap: toccate.add),
         frase: 'Puoi averne uno.',
@@ -142,7 +142,7 @@ void main() {
       final scegli = _righe(tester).where((r) => r.voce == BaVoceRigaPersona.scegli).toList();
       expect(scegli, hasLength(2));
       expect(scegli.every((r) => r.onAzione == null), isTrue, reason: 'al limite non si sceglie più');
-      await tester.tap(find.text('Scelto'));
+      await tester.tap(find.text('Nella scelta'));
       expect(toccate, ['Davide'], reason: 'la scelta si toglie');
     });
 
@@ -175,7 +175,7 @@ void main() {
       await tester.pumpWidget(_pagina(_selettore(c, persone: _tre())));
       expect(find.byType(BaSelettorePersone), findsOneWidget);
       expect(find.text('Invita'), findsNWidgets(3));
-      await tester.pumpWidget(_pagina(_selettore(c, persone: _tre(), scegli: 'Scegli', scelta: 'Scelto', limite: 1)));
+      await tester.pumpWidget(_pagina(_selettore(c, persone: _tre(), scegli: 'Scegli', scelta: 'Nella scelta', limite: 1)));
       expect(find.byType(BaSelettorePersone), findsOneWidget);
       expect(find.text('Scegli'), findsNWidgets(3));
       expect(find.text('Invita'), findsNothing);
@@ -215,7 +215,7 @@ void main() {
               final selettore = _selettore(
                 c,
                 scegli: 'Scegli',
-                scelta: 'Scelto',
+                scelta: 'Nella scelta',
                 limite: 1,
                 intestazione: null,
                 persone: _tre(
@@ -243,8 +243,8 @@ void main() {
       expect(aggiungi().onTap, isNotNull, reason: 'scelto uno: attiva');
       await tester.tap(find.text('Aggiungi un co-amministratore'));
       expect(aggiunti, 1);
-      await tester.ensureVisible(find.text('Scelto'));
-      await tester.tap(find.text('Scelto'));
+      await tester.ensureVisible(find.text('Nella scelta'));
+      await tester.tap(find.text('Nella scelta'));
       await tester.pump();
       expect(aggiungi().onTap, isNull, reason: 'tolto: di nuovo inattiva');
     });

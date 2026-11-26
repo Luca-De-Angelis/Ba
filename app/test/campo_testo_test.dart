@@ -1,3 +1,4 @@
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -228,6 +229,48 @@ void main() {
       final campo = tester.getRect(find.byType(BaCampoTesto));
       final frase = tester.getRect(find.text('Questa email non è valida, controlla e riprova.'));
       expect(campo.contains(frase.topLeft) && campo.contains(frase.bottomRight - const Offset(0.01, 0.01)), isTrue);
+    });
+  });
+
+  group('il testo del campo (task 032)', () {
+    testWidgets('è campo: 20/400, non il titolo del foglio (20/600)', (tester) async {
+      final controller = TextEditingController(text: 'sara@esempio.it');
+      addTearDown(controller.dispose);
+      await tester.pumpWidget(_app(_campo(controller: controller)));
+      final stile = tester.widget<EditableText>(find.byType(EditableText)).style;
+      expect(stile.fontSize, 20);
+      expect(stile.fontSize, BaTestoTokens.campo.fontSize);
+      expect(stile.fontWeight, isNot(FontWeight.w600));
+      expect(stile.letterSpacing, isNull, reason: 'senza il tracking dei titoli');
+    });
+  });
+
+  group('il segnaposto di un campo di una riga non va a capo (task 032c)', () {
+    testWidgets('a 2,0 e 360 dp «nome@esempio.it» e il numero stanno su una riga, con i puntini', (tester) async {
+      for (final segnaposto in ['nome@esempio.it', '320 000 0000']) {
+        await tester.pumpWidget(_app(_campo(segnaposto: segnaposto), testo: 2.0));
+        expect(tester.takeException(), isNull);
+        final t = tester.widget<Text>(find.text(segnaposto));
+        expect(t.maxLines, 1, reason: segnaposto);
+        expect(t.softWrap, isFalse, reason: segnaposto);
+        expect(t.overflow, TextOverflow.ellipsis, reason: segnaposto);
+        final r = tester.renderObject<RenderParagraph>(find.text(segnaposto));
+        final unaRiga = TextPainter(text: TextSpan(text: 'x', style: r.text.style), textDirection: TextDirection.ltr, textScaler: r.textScaler)..layout();
+        expect(r.size.height, closeTo(unaRiga.height, 0.5), reason: '$segnaposto: una sola riga');
+      }
+    });
+
+    testWidgets('a 1,0 non cambia niente: il segnaposto breve sta su una riga, senza puntini', (tester) async {
+      await tester.pumpWidget(_app(_campo(segnaposto: 'a@b.it')));
+      final r = tester.renderObject<RenderParagraph>(find.text('a@b.it'));
+      expect(r.didExceedMaxLines, isFalse);
+    });
+
+    testWidgets('un campo a più righe (descrizione) lascia andare a capo il suo segnaposto', (tester) async {
+      await tester.pumpWidget(_app(_campo(segnaposto: 'Due chiacchiere dopo cena, senza un argomento fisso.', minRighe: 3, maxRighe: 6), testo: 2.0));
+      final t = tester.widget<Text>(find.text('Due chiacchiere dopo cena, senza un argomento fisso.'));
+      expect(t.maxLines, isNull);
+      expect(t.softWrap, isTrue);
     });
   });
 }

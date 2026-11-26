@@ -14,9 +14,8 @@
 // Nessuna animazione del pallino: T8 non ne prevede, e lo spostamento è
 // immediato, come la comparsa delle presenze.
 //
-// Valori che i token non hanno (segnalati nel report del task 022): il fondo
-// dell'interruttore acceso del prototipo (sabbia300 a16: uso `azioneAttivaFondo`,
-// la più vicina) e il pallino spento a metà opacità (uso `testoTerzo`).
+// Il fondo dell'interruttore acceso è `BaCodaTokens.interruttoreFondoAcceso` (sabbia300 a16) e
+// il pallino spento è a metà (`interruttorePallinoSpentoOpacita`): token del task 032.
 //
 // Importa solo widgets.dart: nessuna eccezione.
 import 'package:flutter/widgets.dart';
@@ -54,6 +53,27 @@ class BaInterruttoreRiga extends StatelessWidget {
   /// Se manca: titolo e descrizione. Lo stato lo dice `toggled`, non il testo.
   final String? semanticsLabel;
 
+  /// Il titolo e, sotto, la descrizione (che può andare a capo).
+  Widget _testi(ValueChanged<bool>? onCambia) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            titolo,
+            style: BaTestoTokens.controllo.copyWith(
+              color: onCambia == null ? BaColorTokens.testoInattivo : BaColorTokens.testoPrimo,
+            ),
+          ),
+          if (descrizione != null) ...[
+            const SizedBox(height: BaSpazioTokens.xxs),
+            Text(
+              descrizione!,
+              style: BaTestoTokens.minore.copyWith(color: BaColorTokens.testoSecondo),
+            ),
+          ],
+        ],
+      );
+
   @override
   Widget build(BuildContext context) {
     final onCambia = this.onCambia;
@@ -73,29 +93,24 @@ class BaInterruttoreRiga extends StatelessWidget {
           decoration: const BoxDecoration(
             border: Border(top: BorderSide(color: BaColorTokens.filettoDivisorio)),
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
+          // Dal testo a `azioneSottoDa` (1,3) la disposizione è verticale (task 032c): titolo e
+          // descrizione a tutta larghezza (nessuna parola si spezza) e l'interruttore con la sua
+          // parola sotto, a sinistra. A testo normale è com'era: l'interruttore a destra.
+          child: BaScalaTokens.testo(context) >= BaPersoneTokens.azioneSottoDa
+              ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      titolo,
-                      style: BaTestoTokens.controllo.copyWith(
-                        color: onCambia == null ? BaColorTokens.testoInattivo : BaColorTokens.testoPrimo,
-                      ),
-                    ),
-                    if (descrizione != null) ...[
-                      const SizedBox(height: BaSpazioTokens.xxs),
-                      Text(
-                        descrizione!,
-                        style: BaTestoTokens.minore.copyWith(color: BaColorTokens.testoSecondo),
-                      ),
-                    ],
+                    _testi(onCambia),
+                    const SizedBox(height: BaSpazioTokens.s),
+                    _Interruttore(acceso: acceso, parola: acceso ? parolaAcceso : parolaSpento),
                   ],
-                ),
+                )
+              : Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: _testi(onCambia),
               ),
               const SizedBox(width: BaSpazioTokens.md),
               _Interruttore(acceso: acceso, parola: acceso ? parolaAcceso : parolaSpento),
@@ -130,20 +145,16 @@ class _Interruttore extends StatelessWidget {
                 color: acceso ? BaColorTokens.azioneChiara : BaColorTokens.ascoltoGruppoBordo,
                 width: acceso ? BaCodaTokens.interruttoreBordoAcceso : BaCodaTokens.interruttoreBordo,
               ),
-              gradient: acceso
-                  ? LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: BaColorTokens.azioneAttivaFondo,
-                    )
-                  : null,
+              // Acceso: il fondo è sabbia300 a16, un colore piatto (task 032); spento, nessun fondo.
+              color: acceso ? BaCodaTokens.interruttoreFondoAcceso : null,
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: BaSpazioTokens.xxs),
               child: Align(
                 alignment: acceso ? Alignment.centerRight : Alignment.centerLeft,
                 child: DecoratedBox(
-                  decoration: BoxDecoration(shape: BoxShape.circle, color: colore),
+                  // Spento il pallino è a metà (task 032): il segno di stato è la posizione e la parola.
+                  decoration: BoxDecoration(shape: BoxShape.circle, color: acceso ? colore : BaColorTokens.testoPrimo.withValues(alpha: BaCodaTokens.interruttorePallinoSpentoOpacita)),
                   child: const SizedBox.square(dimension: BaCodaTokens.interruttorePallino),
                 ),
               ),

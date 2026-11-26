@@ -16,11 +16,12 @@
 // manca [onAzione], l'azione è inattiva.
 //
 // **Le voci del 030** ([voce]): la parola sta in [azione] («Aggiungi», «Invita»,
-// «Scegli», «Aggiunta», «Nell'invito»). Mai il solo colore: *da aggiungere* e
+// «Scegli», «In lista», «Nell'invito»). Mai il solo colore: *da aggiungere* e
 // *scegli* sono un'azione **con il contorno** e la parola; *aggiunta* e *nell'invito*
 // sono **una spunta disegnata più la parola**, senza contorno (e «Nell'invito» si
-// può toccare per toglierla). Con testo grande l'azione **va a capo** sotto il
-// nome e nessuna parola si spezza. **Mai lo stato di presenza né il luogo in cui la
+// può toccare per toglierla). Dal testo a 1,3 (`azioneSottoDa`) l'azione sta **sotto il
+// nome, a sinistra, in ogni riga** (task 032c: prima stava accanto se c'era posto e sotto
+// se no, riga per riga); a 1,0 è accanto. Nessuna parola si spezza. **Mai lo stato di presenza né il luogo in cui la
 // persona si trova:** nessun parametro lo ammette, e nessun valore di questo file
 // serve a mostrarlo.
 //
@@ -35,10 +36,9 @@
 // `BaPubblico`): non si calcolano dall'id. Per lo screen reader la riga ha due
 // elementi: il nome (con alias e stato) e l'azione o l'interruttore.
 //
-// Valori che i token non hanno: la proporzione della spunta (costanti private) e
-// il fondo dell'interruttore acceso (`azioneAttivaFondo`, come in
-// `BaInterruttoreRiga`). Il raggio dell'azione è `azioneRaggio` (16): il prototipo
-// 030 la disegna a 24 (segnalato nel report del task 033).
+// Valore che i token non hanno: la proporzione della spunta (costanti private). Il fondo
+// dell'interruttore acceso e il pallino spento sono quelli di `BaInterruttoreRiga` (token del
+// task 032); il raggio dell'azione è `azioneRaggio` (24).
 //
 // Importa solo widgets.dart: nessuna eccezione.
 import 'package:flutter/widgets.dart';
@@ -52,7 +52,7 @@ enum BaVoceRigaPersona {
   /// «Aggiungi», «Invita»: un'azione con il contorno.
   daAggiungere,
 
-  /// «Aggiunta»: la spunta e la parola, senza contorno.
+  /// «In lista»: la spunta e la parola, senza contorno.
   aggiunta,
 
   /// «Nell'invito»: la spunta e la parola, senza contorno; si può toccare per
@@ -213,6 +213,9 @@ class BaRigaPersona extends StatelessWidget {
 
   Widget _costruisciNuova(BuildContext context) {
     final interruttore = acceso != null;
+    // Dal testo a `azioneSottoDa` l'azione sta sotto il nome in **ogni** riga (task 032c, 030 con testo 2,0):
+    // senza questa soglia l'azione stava accanto se c'era posto e sotto se no, riga per riga.
+    final sotto = BaScalaTokens.testo(context) >= BaPersoneTokens.azioneSottoDa;
     final riga = Container(
       constraints: const BoxConstraints(
         minHeight: BaPersoneTokens.rigaAltezza,
@@ -220,27 +223,7 @@ class BaRigaPersona extends StatelessWidget {
       ),
       padding: const EdgeInsets.symmetric(vertical: BaSpazioTokens.s),
       decoration: _filetto,
-      // Wrap: a testo grande l'azione va a capo sotto il nome.
-      child: Wrap(
-        alignment: WrapAlignment.spaceBetween,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        spacing: BaPersoneTokens.rigaGap,
-        runSpacing: BaSpazioTokens.s,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _sagoma(),
-              const SizedBox(width: BaPersoneTokens.rigaGap),
-              Flexible(child: _testi()),
-            ],
-          ),
-          if (interruttore)
-            _Interruttore(acceso: acceso!, parola: acceso! ? parolaAcceso! : parolaSpento!)
-          else
-            _destra(),
-        ],
-      ),
+      child: sotto ? _impilata(interruttore) : _affiancata(interruttore),
     );
     if (!interruttore) return riga;
     // L'interruttore: tutta la riga è toccabile, e per lo screen reader è un interruttore.
@@ -255,6 +238,45 @@ class BaRigaPersona extends StatelessWidget {
       ),
     );
   }
+
+  Widget _destraOInterruttore(bool interruttore) =>
+      interruttore ? _Interruttore(acceso: acceso!, parola: acceso! ? parolaAcceso! : parolaSpento!) : _destra();
+
+  /// Testo normale: l'azione accanto al nome (a capo, sotto, solo se non c'è posto).
+  Widget _affiancata(bool interruttore) => Wrap(
+        alignment: WrapAlignment.spaceBetween,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        spacing: BaPersoneTokens.rigaGap,
+        runSpacing: BaSpazioTokens.s,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _sagoma(),
+              const SizedBox(width: BaPersoneTokens.rigaGap),
+              Flexible(child: _testi()),
+            ],
+          ),
+          _destraOInterruttore(interruttore),
+        ],
+      );
+
+  /// Testo grande: il nome sopra e l'azione sotto, allineata a sinistra con la sagoma, uguale in ogni riga.
+  Widget _impilata(bool interruttore) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            children: [
+              _sagoma(),
+              const SizedBox(width: BaPersoneTokens.rigaGap),
+              Expanded(child: _testi()),
+            ],
+          ),
+          const SizedBox(height: BaSpazioTokens.s),
+          _destraOInterruttore(interruttore),
+        ],
+      );
 
   /// La parte destra di una voce: l'azione con il contorno, o la spunta e la parola.
   Widget _destra() {
@@ -312,7 +334,7 @@ class _AzioneContorno extends StatelessWidget {
   }
 }
 
-/// La spunta disegnata e la parola («Aggiunta», «Nell'invito»), senza contorno.
+/// La spunta disegnata e la parola («In lista», «Nell'invito»), senza contorno.
 class _SpuntaParola extends StatelessWidget {
   const _SpuntaParola({required this.testo, required this.toccabile});
 
@@ -393,20 +415,16 @@ class _Interruttore extends StatelessWidget {
                 color: acceso ? BaColorTokens.azioneChiara : BaColorTokens.ascoltoGruppoBordo,
                 width: acceso ? BaCodaTokens.interruttoreBordoAcceso : BaCodaTokens.interruttoreBordo,
               ),
-              gradient: acceso
-                  ? LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: BaColorTokens.azioneAttivaFondo,
-                    )
-                  : null,
+              // Acceso: il fondo è sabbia300 a16, un colore piatto (task 032); spento, nessun fondo.
+              color: acceso ? BaCodaTokens.interruttoreFondoAcceso : null,
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: BaSpazioTokens.xxs),
               child: Align(
                 alignment: acceso ? Alignment.centerRight : Alignment.centerLeft,
                 child: DecoratedBox(
-                  decoration: BoxDecoration(shape: BoxShape.circle, color: colore),
+                  // Spento il pallino è a metà (task 032): il segno di stato è la posizione e la parola.
+                  decoration: BoxDecoration(shape: BoxShape.circle, color: acceso ? colore : BaColorTokens.testoPrimo.withValues(alpha: BaCodaTokens.interruttorePallinoSpentoOpacita)),
                   child: const SizedBox.square(dimension: BaCodaTokens.interruttorePallino),
                 ),
               ),

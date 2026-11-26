@@ -14,8 +14,11 @@
 // che dipenderebbe dal font). Con un valore («0 di 1») la freccia non c'è, come
 // nel prototipo.
 //
-// Etichetta e valore vanno a capo come il `flex-wrap` del prototipo: a testo
-// grande o con un nome lungo il valore scende sotto l'etichetta, nulla si taglia.
+// Etichetta e valore stanno sulla stessa riga a testo normale. **Dal testo a
+// `BaPersoneTokens.azioneSottoDa` (1,3) il valore sta sempre sotto l'etichetta, in ogni
+// riga, con lo stesso bordo sinistro** (task 032c: prima scendeva solo nelle righe in cui
+// non c'era posto). Con un'etichetta lunga anche a testo normale il valore scende, nulla
+// si taglia.
 //
 // Valori che i token non hanno (segnalati nel report del task 023b): l'altezza
 // minima (48 nel prototipo: uso `BaControlloTokens.coppia`, stesso valore) e la
@@ -106,6 +109,11 @@ class _Contenuto extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
+          if (valore != null && BaScalaTokens.testo(context) >= BaPersoneTokens.azioneSottoDa) ...[
+            // Testo grande: l'etichetta e, sotto, il valore, a sinistra, uguale in ogni riga.
+            Text(etichetta, style: BaTestoTokens.corpo.copyWith(color: BaColorTokens.testoPrimo)),
+            Text(valore!, style: BaTestoTokens.corpo.copyWith(color: BaColorTokens.testoSecondo)),
+          ] else
           Wrap(
             alignment: WrapAlignment.spaceBetween,
             crossAxisAlignment: WrapCrossAlignment.center,

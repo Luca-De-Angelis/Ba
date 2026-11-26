@@ -370,4 +370,18 @@ void main() {
     await tester.pumpWidget(const SizedBox());
     expect(tester.takeException(), isNull);
   });
+
+  group('la cifra (task 032)', () {
+    testWidgets('è cifra: 22/400, non il titolo della stanza (22/600)', (tester) async {
+      await tester.pumpWidget(_app(_codice()));
+      await tester.enterText(find.byType(EditableText), '481');
+      await tester.pump();
+      final stile = tester.widget<Text>(find.text('4')).style!;
+      expect(stile.fontSize, 22);
+      expect(stile.fontSize, BaTestoTokens.cifra.fontSize);
+      expect(stile.fontWeight, isNot(FontWeight.w600));
+      expect(stile.letterSpacing, isNull);
+      expect(stile.color, BaColorTokens.testoPrimo);
+    });
+  });
 }

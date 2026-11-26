@@ -86,8 +86,8 @@ void main() {
     });
 
     testWidgets('aggiunta: la spunta disegnata e la parola, senza contorno e senza tocco', (tester) async {
-      await tester.pumpWidget(_app(_voce(BaVoceRigaPersona.aggiunta, 'Aggiunta')));
-      expect(find.text('Aggiunta'), findsOneWidget);
+      await tester.pumpWidget(_app(_voce(BaVoceRigaPersona.aggiunta, 'In lista')));
+      expect(find.text('In lista'), findsOneWidget);
       expect(_conSpunta(tester), isTrue, reason: 'il segno');
       expect(_conContorno(tester), isFalse);
       expect(find.byType(BaTouchable), findsNothing, reason: 'una persona aggiunta non si tocca');
@@ -149,12 +149,31 @@ void main() {
       expect(sotto.top, greaterThanOrEqualTo(testi.bottom), reason: 'a testo grande va a capo');
     });
 
+    testWidgets('con il raggio 24 l\x27azione a capo su due righe non taglia il testo: gli angoli del testo stanno dentro l\x27arco', (tester) async {
+      await tester.pumpWidget(_app(
+        _voce(BaVoceRigaPersona.daAggiungere, 'Aggiungi alla lista', onAzione: () {}),
+        testo: BaScalaTokens.maxTesto,
+      ));
+      expect(tester.takeException(), isNull);
+      final contorno = find.descendant(of: find.byType(BaRigaPersona), matching: find.byType(Container)).evaluate().map((e) => e.widget as Container).firstWhere(
+            (c) => c.decoration is BoxDecoration && (c.decoration! as BoxDecoration).border is Border,
+          );
+      final pillola = tester.getRect(find.byWidget(contorno));
+      final testo = tester.getRect(find.text('Aggiungi alla lista'));
+      expect(BaPersoneTokens.azioneRaggio, 24);
+      expect(testo.height, greaterThan(2 * 14 * BaScalaTokens.maxTesto * 1.0), reason: 'su due righe almeno');
+      final arco = RRect.fromRectAndRadius(pillola, const Radius.circular(BaPersoneTokens.azioneRaggio));
+      for (final angolo in [testo.topLeft, testo.topRight, testo.bottomLeft, testo.bottomRight]) {
+        expect(arco.contains(angolo), isTrue, reason: 'l\x27angolo $angolo del testo esce dal contorno $pillola');
+      }
+    });
+
     for (final larghezza in [360.0, 744.0]) {
       testWidgets('a 2,0 su ${larghezza.round()} dp nessuna voce si taglia né sborda', (tester) async {
         for (final riga in <Widget>[
           _voce(BaVoceRigaPersona.daAggiungere, 'Aggiungi', onAzione: () {}),
           _voce(BaVoceRigaPersona.scegli, 'Scegli', onAzione: () {}),
-          _voce(BaVoceRigaPersona.aggiunta, 'Aggiunta'),
+          _voce(BaVoceRigaPersona.aggiunta, 'In lista'),
           _voce(BaVoceRigaPersona.nellInvito, 'Nell\'invito', onAzione: () {}),
           BaRigaPersona(nome: 'Maria Antonietta Bianchi-Rossi', alias: '@maria.antonietta.bianchi', acceso: false, parolaAcceso: 'Acceso', parolaSpento: 'Spento', onCambia: (_) {}),
         ]) {
@@ -238,6 +257,91 @@ void main() {
       expect(riga.voce, isNull);
       expect(riga.acceso, isNull);
       expect(riga.alias, isNull);
+    });
+  });
+
+  group('l\'interruttore ha il fondo e il pallino del 032', () {
+    BoxDecoration pallinoDi(WidgetTester tester) {
+      final p = find.byWidgetPredicate((w) => w is SizedBox && w.width == BaCodaTokens.interruttorePallino && w.height == BaCodaTokens.interruttorePallino);
+      return tester.widget<DecoratedBox>(find.ancestor(of: p, matching: find.byType(DecoratedBox)).first).decoration as BoxDecoration;
+    }
+
+    BoxDecoration scatolaDi(WidgetTester tester) {
+      final s = find.byWidgetPredicate((w) => w is SizedBox && w.width == BaPersoneTokens.consensoInterruttoreLarghezza && w.height == BaPersoneTokens.consensoInterruttoreAltezza);
+      return tester.widget<DecoratedBox>(find.descendant(of: s, matching: find.byType(DecoratedBox)).first).decoration as BoxDecoration;
+    }
+
+    testWidgets('acceso: fondo piatto sabbia300 a16; spento: nessun fondo e pallino a metà', (tester) async {
+      await tester.pumpWidget(_app(BaRigaPersona(nome: 'Marta', acceso: true, parolaAcceso: 'Acceso', parolaSpento: 'Spento', onCambia: (_) {})));
+      expect(scatolaDi(tester).color, BaCodaTokens.interruttoreFondoAcceso);
+      expect(scatolaDi(tester).gradient, isNull);
+      expect(pallinoDi(tester).color, BaColorTokens.azioneChiara);
+
+      await tester.pumpWidget(_app(BaRigaPersona(nome: 'Marta', acceso: false, parolaAcceso: 'Acceso', parolaSpento: 'Spento', onCambia: (_) {})));
+      expect(scatolaDi(tester).color, isNull);
+      expect(pallinoDi(tester).color!.a, closeTo(BaCodaTokens.interruttorePallinoSpentoOpacita, 0.01));
+    });
+  });
+
+  group('a testo grande l\'azione sta sotto il nome in ogni riga (task 032c, 030 con testo 2,0)', () {
+    final righe = <Widget>[
+      BaRigaPersona(nome: 'Marta', alias: '@marta.v', tinta: 1, sagoma: 1, voce: BaVoceRigaPersona.aggiunta, azione: 'In lista'),
+      BaRigaPersona(nome: 'Davide', alias: '@davide.k', tinta: 2, sagoma: 2, voce: BaVoceRigaPersona.daAggiungere, azione: 'Aggiungi', onAzione: () {}),
+      BaRigaPersona(nome: 'Luca', alias: '@luca.r', tinta: 3, sagoma: 3, voce: BaVoceRigaPersona.daAggiungere, azione: 'Aggiungi', onAzione: () {}),
+      BaRigaPersona(nome: 'Maria Antonietta Bianchi-Rossi', alias: '@maria.antonietta', voce: BaVoceRigaPersona.scegli, azione: 'Scegli', onAzione: () {}),
+      BaRigaPersona(nome: 'Sara', alias: '@sara.m', voce: BaVoceRigaPersona.nellInvito, azione: 'Nell\'invito', onAzione: () {}),
+      BaRigaPersona(nome: 'Ciccio', acceso: false, parolaAcceso: 'Acceso', parolaSpento: 'Spento', onCambia: (_) {}),
+    ];
+    const nomi = ['Marta', 'Davide', 'Luca', 'Maria Antonietta Bianchi-Rossi', 'Sara', 'Ciccio'];
+    const parole = ['In lista', 'Aggiungi', 'Aggiungi', 'Scegli', 'Nell\'invito', 'SPENTO'];
+
+    Rect azioneDi(WidgetTester tester, int i) => tester.getRect(find.descendant(of: find.byWidget(righe[i]), matching: find.text(parole[i])));
+
+    /// Il blocco dell'azione: il contorno (`BaTouchable`), la spunta con la parola, o l'interruttore.
+    Rect bloccoAzione(WidgetTester tester, int i) {
+      final r = find.byWidget(righe[i]);
+      final interruttore = find.descendant(
+        of: r,
+        matching: find.byWidgetPredicate((w) => w is SizedBox && w.width == BaPersoneTokens.consensoInterruttoreLarghezza && w.height == BaPersoneTokens.consensoInterruttoreAltezza),
+      );
+      if (interruttore.evaluate().isNotEmpty) return tester.getRect(interruttore).expandToInclude(azioneDi(tester, i)); // l'interruttore e la sua parola
+      if (i == 0) return tester.getRect(find.descendant(of: r, matching: find.byType(CustomPaint)).first).expandToInclude(azioneDi(tester, i));
+      return tester.getRect(find.descendant(of: r, matching: find.byType(BaTouchable)));
+    }
+
+    testWidgets('a 2,0 e 360 dp tutte le azioni hanno lo stesso bordo sinistro e stanno sotto il nome', (tester) async {
+      await tester.pumpWidget(_app(Column(children: righe), testo: 2.0));
+      expect(tester.takeException(), isNull);
+      final bordi = <double>[];
+      for (var i = 0; i < righe.length; i++) {
+        final nome = tester.getRect(find.descendant(of: find.byWidget(righe[i]), matching: find.text(nomi[i])));
+        final riga = tester.getRect(find.byWidget(righe[i]));
+        final blocco = bloccoAzione(tester, i);
+        expect(blocco.top, greaterThanOrEqualTo(nome.bottom), reason: '${nomi[i]}: sotto il nome');
+        expect(azioneDi(tester, i).top, greaterThanOrEqualTo(nome.bottom), reason: '${nomi[i]}: la parola sotto il nome');
+        bordi.add(blocco.left);
+        expect(blocco.left, riga.left, reason: '${nomi[i]}: a sinistra, sul bordo della riga');
+      }
+      expect(bordi.toSet(), hasLength(1), reason: 'stesso bordo sinistro: $bordi');
+    });
+
+    testWidgets('a 1,0 le azioni stanno accanto al nome, a destra, come prima', (tester) async {
+      await tester.pumpWidget(_app(Column(children: righe.take(3).toList())));
+      for (var i = 0; i < 3; i++) {
+        final nome = tester.getRect(find.descendant(of: find.byWidget(righe[i]), matching: find.text(nomi[i])));
+        expect(azioneDi(tester, i).left, greaterThan(nome.right), reason: '${nomi[i]}: accanto');
+      }
+    });
+
+    testWidgets('la soglia è azioneSottoDa: sotto a 1,3, accanto sotto 1,3 (con spazio)', (tester) async {
+      expect(BaPersoneTokens.azioneSottoDa, 1.3);
+      const piccola = BaRigaPersona(nome: 'Io', voce: BaVoceRigaPersona.aggiunta, azione: 'In lista');
+      await tester.pumpWidget(_app(piccola, testo: 1.29));
+      var nome = tester.getRect(find.text('Io'));
+      expect(tester.getRect(find.text('In lista')).left, greaterThan(nome.right));
+      await tester.pumpWidget(_app(piccola, testo: 1.3));
+      nome = tester.getRect(find.text('Io'));
+      expect(tester.getRect(find.text('In lista')).top, greaterThanOrEqualTo(nome.bottom));
     });
   });
 }

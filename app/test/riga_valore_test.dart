@@ -100,4 +100,42 @@ void main() {
       }
     });
   });
+
+  group('a testo grande il valore sta sotto l\'etichetta in ogni riga (task 032c)', () {
+    final righe = <Widget>[
+      const BaRigaValore(etichetta: 'Lingua', valore: 'Italiano'),
+      const BaRigaValore(etichetta: 'Microfono', valore: 'Consentito'),
+      const BaRigaValore(etichetta: 'Chi può trovarmi', valore: 'Chi conosco'),
+      const BaRigaValore(etichetta: 'Persone bloccate', valore: '3 persone'),
+      const BaRigaValore(etichetta: 'Tipo', valore: 'Privato'),
+    ];
+    const coppie = [('Lingua', 'Italiano'), ('Microfono', 'Consentito'), ('Chi può trovarmi', 'Chi conosco'), ('Persone bloccate', '3 persone'), ('Tipo', 'Privato')];
+
+    testWidgets('a 2,0 e 360 dp ogni valore è sotto la sua etichetta e tutti i valori hanno lo stesso bordo sinistro', (tester) async {
+      await tester.pumpWidget(_app(Column(children: righe), testo: 2.0));
+      expect(tester.takeException(), isNull);
+      final bordi = <double>{};
+      for (final (etichetta, valore) in coppie) {
+        final e = tester.getRect(find.text(etichetta));
+        final v = tester.getRect(find.text(valore));
+        expect(v.top, greaterThanOrEqualTo(e.bottom), reason: '$etichetta: valore sotto');
+        expect(v.left, e.left, reason: '$etichetta: stesso bordo sinistro dell\'etichetta');
+        bordi.add(v.left);
+      }
+      expect(bordi, hasLength(1), reason: '$bordi');
+    });
+
+    testWidgets('a 1,0 il valore sta accanto all\'etichetta, come prima', (tester) async {
+      await tester.pumpWidget(_app(Column(children: righe.take(1).toList())));
+      expect(tester.getRect(find.text('Italiano')).left, greaterThan(tester.getRect(find.text('Lingua')).right));
+    });
+
+    testWidgets('la soglia è azioneSottoDa (1,3), la stessa delle righe di persona', (tester) async {
+      const riga = BaRigaValore(etichetta: 'Io', valore: 'Sì');
+      await tester.pumpWidget(_app(riga, testo: 1.29));
+      expect(tester.getRect(find.text('Sì')).left, greaterThan(tester.getRect(find.text('Io')).right));
+      await tester.pumpWidget(_app(riga, testo: BaPersoneTokens.azioneSottoDa));
+      expect(tester.getRect(find.text('Sì')).top, greaterThanOrEqualTo(tester.getRect(find.text('Io')).bottom));
+    });
+  });
 }

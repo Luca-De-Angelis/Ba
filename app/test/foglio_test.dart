@@ -139,6 +139,24 @@ void main() {
       expect(_cima(tester), arrivo, reason: 'fermo: nessun rimbalzo');
     });
 
+    testWidgets('sale con curvaFoglio (task 032): la posizione a ogni istante è quella della curva', (tester) async {
+      _vista(tester);
+      await tester.pumpWidget(_app((_) => _richiesta()));
+      await _apriFoglio(tester);
+      final sopra = <int, double>{};
+      for (var ms = 0; ms <= 240; ms += 20) {
+        sopra[ms] = tester.getTopLeft(_sheet()).dy;
+        await tester.pump(const Duration(milliseconds: 20));
+      }
+      await tester.pump(const Duration(milliseconds: 100));
+      final rect = tester.getRect(_sheet());
+      final fine = rect.top;
+      for (final e in sopra.entries) {
+        final p = 1 - (e.value - fine) / 800; // la rotta traslada tutta la pagina (800 dp), non solo il foglio
+        expect(p, closeTo(BaMovimentoTokens.curvaFoglio.transform(e.key / BaMovimentoTokens.foglio.inMilliseconds), 0.02), reason: 'a ${e.key} ms');
+      }
+    });
+
     testWidgets('con «riduci movimento» è subito al suo posto', (tester) async {
       _vista(tester, riduci: true);
       await tester.pumpWidget(_app((_) => _richiesta()));

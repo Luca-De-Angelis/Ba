@@ -47,6 +47,8 @@ Un file per task, `NNN-nome.md`, al massimo una pagina, nel formato di `_templat
 | 023b | `023b-fogli-creazione-gestione.md` — Fogli di contenuto: creare e gestire i DEN, sotto-DEN (i passi di «Crea un DEN», `BaFoglioGestisci`, `BaFoglioSottoDen`) | Claude Code | Concluso |
 | 029 | `029-componenti-stanza-elenco.md` — Componenti della stanza, dell'elenco e dell'account chiuso (`BaIntestazione`, `BaRigaDen`, `BaSchermataCopertura` e gli altri) | Claude Code | Concluso |
 | 030 | `030-persone-inviti.md` — Persone, inviti e richiamo (proposta) | Claude Design | Concluso |
+| 032 | Consolidamento del design: dieci decisioni dove design e codice divergevano, più la regola sul genere grammaticale | Claude Design | Concluso |
+| 032c | `032c-applicare-032.md` — Portare il consolidamento del design (032) nel codice e nei documenti: token, titolo a 28, barra, curva del foglio, testi neutri rispetto al genere | Claude Code | In corso |
 | 033 | `033-persone-inviti-codice.md` — Persone e inviti: applicare il 030 e costruire componenti e fogli (`BaRicercaPersone`, `BaRigaPersona` estesa, `BaSelettorePersone`, `BaRigaConsenso`, `BaFoglioInvito`) | Claude Code | Concluso |
 | 024c | `024c-persone-inviti-prototipo.md` — Persone e inviti nel prototipo, testi allineati ai prototipi, test più leggeri | Claude Code | In corso |
 | 024a | `024-prototipo-navigabile.md` — Prototipo navigabile, prima parte: struttura, accesso, elenco, stanza, «diventa partecipante», impostazioni | Claude Code | Concluso |

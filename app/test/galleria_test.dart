@@ -77,7 +77,7 @@ Rect _stanza(WidgetTester tester) => tester.getRect(find
     .first);
 
 
-/// Una vista abbastanza alta da contenere la stanza finta intera (fino a 1060 dp):
+/// Una vista abbastanza alta da contenere la stanza finta intera (fino a 960 dp):
 /// i tocchi sul velo e sulle azioni dei fogli non cadono fuori dallo schermo.
 void _vistaAlta(WidgetTester tester) {
   tester.view.physicalSize = const Size(900, 1800);
@@ -167,11 +167,11 @@ void main() {
     expect(find.byType(BaPresenza), findsNWidgets(8));
     expect(diametro(), 88);
 
-    // Testo di sistema 2,0 e altezza della stanza 1060 → 1010 → 960 → 910: il
+    // Testo di sistema 2,0 e altezza della stanza 960 → 920 → 890 → 860: il
     // palco cede in modo continuo, nessuna presenza sparisce.
     await _tocca(tester, 'Testo 1,0');
     final diametri = [diametro()];
-    for (final altezza in [1060, 1010, 960]) {
+    for (final altezza in [960, 920, 890]) {
       await _tocca(tester, 'Altezza: $altezza');
       diametri.add(diametro());
       expect(find.byType(BaPresenza), findsNWidgets(8), reason: 'altezza $altezza');
@@ -179,7 +179,7 @@ void main() {
     for (var i = 1; i < diametri.length; i++) {
       expect(diametri[i], lessThanOrEqualTo(diametri[i - 1]), reason: 'non cresce mai');
     }
-    expect(diametri.last, lessThan(88), reason: 'a 910 dp il palco è sceso sotto 88');
+    expect(diametri.last, lessThan(88), reason: 'a 860 dp il palco è sceso sotto 88');
     expect(diametri.last, greaterThanOrEqualTo(BaPresenzaTokens.minimo));
     expect(diametri.toSet().length, 4, reason: 'scende per gradi, non di colpo');
 
@@ -187,7 +187,7 @@ void main() {
     // bordo e non copre le presenze.
     await tester.pump();
     _controllaStanza(tester);
-    await _tocca(tester, 'Altezza: 910'); // torna a 1060
+    await _tocca(tester, 'Altezza: 860'); // torna a 960
     await _tocca(tester, 'Testo 2,0');
 
     // Tablet: presenze più grandi (otto: 132).
@@ -250,7 +250,7 @@ void main() {
     _controllaStanza(tester);
 
     // A ogni altezza della stanza, il palco parte sotto l'intestazione.
-    for (final altezza in [1060, 1010, 960]) {
+    for (final altezza in [960, 920, 890]) {
       await _tocca(tester, 'Altezza: $altezza');
       await tester.pump();
       _controllaStanza(tester);
@@ -894,7 +894,7 @@ void main() {
       await alRiepilogo(tester, privato: true);
       await _tocca(tester, 'Crea il DEN');
       expect(find.text('Il DEN non è stato creato'), findsOneWidget);
-      expect(find.text('Non siamo riusciti ad aprirlo. Controlla la connessione e riprova.'), findsOneWidget);
+      expect(find.text('Non è stato possibile aprirlo. Controlla la connessione e riprova.'), findsOneWidget);
       expect(find.text('Quello che hai scritto è ancora qui.'), findsOneWidget);
       expect(find.byType(BaFoglio), findsOneWidget);
       await _tocca(tester, 'Riprova');
@@ -1127,7 +1127,7 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('le righe nei loro stati: «Aggiungi» passa ad «Aggiunta» e non si ritocca', (tester) async {
+    testWidgets('le righe nei loro stati: «Aggiungi» passa a «In lista» e non si ritocca', (tester) async {
       await apri(tester);
       final prima = find.text('Aggiungi').evaluate().length;
       await tester.ensureVisible(find.text('Aggiungi').first);
@@ -1135,7 +1135,7 @@ void main() {
       await tester.tap(find.text('Aggiungi').first);
       await tester.pump();
       expect(find.text('Aggiungi').evaluate().length, prima - 1);
-      expect(find.text('Aggiunta'), findsWidgets);
+      expect(find.text('In lista'), findsWidgets);
       expect(find.text('Nell\'invito'), findsWidgets);
       expect(find.text('Scegli'), findsWidgets);
       expect(tester.takeException(), isNull);
@@ -1195,11 +1195,11 @@ void main() {
       expect(find.byType(BaFoglio), findsNothing);
     });
 
-    testWidgets('«Sei stato invitato», scaduto e annullato', (tester) async {
+    testWidgets('«Hai un invito», scaduto e annullato', (tester) async {
       await apri(tester);
-      await _tocca(tester, 'Sei stato invitato');
+      await _tocca(tester, 'Hai un invito');
       await sale(tester);
-      expect(find.text('Marta ti ha invitato a Cena senza fretta'), findsOneWidget);
+      expect(find.text('Invito di Marta a Cena senza fretta'), findsOneWidget);
       expect(find.text('Entra'), findsOneWidget);
       await _tocca(tester, 'Non ora');
       await sale(tester);
@@ -1228,7 +1228,7 @@ void main() {
       final aperture = <String, String>{
         'Invita: il posto riempito': 'Non ora',
         'Co-amministratore: il posto riempito': 'Chiudi',
-        'Sei stato invitato': 'Non ora',
+        'Hai un invito': 'Non ora',
         'Invito scaduto': 'Ho capito',
         'Invito annullato': 'Ho capito',
       };

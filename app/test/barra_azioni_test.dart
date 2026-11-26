@@ -364,4 +364,68 @@ void main() {
       expect(BaBarraAzioniTokens.altroBordo.a, closeTo(0.32, 0.005));
     });
   });
+
+  group('secondarie a 14 e larghezze dal contenuto (task 032)', () {
+    BaBarraAzioni barra(List<String> testi) => BaBarraAzioni(
+          azioni: [
+            for (var i = 0; i < testi.length; i++)
+              BaAzioneBarra(
+                ruolo: i == 0 ? BaRuoloAzione.primaria : BaRuoloAzione.secondaria,
+                testo: testi[i],
+                semanticsLabel: testi[i],
+                fissa: i < 3,
+                onTap: () {},
+              ),
+          ],
+          onAltro: () {},
+          semanticsLabelAltro: 'Altro',
+        );
+
+    testWidgets('la primaria resta a 16/500, le secondarie sono a 14', (tester) async {
+      await tester.pumpWidget(_app(barra(['Microfono', 'Esci', 'Invita'])));
+      expect(tester.widget<Text>(find.text('Microfono')).style!.fontSize, 16);
+      expect(tester.widget<Text>(find.text('Microfono')).style!.fontWeight, FontWeight.w500);
+      expect(tester.widget<Text>(find.text('Esci')).style!.fontSize, BaTestoTokens.azione.fontSize);
+      expect(tester.widget<Text>(find.text('Invita')).style!.fontSize, 14);
+    });
+
+    testWidgets('le secondarie hanno la larghezza del testo più l\'avanzo, non tutte uguali; stessa altezza', (tester) async {
+      await tester.pumpWidget(_app(barra(['Microfono', 'Esci', 'Invita'])));
+      final a = tester.getRect(find.byType(BaPillola).at(1));
+      final b = tester.getRect(find.byType(BaPillola).at(2));
+      final primaria = tester.getRect(find.byType(BaPillola).at(0));
+      expect(a.top, b.top);
+      expect(a.height, b.height);
+      expect(a.width, isNot(closeTo(b.width, 1)), reason: '«Invita» è più lunga di «Esci»: non sono uguali');
+      expect(b.width, greaterThan(a.width));
+      expect(a.left, primaria.left);
+      expect(b.left - a.right, BaControlloTokens.gapCoppia);
+      expect(b.right, closeTo(primaria.right, 0.01), reason: 'l\'avanzo si divide: la riga è piena');
+      // L'avanzo è uguale per tutte: la differenza fra le larghezze è quella dei testi.
+      final testoA = tester.getSize(find.text('Esci')).width;
+      final testoB = tester.getSize(find.text('Invita')).width;
+      expect(b.width - a.width, closeTo(testoB - testoA, 0.5));
+    });
+
+    testWidgets('con «Altro»: stessa regola, e «Altro» resta 48 × 48 a destra, centrato sulla riga', (tester) async {
+      await tester.pumpWidget(_app(barra(['Microfono', 'Esci', 'Invita', 'Più'])));
+      final a = tester.getRect(find.byType(BaPillola).at(1));
+      final b = tester.getRect(find.byType(BaPillola).at(2));
+      final altro = tester.getRect(find.byKey(BaBarraAzioni.chiaveAltro));
+      expect(a.height, b.height);
+      expect(altro.size, const Size(48, 48));
+      expect(altro.right, closeTo(tester.getRect(find.byType(BaPillola).at(0)).right, 0.01));
+      expect(altro.center.dy, closeTo(a.center.dy, 0.01));
+      expect(b.width, greaterThan(a.width));
+    });
+
+    testWidgets('a testo grande non peggiora: le secondarie vanno in colonna come prima, senza overflow', (tester) async {
+      await tester.pumpWidget(_app(barra(['Microfono', 'Scendi dal palco', 'Esci', 'Invita']), testo: 2.0));
+      expect(tester.takeException(), isNull);
+      final a = tester.getRect(find.byType(BaPillola).at(1));
+      final b = tester.getRect(find.byType(BaPillola).at(2));
+      expect(b.top, greaterThanOrEqualTo(a.bottom), reason: 'una sotto l\'altra: il ripiego a colonna non si tocca');
+      expect(a.width, 360);
+    });
+  });
 }

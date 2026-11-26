@@ -39,6 +39,7 @@ class _PaginaChiPuoTrovarmiState extends State<PaginaChiPuoTrovarmi> {
     return PaginaProto(
       nome: T.chiPuoTrovarmi,
       titolo: T.chiPuoTrovarmi,
+      titoloSchermata: true,
       corpo: [
         BaSceltaDen(
           opzioni: _opzioni,
@@ -90,6 +91,7 @@ class PaginaChiPuoiAvvisare extends StatelessWidget {
     return PaginaProto(
       nome: T.chiPuoiAvvisare,
       titolo: T.chiPuoiAvvisare,
+      titoloSchermata: true,
       corpo: [
         const Frase(T.avvisareFrase),
         if (aggiunte.isEmpty)
@@ -127,6 +129,7 @@ class PaginaChiPuoAvvisarti extends StatelessWidget {
     return PaginaProto(
       nome: T.chiPuoAvvisarti,
       titolo: T.chiPuoAvvisarti,
+      titoloSchermata: true,
       corpo: [
         const Frase(T.avvisartiFrase),
         Column(

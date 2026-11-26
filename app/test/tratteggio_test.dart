@@ -71,9 +71,12 @@ void main() {
     expect(vuoti, isNotEmpty);
   });
 
-  testWidgets('tratto e vuoto vengono dalla scala dello spazio', (tester) async {
-    expect(BaTratteggio.tratto, BaSpazioTokens.xs);
-    expect(BaTratteggio.vuoto, BaSpazioTokens.xxs);
+  testWidgets('tratto, vuoto e colore vengono dai token del tratteggio (task 032: stessi valori di prima, 6 e 4)', (tester) async {
+    expect(BaTratteggio.tratto, BaCreazioneTokens.tratteggioTratto);
+    expect(BaTratteggio.vuoto, BaCreazioneTokens.tratteggioVuoto);
+    expect(BaTratteggio.tratto, 6);
+    expect(BaTratteggio.vuoto, 4);
+    expect(const BaTratteggio().colore, BaCreazioneTokens.tratteggioColore);
   });
 
   testWidgets('il colore è quello dato e lo spessore è quello dato', (tester) async {

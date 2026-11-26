@@ -8,9 +8,9 @@
 // Il tratteggio dice «qui c'è un posto, non un'azione»: non è toccabile e non
 // entra nella semantica.
 //
-// Valori che i token non hanno (segnalati nel report del task 022): la lunghezza
-// del tratto e del vuoto — qui `BaSpazioTokens.xs` (6) e `xxs` (4) — e il colore
-// del tratteggio, per il quale uso `ascoltoGruppoBordo`, la a32 che c'è già.
+// Il tratto (6), il vuoto (4) e il colore (a32) sono i token `BaCreazioneTokens.tratteggio*`
+// (task 032): sono i valori che il codice già usava, ora con il loro nome. Il tratteggio del
+// prototipo, nel browser, è un'approssimazione (3 e 3).
 //
 // Importa solo widgets.dart: nessuna eccezione.
 import 'package:flutter/widgets.dart';
@@ -23,7 +23,7 @@ class BaTratteggio extends StatelessWidget {
     super.key,
     this.raggio = BaRaggioTokens.riquadro,
     this.spessore = BaCreazioneTokens.aggancioBordo,
-    this.colore = BaColorTokens.ascoltoGruppoBordo,
+    this.colore = BaCreazioneTokens.tratteggioColore,
     this.child,
   }) : soloSopra = false;
 
@@ -32,7 +32,7 @@ class BaTratteggio extends StatelessWidget {
   const BaTratteggio.sopra({
     super.key,
     this.spessore = BaCreazioneTokens.aggancioBordo,
-    this.colore = BaColorTokens.ascoltoGruppoBordo,
+    this.colore = BaCreazioneTokens.tratteggioColore,
     this.child,
   })  : raggio = 0,
         soloSopra = true;
@@ -52,8 +52,8 @@ class BaTratteggio extends StatelessWidget {
   final Widget? child;
 
   /// Lunghezza di un tratto e di un vuoto.
-  static const double tratto = BaSpazioTokens.xs;
-  static const double vuoto = BaSpazioTokens.xxs;
+  static const double tratto = BaCreazioneTokens.tratteggioTratto;
+  static const double vuoto = BaCreazioneTokens.tratteggioVuoto;
 
   @override
   Widget build(BuildContext context) {

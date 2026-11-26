@@ -60,7 +60,8 @@ void main() {
         l.presenzaHaLaParola('Marta B.'),
       ];
       for (final t in testi) {
-        expect(t, startsWith('Marta B.'), reason: '$lingua: $t');
+        // In italiano «Persona bloccata: Marta B.» (task 032): il nome dopo, non l'aggettivo dopo il nome.
+        expect(t, lingua == 'it' ? contains('Marta B.') : startsWith('Marta B.'), reason: '$lingua: $t');
       }
       expect(testi.toSet(), hasLength(4), reason: '$lingua: quattro frasi diverse');
     }
@@ -69,7 +70,7 @@ void main() {
   test('italiano e tedesco: i testi dei quattro stati', () async {
     final it = await _carica('it');
     expect(it.presenzaMutata('Marta B.'), 'Marta B., voce mutata da te');
-    expect(it.presenzaBloccata('Marta B.'), 'Marta B., persona bloccata');
+    expect(it.presenzaBloccata('Marta B.'), 'Persona bloccata: Marta B.');
     expect(it.presenzaMicSpento('Marta B.'), 'Marta B., microfono spento');
     expect(it.presenzaHaLaParola('Marta B.'), 'Marta B., ha la parola');
 
@@ -82,7 +83,7 @@ void main() {
   test('«bloccata» senza genere: un sostantivo davanti all\'aggettivo, in italiano, francese e spagnolo (021b)',
       () async {
     final attese = {
-      'it': 'Marta B., persona bloccata',
+      'it': 'Persona bloccata: Marta B.', // task 032: la persona prima del nome, mai l'aggettivo dopo
       'fr': 'Marta B., personne bloquée',
       'es': 'Marta B., persona bloqueada',
       // Già neutre: non cambiano.

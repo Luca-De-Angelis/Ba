@@ -51,6 +51,16 @@ BaSchermataCopertura _schermata({
 
 void main() {
   group('B1 · account chiuso', () {
+    testWidgets('il titolo è un titolo di schermata intera: 28/600 (titoloSchermata), non il 22 della stanza', (tester) async {
+      _vista(tester);
+      await tester.pumpWidget(_app(_schermata()));
+      final stile = tester.widget<Text>(find.text('Questo account non può più usare BA')).style!;
+      expect(stile.fontSize, 28);
+      expect(stile.fontWeight, FontWeight.w600);
+      expect(stile.fontSize, isNot(BaTestoTokens.stanza.fontSize));
+      expect(stile.color, BaColorTokens.testoPrimo);
+    });
+
     testWidgets('il titolo, i paragrafi e una sola azione: chiara', (tester) async {
       _vista(tester);
       await tester.pumpWidget(_app(_schermata()));
@@ -167,6 +177,27 @@ void main() {
       }
       expect(vivo, isTrue);
       semantica.dispose();
+    });
+  });
+
+  group('una sola colonna (task 032)', () {
+    testWidgets('a 744 dp il testo e l\x27azione stanno nella stessa colonna di 512: stesso bordo sinistro e stessa larghezza', (tester) async {
+      _vista(tester, larghezza: 744, altezza: 1133);
+      await tester.pumpWidget(_app(_schermata(titolo: 'Titolo breve', paragrafi: const [BaParagrafoPasso('Una frase.')])));
+      final colonna = BaLayoutTokens.larghezzaColonna(744);
+      expect(colonna, 512);
+      final azione = tester.getRect(find.byType(BaPillola));
+      expect(azione.width, colonna);
+      expect(tester.getTopLeft(find.text('Titolo breve')).dx, azione.left, reason: 'il titolo, anche se corto, parte dal bordo della colonna');
+      expect(tester.getTopLeft(find.text('Una frase.')).dx, azione.left);
+    });
+
+    testWidgets('a 360 dp la colonna e\x27 la larghezza meno i margini: 320', (tester) async {
+      _vista(tester);
+      await tester.pumpWidget(_app(_schermata(titolo: 'Titolo breve', paragrafi: const [BaParagrafoPasso('Una frase.')])));
+      final azione = tester.getRect(find.byType(BaPillola));
+      expect(azione.width, 320);
+      expect(tester.getTopLeft(find.text('Titolo breve')).dx, azione.left);
     });
   });
 
