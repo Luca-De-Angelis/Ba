@@ -4,7 +4,7 @@ Il progetto Flutter c'è (iOS, Android e, solo per la galleria, web). Lo stato o
 
 - **Token**: `lib/design_system/tokens.dart`, la copia unica dei valori di design, a due livelli (D-019).
 - **Componenti** in `lib/design_system/`: `BaTouchable` (task 009), `BaRitratto`, `BaAnello` e `BaPresenza` con `BaDiametro` (task 010 e 010b, stati di base), `BaPalco` (task 011, widget sopra `disponiPalco` in `palco/disposizione.dart`). `BaGlifo` (task 012) e gli stati di `BaPresenza` con glifo: mutata, bloccata, microfono spento e la tacca della parola; i tre glifi stanno nel disco in basso a destra della sagoma, mai al centro. I testi di `BaPalco` gli arrivano dal chiamante: non importa le traduzioni. I controlli (task 020): `BaPillola` (informativa, attiva, chiara, spenta; altezza minima `primario`, raggio a stadio), `BaAzioniInCoppia` (due pillole spente o una centrata), `BaBarraAzioni` (un posto primario e due secondari; «Altro» dalla quarta azione, che chiama `onAltro`: il foglio arriva con il 021) e `BaPubblico` (campione di tre sagome e contatore, senza animazione). Nessuno importa le traduzioni: i testi arrivano dal chiamante. I fogli (task 021): `BaFoglio` (il contenitore: corpo che scorre e azioni ancorate in basso, altezza massima 0,80 sul telefono e 0,62 dal tablet; tre facce, richiesta, scheda e invito) con `showBaFoglio` che lo apre sopra un velo; `BaSchedaPersona` (le tre righe fisse e il gruppo delle azioni nuove) con `BaRigaAzione`; `BaMessaggio` (neutro ed errore, l'errore mai pieno). Nessuno importa le traduzioni. I controlli dei task 013–015 (task 022): `BaCampoTesto` (la linea sotto, costruito con `EditableText`) con `BaFraseErrore`, `BaCampoCodice` (sei caselle, un campo solo per lo screen reader), `BaSceltaDen`, `BaChipScelta` (la spunta è disegnata), `BaPuntoAggancio` (solo un posto, mai un'azione) e `BaTratteggio`, `BaInterruttoreRiga`, `BaRigaCoda`, `BaFasciaAttesa`, `BaBandaPosto`. Nessuno importa le traduzioni; i campi di testo non hanno menù di selezione né maniglie (richiederebbero Material o Cupertino).
-- **Traduzioni**: file ARB in `lib/l10n/`, `l10n.yaml`, `generate: true`. Cinque lingue (IT, EN, FR, ES, DE); per ora c'è solo la chiave di prova `appNome`.
+- **Traduzioni**: file ARB in `lib/l10n/`, `l10n.yaml`, `generate: true`. Cinque lingue (IT, EN, FR, ES, DE); oggi nove chiavi, quasi tutte per il palco (vedi «Traduzioni» sotto).
 - **Font**: Instrument Sans e IBM Plex Mono (OFL) in `assets/fonts/`, dichiarati nel `pubspec.yaml`.
 - **Galleria di sviluppo**: vedi sotto.
 - `lib/features/` e `lib/core/` (audio, servizio) sono ancora vuote. `main.dart` è uno schermo vuoto del colore di fondo, senza Material.
@@ -24,6 +24,22 @@ lib/
 L'ordine di costruzione è in `design/system/md/inventario-componenti.md`: `BaTouchable` → `BaPresenza` con `BaRitratto` e `BaAnello` → `BaPalco` → i componenti con glifo.
 
 Comandi, sempre da questa cartella: `flutter pub get`, `flutter analyze`, `flutter test`.
+
+## Traduzioni (file ARB)
+
+I testi dell'interfaccia sono in `lib/l10n/app_<lingua>.arb`, configurati da `l10n.yaml`: **`app_it.arb` è il riferimento** (`template-arb-file`) e le altre quattro lingue (`en`, `fr`, `es`, `de`) lo seguono. `flutter gen-l10n` (o `flutter pub get` e `flutter test`, che lo lanciano da soli) genera `app_localizations*.dart`, che **non si committano**. I componenti di `design_system/` non importano le traduzioni: il testo arriva dal chiamante.
+
+**Come è fatta una chiave** (in `app_it.arb`):
+- **Nome** in camelCase, per area e poi per cosa dice: `palcoLibero`, `palcoInvito`, `presenzaParla`, `presenzaBloccata`. Il nome non porta la lingua né il testo.
+- **Descrizione**: subito dopo, `"@chiave": { "description": "…" }`, che dice **dove compare, a chi serve e qualunque vincolo** («Etichetta di una persona bloccata, per lo screen reader.»). La leggono i madrelingua nel foglio di revisione (colonna `contesto`): scrivila per chi non ha visto la schermata.
+- **Segnaposto**: fra graffe nel testo (`{nome}`, `{n}`) e dichiarati in `@chiave` con il loro tipo (`"placeholders": { "nome": { "type": "String" } }`, `int` per i conteggi). Non si traducono e **restano uguali in tutte le lingue**.
+- **Plurali**: sintassi ICU con i casi `=0` e `=1` **espliciti** (in francese 0 e 1 sono entrambi «uno»): `{n, plural, =0{…} =1{…} other{…}}`.
+- **Senza genere**: l'italiano non usa participi o aggettivi che dipendano dal genere di una persona (`docs/GLOSSARY.md`, «Genere grammaticale»): `Persona bloccata: {nome}`, non «{nome}, bloccata».
+- Gli altri quattro file hanno **solo i testi**: descrizioni e segnaposto stanno nell'italiano.
+
+**Come si aggiunge una chiave**: nell'italiano con descrizione e segnaposto; lo stesso testo tradotto in tutti gli altri file; un test come `test/l10n_palco_test.dart` che la prova nelle cinque lingue; il report del task elenca le chiavi nuove da far rivedere.
+
+**Come si aggiunge una lingua**: (1) `lib/l10n/app_<codice>.arb` (codice a due lettere) con `"@@locale": "<codice>"` e **tutte le stesse chiavi** dell'italiano, con gli stessi segnaposto, **senza** i `@chiave`; (2) `flutter gen-l10n`: la lingua entra da sola in `AppLocalizations.supportedLocales` (non c'è una lista da aggiornare a mano); (3) aggiungere il codice a `_lingue` nei test di `test/l10n_palco_test.dart`; (4) `dart run tool/revisione_traduzioni.dart` prepara il suo foglio di revisione in `docs/traduzioni/` (vedi il suo `README.md`); (5) i madrelingua rivedono **prima del rilascio** (`CLAUDE.md`). Il tedesco allunga le etichette fino al 30%: vale per ogni layout.
 
 ## Tablet e orientamento (D-020)
 
