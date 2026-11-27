@@ -51,6 +51,16 @@ BaRichiestaPermesso _dopo({VoidCallback? onApri, VoidCallback? onChiudi, bool co
       chiudi: _azione('Chiudi', onTap: onChiudi),
     );
 
+const _seconda = 'Puoi spegnerli quando vuoi.';
+
+BaRichiestaPermesso _richiestaConSeconda() => BaRichiestaPermesso(
+      titolo: _titolo,
+      frase: _frase,
+      fraseOpzionale: _seconda,
+      consenti: _azione('Consenti gli avvisi'),
+      nonOra: _azione('Non ora'),
+    );
+
 BaPillola _pillola(WidgetTester tester, String testo) => tester.widget<BaPillola>(find.widgetWithText(BaPillola, testo));
 
 Finder _riquadro() => find.byWidgetPredicate((w) =>
@@ -116,6 +126,28 @@ void main() {
     });
   });
 
+  group('la richiesta: la seconda frase, più piccola, è facoltativa', () {
+    testWidgets('con la seconda frase sta sotto la prima, più piccola e nello stesso colore; senza, il foglio è quello di prima', (tester) async {
+      _vista(tester);
+      await tester.pumpWidget(_app(_richiestaConSeconda()));
+      final prima = tester.widget<Text>(find.text(_frase));
+      final seconda = tester.widget<Text>(find.text(_seconda));
+      expect(tester.getTopLeft(find.text(_seconda)).dy, greaterThan(tester.getBottomLeft(find.text(_frase)).dy));
+      expect(seconda.style?.fontSize, BaTestoTokens.minore.fontSize);
+      expect(seconda.style!.fontSize!, lessThan(prima.style!.fontSize!));
+      expect(seconda.style?.color, prima.style?.color);
+      expect(_pillola(tester, 'Consenti gli avvisi').variante, BaVariantePillola.attiva);
+      expect(_pillola(tester, 'Non ora').variante, BaVariantePillola.attiva);
+
+      await tester.pumpWidget(_app(_richiesta()));
+      expect(find.text(_frase), findsOneWidget);
+      expect(find.text(_seconda), findsNothing);
+      final soloUna = tester.getSize(_riquadro()).height;
+      await tester.pumpWidget(_app(_richiestaConSeconda()));
+      expect(tester.getSize(_riquadro()).height, greaterThan(soloUna), reason: 'la seconda frase si vede, non è nascosta');
+    });
+  });
+
   group('dopo il rifiuto: una frase senza colpa', () {
     testWidgets('ha il suo stato: la frase, «Se cambi idea…», «Apri le impostazioni del telefono» attiva e «Chiudi» spenta', (tester) async {
       _vista(tester);
@@ -163,6 +195,22 @@ void main() {
   });
 
   group('testo grande e larghezze', () {
+    for (final (larghezza, altezza) in [(360.0, 800.0), (744.0, 1133.0)]) {
+      testWidgets('con la seconda frase, a 2,0 su ${larghezza.round()} dp nulla si taglia e le azioni restano ancorate', (tester) async {
+        _vista(tester, larghezza: larghezza, altezza: altezza, testo: BaScalaTokens.maxTesto);
+        await tester.pumpWidget(_app(_richiestaConSeconda()));
+        expect(tester.takeException(), isNull);
+        final tetto = altezza * (larghezza >= 600 ? BaAccessoTokens.foglioAltezzaTablet : BaAccessoTokens.foglioAltezzaTelefono);
+        expect(tester.getSize(_riquadro()).height, lessThanOrEqualTo(tetto + 0.01));
+        final pillole = tester.widgetList<BaPillola>(find.byType(BaPillola)).toList();
+        expect(tester.getRect(find.byWidget(pillole.last)).bottom, lessThanOrEqualTo(altezza), reason: 'le azioni restano sullo schermo');
+        expect(tester.getSize(find.byWidget(pillole.first)).width, tester.getSize(find.byWidget(pillole.last)).width, reason: 'righe uguali fra loro');
+        for (final t in tester.widgetList<Text>(find.byType(Text))) {
+          expect(tester.getRect(find.byWidget(t)).right, lessThanOrEqualTo(larghezza), reason: t.data);
+        }
+      });
+    }
+
     for (final (larghezza, altezza) in [(360.0, 800.0), (744.0, 1133.0)]) {
       testWidgets('a 2,0 su ${larghezza.round()} dp nulla si taglia, le azioni restano ancorate, le pillole di una coppia sono uguali', (tester) async {
         _vista(tester, larghezza: larghezza, altezza: altezza, testo: BaScalaTokens.maxTesto);

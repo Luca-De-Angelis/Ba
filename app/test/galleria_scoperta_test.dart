@@ -79,6 +79,8 @@ void main() {
     expect(find.text('Essere disponibile a chiacchierare'), findsOneWidget);
     expect(find.text('Ti trova solo chi può trovarti secondo «Chi può trovarmi»: la visibilità non si allarga da sola.'), findsOneWidget);
     expect(find.textContaining('chi puoi essere trovato'), findsNothing, reason: 'la frase sbagliata del prototipo non c\'è');
+    expect(find.text('Si spegne con un tocco, e da solo quando entri in un DEN.'), findsOneWidget, reason: 'la terza frase, più piccola');
+    expect(tester.widget<Text>(find.text('Si spegne con un tocco, e da solo quando entri in un DEN.')).style?.fontSize, BaTestoTokens.minore.fontSize);
 
     await _tocca(tester, 'Non ora');
     await _sale(tester);
@@ -122,7 +124,8 @@ void main() {
         await _tocca(tester, apertura);
         await _sale(tester);
         expect(find.byType(BaRichiestaPermesso), findsOneWidget, reason: apertura);
-        expect(find.descendant(of: find.byType(BaFoglio), matching: find.text(titolo)), findsOneWidget, reason: apertura);
+        expect(tester.widget<BaFoglio>(find.byType(BaFoglio)).semanticsLabel, titolo, reason: apertura);
+        expect(find.descendant(of: find.byType(BaFoglio), matching: find.text(titolo)), findsWidgets, reason: apertura);
         final varianti = tester.widgetList<BaPillola>(find.descendant(of: find.byType(BaFoglio), matching: find.byType(BaPillola))).map((p) => p.variante);
         expect(varianti, isNot(contains(BaVariantePillola.chiara)), reason: '$apertura: nessuna chiara');
         await _tocca(tester, chiusura);
@@ -131,12 +134,23 @@ void main() {
       }
     });
 
-    testWidgets('«Avvisi: la richiesta» ha «Consenti» e «Non ora» alla pari; il rifiuto non ha colpa', (tester) async {
+    testWidgets('«Posizione: la richiesta» ha la seconda frase e «Usa la posizione» come azione', (tester) async {
+      await _apri(tester);
+      await _tocca(tester, 'Posizione: la richiesta');
+      await _sale(tester);
+      expect(find.text('Nessuno la vede e non ci sono distanze da persone.'), findsOneWidget);
+      expect(find.widgetWithText(BaPillola, 'Usa la posizione'), findsOneWidget);
+      expect(find.widgetWithText(BaPillola, 'Non ora'), findsOneWidget);
+    });
+
+    testWidgets('«Avvisi: la richiesta» ha «Consenti gli avvisi» e «Non ora» alla pari, con la seconda frase; il rifiuto non ha colpa', (tester) async {
       await _apri(tester);
       await _tocca(tester, 'Avvisi: la richiesta');
       await _sale(tester);
-      expect(find.text('Consenti'), findsOneWidget);
-      expect(tester.widget<BaPillola>(find.widgetWithText(BaPillola, 'Consenti')).variante, tester.widget<BaPillola>(find.widgetWithText(BaPillola, 'Non ora')).variante);
+      expect(find.text('Puoi spegnerli quando vuoi.'), findsOneWidget);
+      expect(find.text('Consenti'), findsNothing, reason: 'l\'etichetta è quella del prototipo');
+      expect(find.text('Consenti gli avvisi'), findsOneWidget);
+      expect(tester.widget<BaPillola>(find.widgetWithText(BaPillola, 'Consenti gli avvisi')).variante, tester.widget<BaPillola>(find.widgetWithText(BaPillola, 'Non ora')).variante);
       await _tocca(tester, 'Non ora');
       await _sale(tester);
       await _tocca(tester, 'Avvisi: dopo il rifiuto');

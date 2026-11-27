@@ -302,6 +302,7 @@ class _GalleriaScopertaState extends State<GalleriaScoperta> {
           'Mentre sei disponibile, il tuo nickname e il tuo alias compaiono fra le persone che si possono invitare.',
           'Ti trova solo chi può trovarti secondo «Chi può trovarmi»: la visibilità non si allarga da sola.',
         ],
+        paragrafiMinori: const ['Si spegne con un tocco, e da solo quando entri in un DEN.'],
         azioni: [
           BaAzioneFoglio(testo: 'Accendi', semanticsLabel: 'Accendi', variante: BaVariantePillola.attiva, onTap: () => Navigator.of(foglio).pop(true)),
           BaAzioneFoglio(testo: 'Non ora', semanticsLabel: 'Non ora', onTap: () => Navigator.of(foglio).pop(false)),
@@ -318,7 +319,8 @@ class _GalleriaScopertaState extends State<GalleriaScoperta> {
   Widget _avvisi(BuildContext foglio) => BaRichiestaPermesso(
         titolo: 'Avvisi sui DEN',
         frase: 'BA può avvisarti quando si apre un DEN su un tema o una lingua che scegli. Non avvisa mai per le persone.',
-        consenti: _azione(foglio, 'Consenti'),
+        fraseOpzionale: 'Puoi spegnerli quando vuoi.',
+        consenti: _azione(foglio, 'Consenti gli avvisi'),
         nonOra: _azione(foglio, 'Non ora'),
       );
 
@@ -333,7 +335,8 @@ class _GalleriaScopertaState extends State<GalleriaScoperta> {
   Widget _posizione(BuildContext foglio) => BaRichiestaPermesso(
         titolo: 'Usa la posizione',
         frase: 'Con la posizione, BA ti mostra i DEN vicini. Si usa solo mentre guardi l\'elenco.',
-        consenti: _azione(foglio, 'Consenti'),
+        fraseOpzionale: 'Nessuno la vede e non ci sono distanze da persone.',
+        consenti: _azione(foglio, 'Usa la posizione'),
         nonOra: _azione(foglio, 'Non ora'),
       );
 

@@ -33,10 +33,13 @@ class BaRichiestaPermesso extends StatelessWidget {
   /// La richiesta: [titolo] («Avvisi sui DEN»), la [frase] sul perché («BA può avvisarti quando si
   /// apre un DEN su un tema o una lingua che scegli. Non avvisa mai per le persone.») e le due
   /// azioni alla pari, [consenti] e [nonOra]. Le loro varianti sono imposte: tutte e due attive.
+  /// Se serve, sotto la frase ne sta una seconda più piccola, [fraseOpzionale] («Puoi spegnerli
+  /// quando vuoi.»): senza, il foglio è quello di prima.
   BaRichiestaPermesso({
     Key? key,
     required String titolo,
     required String frase,
+    String? fraseOpzionale,
     required BaAzioneFoglio consenti,
     required BaAzioneFoglio nonOra,
   }) : this._(
@@ -45,6 +48,7 @@ class BaRichiestaPermesso extends StatelessWidget {
           foglio: BaFoglio.richiesta(
             titolo: titolo,
             paragrafi: [frase],
+            paragrafiMinori: [?fraseOpzionale],
             azioni: [_conVariante(consenti, BaVariantePillola.attiva), _conVariante(nonOra, BaVariantePillola.attiva)],
           ),
         );
@@ -64,7 +68,8 @@ class BaRichiestaPermesso extends StatelessWidget {
           stato: BaStatoRichiestaPermesso.dopoIlRifiuto,
           foglio: BaFoglio.richiesta(
             titolo: titolo,
-            paragrafi: [frase, ?fraseSeCambiIdea],
+            paragrafi: [frase],
+            paragrafiMinori: [?fraseSeCambiIdea],
             azioni: [_conVariante(apriImpostazioni, BaVariantePillola.attiva), _conVariante(chiudi, BaVariantePillola.spenta)],
           ),
         );
