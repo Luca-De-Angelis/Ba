@@ -146,12 +146,12 @@ class _BaTouchableState extends State<BaTouchable> {
       inattivo: !_attivo,
     );
     final suPresenza = widget.variante == BaVarianteTocco.suPresenza;
-    final riduciMovimento = MediaQuery.disableAnimationsOf(context);
-    final durata = riduciMovimento
-        ? Duration.zero
-        : (stato.premuto
-            ? BaMovimentoTokens.premutoAndata
-            : BaMovimentoTokens.premutoRitorno);
+    // Movimento ridotto o screen reader: `statico`; ogni durata esce da `durata()` (task 036).
+    final riduciMovimento = BaMovimentoTokens.statico(context);
+    final durata = BaMovimentoTokens.durata(
+      context,
+      stato.premuto ? BaMovimentoTokens.premutoAndata : BaMovimentoTokens.premutoRitorno,
+    );
 
     Widget contenuto =
         widget.builder != null ? widget.builder!(context, stato) : widget.child!;

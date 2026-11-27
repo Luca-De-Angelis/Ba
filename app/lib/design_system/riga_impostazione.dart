@@ -14,13 +14,13 @@
 // `.negata` è nuova. Nessun prototipo ha una riga con interruttore (l'Inventario la
 // elenca): è lì perché il componente la prevede. **Nessuno stato «deciso dalla
 // stanza»** (un DEN non impone impostazioni) e **nessun interruttore della
-// trascrizione** (D-003): il consenso a parlare si ritira con «Torna ascoltatore».
+// trascrizione** (D-003): il consenso a parlare si ritira con «Torna all'ascolto».
 //
 // Il negato sta nelle parole («Negate — senza queste non posso avvisarti»), non nel
 // colore: nel prototipo 004 la riga non ha un colore d'errore. La via d'uscita è
 // una `BaPillola` spenta alta almeno `areaMinima`, come l'uscita di `BaRigaCoda`.
 // Il testo di ogni forma arriva dal chiamante; nessuna logica: dove va «Apri» o
-// «Torna ascoltatore» è del prototipo navigabile (task 024).
+// «Torna all'ascolto» è del prototipo navigabile (task 024).
 //
 // Valori che i token non hanno (segnalati nel report del task 029): l'altezza
 // minima della riga negata (48 come `BaRigaValore`: `BaControlloTokens.coppia`).

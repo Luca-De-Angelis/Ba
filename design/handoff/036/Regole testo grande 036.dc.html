@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"><style>body{margin:0;background:#0B0A09;color:#F2EEE9;font-family:'Instrument Sans','Helvetica Neue',Helvetica,Arial,sans-serif}a{color:#D9CFA8}a:hover{color:#F2EEE9}</style>
+</helmet>
+<div style="padding:40px 56px 24px;display:flex;flex-direction:column;gap:12px;max-width:980px">
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#8A837B">BA · task 036 · regole nate dal codice · 360 dp</div>
+  <div style="font-size:32px;font-weight:600;letter-spacing:-0.02em;line-height:1.15">Testo grande: righe, campi, barra</div>
+  <div style="font-size:16px;line-height:1.55;color:#A09890;text-wrap:pretty">Non sono schermate nuove: sono le tre regole (T11) mostrate con i valori reali. A testo 1,0 niente cambia. Sotto, il testo è a 2,0 salvo dove indicato; i frame non scorrono (il contenuto sta sopra, le azioni restano in basso).</div>
+</div>
+<sc-for list="{{ sections }}" as="sec" hint-placeholder-count="3">
+  <section style="padding:24px 56px 40px;border-top:1px solid rgba(242,238,233,0.10);display:flex;flex-direction:column;gap:18px">
+    <div style="display:flex;flex-direction:column;gap:6px;max-width:900px"><div style="font-size:22px;font-weight:600">{{ sec.title }}</div><div style="font-size:16px;line-height:1.5;color:#A09890;text-wrap:pretty">{{ sec.note }}</div></div>
+    <div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start">
+      <sc-for list="{{ sec.frames }}" as="f" hint-placeholder-count="2">
+        <div id="{{ f.id }}" style="flex:none;display:flex;flex-direction:column;gap:8px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#8A837B;max-width:360px">{{ f.label }}</div>
+          <div style="--ts:{{ f.ts }};width:360px;height:{{ f.h }}px;box-sizing:border-box;position:relative;background:#100F0E;border:1px solid rgba(242,238,233,0.12);border-radius:24px;overflow:hidden;display:flex;flex-direction:column">
+            <sc-if value="{{ f.hasTitle }}" hint-placeholder-val="{{ false }}"><div style="flex:none;padding:28px 20px 8px;font-size:22px;font-weight:600;letter-spacing:-0.01em;line-height:1.2">{{ f.title }}</div></sc-if>
+            <div style="flex:1;min-height:0;overflow:hidden;padding:0 20px;display:flex;flex-direction:column;gap:0">
+              <sc-if value="{{ f.stageNote }}" hint-placeholder-val="{{ false }}"><div style="flex:1;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#6B655E;background:repeating-linear-gradient(135deg,rgba(242,238,233,0.03) 0 8px,transparent 8px 16px);margin-top:16px;border-radius:12px">palco · non scorre</div></sc-if>
+              <sc-for list="{{ f.rows }}" as="b" hint-placeholder-count="4">
+                <div>
+                  <sc-if value="{{ b.isPerW }}" hint-placeholder-val="{{ false }}"><div style="min-height:56px;box-sizing:border-box;padding:8px 0;border-top:1px solid rgba(242,238,233,0.12);display:flex;align-items:center;gap:12px"><div style="flex:none;width:32px;height:32px;border-radius:{{ b.br }};background:{{ b.bg }}"></div><div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><div style="font-size:calc(16px * var(--ts, 1));line-height:1.3">{{ b.t }}</div><div style="font-size:calc(14px * var(--ts, 1));line-height:1.43;color:#A09890">{{ b.sub }}</div></div><div style="flex:none;min-height:{{ b.vh }}px;box-sizing:border-box;padding:0 {{ b.vp }}px;border-radius:24px;border:1px solid {{ b.vbd }};display:flex;align-items:center;font-size:calc(14px * var(--ts, 1));line-height:1.2;color:{{ b.vc }};white-space:nowrap">{{ b.voice }}</div></div></sc-if>
+                  <sc-if value="{{ b.isPerS }}" hint-placeholder-val="{{ false }}"><div style="box-sizing:border-box;padding:10px 0;border-top:1px solid rgba(242,238,233,0.12);display:flex;flex-direction:column;align-items:flex-start;gap:8px"><div style="display:flex;align-items:center;gap:12px;min-width:0;width:100%"><div style="flex:none;width:32px;height:32px;border-radius:{{ b.br }};background:{{ b.bg }}"></div><div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><div style="font-size:calc(16px * var(--ts, 1));line-height:1.3">{{ b.t }}</div><div style="font-size:calc(14px * var(--ts, 1));line-height:1.43;color:#A09890">{{ b.sub }}</div></div></div><div style="min-height:{{ b.vh }}px;box-sizing:border-box;padding:0 {{ b.vp }}px;border-radius:24px;border:1px solid {{ b.vbd }};display:flex;align-items:center;font-size:calc(14px * var(--ts, 1));line-height:1.2;color:{{ b.vc }};white-space:nowrap">{{ b.voice }}</div></div></sc-if>
+                  <sc-if value="{{ b.isValW }}" hint-placeholder-val="{{ false }}"><div style="min-height:48px;box-sizing:border-box;padding:10px 0;border-top:1px solid rgba(242,238,233,0.12);display:flex;flex-direction:column;justify-content:center;gap:4px"><div style="display:flex;justify-content:space-between;gap:12px;font-size:calc(16px * var(--ts, 1));line-height:1.3"><span>{{ b.t }}</span><span style="color:#A09890">{{ b.v }}</span></div><div style="font-size:calc(14px * var(--ts, 1));line-height:1.43;color:#A09890">{{ b.sub }}</div></div></sc-if>
+                  <sc-if value="{{ b.isValS }}" hint-placeholder-val="{{ false }}"><div style="min-height:48px;box-sizing:border-box;padding:10px 0;border-top:1px solid rgba(242,238,233,0.12);display:flex;flex-direction:column;gap:2px"><div style="font-size:calc(16px * var(--ts, 1));line-height:1.3">{{ b.t }}</div><div style="font-size:calc(16px * var(--ts, 1));line-height:1.3;color:#A09890">{{ b.v }}</div><div style="font-size:calc(14px * var(--ts, 1));line-height:1.43;color:#A09890">{{ b.sub }}</div></div></sc-if>
+                  <sc-if value="{{ b.isTogW }}" hint-placeholder-val="{{ false }}"><div style="box-sizing:border-box;padding:12px 0;border-top:1px solid rgba(242,238,233,0.12);display:flex;align-items:flex-start;justify-content:space-between;gap:14px"><div style="display:flex;flex-direction:column;gap:4px;min-width:0"><div style="font-size:calc(16px * var(--ts, 1));line-height:1.3;font-weight:600">{{ b.t }}</div><div style="font-size:calc(14px * var(--ts, 1));line-height:1.43;color:#A09890">{{ b.sub }}</div></div><div style="flex:none;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:44px;height:26px;box-sizing:border-box;border-radius:999px;border:{{ b.tbd }};background:{{ b.tbg }};display:flex;align-items:center;justify-content:{{ b.tjc }};padding:0 4px"><div style="width:16px;height:16px;border-radius:999px;background:{{ b.tdot }}"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:{{ b.tc }}">{{ b.tw }}</div></div></div></sc-if>
+                  <sc-if value="{{ b.isTogS }}" hint-placeholder-val="{{ false }}"><div style="box-sizing:border-box;padding:12px 0;border-top:1px solid rgba(242,238,233,0.12);display:flex;flex-direction:column;gap:4px"><div style="font-size:calc(16px * var(--ts, 1));line-height:1.3;font-weight:600">{{ b.t }}</div><div style="font-size:calc(14px * var(--ts, 1));line-height:1.43;color:#A09890">{{ b.sub }}</div><div style="display:flex;align-items:center;gap:10px;margin-top:6px"><div style="flex:none;width:44px;height:26px;box-sizing:border-box;border-radius:999px;border:{{ b.tbd }};background:{{ b.tbg }};display:flex;align-items:center;justify-content:{{ b.tjc }};padding:0 4px"><div style="width:16px;height:16px;border-radius:999px;background:{{ b.tdot }}"></div></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:{{ b.tc }}">{{ b.tw }}</div></div></div></sc-if>
+                  <sc-if value="{{ b.isFld }}" hint-placeholder-val="{{ false }}"><div style="padding:14px 0 0;display:flex;flex-direction:column;gap:2px"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#8A837B">{{ b.label }}</div><div style="min-height:{{ b.mh }}px;box-sizing:border-box;border-bottom:1px solid #D9CFA8;display:flex;align-items:{{ b.ai }};justify-content:{{ b.jc }};overflow:hidden;padding:4px 0"><span style="font-size:calc(20px * var(--ts, 1));line-height:1.25;color:{{ b.c }};{{ b.ov }}">{{ b.txt }}</span></div><div style="font-size:12px;color:#8A837B;font-family:'IBM Plex Mono',monospace">{{ b.note }}</div></div></sc-if>
+                </div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ f.hasBar }}" hint-placeholder-val="{{ false }}"><div style="flex:none;padding:12px 20px 20px;display:flex;flex-direction:column;gap:10px">
+              <div style="min-height:56px;box-sizing:border-box;padding:8px 20px;border-radius:999px;background:linear-gradient(180deg,#EDE7DC 0%,#D2C9B6 100%);display:flex;align-items:center;justify-content:center;text-align:center;font-size:calc(16px * var(--ts, 1));line-height:1.2;font-weight:500;color:#100F0E;word-break:keep-all;overflow-wrap:normal">{{ f.prim }}</div>
+              <sc-if value="{{ f.barRow }}" hint-placeholder-val="{{ false }}"><div style="display:flex;align-items:stretch;gap:10px"><sc-for list="{{ f.secs }}" as="s" hint-placeholder-count="2"><div style="flex:1 1 auto;min-width:0;min-height:48px;box-sizing:border-box;padding:6px 12px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;text-align:center;font-size:calc(14px * var(--ts, 1));line-height:1.2;color:#A09890;word-break:keep-all;overflow-wrap:normal;white-space:nowrap">{{ s.t }}</div></sc-for><div style="flex:none;align-self:center;width:48px;height:48px;box-sizing:border-box;border-radius:999px;border:1px solid rgba(242,238,233,0.32);display:flex;align-items:center;justify-content:center;gap:3px"><div style="width:4px;height:4px;border-radius:999px;background:#F2EEE9"></div><div style="width:4px;height:4px;border-radius:999px;background:#F2EEE9"></div><div style="width:4px;height:4px;border-radius:999px;background:#F2EEE9"></div></div></div></sc-if>
+              <sc-if value="{{ f.barStack }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;gap:10px"><sc-for list="{{ f.secsInit }}" as="s" hint-placeholder-count="1"><div style="min-height:48px;box-sizing:border-box;padding:6px 12px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;text-align:center;font-size:calc(14px * var(--ts, 1));line-height:1.2;color:#A09890;word-break:keep-all;overflow-wrap:normal">{{ s.t }}</div></sc-for><div style="display:flex;align-items:stretch;gap:10px"><div style="flex:1 1 auto;min-width:0;min-height:48px;box-sizing:border-box;padding:6px 12px;border-radius:999px;border:1px solid rgba(242,238,233,0.10);display:flex;align-items:center;justify-content:center;text-align:center;font-size:calc(14px * var(--ts, 1));line-height:1.2;color:#A09890;word-break:keep-all;overflow-wrap:normal">{{ f.secLast }}</div><div style="flex:none;align-self:center;width:48px;height:48px;box-sizing:border-box;border-radius:999px;border:1px solid rgba(242,238,233,0.32);display:flex;align-items:center;justify-content:center;gap:3px"><div style="width:4px;height:4px;border-radius:999px;background:#F2EEE9"></div><div style="width:4px;height:4px;border-radius:999px;background:#F2EEE9"></div><div style="width:4px;height:4px;border-radius:999px;background:#F2EEE9"></div></div></div></div></sc-if>
+            </div></sc-if>
+            <sc-if value="{{ f.hasClose }}" hint-placeholder-val="{{ false }}"><div style="flex:none;padding:12px 20px 20px"><div style="min-height:56px;box-sizing:border-box;padding:8px 20px;border-radius:999px;border:1px solid rgba(242,238,233,0.14);display:flex;align-items:center;justify-content:center;font-size:calc(16px * var(--ts, 1));font-weight:500;color:#F2EEE9">Chiudi</div></div></sc-if>
+          </div>
+          <div style="max-width:360px;font-size:13px;line-height:1.45;color:#8A837B">{{ f.cap }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+</sc-for>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const BP = [['57% 43% 48% 52% / 46% 54% 50% 50%', '#A83E2E', '#6E251C'], ['45% 55% 56% 44% / 53% 47% 52% 48%', '#23735A', '#14473A'], ['52% 48% 43% 57% / 49% 51% 46% 54%', '#2A6894', '#1B4463'], ['47% 53% 58% 42% / 55% 45% 42% 58%', '#96621A', '#5F3C0B']];
+    const SOTTO = 1.3, COL = 320;
+    const fr = (id, label, ts, o) => {
+      const rows = (o.rows || []).map((r, i) => {
+        const s = ts >= SOTTO, b = { br: '', bg: '', vh: 0, vp: 0, vbd: 'transparent', vc: '#A09890', mh: 56, ai: 'center', jc: 'flex-start', ov: '', c: '#F2EEE9', note: '', ...r };
+        if (r.k === 'person') { b.br = BP[i % 4][0]; b.bg = 'linear-gradient(155deg,' + BP[i % 4][1] + ' 0%,' + BP[i % 4][2] + ' 100%)'; if (r.act) { b.vh = 44; b.vp = 16; b.vbd = 'rgba(242,238,233,0.14)'; b.vc = '#F2EEE9'; } b.isPerW = !s; b.isPerS = s; }
+        if (r.k === 'val') { b.isValW = !s; b.isValS = s; }
+        if (r.k === 'tog') { b.tbd = r.on ? '2px solid #D9CFA8' : '1px solid rgba(242,238,233,0.32)'; b.tbg = r.on ? 'rgba(217,207,168,0.16)' : 'transparent'; b.tjc = r.on ? 'flex-end' : 'flex-start'; b.tdot = r.on ? '#D9CFA8' : 'rgba(242,238,233,0.5)'; b.tw = r.on ? 'Acceso' : 'Spento'; b.tc = r.on ? '#D9CFA8' : '#8A837B'; b.isTogW = !s; b.isTogS = s; }
+        if (r.k === 'fld') { b.isFld = true; b.c = r.ph ? '#8A837B' : '#F2EEE9'; if (r.mode === 'ell') b.ov = 'min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block;width:100%'; else if (r.mode === 'end') { b.jc = 'flex-end'; b.ov = 'flex:none;white-space:nowrap'; } else if (r.mode === 'wrap') { b.ov = 'overflow-wrap:normal;word-break:keep-all;text-wrap:balance'; b.mh = 56; } else { b.mh = 96; b.ai = 'flex-start'; b.ov = 'overflow-wrap:normal;word-break:keep-all'; } }
+        return b;
+      });
+      let bar = {};
+      if (o.bar) {
+        const secs = o.bar.secs, w = secs.reduce((a, x) => a + x.length * 6.5 * ts + 24, 0) + 48 + 10 * secs.length;
+        const stack = w > COL, e = (x) => ({ t: x });
+        bar = { hasBar: true, prim: o.bar.prim, barRow: !stack, barStack: stack, secs: secs.map(e), secsInit: secs.slice(0, -1).map(e), secLast: secs[secs.length - 1] };
+      }
+      return { id, label, ts: String(ts), h: o.h || 640, hasTitle: !!o.title, title: o.title || '', stageNote: !!o.bar, rows, hasBar: false, hasClose: !!o.close, prim: '', barRow: false, barStack: false, secs: [], secsInit: [], secLast: '', cap: o.cap || '', ...bar };
+    };
+    const P = (t, sub, voice, act) => ({ k: 'person', t, sub, voice, act });
+    const lista = [P('Marta', '@marta.v', '✓ In lista', false), P('Davide', '@davide.k', 'Aggiungi', true), P('Alessandra Bellini-Rossi', '@alessandra.bellini', 'Aggiungi', true), P('Luca', '@luca.r', 'Aggiungi', true)];
+    const imp = [{ k: 'val', t: 'Lingua', v: 'Italiano', sub: '' }, { k: 'val', t: 'Microfono', v: 'Consentito', sub: '' }, { k: 'val', t: 'Chi può trovarmi', v: 'Chi conosco', sub: 'Ti trovano le persone che hai aggiunto.' }, { k: 'tog', t: 'Richiamo', sub: 'Un avviso quando una persona che hai scelto entra in un DEN pubblico.', on: true }];
+    const F = (label, txt, mode, ph, note, mh) => ({ k: 'fld', label, txt, mode, ph, note: note || '', mh });
+    const campi = [F('Email', 'nome@esempio.it', 'ell', true, 'segnaposto: puntini'), F('Email', 'nome.cognome@esempio.it', 'end', false, 'scritto: scorre, si vede la fine'), F('Numero', '+39 320 000 0000', 'end', false, 'scritto: scorre'), F('Nome del sotto-DEN', 'Tavolo lungo con gli amici', 'end', false, 'scritto: scorre'), F('Cerca', 'Nickname, alias, email o numero', 'wrap', true, 'segnaposto di più parole: a capo fra le parole'), F('Descrizione', 'Di cosa si parla, in una frase', 'multi', true, 'multilinea: va a capo', 96)];
+    const sp = (stage) => ({ prim: stage ? 'Accendi il microfono' : 'Sali sul palco', secs: stage ? ['Scendi dal palco', 'Esci'] : ['Esci'] });
+    const spDe = { prim: 'Mikrofon einschalten', secs: ['Von der Bühne gehen', 'Verlassen'] };
+    const st = (id, l, ts, bar, cap) => fr(id, l, ts, { bar, h: 330, cap });
+    return { sections: [
+      { title: 'A · Le righe di una lista hanno la stessa disposizione', note: 'Da testo 1,3 (BaPersoneTokens.azioneSottoDa) in ogni riga di una lista: la voce, il valore o l\'interruttore stanno sotto il nome, allineati a sinistra; la descrizione dell\'interruttore è a tutta larghezza e l\'interruttore con la parola sta sotto. Valgono per tutte le righe, anche quando una sola non starebbe in linea: la lista non cambia forma da una riga all\'altra. Sotto 1,3 niente cambia.', frames: [
+        fr('a-persone-10', 'Persone · 1,0 (invariato)', 1, { title: 'Aggiungi persone', rows: lista, close: true, h: 520, cap: 'A 1,0 la voce sta a destra del nome.' }),
+        fr('a-persone-20', 'Persone · 2,0', 2, { title: 'Aggiungi persone', rows: lista, close: true, h: 860, cap: 'Quattro nomi di lunghezza diversa, una sola disposizione. «✓ In lista» e «Aggiungi» sono alla stessa altezza, a sinistra.' }),
+        fr('a-impostazioni-20', 'Valori e interruttore · 2,0', 2, { title: 'Impostazioni', rows: imp, close: true, h: 860, cap: 'Il valore sotto l\'etichetta; l\'interruttore e «Acceso» sotto la frase.' }),
+        fr('a-impostazioni-10', 'Valori e interruttore · 1,0 (invariato)', 1, { title: 'Impostazioni', rows: imp, close: true, h: 520, cap: 'A 1,0 il valore e l\'interruttore stanno a destra.' })] },
+      { title: 'B · I campi di una riga non vanno a capo e non spezzano una parola', note: 'Email, numero, nickname, nome del DEN e del sotto-DEN: una riga sola. Il segnaposto si tronca con i puntini; il testo scritto scorre in orizzontale e si vede la fine. Vanno a capo solo il campo multilinea (descrizione) e il segnaposto di più parole (la ricerca), fra le parole e mai a metà.', frames: [
+        fr('b-campi-20', 'Campi · 2,0', 2, { rows: campi, h: 900, cap: '«nome@esempio.it» resta su una riga e finisce con i puntini.' }),
+        fr('b-campi-10', 'Campi · 1,0 (invariato)', 1, { rows: campi, h: 520, cap: 'A 1,0 tutto sta; lo stesso comportamento.' })] },
+      { title: 'C · La barra si ripiega appena una secondaria non sta su una riga', note: 'Regola: la barra resta in riga (due secondarie e «Altro» a destra) finché ogni secondaria sta intera su una riga; appena una non ci sta, le secondarie vanno una sotto l\'altra a tutta larghezza e «Altro» sta a destra sulla riga dell\'ultima. Nessuna parola si spezza. Non c\'è una soglia fissa: si misura. A 360 dp, in italiano, la barra del palco resta in riga fino a 1,5 e si ripiega da 1,6; in tedesco («Von der Bühne gehen») si ripiega già da 1,2. L\'ascoltatore ha una sola secondaria («Esci»): non si ripiega mai.', frames: [
+        st('c-ascoltatore-10', 'Ascoltatore · 1,0', 1, sp(false), 'Primaria, «Esci» e «Altro».'),
+        st('c-ascoltatore-14', 'Ascoltatore · 1,4', 1.4, sp(false), 'In riga.'),
+        st('c-ascoltatore-20', 'Ascoltatore · 2,0', 2, sp(false), 'In riga: una secondaria sola sta sempre.'),
+        st('c-palco-10', 'Sul palco · 1,0', 1, sp(true), 'In riga.'),
+        st('c-palco-14', 'Sul palco · 1,4', 1.4, sp(true), 'In riga: «Scendi dal palco» sta intera su una riga (prima andava su 2–3).'),
+        st('c-palco-20', 'Sul palco · 2,0', 2, sp(true), 'Ripiegata: una sotto l\'altra, «Altro» sull\'ultima.'),
+        st('c-persa-10', 'Linea persa · 1,0', 1, sp(true), 'Stesse azioni del palco.'),
+        st('c-persa-14', 'Linea persa · 1,4', 1.4, sp(true), 'In riga.'),
+        st('c-persa-20', 'Linea persa · 2,0', 2, sp(true), 'Ripiegata.'),
+        st('c-palco-de-14', 'Sul palco, tedesco · 1,4', 1.4, spDe, 'In tedesco la parola è più lunga: a 1,4 è già ripiegata.')] }
+    ] };
+  }
+}
+</script>
+</body>
+</html>

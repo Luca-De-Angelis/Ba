@@ -1,5 +1,5 @@
 // L'elenco dei DEN (task 024a, prototipi 013 A6 e 014 E1): l'intestazione «DEN» con
-// «sei ascoltatore» o «sei partecipante», le righe (viva, spenta, su invito), la riga
+// «in ascolto» o «sei partecipante», le righe (viva, spenta, su invito), la riga
 // «Impostazioni ›» e l'azione «Crea un DEN». Il tocco di una riga porta nella stanza
 // **come pubblico** (D-006). Un DEN privato su invito si vede solo da partecipante
 // (D-041). L'elenco ha **un'azione sola** in fondo (014b); le impostazioni sono una

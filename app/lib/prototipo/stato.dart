@@ -226,7 +226,7 @@ class StatoProto extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// «Torna ascoltatore» (D-040): chi parla esce dalla stanza.
+  /// «Torna all'ascolto» (D-040): chi parla esce dalla stanza.
   void tornaAscoltatore() {
     account = Account.ascoltatore;
     if (denCorrente != null) esciDallaStanza();

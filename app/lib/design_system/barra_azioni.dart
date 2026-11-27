@@ -13,10 +13,11 @@
 // secondarie sono a 14 (`BaTestoTokens.azione`, la primaria resta a 16) e, in una riga,
 // **non hanno la stessa larghezza**: ognuna parte dalla larghezza del suo testo più il
 // riempimento e si divide con le altre l'avanzo (come `flex: 1 1 auto` del prototipo), così
-// «Scendi dal palco» sta su una riga a 360 dp e una parola lunga non decide per tutte. Se i
-// testi su una riga non entrano, vale la disposizione di prima (020b): a testo grande, se
-// la parola più lunga di una secondaria non entra nella sua pillola, le secondarie vanno in
-// colonna e «Altro» sta sulla riga dell’ultima.
+// «Scendi dal palco» sta su una riga a 360 dp e una parola lunga non decide per tutte.
+// **Task 036: il ripiego si misura.** La barra resta in riga finché ogni secondaria sta intera su
+// una riga (con il riempimento di 12 delle secondarie, come nel design); appena una non ci sta,
+// a qualunque taglia e in qualunque lingua, le secondarie vanno in colonna e «Altro» sta sulla
+// riga dell’ultima. Nessun numero per lingua e nessuna disposizione intermedia con il testo a capo.
 // Con due azioni c’è una sola secondaria, centrata come in BaAzioniInCoppia; con
 // una sola, c'è la primaria.
 //
@@ -103,6 +104,10 @@ class BaBarraAzioni extends StatelessWidget {
   /// Le secondarie sono a 14, sotto la primaria nella gerarchia (task 032).
   static const TextStyle _stileSecondaria = BaTestoTokens.azione;
 
+  /// Il riempimento orizzontale delle secondarie: 12 (`BaSpazioTokens.m`), come nel design (task 036);
+  /// la primaria resta a 20. Da questo dipende dove la barra si ripiega.
+  static const double _riempimentoSecondaria = BaSpazioTokens.m;
+
   /// Le azioni che finiscono in «Altro»: quelle segnate `inAltro` e quelle che, fra le
   /// altre, stanno oltre i tre posti, nell'ordine in cui sono date. Chi apre il foglio
   /// di «Altro» lo riempie con queste.
@@ -154,6 +159,7 @@ class BaBarraAzioni extends StatelessWidget {
           {EdgeInsets estensione = EdgeInsets.zero, bool primaria = false, double? altezza}) =>
       BaPillola(
         stile: primaria ? BaTestoTokens.controllo : _stileSecondaria,
+        riempimento: primaria ? BaSpazioTokens.xl : _riempimentoSecondaria,
         testo: a.testo,
         semanticsLabel: a.semanticsLabel,
         onTap: a.onTap,
@@ -186,16 +192,14 @@ class BaBarraAzioni extends StatelessWidget {
     );
   }
 
-  /// Le secondarie e «Altro». Due disposizioni:
-  /// - **affiancate** (la normale): tutte sulla stessa riga, con la stessa
-  ///   altezza (quella della più alta); «Altro» resta 48 × 48 e centrato in
-  ///   verticale sulla riga;
-  /// - **in colonna** (il ripiego): se la parola più lunga di una secondaria non
-  ///   entra, intera, nella sua pillola al testo di sistema corrente, le due
-  ///   secondarie vanno una sotto l'altra a tutta larghezza e «Altro» sta a
-  ///   destra in fondo, sulla riga dell'ultima. Niente parole spezzate. Si decide
-  ///   misurando (BaPillola.parolaEntra) con la larghezza che la pillola
-  ///   avrebbe affiancata; la riga di «Altro» in colonna non si ricontrolla.
+  /// Le secondarie e «Altro». Due disposizioni, e **il ripiego si misura** (task 036, nessun numero
+  /// per lingua):
+  /// - **in riga** (la normale): le secondarie e «Altro» sulla stessa riga, con la stessa altezza; ogni
+  ///   secondaria parte dalla larghezza del suo testo e si divide l'avanzo; «Altro» resta 48 × 48 e
+  ///   centrato in verticale;
+  /// - **in colonna** (il ripiego): **appena una secondaria non sta intera su una riga**, qualunque sia
+  ///   la taglia del testo e la lingua, le secondarie vanno una sotto l'altra a tutta larghezza e
+  ///   «Altro» sta a destra in fondo, sulla riga dell'ultima. Una parola non si spezza mai.
   Widget _secondarie(BuildContext context, double larghezza, List<BaAzioneBarra> secondarie) {
     final conAltro = _conAltro(azioni);
     const gap = BaControlloTokens.gapCoppia;
@@ -215,6 +219,7 @@ class BaBarraAzioni extends StatelessWidget {
           variante: a.varianteEffettiva,
           inattiva: a.onTap == null,
           stile: _stileSecondaria,
+          riempimento: _riempimentoSecondaria,
         );
     double altezza(BaAzioneBarra a, double l) => BaPillola.altezzaNecessaria(
           context,
@@ -224,6 +229,7 @@ class BaBarraAzioni extends StatelessWidget {
           inattiva: a.onTap == null,
           altezzaMinima: BaControlloTokens.coppia,
           stile: _stileSecondaria,
+          riempimento: _riempimentoSecondaria,
         );
     double contenuto(BaAzioneBarra a) => BaPillola.larghezzaNecessaria(
           context,
@@ -231,6 +237,7 @@ class BaBarraAzioni extends StatelessWidget {
           variante: a.varianteEffettiva,
           inattiva: a.onTap == null,
           stile: _stileSecondaria,
+          riempimento: _riempimentoSecondaria,
         );
 
     // Una sola secondaria, senza «Altro»: centrata, larga come una di due; se la
@@ -274,30 +281,10 @@ class BaBarraAzioni extends StatelessWidget {
         ],
       );
     }
-    final affiancata = conAltro
-        ? (larghezza - secondarie.length * gap - BaBarraAzioniTokens.altroLato) / secondarie.length
-        : (larghezza - (secondarie.length - 1) * gap) / secondarie.length;
-    final affiancate = secondarie.every((a) => entra(a, affiancata));
-
+    // Appena una secondaria non sta intera su una riga, a qualunque taglia del testo: in colonna.
+    // Nessuna disposizione intermedia con il testo a capo (task 036).
     Widget altro(EdgeInsets estensione) =>
         _Altro(semanticsLabel: semanticsLabelAltro, onTap: onAltro, estensione: estensione);
-
-    if (affiancate) {
-      final h = secondarie.map((a) => altezza(a, affiancata)).reduce((a, b) => a > b ? a : b);
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          for (var i = 0; i < secondarie.length; i++) ...[
-            if (i > 0) const SizedBox(width: gap),
-            Expanded(child: _pillola(secondarie[i], estensione: _estensione(i, voci), altezza: h)),
-          ],
-          if (conAltro) ...[
-            const SizedBox(width: gap),
-            altro(_estensione(voci - 1, voci)),
-          ],
-        ],
-      );
-    }
 
     // In colonna: tutte a tutta larghezza; l'ultima con «Altro» a destra.
     final ultima = secondarie.length - 1;

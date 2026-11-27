@@ -62,13 +62,10 @@ class _PaginaGuscioState extends State<PaginaGuscio> {
 /// Il titolo di una pagina: prende il focus quando la pagina compare. Un'intestazione
 /// per lo screen reader.
 class TitoloPagina extends StatelessWidget {
-  const TitoloPagina({super.key, required this.focus, required this.testo, this.titoloSchermata = false});
+  const TitoloPagina({super.key, required this.focus, required this.testo});
 
   final FocusNode focus;
   final String testo;
-
-  /// Un titolo di schermata intera (28, task 032): le pagine del 030. Le altre restano a 22.
-  final bool titoloSchermata;
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +77,7 @@ class TitoloPagina extends StatelessWidget {
         excludeSemantics: true,
         child: Text(
           testo,
-          style: (titoloSchermata ? BaTestoTokens.titoloSchermata : BaTestoTokens.stanza).copyWith(color: BaColorTokens.testoPrimo),
+          style: BaTestoTokens.stanza.copyWith(color: BaColorTokens.testoPrimo),
         ),
       ),
     );
@@ -94,7 +91,6 @@ class PaginaProto extends StatelessWidget {
     required this.nome,
     this.titolo,
     this.intestazione,
-    this.titoloSchermata = false,
     this.corpo = const [],
     this.azioni = const [],
   }) : assert(titolo != null || intestazione != null, 'la pagina ha un titolo o un titolo composto');
@@ -108,8 +104,6 @@ class PaginaProto extends StatelessWidget {
   /// Un titolo già composto: prende il focus come il titolo di testo.
   final Widget? intestazione;
 
-  /// Il titolo è di schermata intera (28, task 032): le pagine del 030.
-  final bool titoloSchermata;
 
   /// Ciò che sta sotto il titolo e scorre.
   final List<Widget> corpo;
@@ -140,7 +134,7 @@ class PaginaProto extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         child: intestazione != null
                             ? Focus(focusNode: titoloFocus, child: intestazione!)
-                            : TitoloPagina(focus: titoloFocus, testo: titolo!, titoloSchermata: titoloSchermata),
+                            : TitoloPagina(focus: titoloFocus, testo: titolo!),
                       ),
                       for (final w in corpo) ...[
                         const SizedBox(height: BaSpazioTokens.l),

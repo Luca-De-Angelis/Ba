@@ -16,7 +16,7 @@ Servono Flutter e Chrome ([avvio](avvio.md)). Niente backend, audio, autenticazi
 ## Come si naviga
 
 - **La cornice** al centro è un telefono da **360 dp** (il dispositivo di riferimento) e alto 896 (sul palco, a testo 2,0, la barra a tre posti e «Altro» non entra in meno; a testo 2,0 diventa **1200**, perché una nota lunga come il posto offerto non entra: un telefono vero scorrerebbe); dal pannello si passa a **744** (il tablet). **Quello che sta nella cornice è il prodotto.**
-- **Il pannello dello strumento**, fuori dalla cornice, **non è il prodotto**: testo 1,0 e 2,0, riduci movimento, larghezza 360 e 744, **«Torna all'inizio»** (riparte dal login), una riga con i **codici di prova**, le **simulazioni** (sotto) e, in piccolo, lo stato finto (account e pagina). Accanto alla cornice il pannello scorre da solo.
+- **Il pannello dello strumento**, fuori dalla cornice, **non è il prodotto**: testo 1,0, 2,0 e 1,4 (un tasto che gira: 1,0 → 2,0 → 1,4 → 1,0; il 1,4 serve per provare la barra), riduci movimento, larghezza 360 e 744, **«Torna all'inizio»** (riparte dal login), una riga con i **codici di prova**, le **simulazioni** (sotto) e, in piccolo, lo stato finto (account e pagina). Accanto alla cornice il pannello scorre da solo.
 - **Codici di prova:** `123456` è giusto, `000000` è scaduto, ogni altro è sbagliato. Il numero di telefono dei passi di «diventa partecipante» è `320 000 0000` (qualunque numero non vuoto va bene); la email, una qualunque che sembri una email.
 - **Con la tastiera:** Tab porta il focus da un elemento al successivo, Invio e spazio toccano; al cambio di pagina il titolo della pagina nuova prende il focus. **Ogni vicolo ha un'uscita:** «Indietro» nelle pagine, «Non ora» o «Chiudi» nei fogli.
 
@@ -75,7 +75,7 @@ Tutto: i DEN, le persone, i numeri, il codice, la «verifica» del telefono. **N
 | A6 elenco · E1 «Crea un DEN» (013, 014) | **024a** | «Crea un DEN» da ascoltatore apre il percorso di «diventa partecipante»; da partecipante apre i passi della creazione (024b) |
 | Stanza: pubblico, sul palco con microfono acceso e spento, palco vuoto, scheda persona, «Altro» (002) | **024a** | senza «sto salendo»; il palco pieno e la coda: 024b |
 | P1–P4 «diventa partecipante» · R1, R2 (013, 014) | **024a** | |
-| T1–T4 «Torna ascoltatore» · persone bloccate · impostazioni (013, 001) | **024a** | «Esci da BA» → login |
+| T1–T4 «Torna all'ascolto» · persone bloccate · impostazioni (013, 001) | **024a** | «Esci da BA» → login |
 | Coda e attesa (015: K1, K2, K2 ter, K4, K4 bis, K5, K6, K7, W1, W2, S1) · linea persa e ritorno (015 P1–P3) | **024b** | senza W3 (lasciare il gruppo per salire: il posto si offre e basta); P1 senza l'ora fissa (P1 bis) |
 | «Crea un DEN» C1–C5 · S2 · «Gestisci» G1–G5 · sotto-DEN D1 (014) | **024b** | il posto degli invitati e del co-amministratore con `BaSelettorePersone` su persone finte (`ganci.dart`: un solo punto da sostituire nel 024c); da ascoltatore «diventa partecipante» e la creazione sono due fogli di seguito |
 | Account chiuso B1, B1 bis, B2 · schermo bloccato L1–L4 (027) · permesso del microfono negato (001, Fase 2) | **024b** | simulazioni dichiarate, dal pannello |

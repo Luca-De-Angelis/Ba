@@ -240,4 +240,39 @@ void main() {
       expect(BaPillola.parolaEntra(contesto, testo: 'Scendi dal palco', larghezza: 175), isTrue);
     });
   });
+
+  group('il riempimento orizzontale (task 036): il default non cambia', () {
+    testWidgets('senza riempimento il testo sta a 20 dal bordo, come prima; con 12 a 12', (tester) async {
+      Future<double> sinistraDelTesto(WidgetTester tester, double? riempimento) async {
+        await tester.pumpWidget(_app(
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              riempimento == null
+                  ? BaPillola(testo: 'Sali', semanticsLabel: 'Sali', onTap: () {}, allarga: false)
+                  : BaPillola(testo: 'Sali', semanticsLabel: 'Sali', onTap: () {}, allarga: false, riempimento: riempimento),
+            ],
+          ),
+        ));
+        return tester.getRect(find.text('Sali')).left - tester.getRect(find.byType(BaPillola)).left;
+      }
+
+      final bordo = const BorderSide().width;
+      expect(await sinistraDelTesto(tester, null), BaSpazioTokens.xl + bordo);
+      expect(BaSpazioTokens.xl, 20);
+      expect(await sinistraDelTesto(tester, BaSpazioTokens.m), BaSpazioTokens.m + bordo);
+      expect(BaSpazioTokens.m, 12);
+    });
+
+    testWidgets('le misure statiche prendono lo stesso riempimento', (tester) async {
+      late BuildContext contesto;
+      await tester.pumpWidget(_app(Builder(builder: (c) {
+        contesto = c;
+        return const SizedBox();
+      })));
+      final a20 = BaPillola.larghezzaNecessaria(contesto, testo: 'Scendi dal palco', stile: BaTestoTokens.azione);
+      final a12 = BaPillola.larghezzaNecessaria(contesto, testo: 'Scendi dal palco', stile: BaTestoTokens.azione, riempimento: BaSpazioTokens.m);
+      expect(a20 - a12, 2 * (BaSpazioTokens.xl - BaSpazioTokens.m));
+    });
+  });
 }

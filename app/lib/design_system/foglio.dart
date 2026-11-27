@@ -303,8 +303,7 @@ Future<T?> showBaFoglio<T>(
   String? etichettaVelo,
 }) async {
   final precedente = FocusManager.instance.primaryFocus;
-  final durata =
-      MediaQuery.disableAnimationsOf(context) ? Duration.zero : BaMovimentoTokens.foglio;
+  final durata = BaMovimentoTokens.durata(context, BaMovimentoTokens.foglio);
   final risultato = await Navigator.of(context).push<T>(
     _RottaFoglio<T>(builder: builder, durata: durata, etichettaVelo: etichettaVelo),
   );

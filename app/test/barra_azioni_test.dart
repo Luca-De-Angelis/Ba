@@ -257,23 +257,29 @@ void main() {
       return (p.size.height / una.height).round();
     }
 
-    testWidgets('due pillole nella stessa riga, etichette di lunghezza diversa: stessa altezza', (tester) async {
+    // Task 036: prima, se la lunga non entrava in riga andava a capo dentro la sua pillola (stessa riga,
+    // riga più alta); ora la regola è riga → colonna: appena una secondaria non sta intera su una riga,
+    // tutte in colonna a tutta larghezza. Nei test il font è Ahem (lettere larghe quanto la taglia).
+    testWidgets('etichette di lunghezza diversa che non stanno insieme in riga: in colonna, ognuna su una riga, stessa altezza', (tester) async {
       await tester.pumpWidget(_app(barra(['Microfono', 'Esci', 'Scendi dal palco ora'])));
       final a = tester.getRect(find.byType(BaPillola).at(1));
       final b = tester.getRect(find.byType(BaPillola).at(2));
-      expect(a.top, b.top, reason: 'sulla stessa riga');
+      expect(b.top, greaterThanOrEqualTo(a.bottom), reason: 'una sotto l\'altra: la lunga non sta in riga con «Esci»');
       expect(a.height, b.height);
-      expect(b.height, greaterThan(BaControlloTokens.coppia), reason: 'la lunga va a capo e alza la riga');
+      expect(b.width, a.width, reason: 'a tutta larghezza, uguali');
     });
 
-    testWidgets('con «Altro»: stessa altezza e «Altro» 48 × 48, centrato sulla riga', (tester) async {
+    // Task 036: come sopra; «Altro» sta sulla riga dell'ultima secondaria, in colonna (prima, in riga,
+    // era sulla riga delle due).
+    testWidgets('con «Altro»: in colonna, «Altro» 48 × 48 e centrato sulla riga dell\'ultima', (tester) async {
       await tester.pumpWidget(_app(barra(['Microfono', 'Esci', 'Scendi dal palco ora', 'Invita'])));
       final a = tester.getRect(find.byType(BaPillola).at(1));
       final b = tester.getRect(find.byType(BaPillola).at(2));
       final altro = tester.getRect(find.byKey(BaBarraAzioni.chiaveAltro));
-      expect(a.height, b.height);
+      expect(a.height, BaControlloTokens.coppia, reason: 'in colonna ogni pillola ha la sua altezza: «Esci» 48');
+      expect(b.height, greaterThanOrEqualTo(BaControlloTokens.coppia), reason: 'la lunga, accanto ad «Altro», può andare a capo (Ahem) e crescere');
       expect(altro.size, const Size(48, 48));
-      expect(altro.center.dy, closeTo(a.center.dy, 0.01));
+      expect(altro.center.dy, closeTo(b.center.dy, 0.01));
     });
 
     testWidgets('testo 1,0: «Scendi dal palco» e «Esci» restano affiancate', (tester) async {
@@ -315,9 +321,11 @@ void main() {
       expect(find.byType(BaPillola), findsNWidgets(3));
     });
 
+    // Task 036: con Ahem «Scendi dal palco» + «Esci» + «Altro» non stanno in una riga di 360 dp (col font
+    // vero sì: vedi `misure_font_vero_test.dart`); qui etichette brevi, che in riga stanno anche in Ahem.
     testWidgets('con il testo normale la disposizione non cambia: «Altro» 48 × 48 e tre pillole',
         (tester) async {
-      await tester.pumpWidget(_app(barra(['Microfono', 'Scendi dal palco', 'Esci', 'Invita'])));
+      await tester.pumpWidget(_app(barra(['Microfono', 'Scendi', 'Esci', 'Invita'])));
       expect(find.byType(BaPillola), findsNWidgets(3));
       expect(tester.getSize(find.byKey(BaBarraAzioni.chiaveAltro)), const Size(48, 48));
       final a = tester.getRect(find.byType(BaPillola).at(1));

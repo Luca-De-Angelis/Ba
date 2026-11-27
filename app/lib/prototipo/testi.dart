@@ -66,7 +66,7 @@ abstract final class T {
   // ------------------------------------------------------------- elenco (013, 014)
   static const String elencoNome = 'Elenco dei DEN';
   static const String elencoTitolo = 'DEN';
-  static const String seiAscoltatore = 'sei ascoltatore';
+  static const String seiAscoltatore = 'in ascolto';
   static const String seiPartecipante = 'sei partecipante';
   static const String creaUnDen = 'Crea un DEN';
   static const String impostazioniRiga = 'Impostazioni';
@@ -134,10 +134,10 @@ abstract final class T {
   static const String consentito = 'Consentito';
   static const String personeBloccate = 'Persone bloccate';
   static String nPersone(int n) => n == 1 ? '1 persona' : '$n persone';
-  static const String tornaAscoltatore = 'Torna ascoltatore';
+  static const String tornaAscoltatore = 'Torna all\'ascolto';
   static const String tornaConseguenza =
       'Cambia il tipo di account: da partecipante ad ascoltatore. Non potrai più parlare. Se stai parlando, esci dalla stanza.';
-  static const String seiAscoltatoreRiga = 'Sei ascoltatore';
+  static const String seiAscoltatoreRiga = 'In ascolto';
   static const String seiAscoltatoreNota = 'Per parlare di nuovo, sali sul palco di un DEN e dai il consenso.';
   static const String esciDaBa = 'Esci da BA';
 

@@ -500,5 +500,11 @@ void main() {
       expect(BaCodaTokens.interruttoreFondoAcceso.toARGB32() & 0x00FFFFFF, BaColorTokens.azioneChiara.toARGB32() & 0x00FFFFFF);
       expect(BaCodaTokens.interruttorePallinoSpentoOpacita, 0.5);
     });
+
+    test('azioneSottoDa vale 1,3: da lì le righe di una lista hanno tutte la stessa disposizione (task 036)', () {
+      expect(BaPersoneTokens.azioneSottoDa, 1.3);
+      expect(BaPersoneTokens.azioneSottoDa, lessThan(BaScalaTokens.maxTesto));
+      expect(BaPersoneTokens.azioneSottoDa, greaterThan(1.0), reason: 'a 1,0 niente cambia');
+    });
   });
 }

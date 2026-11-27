@@ -1,10 +1,10 @@
 // Le impostazioni (task 024a, prototipi 001 5d e 013 T1–T4) e la pagina «Persone
 // bloccate» (001 5j). Righe: lingua e microfono (di sola lettura, chiaramente
-// inattive), «Persone bloccate», «Torna ascoltatore» con **le due conferme** (T2 e
+// inattive), «Persone bloccate», «Torna all'ascolto» con **le due conferme** (T2 e
 // T3) e il risultato (T4: la riga diventa un fatto), «Esci da BA» (porta al login:
 // proposta del task 024, nessun documento dice dove si va).
 //
-// «Torna ascoltatore» ritira il consenso a parlare (D-003, D-040): chi parla esce
+// «Torna all'ascolto» ritira il consenso a parlare (D-003, D-040): chi parla esce
 // dalla stanza. Dopo il cambio non c'è un nuovo accesso: si resta nell'app (ipotesi
 // 17 di `aperte.md`: «può servire un nuovo accesso»). Il permesso del microfono
 // negato (simulazione del pannello) mostra «Negato» con «Apri» (001).
@@ -113,7 +113,7 @@ class PaginaImpostazioni extends StatelessWidget {
 
 // ------------------------------------------------------------ torna ascoltatore
 
-/// «Torna ascoltatore» (T2 e T3): un foglio che cambia passo, con **due conferme**.
+/// «Torna all'ascolto» (T2 e T3): un foglio che cambia passo, con **due conferme**.
 Future<void> apriTornaAscoltatore(BuildContext context) async {
   final stato = ProtoScope.leggi(context);
   final confermato = await showBaFoglio<bool>(

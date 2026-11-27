@@ -73,4 +73,4 @@ Una pagina web in Chrome che parte dal login e si naviga come un'app, con dati f
 flutter run -d chrome -t lib/prototipo/main_prototipo.dart
 ```
 
-Una cornice da telefono al centro e, fuori, un pannello dello strumento (testo, riduci movimento, larghezza, «Torna all'inizio», i codici di prova). Come si naviga, i percorsi da provare e che cosa è finto sono in [prototipo](prototipo.md).
+Una cornice da telefono al centro e, fuori, un pannello dello strumento (testo 1,0, 2,0 e 1,4, riduci movimento, larghezza, «Torna all'inizio», i codici di prova). Come si naviga, i percorsi da provare e che cosa è finto sono in [prototipo](prototipo.md).

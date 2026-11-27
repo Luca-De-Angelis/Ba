@@ -36,6 +36,9 @@ const double _altezzaTablet = 1133;
 // telefono molto alto. Un telefono vero scorrerebbe; la cornice, qui, cresce.
 const double _altezzaTelefonoTestoGrande = 1200;
 const double _larghezzaPannello = 320;
+// Il testo intermedio dello strumento, per provare la barra (task 036): fra 1,0 e 2,0 la barra del palco
+// in italiano è ancora in riga (si ripiega da circa 1,55). È un valore dello strumento, non del design.
+const double _testoIntermedio = 1.4;
 
 double _altezza(Strumento s) =>
     s.larghezza == _tablet ? _altezzaTablet : (s.testo > 1.0 ? _altezzaTelefonoTestoGrande : _altezzaTelefono);
@@ -47,8 +50,9 @@ class Strumento extends ChangeNotifier {
   bool riduciMovimento = false;
   double larghezza = _telefono;
 
+  /// 1,0 → 2,0 → 1,4 → 1,0: da 1,0 un tocco dà 2,0, come prima; il terzo giro è il testo intermedio.
   void cambiaTesto() {
-    testo = testo == 1.0 ? BaScalaTokens.maxTesto : 1.0;
+    testo = testo == 1.0 ? BaScalaTokens.maxTesto : (testo == BaScalaTokens.maxTesto ? _testoIntermedio : 1.0);
     notifyListeners();
   }
 
@@ -250,7 +254,7 @@ class _Pannello extends StatelessWidget {
               onTap: strumento.cambiaLarghezza,
             ),
             _Comando(
-              testo: '${T.strumentoTesto} ${strumento.testo == 1.0 ? '1,0' : '2,0'}',
+              testo: '${T.strumentoTesto} ${strumento.testo == 1.0 ? '1,0' : (strumento.testo == _testoIntermedio ? '1,4' : '2,0')}',
               acceso: strumento.testo != 1.0,
               onTap: strumento.cambiaTesto,
             ),

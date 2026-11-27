@@ -66,12 +66,11 @@ class BaGlifo extends StatelessWidget {
   Widget build(BuildContext context) {
     final dimensione =
         lato ?? (ripiego ? BaPresenzaTokens.glifoRipiego : BaPresenzaTokens.glifo);
-    final riduci = MediaQuery.disableAnimationsOf(context);
     // Decorativo: l'etichetta la porta la presenza.
     return ExcludeSemantics(
       child: AnimatedOpacity(
         opacity: acceso ? 1 : BaPresenzaTokens.glifoOpacitaSpento,
-        duration: riduci ? Duration.zero : BaMovimentoTokens.glifo,
+        duration: BaMovimentoTokens.durata(context, BaMovimentoTokens.glifo),
         curve: Curves.linear,
         child: SizedBox.square(
           dimension: dimensione,

@@ -232,7 +232,7 @@ class _GalleriaStanzaElencoState extends State<GalleriaStanzaElenco> {
             onCambia: (v) => setState(() => _avvisami = v),
           ),
           BaRigaImpostazione.azione(
-            titolo: 'Torna ascoltatore',
+            titolo: "Torna all'ascolto",
             conseguenza: 'Non potrai più parlare. Se stai parlando, esci dalla stanza.',
             onTap: () {},
           ),

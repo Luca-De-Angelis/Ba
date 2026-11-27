@@ -72,7 +72,7 @@ void main() {
       await _avvia(tester);
       await _accedi(tester);
       expect(find.text('Cucina di notte'), findsOneWidget);
-      expect(find.text('SEI ASCOLTATORE'), findsOneWidget);
+      expect(find.text('IN ASCOLTO'), findsOneWidget);
       expect(
         find.text('Corridoio lungo'),
         findsNothing,
@@ -458,19 +458,19 @@ void main() {
       await _tocca(tester, 'Impostazioni');
     }
 
-    testWidgets('da ascoltatore la riga è un fatto: «Sei ascoltatore»', (
+    testWidgets('da ascoltatore la riga è un fatto: «In ascolto»', (
       tester,
     ) async {
       await alleImpostazioni(tester);
-      expect(find.text('Sei ascoltatore'), findsOneWidget);
-      expect(find.text('Torna ascoltatore'), findsNothing);
+      expect(find.text('In ascolto'), findsOneWidget);
+      expect(find.text("Torna all'ascolto"), findsNothing);
       expect(find.text('3 persone'), findsOneWidget);
       expect(find.text('Italiano'), findsOneWidget);
       expect(find.text('Consentito'), findsOneWidget);
     });
 
     testWidgets(
-      '«Torna ascoltatore» chiede due conferme e poi la riga diventa un fatto',
+      '«Torna all\'ascolto» chiede due conferme e poi la riga diventa un fatto',
       (tester) async {
         await _avvia(tester);
         await _accedi(tester);
@@ -479,20 +479,20 @@ void main() {
         await _diventaPartecipante(tester, 'Acconsento e salgo');
         await _tocca(tester, 'Esci');
         await _tocca(tester, 'Impostazioni');
-        expect(find.text('Torna ascoltatore'), findsOneWidget);
+        expect(find.text("Torna all'ascolto"), findsOneWidget);
 
-        await _tocca(tester, 'Torna ascoltatore');
+        await _tocca(tester, "Torna all'ascolto");
         await _sale(tester);
         expect(find.text('Tornare ascoltatore?'), findsOneWidget);
         await _tocca(tester, 'Non ora');
         await _sale(tester);
         expect(
-          find.text('Torna ascoltatore'),
+          find.text("Torna all'ascolto"),
           findsOneWidget,
           reason: '«Non ora» non cambia niente',
         );
 
-        await _tocca(tester, 'Torna ascoltatore');
+        await _tocca(tester, "Torna all'ascolto");
         await _sale(tester);
         await _toccaNelFoglio(tester, 'Continua');
         expect(
@@ -501,13 +501,13 @@ void main() {
           reason: 'la seconda conferma',
         );
         expect(
-          find.text('Sei ascoltatore'),
+          find.text('In ascolto'),
           findsNothing,
           reason: 'ancora partecipante',
         );
-        await _toccaNelFoglio(tester, 'Torna ascoltatore');
+        await _toccaNelFoglio(tester, "Torna all'ascolto");
         await _sale(tester);
-        expect(find.text('Sei ascoltatore'), findsOneWidget);
+        expect(find.text('In ascolto'), findsOneWidget);
         expect(
           find.text(
             'Per parlare di nuovo, sali sul palco di un DEN e dai il consenso.',

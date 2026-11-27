@@ -117,11 +117,11 @@ void main() {
       expect(esci.height, BaControlloTokens.coppia);
       expect(scendi.top, esci.top, reason: 'affiancate, sulla stessa riga');
       final testo = _larghezzaTesto('Scendi dal palco', BaTestoTokens.azione);
-      final minima = BaPillola.larghezzaNecessaria(tester.element(find.byType(BaBarraAzioni)), testo: 'Scendi dal palco', stile: BaTestoTokens.azione);
+      final minima = BaPillola.larghezzaNecessaria(tester.element(find.byType(BaBarraAzioni)), testo: 'Scendi dal palco', stile: BaTestoTokens.azione, riempimento: BaSpazioTokens.m);
       expect(scendi.width, greaterThanOrEqualTo(minima));
       // ignore: avoid_print
       print('MISURA 360 dp, testo 1,0, 3 azioni: testo «Scendi dal palco» ${testo.toStringAsFixed(1)} dp; '
-          'pillola minima ${minima.toStringAsFixed(1)} dp (padding 20+20 e filetto 1+1); '
+          'pillola minima ${minima.toStringAsFixed(1)} dp (riempimento 12+12 delle secondarie e filetto 1+1); '
           'pillola disegnata ${scendi.width.toStringAsFixed(1)} dp; «Esci» ${esci.width.toStringAsFixed(1)} dp; '
           'riga di ${BaLayoutTokens.larghezzaColonna(360).toStringAsFixed(0)} dp');
     });
@@ -139,18 +139,18 @@ void main() {
       final occupato = esci.right - scendi.left + BaControlloTokens.gapCoppia + altro.width;
       expect(occupato, lessThanOrEqualTo(BaLayoutTokens.larghezzaColonna(360) + 0.01));
       final contesto = tester.element(find.byType(BaBarraAzioni));
-      final minime = BaPillola.larghezzaNecessaria(contesto, testo: 'Scendi dal palco', stile: BaTestoTokens.azione) +
-          BaPillola.larghezzaNecessaria(contesto, testo: 'Esci', stile: BaTestoTokens.azione) +
+      final minime = BaPillola.larghezzaNecessaria(contesto, testo: 'Scendi dal palco', stile: BaTestoTokens.azione, riempimento: BaSpazioTokens.m) +
+          BaPillola.larghezzaNecessaria(contesto, testo: 'Esci', stile: BaTestoTokens.azione, riempimento: BaSpazioTokens.m) +
           2 * BaControlloTokens.gapCoppia +
           BaBarraAzioniTokens.altroLato;
       // ignore: avoid_print
       print('MISURA 360 dp, testo 1,0, con «Altro»: le due secondarie al minimo, «Altro» e gli spazi occupano '
           '${minime.toStringAsFixed(1)} dp su ${BaLayoutTokens.larghezzaColonna(360).toStringAsFixed(0)} '
-          '(il changelog del 032 dice 246 con un riempimento di 12 dp per lato; qui sono 20)');
+          '(il design dice 246: qui 250, più i due filetti di ogni pillola)');
       expect(minime, lessThanOrEqualTo(BaLayoutTokens.larghezzaColonna(360)));
     });
 
-    testWidgets('a testo 1,3 e 1,5 nessuna parola si spezza e niente sborda', (tester) async {
+    testWidgets('a testo 1,3 e 1,5 la barra è ancora in riga (italiano), senza parole spezzate né sbordi', (tester) async {
       for (final scala in [1.3, 1.5]) {
         await tester.pumpWidget(_app(_barra(['Accendi il microfono', 'Scendi dal palco', 'Esci', 'Impostazioni']), testo: scala));
         expect(tester.takeException(), isNull, reason: 'testo $scala');
@@ -160,12 +160,10 @@ void main() {
         }
         // Una parola non si spezza mai: la più larga entra, intera, nella larghezza utile della pillola.
         final scendi = tester.getRect(find.byType(BaPillola).at(1));
-        final utile = scendi.width - 2 * BaSpazioTokens.xl - 2;
+        final utile = scendi.width - 2 * BaSpazioTokens.m - 2; // riempimento 12 delle secondarie (task 036)
         for (final parola in 'Scendi dal palco'.split(' ')) {
           expect(_larghezzaTesto(parola, BaTestoTokens.azione, scala: scala), lessThanOrEqualTo(utile), reason: '$parola a $scala');
         }
-        // Osservazione, non una regola: a testo intermedio vale la disposizione di prima (parole intere,
-        // pillole di pari larghezza), che può andare a capo su più righe.
         // ignore: avoid_print
         print('MISURA 360 dp, testo $scala: «Scendi dal palco» su ${_righe(tester, 'Scendi dal palco')} riga/righe, pillola ${scendi.width.toStringAsFixed(0)} dp');
       }
@@ -185,7 +183,7 @@ void main() {
         expect(rect.left, greaterThanOrEqualTo(barra.left - 0.01), reason: r.data);
       }
       // Nessuna parola spezzata: la parola più larga entra, intera, nella larghezza utile della pillola.
-      final utile = scendi.width - 2 * BaSpazioTokens.xl - 2;
+      final utile = scendi.width - 2 * BaSpazioTokens.m - 2; // riempimento 12 delle secondarie (task 036)
       for (final parola in 'Scendi dal palco'.split(' ')) {
         expect(_larghezzaTesto(parola, BaTestoTokens.azione, scala: 2.0), lessThanOrEqualTo(utile), reason: parola);
       }
@@ -394,6 +392,161 @@ void main() {
           }
         }
       }
+    });
+  });
+
+  group('il ripiego della barra si misura (task 036)', () {
+    // Nessun numero per lingua nel codice: la barra resta in riga finché ogni secondaria sta intera su
+    // una riga. Qui si misura con il font vero, a 360 dp (riga di 320), e le soglie si stampano.
+    const palcoIt = ['Accendi il microfono', 'Scendi dal palco', 'Esci', 'Impostazioni'];
+    const palcoDe = ['Mikrofon einschalten', 'Von der Bühne gehen', 'Verlassen', 'Einstellungen'];
+
+    Widget barraDe(List<String> testi, {bool ascoltatore = false}) => BaBarraAzioni(
+          azioni: [
+            for (var i = 0; i < testi.length; i++)
+              BaAzioneBarra(
+                ruolo: i == 0 ? BaRuoloAzione.primaria : BaRuoloAzione.secondaria,
+                testo: testi[i],
+                semanticsLabel: testi[i],
+                fissa: i < 3 && !(ascoltatore && i == 2),
+                inAltro: ascoltatore && i == 2,
+                onTap: () {},
+              ),
+          ],
+          onAltro: () {},
+          semanticsLabelAltro: 'Altro',
+        );
+
+    /// Le secondarie sono una sotto l'altra?
+    bool ripiegata(WidgetTester tester) {
+      final a = tester.getRect(find.byType(BaPillola).at(1));
+      final b = tester.getRect(find.byType(BaPillola).at(2));
+      return b.top >= a.bottom;
+    }
+
+    /// La prima scala (a passi di 0,05) a cui la barra si ripiega, o null se non succede fino a 2,0.
+    Future<double?> sogliaDi(WidgetTester tester, Widget barra) async {
+      for (var passo = 20; passo <= 40; passo++) {
+        final scala = passo / 20;
+        await tester.pumpWidget(_app(barra, testo: scala));
+        expect(tester.takeException(), isNull, reason: 'testo $scala');
+        if (ripiegata(tester)) return scala;
+      }
+      return null;
+    }
+
+    testWidgets('italiano: «Scendi dal palco» su una riga a 1,4 e a 1,5; si ripiega da circa 1,6 e non peggiora a 2,0', (tester) async {
+      for (final scala in [1.4, 1.5]) {
+        await tester.pumpWidget(_app(_barra(palcoIt), testo: scala));
+        expect(_righe(tester, 'Scendi dal palco'), 1, reason: 'a $scala una riga');
+        expect(ripiegata(tester), isFalse, reason: 'a $scala in riga');
+        expect(tester.getRect(find.byType(BaPillola).at(1)).height, BaControlloTokens.coppia, reason: 'a $scala alta 48');
+      }
+      final soglia = await sogliaDi(tester, _barra(palcoIt));
+      // ignore: avoid_print
+      print('MISURA barra del palco, italiano, 360 dp: in riga fino a ${soglia == null ? 'oltre 2,0' : (soglia - 0.05).toStringAsFixed(2)}, ripiegata da $soglia');
+      expect(soglia, isNotNull);
+      expect(soglia, greaterThan(1.5), reason: 'il design: in riga fino a 1,5');
+      expect(soglia, lessThanOrEqualTo(1.7), reason: 'il design: ripiegata da 1,6');
+      // A 2,0 non peggiora: in colonna, a tutta larghezza, nessuna parola spezzata, niente che sborda.
+      await tester.pumpWidget(_app(_barra(palcoIt), testo: 2.0));
+      expect(ripiegata(tester), isTrue);
+      expect(tester.getRect(find.byType(BaPillola).at(1)).width, BaLayoutTokens.larghezzaColonna(360));
+    });
+
+    testWidgets('tedesco: a 1,4 la barra è già a colonna, senza parole spezzate; la soglia è più bassa dell\'italiano', (tester) async {
+      await tester.pumpWidget(_app(barraDe(palcoDe), testo: 1.4));
+      expect(tester.takeException(), isNull);
+      expect(ripiegata(tester), isTrue, reason: 'a 1,4 in tedesco la barra è a colonna');
+      final scendi = tester.getRect(find.byType(BaPillola).at(1));
+      final utile = scendi.width - 2 * BaSpazioTokens.m - 2;
+      for (final parola in 'Von der Bühne gehen'.split(' ')) {
+        expect(_larghezzaTesto(parola, BaTestoTokens.azione, scala: 1.4), lessThanOrEqualTo(utile), reason: parola);
+      }
+      final barra = tester.getRect(find.byType(BaBarraAzioni));
+      for (final r in tester.widgetList<Text>(find.descendant(of: find.byType(BaBarraAzioni), matching: find.byType(Text)))) {
+        expect(tester.getRect(find.byWidget(r)).right, lessThanOrEqualTo(barra.right + 0.01), reason: r.data);
+      }
+      final de = await sogliaDi(tester, barraDe(palcoDe));
+      final it = await sogliaDi(tester, _barra(palcoIt));
+      // ignore: avoid_print
+      print('MISURA barra del palco, tedesco, 360 dp: ripiegata da $de (italiano: da $it)');
+      expect(de, isNotNull);
+      expect(de, lessThan(it!), reason: 'la soglia dipende dalla lingua: nessun numero fisso');
+      expect(de, lessThanOrEqualTo(1.3), reason: 'il design: da 1,2 circa');
+    });
+
+    testWidgets('l\'ascoltatore (una sola secondaria, «Esci», e «Altro») non si ripiega mai, nemmeno a 2,0', (tester) async {
+      final ascoltatore = barraDe(['Sali sul palco', 'Esci', 'Impostazioni'], ascoltatore: true);
+      for (var passo = 20; passo <= 40; passo += 4) {
+        await tester.pumpWidget(_app(ascoltatore, testo: passo / 20));
+        expect(tester.takeException(), isNull, reason: 'testo ${passo / 20}');
+        final esci = tester.getRect(find.byType(BaPillola).at(1));
+        final altro = tester.getRect(find.byKey(BaBarraAzioni.chiaveAltro));
+        expect(altro.left, greaterThanOrEqualTo(esci.right), reason: '«Altro» a destra di «Esci», sulla stessa riga (testo ${passo / 20})');
+        expect(altro.center.dy, closeTo(esci.center.dy, 0.01));
+      }
+    });
+
+    testWidgets('con «Altro» in colonna: a destra sulla riga dell\'ultima, 48 × 48, e le pillole della stessa riga hanno la stessa altezza', (tester) async {
+      await tester.pumpWidget(_app(barraDe(palcoDe), testo: 1.4));
+      final a = tester.getRect(find.byType(BaPillola).at(1));
+      final b = tester.getRect(find.byType(BaPillola).at(2));
+      final altro = tester.getRect(find.byKey(BaBarraAzioni.chiaveAltro));
+      expect(altro.size, const Size(48, 48));
+      expect(altro.center.dy, closeTo(b.center.dy, 0.01));
+      expect(altro.left, greaterThanOrEqualTo(b.right));
+      expect(a.width, BaLayoutTokens.larghezzaColonna(360));
+    });
+  });
+
+  group('le regole del testo grande: i campi (task 036)', () {
+    Widget app(Widget figlio, double testo) => Directionality(
+          textDirection: TextDirection.ltr,
+          child: MediaQuery(
+            data: MediaQueryData(size: const Size(360, 800), textScaler: TextScaler.linear(testo)),
+            child: Align(alignment: Alignment.topLeft, child: SizedBox(width: 320, child: SingleChildScrollView(child: figlio))),
+          ),
+        );
+
+    testWidgets('il segnaposto di più parole (la ricerca) va a capo fra le parole a 1,4 e a 2,0, mai a metà', (tester) async {
+      const testo = 'Nickname, alias, email o numero';
+      for (final scala in [1.4, 2.0]) {
+        await tester.pumpWidget(app(
+          BaCampoTesto(controller: TextEditingController(), etichetta: 'Cerca', segnaposto: testo, segnapostoSuPiuRighe: true),
+          scala,
+        ));
+        expect(tester.takeException(), isNull, reason: 'testo $scala');
+        final larghezza = tester.getSize(find.text(testo)).width;
+        for (final parola in testo.split(' ')) {
+          expect(_larghezzaTesto(parola, BaTestoTokens.campo, scala: scala), lessThanOrEqualTo(larghezza), reason: '«$parola» a $scala');
+        }
+        // A 2,0 il segnaposto di più parole va a capo; a 1,4 può starci in una riga o in due, mai spezzato.
+        if (scala == 2.0) expect(_righe(tester, testo), greaterThan(1), reason: 'a capo fra le parole');
+      }
+    });
+
+    testWidgets('il testo scritto non va a capo: una riga che scorre in orizzontale, e si vede la fine', (tester) async {
+      const lungo = 'nome.cognome.molto.lungo@esempio-di-dominio-lungo.it';
+      final controller = TextEditingController();
+      addTearDown(controller.dispose);
+      await tester.pumpWidget(app(BaCampoTesto(controller: controller, etichetta: 'Email'), 2.0));
+      await tester.enterText(find.byType(EditableText), lungo);
+      await tester.pump();
+      expect(tester.takeException(), isNull);
+      final scorrimento = tester.state<ScrollableState>(find.descendant(of: find.byType(EditableText), matching: find.byType(Scrollable)).first);
+      expect(scorrimento.position.axis, Axis.horizontal, reason: 'scorre in orizzontale');
+      expect(scorrimento.position.maxScrollExtent, greaterThan(0), reason: 'il testo è più largo del campo');
+      expect(tester.getSize(find.byType(EditableText)).height, closeTo(_altezzaUnaRiga(BaTestoTokens.campo, scala: 2.0), 1.5), reason: 'una sola riga');
+    });
+
+    testWidgets('la descrizione (multilinea) va a capo, anche il suo segnaposto', (tester) async {
+      await tester.pumpWidget(app(
+        BaCampoTesto(controller: TextEditingController(), etichetta: 'Descrizione', segnaposto: 'Due chiacchiere dopo cena, senza un argomento fisso.', minRighe: 3, maxRighe: 6),
+        2.0,
+      ));
+      expect(tester.takeException(), isNull);
+      expect(_righe(tester, 'Due chiacchiere dopo cena, senza un argomento fisso.'), greaterThan(1));
     });
   });
 }

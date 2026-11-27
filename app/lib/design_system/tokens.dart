@@ -630,8 +630,10 @@ class BaMovimentoTokens {
   static const Duration sogliaPersa = Duration(seconds: 12);
   static const Duration riprovaAutomatica = Duration(seconds: 8);
 
-  /// Ripiego statico: movimento ridotto, screen reader, degrado termico.
-  /// Non è una modalità nostra, è quella del telefono.
+  /// Ripiego statico: movimento ridotto e screen reader. Non è una modalità
+  /// nostra, è quella del telefono. È l'unico punto da cui passa la regola:
+  /// ogni durata dell'app esce da durata(). Il degrado termico non è un segnale
+  /// di Flutter e non è una regola (task 036).
   static bool statico(BuildContext c) {
     final mq = MediaQuery.of(c);
     return mq.disableAnimations || mq.accessibleNavigation;

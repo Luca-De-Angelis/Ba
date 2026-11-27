@@ -37,7 +37,7 @@ La struttura della stanza è fatta di `BaIntestazione` (nome e marcatore, cinque
 
 ## 2. Accesso: [Accesso 013](../../design/handoff/013/Accesso%20013.dc.html)
 
-L'accesso dell'ascoltatore con email (D-031), il percorso «diventa partecipante» (numero, SMS, consenso) e «Torna ascoltatore». Note in [`changelog.md`](../../design/handoff/013/changelog.md); correzioni del 013b in [`013b/changelog.md`](../../design/handoff/013b/changelog.md). Il suo changelog marca come «superato dal task 013» l'accesso della Fase 2 (5a); D-031 sostituisce D-002.
+L'accesso dell'ascoltatore con email (D-031), il percorso «diventa partecipante» (numero, SMS, consenso) e «Torna all'ascolto». Note in [`changelog.md`](../../design/handoff/013/changelog.md); correzioni del 013b in [`013b/changelog.md`](../../design/handoff/013b/changelog.md). Il suo changelog marca come «superato dal task 013» l'accesso della Fase 2 (5a); D-031 sostituisce D-002.
 
 | Schermata | Che cosa mostra | Esistono | Mancano |
 | --- | --- | --- | --- |
@@ -51,7 +51,7 @@ L'accesso dell'ascoltatore con email (D-031), il percorso «diventa partecipante
 | P3 · sali-codice | Codice SMS (**rimovibile**) | `BaFoglioPassi` (passo `codice`), `BaCampoCodice` | — |
 | P4 · sali-consenso | Consenso a parlare: «il tuo account passa da ascoltatore a partecipante» (**ipotesi**: può servire un nuovo accesso, D-040) | `BaFoglioPassi` (passo `consenso`), `BaPillola` | — |
 | P5 · sali-sale | Sale a microfono spento (P6, «numero già verificato», è stata tolta, D-040) | la stanza (vedi 002 · 1 bis) | — |
-| T1–T4 · torna ascoltatore | Cambio di tipo di account dalle impostazioni: T1 la riga, T2 la prima conferma, T3 la seconda (**ipotesi**: nuovo accesso), T4 il risultato (D-040) | `BaPillola`, `BaRigaImpostazione` (`.azione`) | — |
+| T1–T4 · torna all'ascolto | Cambio di tipo di account dalle impostazioni: T1 la riga, T2 la prima conferma, T3 la seconda (**ipotesi**: nuovo accesso), T4 il risultato (D-040) | `BaPillola`, `BaRigaImpostazione` (`.azione`) | — |
 
 Il foglio «Vuoi salire sul palco?» è **uno solo** che cresce passo per passo; ciò che sta sopra le azioni scorre, le azioni restano ancorate: è `BaFoglioPassi` (task 023a) sopra `BaFoglio`, con le altezze 0,80 e 0,62 (`BaAccessoTokens.foglioAltezza*`). Il passo lo dà il chiamante e «Non ora» c'è in ogni passo; al cambio di passo il focus va al titolo.
 
