@@ -72,9 +72,11 @@ class _GalleriaState extends State<_Galleria> {
             child: Align(
               alignment: Alignment.centerLeft,
               // Menu: i comandi sono BaTouchable, come nel resto della galleria.
-              child: Wrap(
+              // Una riga sola che scorre: con undici pagine il menu a capo si mangiava l'altezza delle pagine.
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
                 spacing: BaControlloTokens.gapCoppia,
-                runSpacing: BaControlloTokens.gapCoppia,
                 children: [
                   galleriaInterruttore(
                     'BaTouchable',
@@ -132,6 +134,7 @@ class _GalleriaState extends State<_Galleria> {
                     () => setState(() => _pagina = _Pagina.scoperta),
                   ),
                 ],
+                ),
               ),
             ),
           ),
