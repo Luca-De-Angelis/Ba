@@ -33,8 +33,10 @@ Future<void> _apri(WidgetTester tester) async {
 Future<void> _sale(WidgetTester tester) => tester.pump(const Duration(milliseconds: 300));
 
 void main() {
-  testWidgets('le righe di «Proposti per te»: il motivo, «zona abituale» nel marcatore, e la riga di sempre senza motivo', (tester) async {
+  testWidgets('le righe, i testi corretti e i punti di aggancio: scenari riuniti, un passo per scenario', (tester) async {
+    final semantica = tester.ensureSemantics();
     await _apri(tester);
+    // passo: le righe di «Proposti per te»: il motivo, «zona abituale» nel marcatore, e la riga di sempre senza motivo
     expect(find.text('Perché: tema Cucina'), findsOneWidget);
     expect(find.text('Perché: in italiano'), findsOneWidget);
     expect(find.text('Perché: tema Musica'), findsOneWidget);
@@ -43,17 +45,10 @@ void main() {
     final righe = tester.widgetList<BaRigaDen>(find.byType(BaRigaDen)).toList();
     expect(righe.where((r) => r.motivo != null), hasLength(3));
     expect(righe.where((r) => r.motivo == null), hasLength(1), reason: '«Aperti ora»: la riga di sempre');
-  });
-
-  testWidgets('il testo corretto: «Per ora non ci sono proposte.», non «Niente di nuovo per ora.»', (tester) async {
-    await _apri(tester);
+    // passo: il testo corretto: «Per ora non ci sono proposte.», non «Niente di nuovo per ora.»
     expect(find.text('Per ora non ci sono proposte. Scegli un tema o una lingua e ne compaiono.'), findsOneWidget);
     expect(find.textContaining('Niente di nuovo'), findsNothing);
-  });
-
-  testWidgets('tre punti di aggancio, con il nome della sezione e il codice: non si toccano e non hanno semantica d\'azione', (tester) async {
-    final semantica = tester.ensureSemantics();
-    await _apri(tester);
+    // passo: tre punti di aggancio, con il nome della sezione e il codice: non si toccano e non hanno semantica d\'azione
     expect(find.byType(BaPuntoAggancio), findsNWidgets(3));
     for (final (titolo, codice) in [('In evidenza ora', 'G14'), ('Avvisi per tema o lingua', 'G07'), ('DEN preferiti', 'G13')]) {
       expect(find.text(titolo), findsOneWidget);
