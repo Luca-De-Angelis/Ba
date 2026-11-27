@@ -220,11 +220,11 @@ class _GalleriaScopertaState extends State<GalleriaScoperta> {
             ),
           ] else ...[
             _etichetta('acceso: la riga di stato, una frase e «Spegni»'),
-            BaRigaImpostazione.negata(
+            BaRigaImpostazione.stato(
               titolo: 'Sei disponibile a chiacchierare',
               frase: 'Compari fra le persone da invitare.',
-              apri: 'Spegni',
-              onApri: () => setState(() => _disponibile = false),
+              azione: 'Spegni',
+              onAzione: () => setState(() => _disponibile = false),
             ),
           ],
           const SizedBox(height: BaSpazioTokens.s),

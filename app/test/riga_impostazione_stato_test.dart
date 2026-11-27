@@ -46,8 +46,10 @@ void main() {
     final frase = tester.getRect(find.text(_frase));
     final azione = tester.getRect(find.widgetWithText(BaPillola, 'Spegni'));
     expect(azione.left, greaterThanOrEqualTo(titolo.right), reason: 'a destra del testo');
-    expect(azione.center.dy, greaterThan(titolo.top));
+    expect(azione.top, closeTo(titolo.top, 0.5), reason: 'in alto, accanto al titolo');
     expect(azione.top, lessThan(titolo.bottom), reason: 'sulla riga del titolo');
+    expect(azione.height, lessThan(BaControlloTokens.areaMinima + 16), reason: 'la pillola non si allunga: altezza naturale');
+    // Misurato con il font vero (360 dp, colonna 320): il titolo vuole 219,5 dp e ne restano 213,6: va a capo; la pillola (94,4) resta a destra.
     expect(azione.right, lessThanOrEqualTo(360 - BaLayoutTokens.margine(360) + 0.01), reason: 'al bordo destro della colonna');
     expect(frase.top, greaterThanOrEqualTo(titolo.bottom));
     expect(azione.height, greaterThanOrEqualTo(BaControlloTokens.areaMinima));

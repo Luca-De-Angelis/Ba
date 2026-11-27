@@ -271,8 +271,10 @@ class _Stato extends StatelessWidget {
               children: [testo, const SizedBox(height: BaSpazioTokens.s), pulsante],
             )
           : Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [Expanded(child: testo), const SizedBox(width: BaSpazioTokens.m), pulsante],
+              // In alto, accanto al titolo; IntrinsicHeight perché la pillola (Container con alignment) in una riga
+              // con altezza limitata si allungherebbe fino al tetto (misurato con il font vero, 360 dp).
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [Expanded(child: testo), const SizedBox(width: BaSpazioTokens.m), IntrinsicHeight(child: pulsante)],
             ),
     );
   }
