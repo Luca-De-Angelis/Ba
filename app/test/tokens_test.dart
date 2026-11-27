@@ -507,4 +507,32 @@ void main() {
       expect(BaPersoneTokens.azioneSottoDa, greaterThan(1.0), reason: 'a 1,0 niente cambia');
     });
   });
+
+  group('scoperta (task 031, D-038, D-042, D-055)', () {
+    test('il segno di «Disponibile» è un punto di 10, quanto sp2_5; sempre accanto alla parola', () {
+      expect(BaScopertaTokens.disponibileSegnoLato, 10);
+      expect(BaScopertaTokens.disponibileSegnoLato, BaCreazioneTokens.sceltaPuntoLato, reason: 'sp2_5, come il punto interno della scelta');
+    });
+
+    test('il punto di aggancio della home: altezza minima 56, raggio 16', () {
+      expect(BaScopertaTokens.aggancioAltezzaMin, 56);
+      expect(BaScopertaTokens.aggancioRaggio, 16);
+      expect(BaScopertaTokens.aggancioAltezzaMin, BaPersoneTokens.rigaAltezza, reason: 'sp14, la stessa minima di una riga di persona');
+    });
+
+    test('bordo, tratto e vuoto del punto di aggancio sono quelli del tratteggio esistente', () {
+      expect(BaScopertaTokens.aggancioBordo, BaCreazioneTokens.aggancioBordo);
+      expect(BaScopertaTokens.aggancioTratto, BaCreazioneTokens.tratteggioTratto);
+      expect(BaScopertaTokens.aggancioVuoto, BaCreazioneTokens.tratteggioVuoto);
+      expect(BaScopertaTokens.aggancioRaggio, BaCreazioneTokens.aggancioRaggio);
+    });
+
+    test('la disponibilità si spegne da sola quando si entra in un DEN (ipotesi, D-055; nessun timer)', () {
+      expect(BaScopertaTokens.disponibileSiSpegneAdIngresso, isTrue);
+    });
+
+    test('l\'altezza minima della home (56) non è quella del componente di oggi (48): resta da decidere', () {
+      expect(BaScopertaTokens.aggancioAltezzaMin, greaterThan(BaCreazioneTokens.aggancioAltezza));
+    });
+  });
 }
