@@ -142,6 +142,7 @@ Le ipotesi dei prototipi per cui **nessuna delle 19 domande** è la risposta. Il
 
 ## Da tenere presente
 
+- **La suite ha un tetto di 60 s** sulla macchina di Luca (era 50: oltre mille test servono circa +40 s ogni cento; 53 s con 1016 test, 40 s con 967 prima del 034). Se lo supera, le misure con il font vero (`misure_font_vero_test`, `galleria_stato_font_vero_test`) si separano in un secondo comando e non si tolgono. Vedi [regole](regole.md).
 - **Le ipotesi si tolgono prima del codice.** Il segno «ipotesi» sta nei prototipi; nel codice non c'è nessun segno: i valori (`BaCodaTokens`, `BaAccessoTokens`, `BaCreazioneTokens`) sono quelli usati finché la risposta non arriva. Il segno «ipotesi · da confermare» ha un token (`BaAccessoTokens.segno*`) ma nessun componente lo disegna.
 - **Le risposte che cambiano un valore** lo cambiano in `tokens.dart` e nel suo test, in un task: vedi «Come si aggiunge un token» in [architettura](architettura.md).
 - **Le risposte che contraddicono una decisione** (la 6 contro D-031 e la 10 contro D-011 sono ora D-041 e D-043; la 2 contro D-016 è ancora da definire, D-037) aprono una decisione nuova: l'assistente di codice si ferma e chiede, non decide.

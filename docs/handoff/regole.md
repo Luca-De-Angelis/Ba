@@ -63,3 +63,4 @@ Torna all'[indice](README.md). Le ipotesi che ancora non sono regole sono in [ap
 | Un branch per task, mai commit diretti su `main`; piano prima del codice; commit piccoli; report prima della pull request | `CLAUDE.md`, `README.md` della radice |
 | Il web serve solo come galleria di sviluppo; i target restano iOS e Android | D-030 |
 | Se un task chiede di cambiare una decisione, **ci si ferma e si chiede** | `CLAUDE.md` |
+| **La suite ha un tetto di 60 s** sulla macchina di Luca (oltre mille test, circa +40 s ogni cento; la macchina oscilla di 5-6 s da una corsa all'altra, e la prima corsa dopo un cambio, che scarica i pacchetti, ne ha di più). Se lo supera, le misure con il font vero (`misure_font_vero_test`, `galleria_stato_font_vero_test`) si separano in un secondo comando e **non si tolgono** | Task 034; [`aperte.md`](aperte.md) |
