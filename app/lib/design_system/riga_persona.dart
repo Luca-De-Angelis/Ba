@@ -34,6 +34,12 @@
 //
 // Sagoma e tinta sono **indici** assegnati da chi usa il componente (come in
 // `BaPubblico`): non si calcolano dall'id. Per lo screen reader la riga ha due
+// **«● Disponibile» (task 034, 031 L1 e L3):** parametro facoltativo `disponibile`, la **parola**
+// dal chiamante («Disponibile»), sotto l'alias e prima dello stato: un **punto pieno**
+// (`BaScopertaTokens.disponibileSegnoLato`) e **sempre la parola**, mai il solo colore né il solo
+// punto. È uno stato **dichiarato** da chi lo accende, mai rilevato. Senza il parametro la riga è
+// identica a prima.
+//
 // elementi: il nome (con alias e stato) e l'azione o l'interruttore.
 //
 // Valore che i token non hanno: la proporzione della spunta (costanti private). Il fondo
@@ -80,7 +86,9 @@ class BaRigaPersona extends StatelessWidget {
     this.parolaAcceso,
     this.parolaSpento,
     this.onCambia,
-  })  : assert(acceso == null || (voce == null && azione == null), 'l\'interruttore sta al posto dell\'azione'),
+    this.disponibile,
+  })  : assert(disponibile == null || disponibile != '', 'il segno «Disponibile» non va mai senza la parola'),
+        assert(acceso == null || (voce == null && azione == null), 'l\'interruttore sta al posto dell\'azione'),
         assert(acceso == null || (parolaAcceso != null && parolaSpento != null), 'l\'interruttore ha le sue due parole'),
         assert(voce == null || azione != null, 'la voce ha la sua parola in azione');
 
@@ -88,6 +96,10 @@ class BaRigaPersona extends StatelessWidget {
 
   /// Il ruolo o lo stato, già composto dal chiamante («sul palco»). Facoltativo.
   final String? stato;
+
+  /// La parola dello stato dichiarato («Disponibile»), con il punto pieno davanti, sotto l'alias.
+  /// Facoltativa; il segno non esiste senza la parola.
+  final String? disponibile;
 
   /// Il nome unico che distingue due persone con lo stesso nickname (`@sara.m`),
   /// sotto il nome, in secondo piano. Facoltativo.
@@ -136,7 +148,7 @@ class BaRigaPersona extends StatelessWidget {
   /// Nome, alias e stato, uno sotto l'altro; un elemento solo per lo screen reader.
   Widget _testi() => Semantics(
         container: true,
-        label: [nome, ?alias, ?stato].join('. '),
+        label: [nome, ?alias, ?disponibile, ?stato].join('. '),
         excludeSemantics: true,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,6 +158,10 @@ class BaRigaPersona extends StatelessWidget {
             if (alias != null) ...[
               const SizedBox(height: BaSpazioTokens.xxs),
               Text(alias!, style: BaTestoTokens.minore.copyWith(color: BaColorTokens.testoSecondo)),
+            ],
+            if (disponibile != null) ...[
+              const SizedBox(height: BaSpazioTokens.xxs),
+              _Disponibile(parola: disponibile!),
             ],
             if (stato != null) ...[
               const SizedBox(height: BaSpazioTokens.xxs),
@@ -226,7 +242,7 @@ class BaRigaPersona extends StatelessWidget {
       container: true,
       toggled: acceso,
       child: BaTouchable(
-        semanticsLabel: azioneSemanticsLabel ?? [nome, ?alias].join('. '),
+        semanticsLabel: azioneSemanticsLabel ?? [nome, ?alias, ?disponibile].join('. '),
         onTap: onCambia == null ? null : () => onCambia!(!acceso!),
         raggio: 0,
         builder: (context, _) => riga,
@@ -432,6 +448,30 @@ class _Interruttore extends StatelessWidget {
           textScaler: TextScaler.linear(BaScalaTokens.marcatore(context)),
           style: BaTestoTokens.marcatore.copyWith(color: colore),
         ),
+      ],
+    );
+  }
+}
+
+/// «● Disponibile»: il punto pieno e la parola, in sabbia come lo stato acceso delle altre voci. Il punto
+/// non scala col testo (è un segno, come la spunta); la parola sì, e va a capo se serve.
+class _Disponibile extends StatelessWidget {
+  const _Disponibile({required this.parola});
+
+  final String parola;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const DecoratedBox(
+          decoration: BoxDecoration(shape: BoxShape.circle, color: BaColorTokens.azioneChiara),
+          child: SizedBox.square(dimension: BaScopertaTokens.disponibileSegnoLato),
+        ),
+        const SizedBox(width: BaSpazioTokens.xs),
+        Flexible(child: Text(parola, style: BaTestoTokens.minore.copyWith(color: BaColorTokens.azioneChiara))),
       ],
     );
   }

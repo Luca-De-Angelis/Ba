@@ -20,7 +20,7 @@
 // più sotto la frase («Perché: tema Cucina», «Perché: in italiano»), a 14 in secondo piano. Senza,
 // la riga è **identica** a prima. «Vicino a te» e «zona abituale» **non hanno un parametro**:
 // arrivano nel [marcatore] già composto dal chiamante («zona abituale · entra chiunque · 5 sul
-// palco»). Nessun segno del pagante, nessun contatore, nessuna parola «online» né «in un DEN».
+// palco»). Nessun segno del pagante, nessun contatore, nessuno stato di presenza e nessun luogo in cui si trova una persona.
 //
 // Con [onTap] la riga è toccabile (premuta e a fuoco da `BaTouchable`, area almeno
 // `areaMinima`); senza, è solo testo. Per lo screen reader un solo elemento:
