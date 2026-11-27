@@ -8,13 +8,18 @@ import 'package:ba/design_system/richiesta_permesso.dart';
 import 'package:ba/design_system/riga_den.dart';
 import 'package:ba/design_system/riga_persona.dart';
 import 'package:ba/design_system/tokens.dart';
+import 'package:ba/design_system/touchable.dart';
 import 'package:ba/galleria/main_galleria.dart';
 
 // La pagina «Scoperta» della galleria (task 034): le righe e i fogli del 031, sulla schermata finta.
 // Il file è nuovo: `galleria_test.dart` non cambia.
 
+// Si tocca il bersaglio che contiene il testo (la riga, l'interruttore), non il centro del testo: il centro
+// di «SPENTO» non cade sul suo testo e flutter_test avviserebbe che il tocco non colpisce il widget cercato.
 Future<void> _tocca(WidgetTester tester, String testo) async {
-  final f = find.text(testo);
+  final testoF = find.text(testo).first;
+  final bersaglio = find.ancestor(of: testoF, matching: find.byType(BaTouchable));
+  final f = bersaglio.evaluate().isNotEmpty ? bersaglio.first : testoF;
   await tester.ensureVisible(f.first);
   await tester.tap(f.first);
   await tester.pump();
@@ -56,11 +61,7 @@ void main() {
       expect(find.bySemanticsLabel('$titolo. $codice'), findsOneWidget);
     }
     expect(find.descendant(of: find.byType(BaPuntoAggancio), matching: find.byType(BaPillola)), findsNothing);
-    semantica.dispose();
-  });
-
-  testWidgets('le persone disponibili: «● Disponibile» con la parola, in ordine alfabetico, e «Invita» passa a «Nell\'invito»', (tester) async {
-    await _apri(tester);
+    // passo: le persone disponibili: «● Disponibile» con la parola, in ordine alfabetico, e «Invita» passa a «Nell'invito»
     final persone = tester.widgetList<BaRigaPersona>(find.byType(BaRigaPersona)).toList();
     expect(persone.map((p) => p.nome), ['Davide', 'Marta', 'Sara'], reason: 'alfabetico, nessun conteggio');
     expect(persone.every((p) => p.disponibile == 'Disponibile'), isTrue, reason: 'sempre la parola');
@@ -68,9 +69,11 @@ void main() {
     await _tocca(tester, 'Invita');
     expect(find.text('Nell\'invito'), findsOneWidget);
     expect(find.text('Invita'), findsNWidgets(2));
+    semantica.dispose();
   });
 
   testWidgets('«Disponibile a chiacchierare»: la conferma ha la frase corretta, «Accendi» accende, «Spegni» spegne, «Non ora» no', (tester) async {
+    final semantica = tester.ensureSemantics();
     await _apri(tester);
     expect(find.text('Sei disponibile a chiacchierare'), findsNothing);
     await _tocca(tester, 'SPENTO');
@@ -92,22 +95,14 @@ void main() {
     await _sale(tester);
     expect(find.text('Sei disponibile a chiacchierare'), findsOneWidget);
     expect(find.text('Compari fra le persone da invitare.'), findsOneWidget);
-    await _tocca(tester, 'Spegni');
-    expect(find.text('Sei disponibile a chiacchierare'), findsNothing);
-    expect(find.text('Disponibile a chiacchierare'), findsOneWidget);
-  });
-
-  testWidgets('la riga di stato non si dice «negata» per lo screen reader: legge solo il titolo e la frase', (tester) async {
-    final semantica = tester.ensureSemantics();
-    await _apri(tester);
-    await _tocca(tester, 'SPENTO');
-    await _sale(tester);
-    await _tocca(tester, 'Accendi');
-    await _sale(tester);
+    // passo: per lo screen reader la riga di stato legge titolo e frase e l'azione come pulsante, mai «negata»
     expect(find.bySemanticsLabel('Sei disponibile a chiacchierare. Compari fra le persone da invitare.'), findsOneWidget);
     expect(find.bySemanticsLabel(RegExp('negat', caseSensitive: false)), findsNothing);
     expect(find.bySemanticsLabel('Spegni'), findsOneWidget);
     semantica.dispose();
+    await _tocca(tester, 'Spegni');
+    expect(find.text('Sei disponibile a chiacchierare'), findsNothing);
+    expect(find.text('Disponibile a chiacchierare'), findsOneWidget);
   });
 
   group('il permesso: avvisi e posizione', () {
@@ -134,16 +129,7 @@ void main() {
       }
     });
 
-    testWidgets('«Posizione: la richiesta» ha la seconda frase e «Usa la posizione» come azione', (tester) async {
-      await _apri(tester);
-      await _tocca(tester, 'Posizione: la richiesta');
-      await _sale(tester);
-      expect(find.text('Nessuno la vede e non ci sono distanze da persone.'), findsOneWidget);
-      expect(find.widgetWithText(BaPillola, 'Usa la posizione'), findsOneWidget);
-      expect(find.widgetWithText(BaPillola, 'Non ora'), findsOneWidget);
-    });
-
-    testWidgets('«Avvisi: la richiesta» ha «Consenti gli avvisi» e «Non ora» alla pari, con la seconda frase; il rifiuto non ha colpa', (tester) async {
+    testWidgets('«Avvisi: la richiesta» e «Posizione: la richiesta»: «Consenti gli avvisi» e «Non ora» alla pari, con la seconda frase; il rifiuto non ha colpa', (tester) async {
       await _apri(tester);
       await _tocca(tester, 'Avvisi: la richiesta');
       await _sale(tester);
@@ -157,6 +143,14 @@ void main() {
       await _sale(tester);
       expect(find.text('Va bene così. Gli avvisi sui DEN restano spenti.'), findsOneWidget);
       expect(find.text('Apri le impostazioni del telefono'), findsOneWidget);
+      await _tocca(tester, 'Chiudi');
+      await _sale(tester);
+      // passo: la posizione ha la seconda frase e «Usa la posizione» come azione
+      await _tocca(tester, 'Posizione: la richiesta');
+      await _sale(tester);
+      expect(find.text('Nessuno la vede e non ci sono distanze da persone.'), findsOneWidget);
+      expect(find.widgetWithText(BaPillola, 'Usa la posizione'), findsOneWidget);
+      expect(find.widgetWithText(BaPillola, 'Non ora'), findsOneWidget);
     });
   });
 

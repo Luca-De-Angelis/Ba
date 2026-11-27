@@ -145,3 +145,21 @@ Le ipotesi dei prototipi per cui **nessuna delle 19 domande** è la risposta. Il
 - **Le ipotesi si tolgono prima del codice.** Il segno «ipotesi» sta nei prototipi; nel codice non c'è nessun segno: i valori (`BaCodaTokens`, `BaAccessoTokens`, `BaCreazioneTokens`) sono quelli usati finché la risposta non arriva. Il segno «ipotesi · da confermare» ha un token (`BaAccessoTokens.segno*`) ma nessun componente lo disegna.
 - **Le risposte che cambiano un valore** lo cambiano in `tokens.dart` e nel suo test, in un task: vedi «Come si aggiunge un token» in [architettura](architettura.md).
 - **Le risposte che contraddicono una decisione** (la 6 contro D-031 e la 10 contro D-011 sono ora D-041 e D-043; la 2 contro D-016 è ancora da definire, D-037) aprono una decisione nuova: l'assistente di codice si ferma e chiede, non decide.
+
+## Debito dei test: l'avviso «warnIfMissed» di flutter_test
+
+Dalla corsa di Luca (task 034): l'avviso «pass `warnIfMissed: false` to `tap()`» compariva **27 volte in nove file**. I test passano e verificano l'effetto del tocco (la callback, il valore, il focus): il tocco arriva alla riga toccabile, ma **il centro del testo cercato non cade sul testo stesso** (misurato con `hitTestOnBinding` in `galleria_test.dart`: sotto il centro c'è la descrizione della stessa riga o il bersaglio che la contiene). Non è un buco di sicurezza. **Corretti** nel task 034: il nuovo `galleria_stato_font_vero_test.dart`, `galleria_scoperta_test.dart` e, con **una sola modifica all'aiuto condiviso `_tocca`** (si tocca il `BaTouchable` che contiene il testo; nessun `expect` tolto), le **13** di `galleria_test.dart`. **Restano 13**, in sette file che non hanno un aiuto condiviso (ognuno chiama `tester.tap(find.text(...))`); non modificati:
+
+| File:riga | Bersaglio cercato | Il test verifica l'effetto dopo il tocco? |
+|---|---|---|
+| `interruttore_riga_test.dart:85` | testo «Fammi entrare automaticamente» (non il toccabile) | sì: `valori == [true]` |
+| `interruttore_riga_test.dart:87` | parola «SPENTO» | sì: `valori == [true, true]` |
+| `riga_consenso_test.dart:63`, `:71` | nome «Marta» | sì: `onCambia(true)` / `(false)` |
+| `riga_persona_persone_test.dart:212`, `:215` | nome «Marta» | sì: `ultimo` vero / falso |
+| `riga_valore_test.dart:59` | «Descrizione» | sì: `tocchi == 1` |
+| `scelta_den_test.dart:88` | «Pubblico» | sì: `scelte == [1, 0]` |
+| `scheda_persona_test.dart:88`, `:89` | «Blocca», «Segnala» | sì: `(blocca, segnala) == (1, 1)` |
+| `touchable_test.dart:271` | `SizedBox` con la chiave `contenuto` | sì: nessun anello di focus, nessun focus |
+| `fogli_coda_test.dart:169`, `:172` | «Fammi entrare automaticamente», «Aspetta con altri» | sì: «ACCESO» compare 1 e 2 volte |
+
+La causa, nei sette file, è dedotta dallo stesso schema (stessi componenti di `galleria_test.dart`), **non misurata uno per uno**. **Proposta** (task a parte, nessun `expect` tolto): un aiuto condiviso `test/aiuti_tocco.dart` con `tocca(tester, finder)` che tocca il `BaTouchable` antenato se c'è; mai `warnIfMissed: false` per tacere l'avviso.
