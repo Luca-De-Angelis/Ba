@@ -1065,3 +1065,25 @@ class BaPersoneTokens {
   // inviti
   static const Duration invitoScadenza = Duration(days: 7); // eccezione: ipotesi, regola di prodotto. L'interfaccia non mostra il numero di giorni
 }
+
+// ------------------------------------------------------------------ scoperta
+
+/// Scoperta (task 031, D-038, D-042, D-055): i DEN proposti, «disponibile a
+/// chiacchierare», gli avvisi sui DEN e la posizione. Nessun colore nuovo.
+/// Principio: nessun valore qui serve a mostrare che una persona è online o in
+/// un DEN. «Disponibile» è uno stato dichiarato, e porta sempre una parola.
+class BaScopertaTokens {
+  BaScopertaTokens._();
+
+  // la riga di un DEN proposto è BaRigaDen con una riga in più, il motivo (tema o lingua), in BaTestoTokens.minore
+  // il segno davanti a «Disponibile»: un punto pieno prima della parola, mai il solo colore
+  static const double disponibileSegnoLato = _S.sp2_5;
+  // il punto di aggancio: un riquadro tratteggiato dove entrerà una sezione futura (G14, G07, G13)
+  static const double aggancioAltezzaMin = _S.sp14;
+  static const double aggancioRaggio = _S.rounded2xl;
+  static const double aggancioBordo = BaCreazioneTokens.aggancioBordo;
+  static const double aggancioTratto = BaCreazioneTokens.tratteggioTratto;
+  static const double aggancioVuoto = BaCreazioneTokens.tratteggioVuoto;
+  // eccezione: regola di prodotto, ipotesi (D-055): la disponibilità si spegne da sola quando si entra in un DEN, senza timer
+  static const bool disponibileSiSpegneAdIngresso = true;
+}

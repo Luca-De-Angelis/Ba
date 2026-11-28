@@ -123,6 +123,18 @@ Aggiungere persone, la rubrica, «Chi può trovarmi», il selettore degli invita
 
 **Dal 032 il design e il codice coincidono** su «Entra» (attiva, a filetto) e sul raggio dell'azione di una riga di persona (24). I testi sono neutri rispetto al genere: «Invito di Marta», «Hai un invito», «Sei dentro, su invito di Marta», «✓ In lista». Un invito ricevuto mentre si è già in un DEN usa «Vuoi passare di qua?» del 015 (D-042): non è disegnato.
 
+## 4 quater. Scoperta: [Scoperta 031](../../design/handoff/031/Scoperta%20031.dc.html)
+
+La home di chi ascolta («Proposti per te» e «Aperti ora»), «Disponibile a chiacchierare», le persone disponibili in «Aggiungi persone», gli avvisi sui DEN e la posizione (D-038, D-039, D-042). **Sono proposte di Luca (D-055), segnate «ipotesi» e ancora aperte** (vedi [aperte](aperte.md)). Titolo a 22 (nessuna schermata sostituisce tutto), fogli a 20. Nessuna riga mostra o lascia dedurre che una persona è online o in un DEN senza il suo consenso. **Task 034: costruiti i componenti e la pagina di galleria «Scoperta»; nessuna pagina intera (024d).**
+
+| Schermata | Che cosa mostra | Esistono | Mancano |
+| --- | --- | --- | --- |
+| H1–H5 · home | «Proposti per te» (con il motivo: tema o lingua) e «Aperti ora»; nessuna proposta; errore di rete; «Vuoi passare di qua?»; punti di aggancio | `BaRigaDen` (`motivo`), `BaPuntoAggancio` (G14, G07, G13), `BaFoglioPassaDiQua`, `BaMessaggio` | la **pagina** e la navigazione (024d) |
+| D1–D6 · disponibile a chiacchierare | Spento, la conferma prima di accendere, acceso con la riga di stato e «Spegni», l'interazione con «Chi può trovarmi», l'invito ricevuto | `BaRigaImpostazione` (`.interruttore`, `.negata` per la riga di stato), `BaFoglio` (la conferma, composta dal chiamante) | la pagina; la **notifica** dell'invito (superficie di sistema) |
+| L1–L3 · persone disponibili | Una sezione di «Aggiungi persone», in ordine alfabetico, senza conteggio; «Invita»; stato vuoto | `BaRigaPersona` (`disponibile`, voce «Invita») | il foglio «Invita Marta a Cena senza fretta» presuppone un DEN (aperta) |
+| N1–N7 · avvisi sui DEN | Il permesso, dopo il rifiuto, impostazioni, scelta dei temi, spenti dal telefono, notifica a schermo bloccato | `BaRichiestaPermesso`, `BaRigaImpostazione`, `BaChipScelta` | le pagine; la notifica (superficie di sistema) |
+| Z1–Z4 · posizione | Il permesso, il GPS rifiutato con la zona abituale, impostazioni, scelta della zona | `BaRichiestaPermesso`, `BaRigaImpostazione`, `BaSceltaDen` | le pagine |
+
 ## 5. Prototipi precedenti
 
 Due prototipi più vecchi restano nella repo come storia: [Schermate 001](../../design/handoff/001/Schermate%20001.dc.html) (accesso, impostazioni, superfici di sistema) e [Schermate 004](../../design/handoff/004/Schermate%20004.dc.html) (accesso, elenco dei DEN, stanza, attesa, impostazioni). Non sono la fonte da seguire per costruire: l'accesso del 013 è più recente, e la stanza e le attese sono nel 002 e nel 015. **Da verificare**, schermata per schermata, se qualcosa dei due vecchi prototipi vale ancora. `design/system/md/fase-2-schermate.md` e `stanza-den.md` sono esplorazione e storia, non norma (lo dice `CLAUDE.md`).

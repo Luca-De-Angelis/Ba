@@ -71,3 +71,12 @@ Gli accordi con un sostantivo (posto passato, persona aggiunta, DEN creato) sono
 | «Aggiungi un co-amministratore» | invariata finché il nome della funzione non cambia; forma neutra proposta: «Aggiungi chi amministra con te» (ipotesi, da decidere) |
 
 Il tedesco usa già le forme inclusive («Zuhörer:in», «Co-Administrator:in»).
+
+## Scoperta (task 031, 034)
+
+| Termine | Che cos'è |
+| --- | --- |
+| Disponibile a chiacchierare | Uno stato **dichiarato** da chi lo accende, mai rilevato: il profilo diventa **trovabile e invitabile** (compari fra le persone che si possono invitare, solo per chi può trovarti secondo «Chi può trovarmi»: la visibilità non si allarga da sola). Si spegne in un tocco e **da solo quando si entra in un DEN** (ipotesi, D-055; nessun timer). Si mostra sempre come «● Disponibile»: un punto pieno **e** la parola, mai il solo colore, mai uno stato di presenza |
+| Zona abituale | La zona in cui di solito si ascolta, usata al posto del GPS quando la posizione non è autorizzata: una zona, mai un indirizzo (G15, ipotesi). È una memoria in più da dichiarare nell'informativa |
+| Proposti per te | I DEN che la home suggerisce, ognuno con il **motivo** in una frase («Perché: tema Cucina», «Perché: in italiano») e un marcatore («vicino a te», «zona abituale»). Vengono da tema e lingua scelti; il loro numero non è deciso. Nessuna classifica, nessun segno del pagante, nessun contatore |
+| Avvisi sui DEN | Un avviso quando si apre un **DEN** su un tema o una lingua che scegli (G09). **Mai per le persone**: quello è il richiamo, che ha il suo consenso per persona |

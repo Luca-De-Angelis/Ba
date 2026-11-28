@@ -7,6 +7,9 @@
 //     ascoltatore» e la frase di che cosa succede);
 //   - `.negata`      lo stato **negato dal sistema** (il permesso rifiutato) con
 //     la sua **via d'uscita** («Apri»).
+//   - `.stato`       lo stato **di una scelta dell'utente** (task 034: «Sei disponibile a
+//     chiacchierare»): testo a sinistra e azione («Spegni») a destra; dal testo a
+//     `azioneSottoDa` l'azione va sotto la frase, a sinistra. Non è un permesso rifiutato.
 //
 // **Proposta del task 029:** le prime tre riusano i componenti che esistono
 // (`BaRigaValore`, `BaInterruttoreRiga`, `BaRigaAzione`): una riga di impostazione
@@ -121,6 +124,22 @@ class BaRigaImpostazione extends StatelessWidget {
           ),
         );
 
+  /// Lo stato di una scelta dell'utente (non un permesso negato): [titolo] («Sei disponibile a
+  /// chiacchierare»), [frase] («Compari fra le persone da invitare.») e l'[azione] («Spegni»).
+  /// A testo normale il testo sta a sinistra e l'azione a destra; da `azioneSottoDa` (1,3) l'azione
+  /// sta sotto la frase, a sinistra. Senza [onAzione] è inattiva.
+  BaRigaImpostazione.stato({
+    Key? key,
+    required String titolo,
+    required String frase,
+    required String azione,
+    VoidCallback? onAzione,
+    String? semanticsLabel,
+  }) : this._(
+          key: key,
+          figlio: _Stato(titolo: titolo, frase: frase, azione: azione, onAzione: onAzione, azioneSemanticsLabel: semanticsLabel),
+        );
+
   final Widget figlio;
 
   @override
@@ -186,6 +205,77 @@ class _Negata extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// La riga di stato di una scelta (`.stato`): come `_Negata` nei token e nella semantica (titolo e
+/// frase letti insieme, l'azione un pulsante suo), ma a testo normale l'azione sta **a destra** sulla
+/// stessa riga; da `azioneSottoDa` sta sotto la frase, a sinistra (la regola del 036).
+class _Stato extends StatelessWidget {
+  const _Stato({
+    required this.titolo,
+    required this.frase,
+    required this.azione,
+    required this.onAzione,
+    required this.azioneSemanticsLabel,
+  });
+
+  final String titolo;
+  final String frase;
+  final String azione;
+  final VoidCallback? onAzione;
+  final String? azioneSemanticsLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    final testo = Semantics(
+      container: true,
+      label: '$titolo. $frase',
+      excludeSemantics: true,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(titolo, style: BaTestoTokens.corpo.copyWith(color: BaColorTokens.testoPrimo)),
+          const SizedBox(height: BaSpazioTokens.xxs),
+          Text(frase, style: BaTestoTokens.minore.copyWith(color: BaColorTokens.testoSecondo)),
+        ],
+      ),
+    );
+    // container: l'azione è un nodo suo, anche se inattiva.
+    final pulsante = Semantics(
+      container: true,
+      child: IntrinsicWidth(
+        child: BaPillola(
+          testo: azione,
+          semanticsLabel: azioneSemanticsLabel ?? azione,
+          variante: BaVariantePillola.spenta,
+          onTap: onAzione,
+          allarga: false,
+          altezzaMinima: BaControlloTokens.areaMinima,
+        ),
+      ),
+    );
+    final sotto = BaScalaTokens.testo(context) >= BaPersoneTokens.azioneSottoDa;
+    return Container(
+      constraints: const BoxConstraints(minHeight: BaControlloTokens.coppia, minWidth: double.infinity),
+      padding: const EdgeInsets.symmetric(vertical: BaSpazioTokens.s),
+      decoration: const BoxDecoration(
+        border: Border(top: BorderSide(color: BaColorTokens.filettoDivisorio)),
+      ),
+      child: sotto
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [testo, const SizedBox(height: BaSpazioTokens.s), pulsante],
+            )
+          : Row(
+              // In alto, accanto al titolo; IntrinsicHeight perché la pillola (Container con alignment) in una riga
+              // con altezza limitata si allungherebbe fino al tetto (misurato con il font vero, 360 dp).
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [Expanded(child: testo), const SizedBox(width: BaSpazioTokens.m), IntrinsicHeight(child: pulsante)],
+            ),
     );
   }
 }

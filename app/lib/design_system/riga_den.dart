@@ -16,6 +16,12 @@
 // L'Inventario mette il campione di presenze nella riga fra i tagli; il brief lo
 // chiede, e qui c'è.
 //
+// **Il motivo (task 034, 031 H1 «Proposti per te»):** parametro facoltativo `motivo`, una riga in
+// più sotto la frase («Perché: tema Cucina», «Perché: in italiano»), a 14 in secondo piano. Senza,
+// la riga è **identica** a prima. «Vicino a te» e «zona abituale» **non hanno un parametro**:
+// arrivano nel [marcatore] già composto dal chiamante («zona abituale · entra chiunque · 5 sul
+// palco»). Nessun segno del pagante, nessun contatore, nessuno stato di presenza e nessun luogo in cui si trova una persona.
+//
 // Con [onTap] la riga è toccabile (premuta e a fuoco da `BaTouchable`, area almeno
 // `areaMinima`); senza, è solo testo. Per lo screen reader un solo elemento:
 // nome, marcatore e frase.
@@ -47,6 +53,7 @@ class BaRigaDen extends StatelessWidget {
     this.stato = BaStatoRigaDen.viva,
     this.onTap,
     this.semanticsLabel,
+    this.motivo,
   });
 
   final String nome;
@@ -70,14 +77,18 @@ class BaRigaDen extends StatelessWidget {
   /// Nullo = la riga non si tocca.
   final VoidCallback? onTap;
 
-  /// Se manca: nome, marcatore e frase.
+  /// Se manca: nome, marcatore, frase e motivo.
   final String? semanticsLabel;
+
+  /// Il motivo per cui un DEN è proposto, già composto dal chiamante («Perché: tema Cucina»): una
+  /// riga sotto la frase, a 14. Nullo = nessuna riga e nessuno spazio.
+  final String? motivo;
 
   bool get _spenta => stato == BaStatoRigaDen.spenta;
 
   @override
   Widget build(BuildContext context) {
-    final parole = semanticsLabel ?? [nome, ?marcatore, ?frase].join('. ');
+    final parole = semanticsLabel ?? [nome, ?marcatore, ?frase, ?motivo].join('. ');
     final contenuto = _Contenuto(riga: this);
     if (onTap == null) {
       return Semantics(container: true, label: parole, excludeSemantics: true, child: contenuto);
@@ -133,6 +144,10 @@ class _Contenuto extends StatelessWidget {
                 if (riga.frase != null) ...[
                   const SizedBox(height: BaSpazioTokens.s),
                   Text(riga.frase!, style: BaTestoTokens.minore.copyWith(color: BaColorTokens.testoSecondo)),
+                ],
+                if (riga.motivo != null) ...[
+                  const SizedBox(height: BaSpazioTokens.s),
+                  Text(riga.motivo!, style: BaTestoTokens.minore.copyWith(color: BaColorTokens.testoSecondo)),
                 ],
               ],
             ),

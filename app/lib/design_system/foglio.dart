@@ -67,12 +67,14 @@ class BaFoglio extends StatelessWidget {
   });
 
   /// Un permesso: [titolo], un sottotitolo opzionale in marcatore, i
-  /// [paragrafi] e le [azioni]. La prima azione è chiara.
+  /// [paragrafi], le frasi più piccole facoltative [paragrafiMinori] (in coda, in
+  /// `BaTestoTokens.minore`; vuote = come prima) e le [azioni]. La prima azione è chiara.
   BaFoglio.richiesta({
     Key? key,
     required String titolo,
     String? sottotitolo,
     List<String> paragrafi = const [],
+    List<String> paragrafiMinori = const [],
     required List<BaAzioneFoglio> azioni,
   }) : this._faccia(
           key: key,
@@ -80,6 +82,7 @@ class BaFoglio extends StatelessWidget {
           titolo: titolo,
           sottotitolo: sottotitolo,
           paragrafi: paragrafi,
+          paragrafiMinori: paragrafiMinori,
           azioni: azioni,
         );
 
@@ -119,11 +122,12 @@ class BaFoglio extends StatelessWidget {
     required String titolo,
     String? sottotitolo,
     required List<String> paragrafi,
+    List<String> paragrafiMinori = const [],
     required List<BaAzioneFoglio> azioni,
   }) : this(
           key: key,
           semanticsLabel: titolo,
-          corpo: _CorpoRichiesta(titolo: titolo, sottotitolo: sottotitolo, paragrafi: paragrafi),
+          corpo: _CorpoRichiesta(titolo: titolo, sottotitolo: sottotitolo, paragrafi: paragrafi, paragrafiMinori: paragrafiMinori),
           azioni: [
             for (var i = 0; i < azioni.length; i++)
               _pillolaDi(
@@ -238,11 +242,12 @@ class BaFoglio extends StatelessWidget {
 
 /// Titolo, sottotitolo in marcatore e paragrafi di una richiesta o di un invito.
 class _CorpoRichiesta extends StatelessWidget {
-  const _CorpoRichiesta({required this.titolo, required this.sottotitolo, required this.paragrafi});
+  const _CorpoRichiesta({required this.titolo, required this.sottotitolo, required this.paragrafi, this.paragrafiMinori = const []});
 
   final String titolo;
   final String? sottotitolo;
   final List<String> paragrafi;
+  final List<String> paragrafiMinori;
 
   @override
   Widget build(BuildContext context) {
@@ -261,6 +266,10 @@ class _CorpoRichiesta extends StatelessWidget {
         for (final p in paragrafi) ...[
           const SizedBox(height: BaSpazioTokens.m),
           Text(p, style: BaTestoTokens.corpo.copyWith(color: BaColorTokens.testoSecondo)),
+        ],
+        for (final p in paragrafiMinori) ...[
+          const SizedBox(height: BaSpazioTokens.m),
+          Text(p, style: BaTestoTokens.minore.copyWith(color: BaColorTokens.testoSecondo)),
         ],
       ],
     );

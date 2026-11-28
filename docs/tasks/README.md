@@ -52,7 +52,9 @@ Un file per task, `NNN-nome.md`, al massimo una pagina, nel formato di `_templat
 | 033 | `033-persone-inviti-codice.md` — Persone e inviti: applicare il 030 e costruire componenti e fogli (`BaRicercaPersone`, `BaRigaPersona` estesa, `BaSelettorePersone`, `BaRigaConsenso`, `BaFoglioInvito`) | Claude Code | Concluso |
 | 035 | `035-ritocchi-traduzioni.md` — Ritocchi 2 (sagoma e segno «!» condivisi, `dart:math`, chiavi ARB), foglio di revisione delle traduzioni e test più leggeri | Claude Code | Concluso |
 | 036 | Consolidamento 2 del design: le regole del testo grande, i titoli, i testi neutri, il movimento e i nomi di ruolo | Claude Design | Concluso |
-| 036c | `036c-applicare-036.md` — Portare il consolidamento 2 (036) nel codice e nei documenti: la barra misurata, i titoli, «In ascolto», il movimento da `durata()` | Claude Code | In corso |
+| 036c | `036c-applicare-036.md` — Portare il consolidamento 2 (036) nel codice e nei documenti: la barra misurata, i titoli, «In ascolto», il movimento da `durata()` | Claude Code | Concluso |
+| 031 | Scoperta: la home, «Disponibile a chiacchierare», gli avvisi sui DEN e la posizione (proposta) | Claude Design | Concluso |
+| 034 | `034-scoperta-codice.md` — Scoperta: applicare il 031 e costruire i componenti (`BaRichiestaPermesso`, il motivo di `BaRigaDen`, «● Disponibile» di `BaRigaPersona`, galleria «Scoperta») | Claude Code | Concluso |
 | 024c | `024c-persone-inviti-prototipo.md` — Persone e inviti nel prototipo, testi allineati ai prototipi, test più leggeri | Claude Code | In corso |
 | 024a | `024-prototipo-navigabile.md` — Prototipo navigabile, prima parte: struttura, accesso, elenco, stanza, «diventa partecipante», impostazioni | Claude Code | Concluso |
 | 024b | Prototipo navigabile, seconda parte: coda, creazione e «Gestisci», simulazioni, account chiuso, schermo bloccato (nello stesso brief 024) | Claude Code | Concluso |

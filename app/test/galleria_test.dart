@@ -31,10 +31,17 @@ import 'package:ba/design_system/pillola.dart';
 import 'package:ba/design_system/presenza.dart';
 import 'package:ba/design_system/pubblico.dart';
 import 'package:ba/design_system/tokens.dart';
+import 'package:ba/design_system/touchable.dart';
 import 'package:ba/galleria/main_galleria.dart';
 
+// Si tocca il **bersaglio** che contiene il testo (la riga, il segmento), non il centro del testo: in una riga
+// con titolo e descrizione il centro del titolo può cadere su un altro testo e flutter_test avvisa che il
+// tocco «non colpisce» il widget cercato. Senza bersaglio toccabile attorno (un pulsante, un testo)
+// si tocca il testo, come prima.
 Future<void> _tocca(WidgetTester tester, String testo) async {
-  final f = find.text(testo);
+  final testoF = find.text(testo);
+  final bersaglio = find.ancestor(of: testoF, matching: find.byType(BaTouchable));
+  final f = bersaglio.evaluate().isNotEmpty ? bersaglio.first : testoF;
   await tester.ensureVisible(f);
   await tester.tap(f);
   await tester.pump();

@@ -27,6 +27,8 @@ final _vietate = <String, RegExp>{
   '«✓ Scelto» → «✓ Nella scelta»': RegExp('[\'"«]Scelto[\'"»]'),
   '«Sei ascoltatore» → «In ascolto» (task 036)': RegExp(r'[Ss]ei ascoltatore'),
   '«Torna ascoltatore» → «Torna all\'ascolto» (task 036)': RegExp(r'Torna ascoltatore'),
+  '«chi puoi essere trovato» → «chi può trovarti» (task 034, 031 D2)': RegExp(r'chi puoi essere trovato'),
+  '«Niente di nuovo per ora» → «Per ora non ci sono proposte» (task 034, 031 H1)': RegExp(r'Niente di nuovo per ora'),
   '«persona bloccata» dopo il nome → «Persona bloccata: nome»': RegExp(r'\{nome\}, persona bloccata'),
 };
 
